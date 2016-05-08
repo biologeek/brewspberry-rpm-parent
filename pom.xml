@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.brewspberry</groupId>
+	<artifactId>brewspberry-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>brewspberry-parent</name>
+	<description>brewspberry-parent</description>
+	<packaging>pom</packaging>
+
+
+	<properties>
+		<rpm.install.basedir>/opt/tomcat</rpm.install.basedir>
+		<rpm.install.webapps>${rpm.install.basedir}/webapps</rpm.install.webapps>
+		<rpm.install.config>${rpm.install.basedir}/lib</rpm.install.config>
+	</properties>
+	<modules>
+		<module>brewspberry-api</module>
+		<module>brewspberry-webapp</module>
+		<module>brewspberry-jbatches</module>
+		<module>brewspberry-core</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<id>rpm-build</id>
+			<activation>
+				<property>
+					<name>build-rpm</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>rpm-maven-plugin</artifactId>
+						<version>2.1.5</version>
+						<extensions>true</extensions>
+						<executions>
+							<execution>
+								<goals>
+									<goal>attached-rpm</goal>
+								</goals>
+								<configuration>
+									<classifier>${rpm.classifier}</classifier>
+									<copyright>Biologeek</copyright>
+									<distribution>Brewspberry</distribution>
+									<group>Applications/Internet</group>
+									<packager>${user.name}</packager>
+									<changelogFile>CHANGELOG</changelogFile>
+									<defaultDirmode>540</defaultDirmode>
+									<defaultFilemode>440</defaultFilemode>
+									<defaultUsername>tomcat</defaultUsername>
+									<defaultGroupname>tomcat</defaultGroupname>
+									<requires>
+										<require>apache-tomcat &gt;= 8.0.24</require>
+									</requires>
+									<mappings>
+										<mapping>
+											<directory>${rpm.install.webapps}/brewspberry-api</directory>
+											<sources>
+												<source>
+													<location>../brewspberry-api/target/brewspberry-api/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
+												</source>
+											</sources>
+										</mapping>
+										
+										<mapping>
+											<directory>${rpm.install.webapps}/brewspberry-webapp</directory>
+											<sources>
+												<source>
+													<location>../brewspberry-webapp/target/brewspberry-webapp/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
+												</source>
+											</sources>
+										</mapping>
+									</mappings>
+									<postinstallScriptlet>
+									<scriptFile>
+										src/main/resources/rpm/postinstall.sh
+									</scriptFile>
+									</postinstallScriptlet>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+	</profiles>
+
+</project>
