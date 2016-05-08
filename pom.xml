@@ -8,7 +8,6 @@
 	<description>brewspberry-rpm-parent</description>
 	<packaging>pom</packaging>
 
-
 	<properties>
 		<rpm.install.basedir>/opt/tomcat</rpm.install.basedir>
 		<rpm.install.webapps>${rpm.install.basedir}/webapps</rpm.install.webapps>
@@ -34,7 +33,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>rpm-maven-plugin</artifactId>
-						<version>2.1.5</version>
+						<version>2.1</version>
 						<extensions>true</extensions>
 						
 						<executions>
@@ -57,8 +56,9 @@
 									<defaultGroupname>tomcat</defaultGroupname>
 									
 			<properties>
-			<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-			<project.build.group>net.brewspberry</project.build.group></properties>
+	<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+	<project.build.group>net.brewspberry</project.build.group></properties>
+
 									<requires>
 										<require>apache-tomcat &gt;= 8.0.24</require>
 									</requires>
