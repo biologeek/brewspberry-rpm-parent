@@ -13,12 +13,7 @@
 		<rpm.install.webapps>${rpm.install.basedir}/webapps</rpm.install.webapps>
 		<rpm.install.config>${rpm.install.basedir}/lib</rpm.install.config>
 	</properties>
-	<modules>
-		<module>../brewspberry-api</module>
-		<module>../brewspberry-webapp</module>
-		<module>../brewspberry-jbatches</module>
-		<module>../brewspberry-core</module>
-	</modules>
+
 
 	<profiles>
 		<profile>
@@ -28,6 +23,12 @@
 					<name>build-rpm</name>
 				</property>
 			</activation>
+			<modules>
+				<module>../brewspberry-api</module>
+				<module>../brewspberry-webapp</module>
+				<module>../brewspberry-jbatches</module>
+				<module>../brewspberry-core</module>
+			</modules>
 			<build>
 				<plugins>
 					<plugin>
@@ -35,17 +36,18 @@
 						<artifactId>rpm-maven-plugin</artifactId>
 						<version>2.1</version>
 						<extensions>true</extensions>
-						
+
 						<executions>
 							<execution>
 								<goals>
-									<goal>attached-rpm</goal>
+									<goal>rpm</goal>
 								</goals>
 								<configuration>
 									<classifier>${rpm.classifier}</classifier>
 									<copyright>Biologeek</copyright>
-									<distribution>Brewspberry</distribution>					
-				                    <targetOS>linux</targetOS>
+									<icon>src/main/resources/img/icon.png</icon>
+									<distribution>Brewspberry</distribution>
+									<targetOS>linux</targetOS>
 									<needarch>noarch</needarch>
 									<group>Applications/Internet</group>
 									<packager>${user.name}</packager>
@@ -54,10 +56,11 @@
 									<defaultFilemode>440</defaultFilemode>
 									<defaultUsername>tomcat</defaultUsername>
 									<defaultGroupname>tomcat</defaultGroupname>
-									
-			<properties>
-	<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
-	<project.build.group>net.brewspberry</project.build.group></properties>
+
+									<properties>
+										<project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+										<project.build.group>net.brewspberry</project.build.group>
+									</properties>
 
 									<requires>
 										<require>apache-tomcat &gt;= 8.0.24</require>
@@ -78,7 +81,7 @@
 												<source>
 													<location>../brewspberry-webapp/target/brewspberry-webapp/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
 												</source>
-												
+
 											</sources>
 										</mapping>
 									</mappings>
