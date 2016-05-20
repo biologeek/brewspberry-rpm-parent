@@ -12,8 +12,9 @@
 		<rpm.install.basedir>/opt/tomcat</rpm.install.basedir>
 		<rpm.install.webapps>${rpm.install.basedir}/webapps</rpm.install.webapps>
 		<rpm.install.config>${rpm.install.basedir}/lib</rpm.install.config>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.group>Applications/Internet</project.build.group>
 	</properties>
-
 
 	<profiles>
 		<profile>
@@ -101,4 +102,7 @@
 		</profile>
 	</profiles>
 
+	<modules>
+		<module>brewspberry-regulator-algo</module>
+	</modules>
 </project>
