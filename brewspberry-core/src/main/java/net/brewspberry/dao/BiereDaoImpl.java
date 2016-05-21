@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import net.brewspberry.business.IGenericDao;
@@ -17,6 +18,7 @@ import net.brewspberry.util.HibernateUtil;
 public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 
 	private Session session = HibernateUtil.getSession();
+	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	@Override
 	public Biere save(Biere arg0) throws DAOException {

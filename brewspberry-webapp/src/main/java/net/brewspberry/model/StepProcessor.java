@@ -19,6 +19,7 @@ import net.brewspberry.business.service.EtapeServiceImpl;
 import net.brewspberry.business.service.HopServiceImpl;
 import net.brewspberry.business.service.MaltServiceImpl;
 import net.brewspberry.business.service.YeastServiceImpl;
+import net.brewspberry.util.DateManipulator;
 import net.brewspberry.util.LogManager;
 
 public class StepProcessor implements Processor<Object> {
@@ -72,7 +73,7 @@ public class StepProcessor implements Processor<Object> {
 			// Attaching brew to step
 			if (parent != null && parentBrew.getBra_id() != null && !parentBrew.getBra_id().equals(new Brassin())) {
 				
-				logger.info("Attaching to brew "+parentBrew);
+				logger.fine("Attaching to brew "+parentBrew);
 				currentStep.setEtp_brassin(parentBrew);
 			}
 
@@ -81,13 +82,8 @@ public class StepProcessor implements Processor<Object> {
 		// Step beginning date
 		if (request.getParameter("step_beginning") != null) {
 
-			try {
-				currentStepBeginningDate = sdf.parse(request
-						.getParameter("step_beginning"));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			currentStepBeginningDate = DateManipulator.formatDateFromVariousPatterns(request
+					.getParameter("step_beginning")).getTime();
 
 			if (currentStep.getEtp_debut() == null) {
 

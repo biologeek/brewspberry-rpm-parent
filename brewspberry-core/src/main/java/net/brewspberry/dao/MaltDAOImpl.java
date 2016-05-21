@@ -1,11 +1,13 @@
 package net.brewspberry.dao;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projection;
@@ -20,6 +22,7 @@ import net.brewspberry.util.HibernateUtil;
 public class MaltDAOImpl implements IGenericDao<Malt> {
 
 	private Session session = HibernateUtil.getSession();
+	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	@Override
 	public Malt save(Malt arg0) throws DAOException {

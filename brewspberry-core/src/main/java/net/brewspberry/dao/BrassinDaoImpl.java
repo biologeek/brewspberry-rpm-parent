@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
@@ -23,6 +24,7 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 	static final Logger logger = LogManager.getInstance(BrassinDaoImpl.class
 			.getName());
 	private Session session = HibernateUtil.getSession();
+	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	@Override
 	public Brassin save(Brassin arg0) throws DAOException {

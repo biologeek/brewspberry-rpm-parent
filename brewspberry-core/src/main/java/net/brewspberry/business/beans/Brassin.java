@@ -234,9 +234,15 @@ public class Brassin implements Serializable{
 				+ ", bra_debut=" + bra_debut + ", bra_fin=" + bra_fin
 				+ ", bra_date_maj=" + bra_date_maj + ", bra_quantiteEnLitres="
 				+ bra_quantiteEnLitres + ", bra_statut=" + bra_statut
-				+ "]";
+				+ ", bra_malts=" + bra_malts + ", bra_houblons=" + bra_houblons
+				+ ", bra_levures=" + bra_levures + ", bra_etapes=" + bra_etapes
+				+ ", bra_beer=" + bra_beer + ", bra_type=" + bra_type
+				+ ", bra_temperature_measurement="
+				+ bra_temperature_measurement + ", bra_actioner="
+				+ bra_actioner + "]";
 	}
-	
+
+
 	
 
 }

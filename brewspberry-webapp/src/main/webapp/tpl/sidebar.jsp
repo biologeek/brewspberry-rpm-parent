@@ -13,7 +13,10 @@
                             <a href="Accueil"><i class="icon-chevron-right"></i> Liste des brassins</a>
                         </li>
                         <li>
-                            <a href="Actionner?type=listActioner"><i class="icon-chevron-right"></i>Actionneurs</a>
+                            <a href="../brewspberry-api/Actionner?type=listActioner"><i class="icon-chevron-right"></i>Actionneurs</a>
+                        </li>
+                        <li>
+                            <a href="TemperatureServlet"><i class="icon-chevron-right"></i>Temps réel</a>
                         </li>
                     </ul>
                 </div>

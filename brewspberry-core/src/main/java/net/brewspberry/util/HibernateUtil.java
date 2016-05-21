@@ -20,6 +20,7 @@ import net.brewspberry.business.beans.TemperatureMeasurement;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.StatelessSession;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
@@ -28,8 +29,10 @@ import org.hibernate.service.ServiceRegistry;
 public class HibernateUtil {
 
 	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
+	private static final ThreadLocal<StatelessSession> threadLocalState = new ThreadLocal<StatelessSession>();
 	private static SessionFactory sessionFactory;
-	private static Logger logger = LogManager.getInstance(HibernateUtil.class.getName());
+	private static Logger logger = LogManager.getInstance(HibernateUtil.class
+			.getName());
 	private static ServiceRegistry serviceRegistry;
 
 	static {
@@ -59,10 +62,9 @@ public class HibernateUtil {
 					.addAnnotatedClass(TemperatureMeasurement.class)
 					.addAnnotatedClass(Actioner.class)
 					.addAnnotatedClass(DurationBO.class);
-			
-			
-			serviceRegistry = new StandardServiceRegistryBuilder().applySettings(
-		            configuration.getProperties()).build();
+
+			serviceRegistry = new StandardServiceRegistryBuilder()
+					.applySettings(configuration.getProperties()).build();
 			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
 		} catch (Exception e) {
@@ -92,11 +94,29 @@ public class HibernateUtil {
 					: null;
 			threadLocal.set(session);
 		}
+		session.flush();
+		session.clear();
 
 		return session;
 	}
 
-	
+	public static StatelessSession getStatelessSession()
+			throws HibernateException {
+		StatelessSession statelessSession = getSessionFactory()
+				.openStatelessSession();
+
+		if (statelessSession == null) {
+			if (sessionFactory == null) {
+				rebuildSessionFactory();
+			}
+			statelessSession = (sessionFactory != null) ? sessionFactory
+					.openStatelessSession() : null;
+			threadLocalState.set(statelessSession);
+		}
+
+		return statelessSession;
+	}
+
 	public static void rebuildSessionFactory() {
 		try {
 			sessionFactory = configureSessionFactory();

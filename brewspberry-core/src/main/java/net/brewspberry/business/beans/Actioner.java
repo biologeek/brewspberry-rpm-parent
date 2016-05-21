@@ -32,8 +32,8 @@ public class Actioner {
 	public Date act_date_debut;
 	public Date act_date_fin;
 	public String act_raspi_pin;
-	public Boolean act_activated;
-	public Boolean act_used;
+	public boolean act_activated;
+	public boolean act_used;
 
 	@ManyToOne
 	@JoinColumn(name = "act_bra_id")
@@ -43,7 +43,7 @@ public class Actioner {
 	@JoinColumn(name = "act_etp_id")
 	public Etape act_etape;
 	
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="tmes_actioner")
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_actioner")
 	List<TemperatureMeasurement> act_temperature_measurements;
 
 	public Actioner() {
@@ -58,11 +58,11 @@ public class Actioner {
 		this.act_id = act_id;
 	}
 
-	public Boolean getAct_activated() {
+	public boolean getAct_activated() {
 		return act_activated;
 	}
 
-	public void setAct_activated(Boolean act_activated) {
+	public void setAct_activated(boolean act_activated) {
 		this.act_activated = act_activated;
 	}
 
@@ -98,11 +98,11 @@ public class Actioner {
 		this.act_etape = act_etape;
 	}
 
-	public Boolean getAct_used() {
+	public boolean getAct_used() {
 		return act_used;
 	}
 
-	public void setAct_used(Boolean act_used) {
+	public void setAct_used(boolean act_used) {
 		this.act_used = act_used;
 	}
 
@@ -170,8 +170,7 @@ public class Actioner {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((act_activated == null) ? 0 : act_activated.hashCode());
+		result = prime * result + (act_activated ? 1231 : 1237);
 		result = prime * result
 				+ ((act_brassin == null) ? 0 : act_brassin.hashCode());
 		result = prime * result
@@ -191,8 +190,7 @@ public class Actioner {
 						: act_temperature_measurements.hashCode());
 		result = prime * result
 				+ ((act_type == null) ? 0 : act_type.hashCode());
-		result = prime * result
-				+ ((act_used == null) ? 0 : act_used.hashCode());
+		result = prime * result + (act_used ? 1231 : 1237);
 		result = prime * result
 				+ ((act_uuid == null) ? 0 : act_uuid.hashCode());
 		return result;
@@ -207,10 +205,7 @@ public class Actioner {
 		if (getClass() != obj.getClass())
 			return false;
 		Actioner other = (Actioner) obj;
-		if (act_activated == null) {
-			if (other.act_activated != null)
-				return false;
-		} else if (!act_activated.equals(other.act_activated))
+		if (act_activated != other.act_activated)
 			return false;
 		if (act_brassin == null) {
 			if (other.act_brassin != null)
@@ -257,10 +252,7 @@ public class Actioner {
 				return false;
 		} else if (!act_type.equals(other.act_type))
 			return false;
-		if (act_used == null) {
-			if (other.act_used != null)
-				return false;
-		} else if (!act_used.equals(other.act_used))
+		if (act_used != other.act_used)
 			return false;
 		if (act_uuid == null) {
 			if (other.act_uuid != null)
@@ -270,5 +262,6 @@ public class Actioner {
 		return true;
 	}
 
+	
 	
 }

@@ -3,7 +3,7 @@
   <parent>
     <groupId>net.brewspberry</groupId>
     <artifactId>brewspberry-rpm-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>brewspberry-regulator-algo</artifactId>
   <name>brewspberry-regulator-algo</name>

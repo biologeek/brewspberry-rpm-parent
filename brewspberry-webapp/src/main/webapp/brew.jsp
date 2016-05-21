@@ -21,16 +21,23 @@
 <link href="vendors/jGrowl/jquery.jgrowl.css" rel="stylesheet"
 	media="screen">
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script   src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js">
+</script>
+<script type="text/javascript" src="js/graphRefresher.js"></script>
+
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
-<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+<script src="vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
 <script type="text/javascript">
-	function changeActionerState(brew, step, actionerUUID, actionerID) {
+	function changeActionerState(brew, step, actionerUUID, actionerID, actionerType) {
 
 		if (brew != null && step != null) {
 
@@ -46,7 +53,31 @@
 											+ "&eid=" + step,
 									context : document.body
 								}).done(function() {
-							$(this).addClass("done");
+									switch (actionerType){
+									case '1' :
+										/*
+										 * DS18B20
+										 */
+										$('#IMGACT'+actionerUUID).attr('src', 'images/thermo-off.jpg');
+										break;
+										
+
+									case '2' :
+										/*
+										 * PUMP
+										 */
+										$('#IMGACT'+actionerUUID).attr('src', 'images/pump-off.jpg');
+										break;
+										
+
+									case '3' :
+										/*
+										 * ENGINE
+										 */
+										$('#IMGACT'+actionerUUID).attr('src', 'images/engine-off.png');
+										break;
+										 
+									}
 						});
 
 			}
@@ -57,7 +88,31 @@
 								+ step,
 						context : document.body
 					}).done(function() {
-				$(this).addClass("done");
+						switch (actionerType){
+						case '1' :
+							/*
+							 * DS18B20
+							 */
+							$('#IMGACT'+actionerUUID).attr('src', 'images/thermo-on.jpg');
+							break;
+							
+
+						case '2' :
+							/*
+							 * PUMP
+							 */
+							$('#IMGACT'+actionerUUID).attr('src', 'images/pump-on.jpg');
+							break;
+							
+
+						case '3' :
+							/*
+							 * ENGINE
+							 */
+							$('#IMGACT'+actionerUUID).attr('src', 'images/engine-on.png');
+							break;
+							 
+						}
 			});
 
 		}
@@ -125,7 +180,19 @@
 														<td colspan="4"><c:forEach
 																items="${availableActioners}" var="actioner">
 																<a href="#"
-																	onclick="changeActionerState('${steps[loop].getEtp_brassin().getBra_id()}','${steps[loop].getEtp_id()}','${actioner.getAct_uuid()}','${actioner.getAct_id()}')">${actioner.getAct_nom()}</a>
+																	onclick="changeActionerState('${steps[loop].getEtp_brassin().getBra_id()}','${steps[loop].getEtp_id()}','${actioner.getAct_uuid()}','${actioner.getAct_id()}', '${actioner.getAct_type()}')">
+																	<c:if test="${actioner.getAct_type() == 1}">
+																		<img id="IMGACT${actioner.getAct_uuid()}" style="height:50px; width:50px;" src="images/thermo-off.jpg" alt="${steps[loop].getEtp_nom()}" ></a>
+																	</c:if>
+																	
+																	<c:if test="${actioner.getAct_type() == 2}">
+																		<img id="IMGACT${actioner.getAct_uuid()}" style="height:50px; width:50px;" src="images/pump-off.jpg" alt="${steps[loop].getEtp_nom()}" ></a>
+																	</c:if>
+																	
+																	<c:if test="${actioner.getAct_type() == 3}">
+																		<img id="IMGACT${actioner.getAct_uuid()}" style="height:40px; width:60px;" src="images/engine-off.png" alt="${steps[loop].getEtp_nom()}" ></a>
+																	</c:if>
+																	
 															</c:forEach></td>
 													</tr>
 												</tbody>
@@ -145,12 +212,14 @@
 											</div>
 										</div>
 										<div class="block-content collapse in" id="CHART${loop}"'>
-											<a
-												href="${tempServlet}?type=etp&eid=${steps[loop].getEtp_id()}&width=300&height=300">
-												<img alt="JFreeGraph"
-												src="${tempServlet}?type=etp&eid=${steps[loop].getEtp_id()}&width=300&height=300"
-												style="height: 250px; width: 300px; margin: 0 auto; display: block;" />
-											</a>
+											<canvas id="CANVAS${loop}" width="450px" height = "300px"'>
+											<script>
+											console.log ('Executing...')
+
+												execute('CANVAS${loop}', '${steps[loop].getEtp_id()}', 'all', 40);
+											
+											</script>
+											</canvas>
 
 										</div>
 									</div>
@@ -179,10 +248,31 @@
 									<tbody>
 										<tr>
 											<td>Label</td>
-											<td><input type="text" name="step_label" /></td>
+											<td><input type="text" name="step_label" /><</td>
 
 											<td>Durée théorique</td>
 											<td><input type="text" name="step_duration" /></td>
+										</tr>
+										<tr>
+											<td>Début</td>
+											<td id= "stepBeginningAdd"><input type="text" name="step_beginnging" />
+												<script type="text/javascript">
+													$(function(){
+														
+														$("#stepBeginningAdd").datetimepicker();
+													}												
+												</script>
+											</td>
+
+											<td>Fin</td>
+											<td id= "stepEndAdd"><input type="text" name="step_end" />
+											<script type="text/javascript">
+													$(function(){
+														
+														$("#stepEndAdd").datetimepicker();
+													}
+												</script>
+												</td>
 										</tr>
 										<tr>
 											<td>Température théorique</td>

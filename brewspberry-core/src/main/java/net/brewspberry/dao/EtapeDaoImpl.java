@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.HibernateException;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -16,7 +17,9 @@ import net.brewspberry.util.HibernateUtil;
 public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 	private Session session = HibernateUtil.getSession();
-
+	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
+	
+	
 	@Override
 	public Etape save(Etape arg0) throws DAOException {
 		Transaction tx = session.beginTransaction();

@@ -24,9 +24,11 @@
 
 <link href="vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet"
 	media="screen">
-
-<script src="vendors/jquery-1.9.1.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script   src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+<!-- 
+	<script src="vendors/jquery-1.9.1.js"></script>
+ -->
+ <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="vendors/jquery.uniform.min.js"></script>
 <script src="vendors/chosen.jquery.min.js"></script>
 <script src="vendors/bootstrap-datepicker.js"></script>
@@ -85,13 +87,16 @@
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 <script src="vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
- 
-<script type="text/javascript" src="js/lib/soap/jquery.soap.js"></script> 
-<script type="text/javascript" src="js/lib/d3js/d3.js"> </script>
-<!-- <script src="js/graph_builder.js"></script>
 
- -->
-<meta http-equiv="refresh" content="2" >
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+
+<script type="text/javascript" src="http://momentjs.com/downloads/moment-with-locales.min.js">
+</script>
+<script type="text/javascript" src="js/graphRefresher.js"></script>
+	
+</script>
+
 </head>
 
 <body class="wysihtml5-supported">
@@ -115,21 +120,21 @@
 
 				<div class="block-content collapse in">
 					<div class="span12">
-
-						<div class="realtime-graph">
-
-							<img
-								src="http://192.168.0.20:8080/TemperatureDisplay/JFreeGraphServlet" />
-
-						</div>
-
+						<canvas id="CANVAS${loop}" width="450px" height="300px"'>
+							<script>
+								console.log('Executing...')
+		
+								execute(
+										'CANVAS',
+										'${steps[loop].getEtp_id()}',
+										'all', 40);
+							</script>
+						</canvas>
 					</div>
 				</div>
 
 				<div class="block-content collapse in">
-					<div class="span12">
-			
-					</div>
+					<div class="span12"></div>
 				</div>
 			</div>
 		</div>

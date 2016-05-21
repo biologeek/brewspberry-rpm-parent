@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.brewspberry</groupId>
 	<artifactId>brewspberry-rpm-parent</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<name>brewspberry-rpm-parent</name>
 	<description>brewspberry-rpm-parent</description>
 	<packaging>pom</packaging>
@@ -16,6 +16,13 @@
 		<project.build.group>Applications/Internet</project.build.group>
 	</properties>
 
+	<modules>
+		<module>brewspberry-regulator-algo</module>
+		<module>brewspberry-api</module>
+		<module>brewspberry-core</module>
+		<module>brewspberry-jbatches</module>
+		<module>brewspberry-webapp</module>
+	</modules>
 	<profiles>
 		<profile>
 			<id>rpm-build</id>
@@ -24,12 +31,7 @@
 					<name>build-rpm</name>
 				</property>
 			</activation>
-			<modules>
-				<module>../brewspberry-api</module>
-				<module>../brewspberry-webapp</module>
-				<module>../brewspberry-jbatches</module>
-				<module>../brewspberry-core</module>
-			</modules>
+
 			<build>
 				<plugins>
 					<plugin>
@@ -71,7 +73,7 @@
 											<directory>${rpm.install.webapps}/brewspberry-api</directory>
 											<sources>
 												<source>
-													<location>../brewspberry-api/target/brewspberry-api/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
+													<location>./brewspberry-api/target/brewspberry-api/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
 												</source>
 											</sources>
 										</mapping>
@@ -80,7 +82,7 @@
 											<directory>${rpm.install.webapps}/brewspberry-webapp</directory>
 											<sources>
 												<source>
-													<location>../brewspberry-webapp/target/brewspberry-webapp/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
+													<location>./brewspberry-webapp/target/brewspberry-webapp/target/brewspberry-api-0.1.0-SNAPSHOT.war</location>
 												</source>
 
 											</sources>
@@ -102,7 +104,4 @@
 		</profile>
 	</profiles>
 
-	<modules>
-		<module>brewspberry-regulator-algo</module>
-	</modules>
 </project>

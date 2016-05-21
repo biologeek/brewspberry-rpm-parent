@@ -15,7 +15,7 @@ public class DeviceParser extends ConfigLoader {
 
 	static DeviceParser instance = null;
 
-	public static Logger logger = Logger.getLogger(DeviceParser.class
+	public static Logger logger = LogManager.getInstance(DeviceParser.class
 			.toString());
 
 	ActionerServiceImpl actionerService = new ActionerServiceImpl();
@@ -29,7 +29,7 @@ public class DeviceParser extends ConfigLoader {
 
 		if (instance == null) {
 
-			logger.info("Creating new DeviceParser instance");
+			logger.finer("Creating new DeviceParser instance");
 			instance = new DeviceParser();
 
 		}
@@ -50,7 +50,6 @@ public class DeviceParser extends ConfigLoader {
 
 		File propsFile = new File(path);
 
-		logger.info("Entering getDevices. Conf : " + path);
 
 		if (propsFile.exists() && !propsFile.isDirectory()) {
 
@@ -105,20 +104,19 @@ public class DeviceParser extends ConfigLoader {
 		List<Actioner> actioners = getDevices(path);
 
 		logger.info("getDeviceByUUID : " + actioners.size()
-				+ " devices found !");
+				+ " devices found  in file : " + path);
 
 		for (Actioner actioner : actioners) {
 
-			logger.info(actioner.getAct_uuid() + " - " + uuid);
 			if (actioner.getAct_uuid().equals(uuid))
 				result = actioner;
 
 		}
-		logger.info("getDeviceByUUID - Result : " + result);
 
 		return result;
 	}
 
+	@Deprecated
 	public void setIdToActioner(Actioner actioner) throws Exception {
 
 		List<Actioner> devices = getDevices(Constants.DEVICES_PROPERTIES);
@@ -129,11 +127,10 @@ public class DeviceParser extends ConfigLoader {
 			// Modifying devices with new ID
 			for (Actioner device : devices) {
 
-				logger.info("Device : " + device.getAct_uuid() + " "
-						+ device.getAct_id());
-				logger.info("Actioner : " + actioner.getAct_uuid() + " "
+				logger.fine("Device : " + device.getAct_uuid() + " "
+						+ device.getAct_id()+"Actioner : " + actioner.getAct_uuid() + " "
 						+ actioner.getAct_id());
-				if (device.getAct_uuid() == actioner.getAct_uuid()) {
+				if (device.getAct_uuid().equals(actioner.getAct_uuid())) {
 
 					if (found) {
 
@@ -154,6 +151,11 @@ public class DeviceParser extends ConfigLoader {
 		}
 	}
 
+	/**
+	 * Writes device properties in property file 
+	 * @param devices
+	 */
+	@Deprecated
 	private void setDevices(List<Actioner> devices) {
 		Properties props = null;
 
@@ -186,7 +188,6 @@ public class DeviceParser extends ConfigLoader {
 		dev_type = dev_type.substring(0, dev_type.length() - 1);
 
 		if (props != null) {
-			logger.info("Devices written : device.ids" + dev_id);
 
 			props.setProperty("device.ids", dev_id);
 			props.setProperty("device.pins", dev_pin);

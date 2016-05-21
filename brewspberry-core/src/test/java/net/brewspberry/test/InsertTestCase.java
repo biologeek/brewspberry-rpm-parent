@@ -1,20 +1,5 @@
 package net.brewspberry.test;
 
-import net.brewspberry.business.IGenericDao;
-import net.brewspberry.business.beans.Houblon;
-import net.brewspberry.business.beans.Levure;
-import net.brewspberry.business.beans.Malt;
-import net.brewspberry.dao.HopDaoImpl;
-import net.brewspberry.dao.MaltDAOImpl;
-import net.brewspberry.dao.YeastDAOImpl;
-import net.brewspberry.exceptions.DAOException;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 public class InsertTestCase {
 /*
 	static IGenericDao<Malt> dao;

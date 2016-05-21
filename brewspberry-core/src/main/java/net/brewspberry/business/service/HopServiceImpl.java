@@ -95,7 +95,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-						logger.info("Getting hopName "+currentName);
+						logger.fine("Getting hopName "+currentName);
 					
 					Houblon currentIngredient = new Houblon();
 					
@@ -201,7 +201,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-							logger.info("Getting hopName "+currentName);
+							logger.fine("Getting hopName "+currentName);
 						
 						SimpleHoublon currentIngredient = hopDao.getElementById(currentNameNumeric);
 						

@@ -11,10 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 @Entity
-public class TemperatureMeasurement implements Serializable {
-	
+public class TemperatureMeasurement implements Serializable,
+		Comparable<TemperatureMeasurement> {
+
 	/**
 	 * 
 	 */
@@ -22,25 +22,26 @@ public class TemperatureMeasurement implements Serializable {
 	/**
 	 * 
 	 */
-	@Id@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long tmes_id;
 	private Date tmes_date;
 	private String tmes_probeUI;
 	private String tmes_probe_name;
 	private Float tmes_value;
-	
-	@ManyToOne(fetch=FetchType.LAZY, targetEntity=Etape.class)
-	@JoinColumn(name="tmes_etape_id")
+
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Etape.class)
+	@JoinColumn(name = "tmes_etape_id")
 	private Etape tmes_etape;
-	
-	@ManyToOne (fetch=FetchType.LAZY, targetEntity=Brassin.class)
-	@JoinColumn(name="tmes_bra_id")
+
+	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Brassin.class)
+	@JoinColumn(name = "tmes_bra_id")
 	private Brassin tmes_brassin;
-	
-	@ManyToOne (fetch=FetchType.LAZY, targetEntity=Actioner.class)
-	@JoinColumn(name="tmes_act_id")
+
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Actioner.class)
+	@JoinColumn(name = "tmes_act_id")
 	private Actioner tmes_actioner;
-	
+
 	public TemperatureMeasurement() {
 		super();
 	}
@@ -120,7 +121,19 @@ public class TemperatureMeasurement implements Serializable {
 	public void setTmes_actioner(Actioner tmes_actioner) {
 		this.tmes_actioner = tmes_actioner;
 	}
-	
-	
+
+	@Override
+	public int compareTo(TemperatureMeasurement o) {
+
+		if (o.getTmes_date().after(this.getTmes_date())) {
+			return 1;
+		} else if (o.getTmes_date().before(this.getTmes_date())) {
+
+			return -1;
+		} else {
+
+			return 0;
+		}
+	}
 
 }

@@ -2,13 +2,16 @@ package net.brewspberry.adapter;
 
 import java.util.logging.Logger;
 
+import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPin;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinState;
+import com.pi4j.wiringpi.Gpio;
 
 public class RelayAdapter {
 	/**
@@ -38,24 +41,12 @@ public class RelayAdapter {
 		return null;
 	}
 
-	public Boolean changePinState(Pin pin) {
+	public PinState changePinState(GpioPinDigitalOutput pin) {
 
-		Boolean result = null;
-		GpioPinDigitalOutput relay = gpioController
-				.provisionDigitalOutputPin(pin);
-
-		PinState state = relay.getState();
-
-		if (state == PinState.HIGH) {
-			relay.setState(PinState.LOW);
-			result = false;
-
-		} else if (state == PinState.LOW) {
-			relay.setState(PinState.HIGH);
-			result = true;
-		}
-
-		return result;
+		
+		pin.toggle();
+		
+		return pin.getState();
 	}
 	
 	/**
@@ -64,50 +55,34 @@ public class RelayAdapter {
 	 * @param newPinState
 	 * @return
 	 */
-	public Boolean changePinState(Pin pin, PinState newPinState) {
+	public Boolean changePinState(GpioPinDigitalOutput pin, PinState newPinState) {
 
 		Boolean result = null;
-		GpioPinDigitalOutput relay = gpioController
-				.provisionDigitalOutputPin(pin);
 
-		PinState state = relay.getState();
+		PinState state = pin.getState();
 
-		if (state == newPinState) {
-			logger.info("Not changing state as state="+this.getStateAsString(state));
+		if (state.equals(newPinState)) {
+			logger.warning("Not changing state as state="+this.getStateAsString(state));
 
-		} else if (state == PinState.LOW) {
-			relay.setState(PinState.HIGH);
+		} else if (state.equals(PinState.LOW)) {
+			pin.setState(PinState.HIGH);
+			result = true;
+		}else if (state.equals(PinState.HIGH)) {
+			pin.setState(PinState.LOW);
 			result = true;
 		}
 
 		return result;
 	}
 
-	public String getStateAsString(Pin device) {
+	public String getStateAsString(GpioPinDigitalOutput device) {
 
 		String result = "";
-		GpioPinDigitalOutput relay = gpioController
-				.provisionDigitalOutputPin(device);
+		
+		PinState state = device.getState();
 
-		PinState state = relay.getState();
 
-		switch (state) {
-
-		case HIGH:
-
-			result = "HIGH";
-			break;
-		case LOW:
-
-			result = "LOW";
-			break;
-		default:
-
-			result = "LOW";
-			break;
-
-		}
-		return result;
+		return this.getStateAsString(state);
 	}
 	
 	public String getStateAsString(PinState state) {
@@ -132,5 +107,16 @@ public class RelayAdapter {
 
 		}
 		return result;
+	}
+	
+	
+	public void setShutdownOptionsandShutdown (GpioController controller, GpioPin pin, PinState state, boolean unexport){
+		
+		pin.setShutdownOptions(unexport, state);
+		
+		logger.info("Shutting down "+Constants.BREW_GPIO_TO_STR.get(pin));
+		
+		controller.shutdown();;
+		
 	}
 }

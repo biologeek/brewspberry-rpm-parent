@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projection;
@@ -21,6 +22,7 @@ import net.brewspberry.util.HibernateUtil;
 public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
 	private Session session = HibernateUtil.getSession();
+	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	@Override
 	public SimpleMalt save(SimpleMalt arg0) throws DAOException {

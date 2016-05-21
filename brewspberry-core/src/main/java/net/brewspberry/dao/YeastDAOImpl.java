@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 
 import net.brewspberry.business.IGenericDao;
@@ -17,6 +18,7 @@ import net.brewspberry.util.HibernateUtil;
 public class YeastDAOImpl implements IGenericDao<Levure> {
 
 	Session session = HibernateUtil.getSession();
+	StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	@Override
 	public void deleteElement(long arg0) {

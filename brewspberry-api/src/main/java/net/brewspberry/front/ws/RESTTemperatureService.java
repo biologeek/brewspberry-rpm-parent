@@ -57,7 +57,7 @@ public class RESTTemperatureService {
 
 			List<TemperatureMeasurement> tmesList = tmesSpecService
 					.getTemperatureMeasurementByEtape(currentStep);
-			logger.info("List size : "+tmesList.size());
+			logger.fine("List size : "+tmesList.size());
 
 			if (uuid != null) {
 
@@ -66,7 +66,7 @@ public class RESTTemperatureService {
 
 					while (it.hasNext()) {
 						TemperatureMeasurement next = it.next();
-						if (next.getTmes_probeUI() == uuid) {
+						if (next.getTmes_probeUI().equals(uuid)) {
 							filteredList.add(next);
 						}
 
@@ -76,11 +76,11 @@ public class RESTTemperatureService {
 
 			}
 
-			logger.info("List size : "+tmesList.size());
+			logger.fine("List size : "+tmesList.size());
 
 			while (tmesList.size() > limit) {
 				
-				logger.info("List size : "+tmesList.size());
+				logger.fine("List size : "+tmesList.size());
 				tmesList.remove(0);
 			}
 			result = this.convertListToJSONObject(tmesList);

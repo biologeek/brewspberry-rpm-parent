@@ -1,6 +1,7 @@
 package net.brewspberry.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -10,8 +11,10 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import net.brewspberry.business.IGenericDao;
@@ -20,6 +23,8 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.TemperatureMeasurement;
 import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.util.ConfigLoader;
+import net.brewspberry.util.Constants;
 import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 
@@ -30,6 +35,7 @@ public class TemperatureMeasurementDaoImpl implements
 	Logger logger = LogManager.getInstance(TemperatureMeasurementDaoImpl.class
 			.getName());
 	Session session = HibernateUtil.getSession();
+	StatelessSession statelessSession = HibernateUtil.getStatelessSession();
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -160,7 +166,7 @@ public class TemperatureMeasurementDaoImpl implements
 
 			result = this.getElementById(id);
 
-			logger.info("Saved TemperatureMeasurement with id " + id);
+			logger.fine("Saved TemperatureMeasurement with id " + id);
 
 		} catch (HibernateException e) {
 
@@ -280,25 +286,37 @@ public class TemperatureMeasurementDaoImpl implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<TemperatureMeasurement> getTemperatureMeasurementsAfterID(
-			Etape etape, String uuid, long tmesID) {
+			Etape etape, String uuid, long tmesID, int modulo) {
 
 		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
-
+		logger.fine("Restrictions : " + etape.getEtp_id() + " uuid : " + uuid
+				+ " ID : " + tmesID);
 		Criteria query;
 
+		Calendar cal = Calendar.getInstance();
+
+		cal.add(Calendar.MINUTE,
+				Integer.parseInt(ConfigLoader.getConfigByKey(
+						Constants.CONFIG_PROPERTIES,
+						"param.chart.timeLengthInMinutes")));
 		if (etape != null) {
 			if (tmesID > 0) {
 
-				query = session.createCriteria(TemperatureMeasurement.class)
+				query = session
+						.createCriteria(TemperatureMeasurement.class)
 						.add(Restrictions.gt("tmes_id", tmesID))
-						.add(Restrictions.eq("tmes_etape", etape));
+						.add(Restrictions.eq("tmes_etape", etape))
+						.add(Restrictions.gt("tmes_date", cal.getTime()))
+						.add(Restrictions.sqlRestriction("tmes_id mod "
+								+ modulo + " = 0"));
 
-				if (uuid != null && uuid != "all") {
+				if (uuid != null && !uuid.equals("all")) {
 
 					query.add(Restrictions.eq("tmes_probeUI", uuid));
 
 				}
 
+				query.addOrder(Order.asc("tmes_date"));
 				result = (List<TemperatureMeasurement>) query.list();
 			}
 		}
@@ -308,5 +326,29 @@ public class TemperatureMeasurementDaoImpl implements
 
 		return result;
 	}
+
+	@Override
+	public List<TemperatureMeasurement> getLastTemperatureByStepAndUUID(
+			Etape stepID, String uuid) {
+
+		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+
+		Session session = HibernateUtil.getSession();
+
+		Criteria crit = session.createCriteria(TemperatureMeasurement.class);
+		crit.add(Restrictions.eq("tmes_etape", stepID));
+		crit.add(Restrictions.eq("tmes_probeUI", uuid));
+		crit.addOrder(Order.desc("tmes_date"));
+		
+		if (!uuid.equals("") || !uuid.equalsIgnoreCase("all")){
+			
+			crit.setMaxResults(1);
+		
+		}
+		
+		return result;
+	}
+	
+	
 
 }

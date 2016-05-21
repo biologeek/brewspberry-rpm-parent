@@ -1,26 +1,5 @@
 package net.brewspberry.test;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.Assert;
-import net.brewspberry.business.IGenericDao;
-import net.brewspberry.business.IGenericService;
-import net.brewspberry.business.beans.Malt;
-import net.brewspberry.business.service.MaltServiceImpl;
-import net.brewspberry.dao.MaltDAOImpl;
-import net.brewspberry.exceptions.DAOException;
-import net.brewspberry.util.HibernateUtil;
-
-import org.hibernate.Session;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 public class MaltTestCase {
 /*
 	static IGenericService<Malt> service=new MaltServiceImpl();
