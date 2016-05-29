@@ -393,4 +393,36 @@ public class TemperatureMeasurementServiceImpl implements
 		}
 		return result;
 	}
+
+	@Override
+	public List<TemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
+			Etape etapeID, String uuid, int numberOfPoints, float delay)
+			throws Exception {
+		
+		// Normalization of values if they are not correctly defined
+		if (etapeID != null && etapeID.getEtp_id() > 0) {
+			
+				if (numberOfPoints <= 0){					
+					//Use param.chart.defaultNumberOfPoints					
+					numberOfPoints = Integer.parseInt(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.chart.defaultNumberOfPoints"));
+				}
+				
+				if (delay <= 0){					
+					//Use param.chart.defaultTimeLengthInSeconds
+					delay = Float.parseFloat(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.chart.defaultTimeLengthInSeconds"));
+				}			
+
+				if (uuid.equals("")){
+					uuid = "all";
+				}
+				
+				tmesSpecDao.getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(etapeID, uuid, numberOfPoints, delay);
+				
+				
+			
+		} else {
+			throw new IllegalArgumentException("Incorrect step ID : "+etapeID.getEtp_id());
+		}
+		return null;
+	}
 }

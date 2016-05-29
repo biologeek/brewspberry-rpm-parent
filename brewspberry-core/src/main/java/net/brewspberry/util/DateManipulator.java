@@ -219,4 +219,48 @@ public class DateManipulator {
 		
 		return cal;
 	}
+	
+	/**
+	 * Method used for returning date from date parameter and delay. 
+	 * 
+	 * For date in the past, delay is negative
+	 * 
+	 * @param date
+	 * @param delay
+	 * @param delayUnit
+	 * @return
+	 */
+	public Date getDateFromDateAndDelay(Date date, float delay, String delayUnit){
+		
+		
+		Calendar cal = Calendar.getInstance();
+		
+		cal.setTime(date);
+		
+		switch (delayUnit){
+		
+
+		case "SECONDS" :
+			
+			cal.add(Calendar.SECOND, delay);
+		break;
+		
+
+		case "MINUTES" :
+			
+			cal.add(Calendar.MINUTE, delay);
+		break;
+
+		case "HOURS" :
+			
+			cal.add(Calendar.HOUR, delay);
+		break;
+		
+		}
+		
+		
+		
+		return cal.getTime();		
+		
+	}
 }

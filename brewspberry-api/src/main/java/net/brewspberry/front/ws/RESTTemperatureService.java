@@ -2,13 +2,10 @@ package net.brewspberry.front.ws;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -29,7 +26,7 @@ import net.brewspberry.business.service.TemperatureMeasurementServiceImpl;
 import net.brewspberry.util.LogManager;
 
 @Path("/")
-public class RESTTemperatureService {
+public class RESTTemperatureService implements IRESTemperature {
 
 	IGenericService<TemperatureMeasurement> tmesService = new TemperatureMeasurementServiceImpl();
 	ISpecificTemperatureMeasurementService tmesSpecService = new TemperatureMeasurementServiceImpl();
@@ -43,7 +40,8 @@ public class RESTTemperatureService {
 	@Path("/initTemperatures/e/{e}/u/{u}/limitTo/{limitTo}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response initTemperatureForStep(@PathParam("u") String uuid,
-			@PathParam("e") long stepID, @PathParam("limitTo") int limit)
+			@PathParam("e") long stepID, @PathParam("maxPts") int maxPointsNumber, 
+			@PathParam("delay") float delayToDisplayInSeconds)
 			throws JSONException {
 
 		JSONObject json = new JSONObject();
