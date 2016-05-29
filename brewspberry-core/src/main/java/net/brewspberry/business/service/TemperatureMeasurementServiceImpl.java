@@ -393,4 +393,12 @@ public class TemperatureMeasurementServiceImpl implements
 		}
 		return result;
 	}
+
+	@Override
+	public List<TemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
+			int etapeID, String uuid, int numberOfPoints, float delay)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

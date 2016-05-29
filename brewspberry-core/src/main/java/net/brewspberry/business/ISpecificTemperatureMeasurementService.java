@@ -13,6 +13,7 @@ public interface ISpecificTemperatureMeasurementService {
 	public List<TemperatureMeasurement> getTemperatureMeasurementByEtape(Etape etape);
 	
 	public TemperatureMeasurement getLastTemperatureMeasurementByUUID (String uuid) throws Exception;
+	public List<TemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay (int etapeID, String uuid, int numberOfPoints, float delay) throws Exception;
 	public TemperatureMeasurement getLastTemperatureMeasurementByName(String name) throws Exception;
 	public List<TemperatureMeasurement> getTemperatureMeasurementsAfterID(Etape etape, String uuid, long tmesID, int modulo);
 	public List<TemperatureMeasurement> getAllLastTemperatureMeasurements(List<String> uuidOrName, Boolean uuid) throws Exception;
