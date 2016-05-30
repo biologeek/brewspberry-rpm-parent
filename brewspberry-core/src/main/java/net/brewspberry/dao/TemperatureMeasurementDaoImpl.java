@@ -327,6 +327,7 @@ public class TemperatureMeasurementDaoImpl
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<TemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(Etape etapeID,
 			String uuid, int numberOfPoints, float delay) throws Exception {
@@ -344,15 +345,14 @@ public class TemperatureMeasurementDaoImpl
 			
 		}
 		
-		tmesCriteria.add(Order.desc("tmes_id"));
+		tmesCriteria.addOrder(Order.desc("tmes_id"));
 		
 		tmesCriteria.setMaxResults(numberOfPoints);
 		
-		tmesCriteria.add(Restrictions.le("tmes_date", DateManipulator.getInstance().getDateFromDateAndDelay(new Date(), (float)-delay, "SECONDS")));
+		tmesCriteria.add(Restrictions.le("tmes_date", DateManipulator.getInstance().getDateFromDateAndDelay(new Date(), (float) -delay, "SECONDS")));
+				
 		
-		
-		
-		return null;
+		return (List<TemperatureMeasurement>) tmesCriteria.list();
 	}
 
 }
