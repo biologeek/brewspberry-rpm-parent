@@ -42,7 +42,7 @@ public class Etape implements Serializable{
     private Brassin etp_brassin;
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_etape")
-    private List<TemperatureMeasurement> etp_temperature_measurement;
+    private List<ConcreteTemperatureMeasurement> etp_temperature_measurement;
     
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="act_etape")
@@ -61,6 +61,9 @@ public class Etape implements Serializable{
     @OneToMany(fetch=FetchType.LAZY, mappedBy="etp_brassin")
     List<Etape> bra_etapes;
     
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="etp_plt_id")
+    PalierType etp_palier_type;
     
     
 	public Etape() {
@@ -137,12 +140,12 @@ public class Etape implements Serializable{
 		this.etp_remarque = etp_remarque;
 	}
 	
-	public List<TemperatureMeasurement> getEtp_temperature_measurement() {
+	public List<ConcreteTemperatureMeasurement> getEtp_temperature_measurement() {
 		return etp_temperature_measurement;
 	}
 
 	public void setEtp_temperature_measurement(
-			List<TemperatureMeasurement> etp_temperature_measurement) {
+			List<ConcreteTemperatureMeasurement> etp_temperature_measurement) {
 		this.etp_temperature_measurement = etp_temperature_measurement;
 	}
 
@@ -180,6 +183,14 @@ public class Etape implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public PalierType getEtp_palier_type() {
+		return etp_palier_type;
+	}
+
+	public void setEtp_palier_type(PalierType etp_palier_type) {
+		this.etp_palier_type = etp_palier_type;
 	}
 
 	@Override

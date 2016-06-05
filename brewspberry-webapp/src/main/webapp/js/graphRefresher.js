@@ -26,29 +26,25 @@ var currentLastID = 0;
 
 //buildGraph(buildDataSetsForChartJS(testData), 'graph');
 
-function execute (htmlID, step, probe, maxPoints){
+function execute (htmlID, step, probe){
 	
-	maxPointsNumber = maxPoints;
+	maxPointsNumber = $('#defaultmaxPtsValue').value;
+	delay = $('#delay').value;
 	
 	// Initiating chart
-	getDataFromServlet(step, probe, true, 0, function(){
-		
-
-		buildDataSetsForChartJS(function(){
-
-			buildGraph(chartData, htmlID);		
-		});
-		isDataSetAtMaximumSize ();
-
-	});
-
-
+	getDataFromServlet(step, probe, true, 0, maxPoints, delay, function(){
+			buildDataSetsForChartJS(function(){
 	
+				buildGraph(chartData, htmlID);		
+			});
+		
+			isDataSetAtMaximumSize ();
+	});
 	
 	// Updating
 	setInterval (function (){
 		
-		getDataFromServlet (step, probe, false, currentLastID, function (){
+		getDataFromServlet (step, probe, false, currentLastID, maxPts, delay, function (){
 			updateChartWithNewData(rawDataFromServlet);
 
 		});
@@ -67,7 +63,7 @@ function execute (htmlID, step, probe, maxPoints){
 	 * 
 	 * Uses ajax GET Request to retrieve data
 	 */
-	function getDataFromServlet(step, probe, init, lastID, callback) {
+	function getDataFromServlet(step, probe, init, lastID, maxPts, delay, callback) {
 		/* if probe is not null retrieves data for this probe */
 	
 		
@@ -81,46 +77,53 @@ function execute (htmlID, step, probe, maxPoints){
 			address = updateServletAddress;
 		}
 
+		
+		if (typeof probe == "string"){
+				
+				address +='/uuid/'+probe+'';
+		} else {
+			
+			alert ('UUID is not a string')
+		}
+
+
 		if (typeof step == "string" ){
 				
-				address +='/e/'+step+'';
-			
-			
+				address +='/sid/'+step+'';
 		} else {
 			
 			alert ('step is not a string')
 		}
 		
-		if (typeof probe == "string"){
+
+		if (init){
+			if (maxPts > 0){
 				
-				address +='/u/'+probe+'';
-			
-			
-		} else {
-			
-			alert ('UUID is not a string')
-		
+				maxPointsNumber = maxPts;
+				
+			}
+			address+='/maxPts/'+maxPointsNumber;
+
 		}
 
-
-
+		
+		if (!init){
+			if (delay > 0){
+				XplotTimeRangeInMinutes = delay;
+			}
+			
+			address += '/delay/'+XplotTimeRangeInMinutes;
+			
+		}
+		
 		if (!init && lastID > 0){
 			
-			address+= '/l/'+lastID;
+			address+= '/lastID/'+lastID;
 			
 		} else if (!init){
 			
 			console.log ('OK I\'m cool, setting ID to 1');
-			address+= '/l/1';
-		}
-		if (!init){
-			
-			address += '/d/'+XplotTimeRangeInMinutes;
-			
-		}
-		if (init){
-			address+='/limitTo/'+maxPointsNumber;
-
+			address+= '/lastID/1';
 		}
 
 			/* if null => all probes */
@@ -144,19 +147,16 @@ function execute (htmlID, step, probe, maxPoints){
 				 * Will be error message displayed in jsp
 				 * 
 				 */
-				
-
 				console.log ('** Error when calling API !!');
 				console.log ('** Status : '+status);
 				rawDataFromServlet = new Array();
 			}
 		}
 				
-		);
-
-
-	
+		);	
 	}
+	
+
 	
 	function buildGraph(dataSets, divID) {
 	
@@ -167,7 +167,7 @@ function execute (htmlID, step, probe, maxPoints){
 	}
 	
 	/**
-	 * Receiving data as a list of {probe;date;temperature} converting them to
+	 * Receiving data as a list of "uuid":[{probe;date;temperature}, ...] converting them to
 	 * ChartJS datasets. Example :
 	 * 
 	 * [{"date":"2016-03-16
@@ -193,22 +193,38 @@ function execute (htmlID, step, probe, maxPoints){
 			data = rawDataFromServlet;
 		}
 		
-		
-		// For each item
-		jQuery.each (data, function (i, item){
-			// item : {"date":"2016-03-16
-			// 18:15:55.0","temp":16187,"name":"PROBE0","step":8,"id":1277,"brew":7,"uuid":"28-000006ddab6e"}
-			
-			
-			// yValues = {"PROBE1":[temperatures, ...], "PROBE2":[temperatures,
-			// ...], "PROBE3":[temperatures, ...]...}
-			
-			//console.log ('PROBES : '+item.name);
-			
-			
-			// Everytime a new date is added in xLabels
+		/*
+		 * Starting with concreteTemperatureMeasurements,
+		 * For each item (uuid: [ temperature, ...]), puts temperature value in yValues 
+		 */
 
-			//console.log ('Array : '+xLabels+ ' '+formatDateFromJavaToJS(item.date)+' '+typeof formatDateFromJavaToJS(item.date)+ ' '+xLabels.indexOf(formatDateFromJavaToJS(item.date)));
+		jQuery.each (data.ConcreteTemperatureMeasurement, function (i, item){
+			
+			
+			if (xLabels.indexOf(formatDateFromJavaToJS(item.date)) == -1){
+				xLabels.push(formatDateFromJavaToJS(item.date));
+			}
+		
+			var itemName = item.name;
+
+			if (!yValues.hasOwnProperty(itemName)){
+							
+				yValues[itemName] = [];
+
+			}
+			yValues[itemName].push(item.temp);
+			currentLastID = item.id;			
+		});
+
+		/*
+		 * Now working on Theoretical values.
+		 * Usually, there is only one theoretical temperature but in case
+		 * there is more than one, keeps looping over object
+		 * 
+		 */
+		jQuery.each (data.TheoreticalTemperatureMeasurement, function (i, item){
+			
+			
 			if (xLabels.indexOf(formatDateFromJavaToJS(item.date)) == -1){
 				xLabels.push(formatDateFromJavaToJS(item.date));
 			}
@@ -234,41 +250,25 @@ function execute (htmlID, step, probe, maxPoints){
 		if (yValues.PROBE0.length > 0){
 
 			jQuery.each (yValues, function(i, item){
-			
-				chartData.datasets.push (
-					{
-	
-					    label: i,
-					    fillColor: "rgba("+detemineColorForSet()+",0.2)",
-					    strokeColor: "rgba("+detemineColorForSet()+",1)",
-					    pointColor: "rgba("+detemineColorForSet()+",1)",
-					    pointStrokeColor: "#fff",
-					    pointHighlightFill: "#fff",
-					    pointHighlightStroke: "rgba("+detemineColorForSet()+",1)",
-					    data: item
-					
-					}					
+				// For each UUID, creating a dataset
+				// For Theoretical temperature sets, uuid = null, null1, ...
+				if (yValues.contains("null") != -1){
+					chartData.datasets.push (
+						{
+		
+						    label: i,
+						    fillColor: "rgba(255, 0, 0, 0.2)",
+						    strokeColor: "rgba(255, 0, 0, 1)",
+						    pointColor: "rgba(255, 0, 0, 1)",
+						    pointStrokeColor: "#fff",
+						    pointHighlightFill: "#fff",
+						    pointHighlightStroke: "rgba(255, 0, 0, 1)",
+						    data: item
+						}					
 				);
 
 			});
 
-		}
-		else {
-			
-			chartData.datasets.push (
-
-				{
-	
-				    label: "NOTAPROBE",
-				    fillColor: "rgba("+detemineColorForSet(0, yValues.length)+",0.2)",
-				    strokeColor: "rgba("+detemineColorForSet(0, yValues.length)+",1)",
-				    pointColor: "rgba("+detemineColorForSet(0, yValues.length)+",1)",
-				    pointStrokeColor: "#fff",
-				    pointHighlightFill: "#fff",
-				    pointHighlightStroke: "rgba("+detemineColorForSet()+",1)",
-				    data: [20.0]
-					
-				});	
 		}
 		callback();
 		

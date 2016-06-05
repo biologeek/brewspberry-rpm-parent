@@ -55,7 +55,7 @@ public class Brassin implements Serializable{
     private String bra_type;
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_brassin")
-    private List<TemperatureMeasurement> bra_temperature_measurement;
+    private List<ConcreteTemperatureMeasurement> bra_temperature_measurement;
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="act_brassin")
     private List<Actioner> bra_actioner;
@@ -217,13 +217,13 @@ public class Brassin implements Serializable{
 	}
 
 
-	public List<TemperatureMeasurement> getBra_temperature_measurement() {
+	public List<ConcreteTemperatureMeasurement> getBra_temperature_measurement() {
 		return bra_temperature_measurement;
 	}
 
 
 	public void setBra_temperature_measurement(
-			List<TemperatureMeasurement> bra_temperature_measurement) {
+			List<ConcreteTemperatureMeasurement> bra_temperature_measurement) {
 		this.bra_temperature_measurement = bra_temperature_measurement;
 	}
 

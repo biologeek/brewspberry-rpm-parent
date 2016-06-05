@@ -142,6 +142,15 @@
 					</div>
 				</div>
 
+				<div class="block">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left"
+							style="font-size: 10px;">Display range (minutes) : 
+							<input type="text" id="delay" name="delay" value="${defaultDelayValue}" />
+							Points displayed : 
+							<input type="text" id="maxPts" name="maxPts" value="${defaultmaxPtsValue}" /></div>
+					</div>
+				</div>
 				<!-- Loop over each step -->
 				<c:if test="${steps.size() > 0}">
 					<c:forEach begin="0" end="${steps.size()}" var="loop">
@@ -215,8 +224,7 @@
 											<canvas id="CANVAS${loop}" width="450px" height = "300px"'>
 											<script>
 											console.log ('Executing...')
-
-												execute('CANVAS${loop}', '${steps[loop].getEtp_id()}', 'all', 40);
+												execute('CANVAS${loop}', '${steps[loop].getEtp_id()}', 'all');
 											
 											</script>
 											</canvas>

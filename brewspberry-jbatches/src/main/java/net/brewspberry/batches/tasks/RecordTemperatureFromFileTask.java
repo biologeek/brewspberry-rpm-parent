@@ -24,7 +24,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.TemperatureMeasurement;
+import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.service.ActionerServiceImpl;
 import net.brewspberry.business.service.BrassinServiceImpl;
 import net.brewspberry.business.service.EtapeServiceImpl;
@@ -46,12 +46,12 @@ public class RecordTemperatureFromFileTask implements Task {
 	List<Path> filesToRead;
 	Map<String, Integer> valuesMap = new HashMap<String, Integer>();
 
-	IGenericService<TemperatureMeasurement> tmesService = new TemperatureMeasurementServiceImpl();
+	IGenericService<ConcreteTemperatureMeasurement> tmesService = new TemperatureMeasurementServiceImpl();
 
 	String entityToWrite = "ALL";
 
 	Object[] specificParameters = null;
-	List<TemperatureMeasurement> temperatureMeasurement = new ArrayList<TemperatureMeasurement>();
+	List<ConcreteTemperatureMeasurement> temperatureMeasurement = new ArrayList<ConcreteTemperatureMeasurement>();
 
 
 	private Logger logger = LogManager
@@ -107,7 +107,7 @@ public class RecordTemperatureFromFileTask implements Task {
 				int i = 0;
 				while (entries.hasNext()) {
 
-					TemperatureMeasurement tmes = new TemperatureMeasurement();
+					ConcreteTemperatureMeasurement tmes = new ConcreteTemperatureMeasurement();
 					Entry<String, Integer> entry = entries.next();
 
 					tmes.setTmes_brassin((Brassin) specificParameters[0]);
@@ -144,11 +144,11 @@ public class RecordTemperatureFromFileTask implements Task {
 					}
 					if (entityToWrite.equals("ALL")
 							|| entityToWrite.equals("SQL")) {
-						Iterator<TemperatureMeasurement> it = temperatureMeasurement
+						Iterator<ConcreteTemperatureMeasurement> it = temperatureMeasurement
 								.iterator();
 
 						while (it.hasNext()) {
-							TemperatureMeasurement tmesToRec = it.next();
+							ConcreteTemperatureMeasurement tmesToRec = it.next();
 
 							try {
 								logger.fine("Saving in DB");
@@ -163,7 +163,7 @@ public class RecordTemperatureFromFileTask implements Task {
 
 						}
 					}
-					temperatureMeasurement = new ArrayList<TemperatureMeasurement>();
+					temperatureMeasurement = new ArrayList<ConcreteTemperatureMeasurement>();
 				}
 			}
 		} catch (NotTheGoodNumberOfArgumentsException e) {
@@ -211,7 +211,7 @@ public class RecordTemperatureFromFileTask implements Task {
 
 	}
 
-	public List<String> formatDataForCSVFile(List<TemperatureMeasurement> tmes) {
+	public List<String> formatDataForCSVFile(List<ConcreteTemperatureMeasurement> tmes) {
 
 		String lineResult = new String();
 
@@ -219,11 +219,11 @@ public class RecordTemperatureFromFileTask implements Task {
 		logger.finer(tmes.size() + " temperatures to write");
 
 		if (tmes.size() > 0) {
-			Iterator<TemperatureMeasurement> it = tmes.iterator();
+			Iterator<ConcreteTemperatureMeasurement> it = tmes.iterator();
 
 			while (it.hasNext()) {
 
-				TemperatureMeasurement tmesU = it.next();
+				ConcreteTemperatureMeasurement tmesU = it.next();
 
 				lineResult = sdf.format(new Date()) + ";"
 						+ String.valueOf(tmesU.getTmes_brassin().getBra_id())

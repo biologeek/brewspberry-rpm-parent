@@ -14,8 +14,7 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
-import net.brewspberry.business.beans.Temperature;
-import net.brewspberry.business.beans.TemperatureMeasurement;
+import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -58,8 +57,7 @@ public class HibernateUtil {
 					.addAnnotatedClass(Etape.class)
 					.addAnnotatedClass(Biere.class)
 					.addAnnotatedClass(Brassin.class)
-					.addAnnotatedClass(Temperature.class)
-					.addAnnotatedClass(TemperatureMeasurement.class)
+					.addAnnotatedClass(ConcreteTemperatureMeasurement.class)
 					.addAnnotatedClass(Actioner.class)
 					.addAnnotatedClass(DurationBO.class);
 

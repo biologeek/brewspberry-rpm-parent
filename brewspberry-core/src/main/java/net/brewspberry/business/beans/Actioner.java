@@ -44,7 +44,7 @@ public class Actioner {
 	public Etape act_etape;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_actioner")
-	List<TemperatureMeasurement> act_temperature_measurements;
+	List<ConcreteTemperatureMeasurement> act_temperature_measurements;
 
 	public Actioner() {
 		super();
@@ -146,12 +146,12 @@ public class Actioner {
 		this.act_date_fin = act_date_fin;
 	}
 
-	public List<TemperatureMeasurement> getAct_temperature_measurements() {
+	public List<ConcreteTemperatureMeasurement> getAct_temperature_measurements() {
 		return act_temperature_measurements;
 	}
 
 	public void setAct_temperature_measurements(
-			List<TemperatureMeasurement> act_temperature_measurements) {
+			List<ConcreteTemperatureMeasurement> act_temperature_measurements) {
 		this.act_temperature_measurements = act_temperature_measurements;
 	}
 

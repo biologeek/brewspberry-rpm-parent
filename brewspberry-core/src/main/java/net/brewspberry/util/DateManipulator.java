@@ -1,15 +1,9 @@
 package net.brewspberry.util;
 
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.Temporal;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import net.brewspberry.business.beans.DurationBO;
 
@@ -242,18 +236,18 @@ public class DateManipulator {
 
 		case "SECONDS" :
 			
-			cal.add(Calendar.SECOND, delay);
+			cal.add(Calendar.SECOND, (int) delay);
 		break;
 		
 
 		case "MINUTES" :
 			
-			cal.add(Calendar.MINUTE, delay);
+			cal.add(Calendar.MINUTE, (int) delay);
 		break;
 
 		case "HOURS" :
 			
-			cal.add(Calendar.HOUR, delay);
+			cal.add(Calendar.HOUR, (int) delay);
 		break;
 		
 		}

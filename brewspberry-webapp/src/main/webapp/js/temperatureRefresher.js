@@ -23,7 +23,7 @@ var refreshDelay = 5000; // Refreshes every 5 s
  * @param divToFillIDsList
  * @returns
  */
-function execute (step, uuid, divToFillIDsList){
+function execute (step, uuid, divToFillIDsList, maxNumberOfPoints, timeRange){
 	
 	
 	if (typeof step != 'undefined' && typeof uuid != 'undefined' ){
@@ -96,7 +96,13 @@ function getDataFromService (params, callback){
 	
 	
 	
-	
+/**
+ * Checks if UUID from service is present in page
+ *  
+ * @param uuidFromService
+ * @param uuidListFromPage
+ * @returns
+ */
 function checkIfUUIDExistsInPage (uuidFromService, uuidListFromPage){
 	
 	for (uuidFrompage in uuidListFromPage){

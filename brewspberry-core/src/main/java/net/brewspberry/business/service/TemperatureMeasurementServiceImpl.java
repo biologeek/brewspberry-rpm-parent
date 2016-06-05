@@ -17,7 +17,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.TemperatureMeasurement;
+import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.dao.TemperatureMeasurementDaoImpl;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.ChartPointsCalculator;
@@ -27,7 +27,7 @@ import net.brewspberry.util.LogManager;
 
 public class TemperatureMeasurementServiceImpl implements
 		ISpecificTemperatureMeasurementService,
-		IGenericService<TemperatureMeasurement> {
+		IGenericService<ConcreteTemperatureMeasurement> {
 
 	private String measurementsCSV = "/home/xavier/ds18b20_raw_measurements.csv";
 
@@ -38,29 +38,29 @@ public class TemperatureMeasurementServiceImpl implements
 
 	private IGenericService<Etape> etapeService = new EtapeServiceImpl();
 
-	private IGenericDao<TemperatureMeasurement> tmesDao = new TemperatureMeasurementDaoImpl();
+	private IGenericDao<ConcreteTemperatureMeasurement> tmesDao = new TemperatureMeasurementDaoImpl();
 	private ISpecificTemperatureMeasurementService tmesSpecDao = new TemperatureMeasurementDaoImpl();
 	
 	static final Logger logger = LogManager.getInstance(TemperatureMeasurementServiceImpl.class.getName());
 
 	@Override
-	public List<TemperatureMeasurement> getTemperatureMeasurementByBrassin(
+	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(
 			Brassin bid) {
 
 		return tempDao.getTemperatureMeasurementByBrassin(bid);
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getTemperatureMeasurementByEtape(
+	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByEtape(
 			Etape etape) {
 
 		return tmesSpecDao.getTemperatureMeasurementByEtape(etape);
 	}
 
 	@Override
-	public TemperatureMeasurement getLastTemperatureMeasurementByUUID(
+	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementByUUID(
 			String uuid) {
-		TemperatureMeasurement result = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 
 		try {
 			result = this.tempDao.getLastTemperatureMeasurementByUUID(uuid);
@@ -72,9 +72,9 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public TemperatureMeasurement getLastTemperatureMeasurementByName(
+	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementByName(
 			String name) {
-		TemperatureMeasurement result = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 
 		try {
 			result = this.tempDao.getLastTemperatureMeasurementByName(name);
@@ -86,13 +86,13 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getAllLastTemperatureMeasurements(
+	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurements(
 			List<String> uuidOrName, Boolean uuid) throws Exception {
 
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 		Iterator<String> it = uuidOrName.iterator();
 
-		TemperatureMeasurement toAppend = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement toAppend = new ConcreteTemperatureMeasurement();
 
 		// using UUID
 
@@ -129,13 +129,13 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getAllLastTemperatureMeasurementsFromCSV(
+	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurementsFromCSV(
 			List<String> uuidOrName, Boolean uuid) throws Exception {
 
 		BufferedReader f = this.openFile(measurementsCSV);
 		String lastLine = "";
 		String line = "";
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 
 		while ((line = f.readLine()) != null) {
 
@@ -150,13 +150,13 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public TemperatureMeasurement getLastTemperatureMeasurementsByNameFromCSV(
+	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementsByNameFromCSV(
 			String uuidOrName, Boolean uuid) throws Exception {
 
 		BufferedReader f = this.openFile(measurementsCSV);
 		String lastLine = "";
 		String line = "";
-		TemperatureMeasurement result = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 
 		while ((line = f.readLine()) != null) {
 
@@ -189,10 +189,10 @@ public class TemperatureMeasurementServiceImpl implements
 		return br;
 	}
 
-	public List<TemperatureMeasurement> parseLineAsObjects(String line)
+	public List<ConcreteTemperatureMeasurement> parseLineAsObjects(String line)
 			throws Exception {
 
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 
 		if (line != null && line != "") {
 
@@ -202,7 +202,7 @@ public class TemperatureMeasurementServiceImpl implements
 
 			for (int i = 3; i < array.length; i += 2) {
 
-				TemperatureMeasurement tmes = new TemperatureMeasurement();
+				ConcreteTemperatureMeasurement tmes = new ConcreteTemperatureMeasurement();
 
 				tmes.setTmes_date(sdf.parse(array[0]));
 				tmes.setTmes_brassin(brassinService.getElementById(Long
@@ -228,12 +228,12 @@ public class TemperatureMeasurementServiceImpl implements
 
 	}
 
-	public TemperatureMeasurement parseLineAsObject(String line,
+	public ConcreteTemperatureMeasurement parseLineAsObject(String line,
 			String uuidOrName, Boolean uuid) throws Exception {
 
 		System.out.println("Parsing line as object " + uuidOrName);
 
-		TemperatureMeasurement result = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 		System.out.println("Found line " + line);
 
 		if (line != null && line != "") {
@@ -243,7 +243,7 @@ public class TemperatureMeasurementServiceImpl implements
 
 			for (int i = 3; i < array.length; i += 2) {
 
-				TemperatureMeasurement tmes = new TemperatureMeasurement();
+				ConcreteTemperatureMeasurement tmes = new ConcreteTemperatureMeasurement();
 
 				tmes.setTmes_date(sdf.parse(array[0]));
 				tmes.setTmes_brassin(brassinService.getElementById(Long
@@ -286,25 +286,25 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public TemperatureMeasurement save(TemperatureMeasurement arg0)
+	public ConcreteTemperatureMeasurement save(ConcreteTemperatureMeasurement arg0)
 			throws DAOException {
 		return tmesDao.save(arg0);
 	}
 
 	@Override
-	public TemperatureMeasurement update(TemperatureMeasurement arg0) {
+	public ConcreteTemperatureMeasurement update(ConcreteTemperatureMeasurement arg0) {
 		// TODO Auto-generated method stub
 		return tmesDao.update(arg0);
 	}
 
 	@Override
-	public TemperatureMeasurement getElementById(long id) {
+	public ConcreteTemperatureMeasurement getElementById(long id) {
 		// TODO Auto-generated method stub
 		return tmesDao.getElementById(id);
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getAllElements() {
+	public List<ConcreteTemperatureMeasurement> getAllElements() {
 		// TODO tme-generated method stub
 		return tmesDao.getAllElements();
 	}
@@ -316,63 +316,39 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public void deleteElement(TemperatureMeasurement arg0) {
+	public void deleteElement(ConcreteTemperatureMeasurement arg0) {
 		// TODO Auto-generated method stub
 		tmesDao.deleteElement(arg0);
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getAllDistinctElements() {
+	public List<ConcreteTemperatureMeasurement> getAllDistinctElements() {
 		// TODO Auto-generated method stub
 		return tmesDao.getAllDistinctElements();
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(Etape etape, String uuid, long tmesID, int delayInSeconds){
-
-		/*
-		 * In service, modulo is time range in minutes. 
-		 * It will be transformed in modulo depending on 
-		 * time range and record delay
-		 */
-		int delay = Integer.parseInt(ConfigLoader.getConfigByKey(Constants.BATCHES_PROPERTIES, "brewspberry.batches.threads.delay"));
-		int maxPointsOnChart = Integer.parseInt(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.chart.maxPointsOnChart"));
+	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(Etape etape, 
+			String uuid, int numberOfPoints, long tmesID, float delayInSeconds){
+		List<ConcreteTemperatureMeasurement> result = tempDao.getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(etape, uuid, numberOfPoints, tmesID, delayInSeconds);
 		
-		/*
-		 * 
-		 * Calculates the number of points that will be fetched from database 
-		 * - range is the range that the user wants to be displayed in minutes
-		 * 
-		 *  
-		 */
+		int frequency = ChartPointsCalculator.computePointsFrequencyDisplay(numberOfPoints, result.size(), delayInSeconds);
 		
-		float nbRec = 60000/delay*range;
-		int modulo = 1;
+		sortTemperatures(result, frequency);
 		
-		
-		logger.fine("delay : "+delay+" range : "+range);
-		
-		if (nbRec > maxPointsOnChart){
-			
-			modulo = (int) (nbRec/maxPointsOnChart);
-			
-		}
-		logger.fine("NbRec : "+nbRec+" maxPoints : "+maxPointsOnChart+" modulo : "+modulo);
-		
-		List<TemperatureMeasurement> result = tmesSpecDao.getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(etape, uuid, tmesID, delayInSeconds);
-		
-		int frequency = ChartPointsCalculator.computePointsFrequencyDisplay(maxPointsOnChart, result.size(), delayInSeconds);
-
-		List<TemperatureMeasurement> sortedResult = this.sortTemperatures(result, frequency);
-		
-		logger.fine("Retrieved "+result.size()+" results, kept ");
 		
 		return result;
 	}
 
-	private List<TemperatureMeasurement> sortTemperatures(
-			List<TemperatureMeasurement> result, int frequency) {
-		List<TemperatureMeasurement> sorted = new ArrayList<TemperatureMeasurement>();
+	/**
+	 * Method to keep only 1/frequency points to display
+	 * @param result raw list of results from DB
+	 * @param frequency of results to keep
+	 * @return
+	 */
+	private List<ConcreteTemperatureMeasurement> sortTemperatures(
+			List<ConcreteTemperatureMeasurement> result, int frequency) {
+		List<ConcreteTemperatureMeasurement> sorted = new ArrayList<ConcreteTemperatureMeasurement>();
 		
 		for (int i = 0 ; i<result.size() ; i+=frequency){
 			
@@ -384,10 +360,10 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getLastTemperatureByStepAndUUID(
+	public List<ConcreteTemperatureMeasurement> getLastTemperatureByStepAndUUID(
 			Etape stepID, String uuid) {
 		
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 		
 		
 		if (stepID != null && uuid != null){
@@ -413,7 +389,7 @@ public class TemperatureMeasurementServiceImpl implements
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
+	public List<ConcreteTemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
 			Etape etapeID, String uuid, int numberOfPoints, float delay)
 			throws Exception {
 		
@@ -447,7 +423,11 @@ public class TemperatureMeasurementServiceImpl implements
 		}
 		
 		
-		return tmesSpecDao.getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(etapeID, uuid, numberOfPoints, delay);
+		List<ConcreteTemperatureMeasurement>  result = tmesSpecDao.getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(etapeID, uuid, numberOfPoints, delay);
+		List<ConcreteTemperatureMeasurement> sortedResult = sortTemperatures(result, 
+				ChartPointsCalculator.computePointsFrequencyDisplay(numberOfPoints, result.size(), delay));
+
+		return sortedResult;
 	}
 
 }
