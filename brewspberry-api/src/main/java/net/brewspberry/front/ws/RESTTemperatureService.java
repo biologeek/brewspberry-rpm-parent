@@ -2,10 +2,14 @@ package net.brewspberry.front.ws;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,70 +24,82 @@ import org.json.JSONObject;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.business.beans.TemperatureMeasurement;
+import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
+import net.brewspberry.business.beans.TheoreticalTemperatureMeasurement;
 import net.brewspberry.business.service.EtapeServiceImpl;
 import net.brewspberry.business.service.TemperatureMeasurementServiceImpl;
+import net.brewspberry.util.ConfigLoader;
+import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 @Path("/")
 public class RESTTemperatureService {
 
-	IGenericService<TemperatureMeasurement> tmesService = new TemperatureMeasurementServiceImpl();
-	ISpecificTemperatureMeasurementService tmesSpecService = new TemperatureMeasurementServiceImpl();
-	IGenericService<Etape> stepService = new EtapeServiceImpl();
+	IGenericService<ConcreteTemperatureMeasurement> tmesService;
+	ISpecificTemperatureMeasurementService tmesSpecService;
+	IGenericService<Etape> stepService;
 	private Etape currentStep;
 
 	Logger logger = LogManager.getInstance(RESTTemperatureService.class
 			.getName());
 
 	@GET
-	@Path("/initTemperatures/e/{e}/u/{u}/limitTo/{limitTo}")
+	@Path("/initTemperatures/uuid/{uuid}/sid/{sid}/maxPts/{maxPts}/delay/{delay}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response initTemperatureForStep(@PathParam("u") String uuid,
-			@PathParam("e") long stepID, @PathParam("maxPts") int maxPointsNumber, @PathParam("delay") float delayToDisplayInSeconds)
-			throws Exception {
+	/**
+	 * Initiates temperature list with all available results
+	 *  
+	 */
+	public Response initTemperatureForStep(@PathParam("uuid") String uuid,
+			@PathParam("sid") long stepID,
+			@PathParam("maxPts") int maxPointsNumber,
+			@PathParam("delay") float delayToDisplayInSeconds) throws Exception {
 
 		JSONObject json = new JSONObject();
-		JSONArray result = null;
+		JSONObject thResult = null;
+		JSONObject result = null;
 		int limit = 0;
-
-		List<TemperatureMeasurement> filteredList = new ArrayList<TemperatureMeasurement>();
+		tmesService = new TemperatureMeasurementServiceImpl();
+		tmesSpecService = new TemperatureMeasurementServiceImpl();
+		stepService = new EtapeServiceImpl();
+		
+		List<ConcreteTemperatureMeasurement> filteredList = new ArrayList<ConcreteTemperatureMeasurement>();
 
 		if (stepID > 0) {
 
 			currentStep = stepService.getElementById(stepID);
 
-			List<TemperatureMeasurement> tmesList = tmesSpecService
-					.getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(currentStep, uuid, maxPointsNumber, delayToDisplayInSeconds);
-			logger.fine("List size : "+tmesList.size());
+			List<ConcreteTemperatureMeasurement> tmesList = tmesSpecService
+					.getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
+							currentStep, uuid, maxPointsNumber,
+							delayToDisplayInSeconds);
+			logger.fine("List size : " + tmesList.size());
 
-			if (uuid != null) {
-
-				if (!uuid.equals("all")) {
-					Iterator<TemperatureMeasurement> it = tmesList.iterator();
-
-					while (it.hasNext()) {
-						TemperatureMeasurement next = it.next();
-						if (next.getTmes_probeUI().equals(uuid)) {
-							filteredList.add(next);
-						}
-
-					}
-					tmesList = filteredList;
-				}
-
-			}
-
-			logger.fine("List size : "+tmesList.size());
-
-			while (tmesList.size() > limit) {
-				
-				logger.fine("List size : "+tmesList.size());
-				tmesList.remove(0);
-			}
 			result = this.convertListToJSONObject(tmesList);
+			// List filtered in service, so just need to add theoretical
+			// temperatures
+
+			List<TheoreticalTemperatureMeasurement> thList = null;
+
+			String theoreticalParam = ConfigLoader.getConfigByKey(
+					Constants.CONFIG_PROPERTIES,
+					"params.chart.display.theoreticalTemperatures");
+
+			if (theoreticalParam.equals("true")) {
+				// Display theoretical temperatures
+
+				thList = this.generateTheoreticalTmesListFromConstant(
+						filteredList, currentStep.getEtp_palier_type());
+				thResult = this.convertListToJSONObject(thList);
+
+			}
+
 		}
-		return Response.status(200).entity(result.toString()).build();
+		return Response.status(200)
+				.entity(this.mergeTwoJSONObjects(result,  thResult).toString())
+				.build();
 	}
 
 	@GET
@@ -99,13 +115,16 @@ public class RESTTemperatureService {
 			throws JSONException {
 
 		JSONObject json = new JSONObject();
-		JSONArray result = null;
+		JSONObject result = null;
 
+		tmesService = new TemperatureMeasurementServiceImpl();
+		tmesSpecService = new TemperatureMeasurementServiceImpl();
+		stepService = new EtapeServiceImpl();
 		if (stepID > 0) {
 
 			currentStep = stepService.getElementById(stepID);
 
-			List<TemperatureMeasurement> tmesList = tmesSpecService
+			List<ConcreteTemperatureMeasurement> tmesList = tmesSpecService
 					.getTemperatureMeasurementByEtape(currentStep);
 
 			result = this.convertListToJSONObject(tmesList);
@@ -117,7 +136,7 @@ public class RESTTemperatureService {
 	}
 
 	@GET
-	@Path("/updateTemperatures/e/{e}/u/{u}/l/{l}/d/{d}")
+	@Path("/updateTemperatures/uuid/{uuid}/sid/{sid}/maxPts/{maxPts}/delay/{delay}/lastID/{lastID}")
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Returns tempreatures for stepID step, eventually probe with UUID uuid or all for all probes
@@ -128,28 +147,50 @@ public class RESTTemperatureService {
 	 * @param delayInMinutes
 	 * @return
 	 */
-	public Response updateTemperatureForStep(@PathParam("e") long stepID,
-			@PathParam("u") String uuid, @PathParam("l") long lastID,
-			@PathParam("d") int delayInSeconds) throws JSONException {
+	public Response updateTemperatureForStep(@PathParam("uuid") String uuid,
+			@PathParam("sid") long stepID,
+			@PathParam("maxPts") int maxPointsNumber,
+			@PathParam("delay") float delayToDisplayInSeconds,
+			@PathParam("lastID") long lastID) throws JSONException {
 
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
-		JSONArray jsonResult = null;
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
+		JSONObject jsonResult = null;
+		JSONObject thResult = null;
+
+		tmesService = new TemperatureMeasurementServiceImpl();
+		tmesSpecService = new TemperatureMeasurementServiceImpl();
+		stepService = new EtapeServiceImpl();
+		
 		if (lastID > 0) {
 
 			Etape etape = new Etape();
 
 			etape = stepService.getElementById(stepID);
-			
-			result = tmesSpecService.getTemperatureMeasurementsAfterID(etape,
-					uuid, lastID, delayInSeconds);
+
+			if (maxPointsNumber <= 0) {
+				maxPointsNumber = Integer.parseInt(ConfigLoader.getConfigByKey(
+						Constants.CONFIG_PROPERTIES,
+						"params.chart.maxNumberOfPoints"));
+			}
+			result = tmesSpecService
+					.getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(
+							etape, uuid, maxPointsNumber, lastID,
+							delayToDisplayInSeconds);
 			jsonResult = this.convertListToJSONObject(result);
+
+			thResult = this.convertListToJSONObject(this.generateTheoreticalTmesListFromConstant(result,
+					etape.getEtp_palier_type()));
 
 		} else {
 
 			logger.warning("You are trying to update with ID 0");
 		}
 
-		return Response.status(200).entity(jsonResult.toString()).build();
+		return Response
+				.status(200)
+				.entity(this.mergeTwoJSONObjects(jsonResult, thResult)
+						.toString())
+				.build();
 	}
 
 	/**
@@ -168,8 +209,12 @@ public class RESTTemperatureService {
 	public Response getLastTemperatureValue(@PathParam("e") long stepID,
 			@PathParam("u") String uuid) throws JSONException {
 
-		List<TemperatureMeasurement> response = new ArrayList<TemperatureMeasurement>();
-		JSONArray jsonResult = null;
+		List<ConcreteTemperatureMeasurement> response = new ArrayList<ConcreteTemperatureMeasurement>();
+		JSONObject jsonResult = null;
+
+		tmesService = new TemperatureMeasurementServiceImpl();
+		tmesSpecService = new TemperatureMeasurementServiceImpl();
+		stepService = new EtapeServiceImpl();
 
 		if (stepID > 0 && uuid != null) {
 
@@ -198,53 +243,204 @@ public class RESTTemperatureService {
 
 	}
 
-	JSONArray convertListToJSONObject(List<TemperatureMeasurement> toConvert)
+	@SuppressWarnings("unchecked")
+	public JSONObject convertListToJSONObject(
+			List<? extends TemperatureMeasurement> toConvert)
 			throws JSONException {
-		JSONArray json = new JSONArray();
+		JSONObject json = new JSONObject();
+
+		/*
+		 * JSON structure : ConcreteTemperature [ uuid : [ { id : "", uuid : "",
+		 * ... }, ... ], ... ], TheoreticalTemperature [ { id : "" , ... }, ...
+		 * ]
+		 */
 
 		if (toConvert != null && toConvert.size() > 0) {
 
-			Iterator<TemperatureMeasurement> it = toConvert.iterator();
+			Iterator<TemperatureMeasurement> it = (Iterator<TemperatureMeasurement>) toConvert
+					.iterator();
 
-			while (it.hasNext()) {
+			if (toConvert.get(0) instanceof ConcreteTemperatureMeasurement) {
 
-				TemperatureMeasurement tmes = it.next();
+				List<String> actionerUUIDs = this
+						.returnActionerUUIDs((List<ConcreteTemperatureMeasurement>) toConvert);
 
-				JSONObject js = this.convertToJSONObject(tmes);
+				Map<String, List<TemperatureMeasurement>> result = new HashMap<String, List<TemperatureMeasurement>>();
+				
+				
+				while (it.hasNext()) {
 
-				json.put(js);
+					ConcreteTemperatureMeasurement next = (ConcreteTemperatureMeasurement) it
+							.next();
+
+					/*
+					 * Here, temperature measurements are sorted by UUID :
+					 * If UUID is not in the Map, we add new entry
+					 * else add new element to List
+					 * 
+					 */
+					if (result.keySet().contains(next.getTmes_probeUI())) {
+						result.get(next.getTmes_probeUI()).add(next);
+					} else{
+						result.put(next.getTmes_probeUI(), new ArrayList<TemperatureMeasurement>());
+						result.get(next.getTmes_probeUI()).add(next);
+					}
+
+				}
+				
+				// Object to JSON parser
+				json = json.put(ConcreteTemperatureMeasurement.class.getSimpleName(), this.buildJSON(result,
+							ConcreteTemperatureMeasurement.class));
+
+			} else if (toConvert.get(0) instanceof TheoreticalTemperatureMeasurement) {
+
+				// No need to sort temperatures by UUID, so putting null as UUID
+				Map<String, List<TemperatureMeasurement>> result2 = new HashMap<String, List<TemperatureMeasurement>>();
+				List<TemperatureMeasurement> tmesList = new ArrayList<TemperatureMeasurement>();
+				
+				
+				while (it.hasNext()) {
+
+					tmesList.add((TheoreticalTemperatureMeasurement) it.next());
+					
+				}
+				result2.put("null", tmesList);
+
+				json.put(TheoreticalTemperatureMeasurement.class.getSimpleName(), this.buildJSON(result2, TheoreticalTemperatureMeasurement.class));
+
+			}
+
+		}
+
+		return json;
+	}
+
+	
+	/**
+	 * UUID : [
+	 * 				{
+	 * 					id : "", 
+	 * 					...
+	 * 				}
+	 * ]
+	 * 
+	 * Building JSON from a Map 
+	 * @param listTemperatures
+	 * @param class1
+	 * @return
+	 * @throws JSONException
+	 */
+	private JSONObject buildJSON(
+			Map<String, List<TemperatureMeasurement>> listTemperatures,
+			Class<? extends TemperatureMeasurement> class1) throws JSONException {
+		JSONObject res = new JSONObject();
+
+
+		Set<String> keySet = listTemperatures.keySet();
+
+		for (String key : keySet) {
+			JSONArray array = new JSONArray();
+
+			for (TemperatureMeasurement tmes : listTemperatures.get(key)) {
+
+				array.put(this.convertToJSONObject(tmes));
+			}
+			
+			res.put(key, array);
+		}
+		return res;
+	}
+
+	private List<String> returnActionerUUIDs(
+			List<ConcreteTemperatureMeasurement> toConvert) {
+
+		List<String> actioners = new ArrayList<String>();
+
+		for (ConcreteTemperatureMeasurement tmes : toConvert) {
+
+			if (!actioners.contains(tmes)) {
+
+				actioners.add(tmes.getTmes_probeUI());
+
+			}
+		}
+
+		return actioners;
+	}
+
+	/**
+	 * Puts object attributes in JSON object
+	 * 
+	 * @param tmes
+	 * @return
+	 * @throws JSONException
+	 */
+	JSONObject convertToJSONObject(TemperatureMeasurement tmes)
+			throws JSONException {
+		JSONObject json = null;
+
+		if (tmes != null) {
+
+			json = new JSONObject();
+
+			if (tmes instanceof ConcreteTemperatureMeasurement) {
+
+				ConcreteTemperatureMeasurement cTmes = (ConcreteTemperatureMeasurement) tmes;
+				json.put("id", cTmes.getTmes_id());
+				json.put("uuid", cTmes.getTmes_probeUI());
+				json.put("date", cTmes.getTmes_date());
+				json.put("name", cTmes.getTmes_probe_name());
+				json.put("brew", cTmes.getTmes_brassin().getBra_id());
+				json.put("step", cTmes.getTmes_etape().getEtp_id());
+				json.put("temp", cTmes.getTmes_value());
+
+			} else if (tmes instanceof TheoreticalTemperatureMeasurement) {
+
+				TheoreticalTemperatureMeasurement thMes = (TheoreticalTemperatureMeasurement) tmes;
+
+				json.put("id", thMes.getThmes_id());
+				json.put("uuid", "");
+				json.put("date", thMes.getThmes_date());
+				json.put("name", "");
+				json.put("brew", thMes.getThmes_brassin().getBra_id());
+				json.put("step", thMes.getThmes_etape().getEtp_id());
+				json.put("temp", thMes.getThmes_value());
+
 			}
 		}
 
 		return json;
 	}
 
-	/**
-	 * Puts object attributes in JSON object
-	 * 
-	 * @param toConvert
-	 * @return
-	 * @throws JSONException
-	 */
-	JSONObject convertToJSONObject(TemperatureMeasurement toConvert)
-			throws JSONException {
-		JSONObject json = null;
+	public List<TheoreticalTemperatureMeasurement> generateTheoreticalTmesListFromConstant(
+			List<ConcreteTemperatureMeasurement> tmesList, PalierType palier) {
 
-		if (toConvert != null) {
+		List<TheoreticalTemperatureMeasurement> result = new ArrayList<TheoreticalTemperatureMeasurement>();
+		int i = 0;
+		for (ConcreteTemperatureMeasurement tmes : tmesList) {
 
-			json = new JSONObject();
+			TheoreticalTemperatureMeasurement currentThmes = new TheoreticalTemperatureMeasurement();
 
-			json.put("id", toConvert.getTmes_id());
-			json.put("uuid", toConvert.getTmes_probeUI());
-			json.put("date", toConvert.getTmes_date());
-			json.put("name", toConvert.getTmes_probe_name());
-			json.put("brew", toConvert.getTmes_brassin().getBra_id());
-			json.put("step", toConvert.getTmes_etape().getEtp_id());
-			json.put("temp", toConvert.getTmes_value());
-
+			currentThmes.setThmes_id((long) i);
+			currentThmes.setThmes_brassin(tmes.getTmes_brassin());
+			currentThmes.setThmes_etape(tmes.getTmes_etape());
+			currentThmes.setThmes_actioner(tmes.getTmes_actioner());
+			currentThmes.setThmes_date(tmes.getTmes_date());
+			currentThmes.setThmes_value((float) palier.getPlt_temperature());
+			i++;
 		}
 
-		return json;
+		return result;
 	}
 
+	public JSONArray mergeTwoJSONObjects(JSONObject result2, JSONObject thResult2) {
+
+		JSONArray result = new JSONArray();
+		result.put(result2);
+
+		result.put(thResult2);
+
+		return result;
+
+	}
 }

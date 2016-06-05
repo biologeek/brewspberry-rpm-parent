@@ -27,7 +27,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.TemperatureMeasurement;
+import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.service.BrassinServiceImpl;
 import net.brewspberry.business.service.EtapeServiceImpl;
 import net.brewspberry.business.service.TemperatureMeasurementServiceImpl;
@@ -145,7 +145,7 @@ public class JFreeGraphServlet extends HttpServlet {
 		if (request.getParameter("type") != null) {
 
 			String type = request.getParameter("type");
-			List<TemperatureMeasurement> tempList = null;
+			List<ConcreteTemperatureMeasurement> tempList = null;
 
 			switch (type) {
 
@@ -272,22 +272,22 @@ public class JFreeGraphServlet extends HttpServlet {
 	}
 
 	/**
-	 * Converts List of {@link TemperatureMeasurement}
+	 * Converts List of {@link ConcreteTemperatureMeasurement}
 	 * 
 	 * @param tempList
 	 * @param probesList
 	 * @return
 	 */
 	public List<String[]> parseTemperatureMeasurements(
-			List<TemperatureMeasurement> tempList, List<String> probesList) {
+			List<ConcreteTemperatureMeasurement> tempList, List<String> probesList) {
 		List<String[]> result = new ArrayList<String[]>();
 
-		Iterator<TemperatureMeasurement> it = tempList.iterator();
+		Iterator<ConcreteTemperatureMeasurement> it = tempList.iterator();
 
 		while (it.hasNext()) {
 			String[] array = new String[probesList.size() + 5];
 
-			TemperatureMeasurement temp = it.next();
+			ConcreteTemperatureMeasurement temp = it.next();
 
 			int index = probesList.indexOf(temp.getTmes_probe_name()) + 5;
 
@@ -428,17 +428,17 @@ public class JFreeGraphServlet extends HttpServlet {
 		return chart;
 	}
 
-	public List<String> getDistinctProbes(List<TemperatureMeasurement> list) {
+	public List<String> getDistinctProbes(List<ConcreteTemperatureMeasurement> list) {
 
 		List<String> result = new ArrayList<String>();
 
 		if (list != null) {
 
-			Iterator<TemperatureMeasurement> it = list.iterator();
+			Iterator<ConcreteTemperatureMeasurement> it = list.iterator();
 
 			while (it.hasNext()) {
 
-				TemperatureMeasurement temp = it.next();
+				ConcreteTemperatureMeasurement temp = it.next();
 				logger.fine("Trying probe " + temp.getTmes_probe_name());
 				if (!result.contains(temp.getTmes_probe_name())) {
 					logger.fine("Got probe " + temp.getTmes_probe_name());

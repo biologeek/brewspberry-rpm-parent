@@ -9,7 +9,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
-import net.brewspberry.business.beans.TemperatureMeasurement;
+import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.service.TemperatureMeasurementServiceImpl;
 
 @WebService
@@ -21,11 +21,11 @@ public class TemperatureWSImpl implements ITemperatureWS {
 
 	@Override
 	@WebMethod
-	public TemperatureMeasurement getTemperatureMeasurementByProbe(
+	public ConcreteTemperatureMeasurement getTemperatureMeasurementByProbe(
 			String uuidOrname, Boolean uuid) {
 
 		
-		TemperatureMeasurement result = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 
 		if (uuidOrname != null && uuid != null) {
 
@@ -65,9 +65,9 @@ public class TemperatureWSImpl implements ITemperatureWS {
 
 	@Override
 	@WebMethod
-	public List<TemperatureMeasurement> getAllTemperatureMeasurements(
+	public List<ConcreteTemperatureMeasurement> getAllTemperatureMeasurements(
 			List<String> uuidOrname, Boolean uuid) throws Exception {
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 
 		try {
 			result = specTMesService.getAllLastTemperatureMeasurements(
@@ -87,9 +87,9 @@ public class TemperatureWSImpl implements ITemperatureWS {
 	}
 
 	@Override
-	public TemperatureMeasurement getCSVTemperatureMeasurementByProbe(
+	public ConcreteTemperatureMeasurement getCSVTemperatureMeasurementByProbe(
 			String uuidOrname, Boolean uuid) {
-		TemperatureMeasurement result = new TemperatureMeasurement();
+		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 		
 		if (uuid != null){
 			
@@ -109,9 +109,9 @@ public class TemperatureWSImpl implements ITemperatureWS {
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getAllCSVTemperatureMeasurements(
+	public List<ConcreteTemperatureMeasurement> getAllCSVTemperatureMeasurements(
 			List<String> uuidOrname, Boolean uuid) throws Exception {
-		List<TemperatureMeasurement> result = new ArrayList<TemperatureMeasurement>();
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 		
 		if (uuid != null){
 			
