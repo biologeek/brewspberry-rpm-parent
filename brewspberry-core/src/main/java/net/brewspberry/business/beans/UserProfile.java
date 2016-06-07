@@ -5,11 +5,15 @@ import java.util.Map;
 public enum UserProfile {
 	
 	
+	READER(true, false, false, null),
+	WRITER(true, true, false, null),
+	BREWER(true, true, true, null),
+	MASTER(true, true, true, null);
+	
 	boolean read, write, execute;
 	Map<String, Boolean> specialAuths;
 	
 	
-	READER(true, false, false, null);
 
 
 	private UserProfile(boolean read, boolean write, boolean execute, Map<String, Boolean> specialAuths) {
@@ -44,8 +48,4 @@ public enum UserProfile {
 		this.specialAuths = specialAuths;
 	}
 	
-	
-	
-	
-
 }
