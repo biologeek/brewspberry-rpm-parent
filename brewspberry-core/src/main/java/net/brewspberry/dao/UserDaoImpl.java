@@ -10,12 +10,12 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import net.brewspberry.business.IGenericDao;
-import net.brewspberry.business.ISpecificUserDao;
+import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
-public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
+public class UserDaoImpl implements IGenericDao<User>, ISpecificUserService {
 
 	
 	
