@@ -88,4 +88,10 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserService {
 		return result;
 	}
 
+	@Override
+	public boolean checkIfUserIsActiveAndNotBlocked(User user) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

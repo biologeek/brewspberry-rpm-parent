@@ -7,4 +7,6 @@ public interface ISpecificUserService {
 	
 	public User returnUserByCredentials(String username, String encryptedPassword);
 
+	public boolean checkIfUserIsActiveAndNotBlocked(User user);
+
 }

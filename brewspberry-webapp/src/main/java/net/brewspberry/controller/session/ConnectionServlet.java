@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.brewspberry.util.ConfigLoader;
-import net.brewspberry.util.Constants;
+import net.brewspberry.business.IGenericService;
+import net.brewspberry.business.ISpecificUserService;
+import net.brewspberry.business.beans.User;
+import net.brewspberry.business.service.UserServiceImpl;
+import net.brewspberry.util.EncryptionUtils;
+import net.brewspberry.util.validators.UserValidator;
 
 @WebServlet("/connection")
 public class ConnectionServlet extends HttpServlet {
@@ -18,47 +22,30 @@ public class ConnectionServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -5053309074376760642L;
+	private ISpecificUserService userSpecService;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (this.validateRequestParameters(request)) {
-
-		}
-
-	}
-
-	private boolean validateRequestParameters(HttpServletRequest request) {
-
-		int passwdLength = Integer.parseInt(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.session.passwd.length"));
 		
-		if (request.getParameter("username") != null 
-				&& !request.getParameter("username").equals("")){
-			
-			
-		}
+		userSpecService = new UserServiceImpl();
 		
-		if (request.getParameter("password") != null ){
-			if(!request.getParameter("password").equals("")){
-				if(request.getParameter("password").length() > passwdLength){
-					
-					
-					
-				} else {
-					throw new SecurityException("Password not long enough ("+passwdLength+" min)");
-				}
-			} else {
-				throw new SecurityException("Empty password ("+passwdLength+" min)");
+		if (UserValidator.getInstance()
+				.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"))
+				.isEmpty()) {
+			
+			// error list is empty so it's OK
+			String encryptedPassword = EncryptionUtils.encryptPassword(request.getParameter("password"), "MD5");
+			User user = userSpecService.returnUserByCredentials(request.getParameter("username"), encryptedPassword);
+			
+			if (user != null && !user.equals(new User())){
+				
+				
+				userSpecService.checkIfUserIsActiveAndNotBlocked(user);
+				
 			}
-			
 		}
-		
-		if (request.getParameter("username") != null 
-				&& !request.getParameter("username").equals("")){
-			
-			
-		}
-	
-			return false;
+
 	}
+
 }

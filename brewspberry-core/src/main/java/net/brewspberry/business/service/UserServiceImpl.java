@@ -61,12 +61,20 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	}
 
 	@Override
-	public User returnUserByCredentials(String username, String encryptedPassword) {
+	public User returnUserByCredentials(String username, String notYetEncryptedPassword) {
 
-		if (!username.equals("") && !encryptedPassword.equals("")){
+		if (!username.equals("") && !notYetEncryptedPassword.equals("")){
 			
 		}
 		return null;
+	}
+
+	@Override
+	public boolean checkIfUserIsActiveAndNotBlocked(User user) {
+
+		
+		
+		return false;
 	}
 
 
