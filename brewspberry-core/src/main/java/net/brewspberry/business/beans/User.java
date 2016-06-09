@@ -31,16 +31,34 @@ public class User implements Serializable {
 	us_prenom, 
 	
 	// encrypted password
-	us_password;
+	us_password,
+	
+	us_login,
+	
+	us_session_token;
 
+	public String getUs_session_token() {
+		return us_session_token;
+	}
+	public void setUs_session_token(String us_session_token) {
+		this.us_session_token = us_session_token;
+	}
+	public String getUs_login() {
+		return us_login;
+	}
+	public void setUs_login(String us_login) {
+		this.us_login = us_login;
+	}
 	// User profile to manage authorizations
 	private UserProfile us_profile;
 	
 	// If user activated his/her account > true
 	private boolean us_active;
+	private Date us_date_activation;
 	
 	//If user was inactivated by admin > true
 	private boolean us_force_inactivated;
+	private Date us_date_inactivation;
 	
 	private Date us_last_connection;
 	private Date us_first_connection;
@@ -112,6 +130,21 @@ public class User implements Serializable {
 	}
 	public void setUs_birthday(Date us_birthday) {
 		this.us_birthday = us_birthday;
+	}
+	public Date getUs_date_activation() {
+		return us_date_activation;
+	}
+	public void setUs_date_activation(Date us_date_activation) {
+		this.us_date_activation = us_date_activation;
+	}
+	public Date getUs_date_inactivation() {
+		return us_date_inactivation;
+	}
+	public void setUs_date_inactivation(Date us_date_inactivation) {
+		this.us_date_inactivation = us_date_inactivation;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }
