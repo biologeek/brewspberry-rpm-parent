@@ -19,6 +19,7 @@ import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.business.beans.UserProfile;
 import net.brewspberry.business.service.UserServiceImpl;
+import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
@@ -31,7 +32,7 @@ public class UserServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -5053309074376760642L;
 	private ISpecificUserService userSpecService;
-	Logger logger = LogManager.getInstance(UserServlet.class.getName());
+	private IGenericService<User> userService;
 	private HttpSession currentSession;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -39,57 +40,95 @@ public class UserServlet extends HttpServlet {
 
 		currentSession = request.getSession();
 
+		userService = new UserServiceImpl();
 		userSpecService = new UserServiceImpl();
+		Logger logger = LogManager.getInstance(UserServlet.class.getName());
 
-		if (UserValidator.getInstance()
-				.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"))
-				.isEmpty()) {
+		String hiddenParam = request.getParameter("formType");
 
-			// error list is empty so it's OK
-			String encryptedPassword = EncryptionUtils.encryptPassword(request.getParameter("password"), "MD5");
-			User user = userSpecService.returnUserByCredentials(request.getParameter("username"), encryptedPassword);
+		switch (hiddenParam) {
 
-			if (user != null && !user.equals(new User())) {
+		case "registration":
 
-				if (userSpecService.checkIfUserIsActiveAndNotBlocked(user)) {
+			break;
 
-					try {
-						connectUserAndBuildHiSession(user, request, response);
-					} catch (Exception e) {
+		case "connection":
 
-						logger.severe("Could not create session for user " + user.toString());
+			if (UserValidator.getInstance()
+					.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"))
+					.isEmpty()) {
 
+				// error list is empty so it's OK
+				String encryptedPassword = EncryptionUtils.encryptPassword(request.getParameter("password"), "MD5");
+				User user = userSpecService.returnUserByCredentials(request.getParameter("username"), encryptedPassword);
+
+				if (user != null && !user.equals(new User())) {
+
+					if (userSpecService.checkIfUserIsActiveAndNotBlocked(user)) {
+
+						try {
+							connectUserAndBuildHisSession(user, request, response);
+						} catch (Exception e) {
+
+							logger.severe("Could not create session for user " + user.toString());
+
+						}
 					}
 				}
 			}
+			break;
 		}
 
 	}
+	
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		
+		
+		
+		
+	}
+
+
 
 	/**
 	 * Method creating cookies, checking their presence, updating user and
 	 * building session attributes
 	 * 
 	 * @param user
-	 * @param request
-	 * @param response
+	 * @param req
+	 * @param rep
 	 */
-	private void connectUserAndBuildHiSession(User user, HttpServletRequest request, HttpServletResponse response) {
+	private void connectUserAndBuildHisSession(User user, HttpServletRequest req, HttpServletResponse rep) {
 
 		if (this.currentSession.isNew()) {
 
-			response.addCookie(new Cookie("user.login", user.getUs_login()));
-			response.addCookie(new Cookie("user.status", user.getUs_profile().getClass().getSimpleName()));
-			response.addCookie(new Cookie("user.token", this.currentSession.getId()));
-			response.addCookie(
-					new Cookie("user.connectionTime", String.valueOf(this.currentSession.getCreationTime())));
+			rep.addCookie(new Cookie("user.login", user.getUs_login()));
+			rep.addCookie(new Cookie("user.status", user.getUs_profile().getClass().getSimpleName()));
+			rep.addCookie(new Cookie("user.token", this.currentSession.getId()));
+			rep.addCookie(new Cookie("user.connectionTime", String.valueOf(this.currentSession.getCreationTime())));
 
-			this.currentSession.setAttribute("user.login", user.getUs_login());
-			this.currentSession.setAttribute("user.status", computeAuthorizationsForSession(user.getUs_profile()));
-			this.currentSession.setAttribute("user.token", this.currentSession.getId());
-			this.currentSession.setAttribute("user.connectionTime", this.currentSession.getCreationTime());
+			this.currentSession.setAttribute("user", user);
 
 			user.setUs_last_connection(Calendar.getInstance().getTime());
+
+			user.setUs_session_token(currentSession.getId());
+
+			if (user.getUs_first_connection() == null) {
+				user.setUs_first_connection(Calendar.getInstance().getTime());
+			}
+
+			// Updating user
+			userService.update(user);
+		} else {
+
+			if (currentSession.getId().equals(user.getUs_session_token())) {
+
+				currentSession.setAttribute("user", user);
+
+			}
+
 		}
 
 	}
@@ -130,14 +169,6 @@ public class UserServlet extends HttpServlet {
 		}
 
 		return str.toString();
-	}
-
-	public HttpSession getCurrentSession() {
-		return currentSession;
-	}
-
-	public void setCurrentSession(HttpSession currentSession) {
-		this.currentSession = currentSession;
 	}
 
 }

@@ -79,7 +79,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 		Criteria userCriteria = HibernateUtil.getSession().createCriteria(User.class);
 
-		userCriteria.add(Restrictions.eq("us_username", user.getUs_login()));
+		userCriteria.add(Restrictions.eq("us_login", user.getUs_login()));
 		userCriteria.add(Restrictions.eq("us_password", user.getUs_password()));
 
 		User result = (User) userCriteria.uniqueResult();
@@ -94,8 +94,23 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	}
 
 	@Override
+	/**
+	 * Returns User with cookie data (login and session token required)
+	 */
 	public User getUserByCookieData(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (user.getUs_session_token() != null){
+			if (user.getUs_login() != null){
+				Criteria crt = HibernateUtil.getSession().createCriteria(User.class);
+				
+
+				crt.add(Restrictions.eq("us_login", user.getUs_login()));
+				crt.add(Restrictions.eq("us_session_token", user.getUs_session_token()));
+				
+				user = (User) crt.uniqueResult();
+			}
+		}
+		
+		return user;
 	}
 }

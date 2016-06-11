@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
+import net.brewspberry.business.ISpecificUserDao;
 import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.exceptions.DAOException;
@@ -17,7 +18,7 @@ import net.brewspberry.util.validators.UserValidatorErrors;
 public class UserServiceImpl implements IGenericService<User>, ISpecificUserService {
 
 	private IGenericDao<User> userDao;
-	private ISpecificUserService userSpecDao;
+	private ISpecificUserDao userSpecDao;
 	private List<UserValidatorErrors> errors;
 
 	@Override
@@ -84,7 +85,7 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	@Override
 	public User returnUserByCredentials(String username, String notYetEncryptedPassword) {
 		this.setErrors(null);
-		User res = null;
+		User res = new User();
 		List <UserValidatorErrors> errs = UserValidator.getInstance().isUsernameAndPasswordUserValid(username, notYetEncryptedPassword);
 		
 		
@@ -92,8 +93,9 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 		if (errs.isEmpty()){
 			
 			String encryptedPasswd = EncryptionUtils.encryptPassword(notYetEncryptedPassword, "MD5");
-			
-			res = userSpecDao.returnUserByCredentials(username, encryptedPasswd);
+			res.setUs_login(username);
+			res.setUs_password(encryptedPasswd);
+			res = userSpecDao.returnUserByCredentials(res);
 			
 			if (this.checkIfUserIsActiveAndNotBlocked(res)){
 				return res;
@@ -124,11 +126,11 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 		this.userDao = userDao;
 	}
 
-	public ISpecificUserService getUserSpecDao() {
+	public ISpecificUserDao getUserSpecDao() {
 		return userSpecDao;
 	}
 
-	public void setUserSpecDao(ISpecificUserService userSpecDao) {
+	public void setUserSpecDao(ISpecificUserDao userSpecDao) {
 		this.userSpecDao = userSpecDao;
 	}
 
@@ -141,6 +143,11 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	}
 
 	@Override
+	/**
+	 * 
+	 * @param cookies
+	 * @return
+	 */
 	public User getUserByCookieData(Cookie[] cookies) {
 
 		User user = new User();
@@ -149,7 +156,7 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 		if (cookies.length > 0){
 			for (Cookie cookie : cookies){
 				
-				if (cookie.getName().equals("user.name")){
+				if (cookie.getName().equals("user.login")){
 					
 					user.setUs_login(cookie.getValue());
 				
@@ -159,10 +166,12 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 				
 				}			
 			}
+			
+			return userSpecDao.getUserByCookieData(user);
 		}
 
 		
-		return null;
+		return user;
 	}
 
 }
