@@ -11,10 +11,12 @@ import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
+import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
+import net.brewspberry.business.beans.User;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -59,6 +61,8 @@ public class HibernateUtil {
 					.addAnnotatedClass(Brassin.class)
 					.addAnnotatedClass(ConcreteTemperatureMeasurement.class)
 					.addAnnotatedClass(Actioner.class)
+					.addAnnotatedClass(PalierType.class)
+					.addAnnotatedClass(User.class)
 					.addAnnotatedClass(DurationBO.class);
 
 			serviceRegistry = new StandardServiceRegistryBuilder()

@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -21,9 +24,10 @@ public enum PalierType {
 	private int plt_temperature_max;
 	private int plt_temperature;
 	private String plt_libelle;
+	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	private int plt_id;
 	
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="etp_palier_type")
 	List<Etape> plt_etapes;
 
 	PalierType(int plt_id, int plt_temperature_min, int plt_temperature_max, int temperature, String libelle){

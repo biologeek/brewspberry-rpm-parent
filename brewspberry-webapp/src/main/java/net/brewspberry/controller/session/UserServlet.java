@@ -1,7 +1,9 @@
 package net.brewspberry.controller.session;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -23,8 +25,9 @@ import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
+import net.brewspberry.util.validators.UserValidatorErrors;
 
-@WebServlet("/user")
+@WebServlet({"/user", "/"})
 public class UserServlet extends HttpServlet {
 
 	/**
@@ -54,6 +57,7 @@ public class UserServlet extends HttpServlet {
 
 		case "connection":
 
+			logger.info(request.getParameter("username") + "trnzrjgelfg");
 			if (UserValidator.getInstance()
 					.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"))
 					.isEmpty()) {
@@ -68,14 +72,32 @@ public class UserServlet extends HttpServlet {
 
 						try {
 							connectUserAndBuildHisSession(user, request, response);
+							response.sendRedirect("/Accueil");
+
 						} catch (Exception e) {
 
 							logger.severe("Could not create session for user " + user.toString());
+							List<UserValidatorErrors> errs = new ArrayList<UserValidatorErrors>();
+							errs.add(UserValidatorErrors.SESSION_BUILDING);
+							request.setAttribute("errors", errs);
+							response.sendRedirect("/");
 
 						}
+					} else {
+						
+						request.setAttribute("errors", userSpecService.getErrors());
+						response.sendRedirect("/");
+
 					}
+					
+				} else {
+					
+					request.setAttribute("errors", userSpecService.getErrors());
+					
 				}
 			}
+			
+
 			break;
 		}
 
@@ -85,8 +107,7 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		
-		
+		request.getRequestDispatcher("index.jsp").forward(request, response);	
 		
 	}
 

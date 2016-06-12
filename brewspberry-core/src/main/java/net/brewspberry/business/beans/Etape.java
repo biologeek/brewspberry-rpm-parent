@@ -58,11 +58,10 @@ public class Etape implements Serializable{
     @OneToMany(fetch=FetchType.LAZY, mappedBy="lev_etape", cascade=CascadeType.ALL)
     private List<Levure> etp_levures;
     
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="etp_brassin")
-    List<Etape> bra_etapes;
+   
     
     @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="etp_plt_id")
+    @JoinColumn(name="etp_plt_id", updatable=true)
     PalierType etp_palier_type;
     
     
@@ -173,13 +172,6 @@ public class Etape implements Serializable{
 		this.etp_levures = etp_levures;
 	}
 
-	public List<Etape> getBra_etapes() {
-		return bra_etapes;
-	}
-
-	public void setBra_etapes(List<Etape> bra_etapes) {
-		this.bra_etapes = bra_etapes;
-	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

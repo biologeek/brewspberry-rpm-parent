@@ -11,7 +11,7 @@
 <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"
 	media="screen">
 <link href="assets/styles.css" rel="stylesheet" media="screen">
-<link href="vendors/jGrowl/jquery.jgrowl.css" rel="stylesheet"
+<link href="vendors/jGrowl/jquery.jgrowl.css" rel="stylesheet" />
 <link href="css/connection/style.css" rel="stylesheet"
 	media="screen">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -30,19 +30,20 @@
   <h1>Brewspberry connection page</h1>
 
 </hgroup>
-<form action="connection">
+<form action="Accueil" method="post">
   <div class="group">
      <label>Username</label>
-    <input type="text" name="username"><span class="highlight"></span><span class="bar"></span>
+    <input type="text" name="username" id="username"><span class="highlight"></span><span class="bar"></span>
   </div>
   <div class="group">
       <label>Password</label>
-    <input type="password" name="password"><span class="highlight"></span><span class="bar"></span>
+    <input type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
 
   </div>
-  <button type="button" class="button buttonBlue">Subscribe
-    <div class="ripples buttonRipples"><span class="ripplesCircle"></span></div>
-  </button>
+  <input type="hidden" name="formType" value="connection">
+  <input type="submit" class="button buttonBlue" />
+  <div class="ripples buttonRipples"><span class="ripplesCircle">
+    </span></div>
 </form>
 
 </body>

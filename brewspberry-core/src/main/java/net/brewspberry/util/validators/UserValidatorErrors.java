@@ -5,7 +5,8 @@ public enum UserValidatorErrors {
 	EMPTY_USER (1, "user", "User field is empty"),
 	EMPTY_PASSWORD (1, "password", "Password field is empty"),
 	WRONG_PASSWORD (1, "password", "Password is incorrect"),
-	SHORT_PASSWORD (2, "password", "Password is too short");
+	SHORT_PASSWORD (2, "password", "Password is too short"),
+	SESSION_BUILDING (3, "session", "Session building error");
 	
 	int severity;
 	String field;
