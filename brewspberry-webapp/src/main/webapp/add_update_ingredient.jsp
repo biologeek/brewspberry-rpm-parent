@@ -11,6 +11,8 @@
 
 <head>
 <title>BrewViewer</title>
+
+<link href="https://code.jquery.com/jquery-3.0.0.min.js" rel="stylesheet">
 <!-- Bootstrap -->
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">

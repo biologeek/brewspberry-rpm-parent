@@ -15,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -31,7 +32,7 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 
 	private HttpSession currentSession;
@@ -49,10 +50,26 @@ public class AuthentificationFilter implements Filter {
 
 		HttpServletRequest req = null;
 		HttpServletResponse rep = null;
+		
+		class FilteredRequest extends HttpServletRequestWrapper {
+
+			public FilteredRequest(HttpServletRequest request) {
+				super(request);
+			}
+			
+			
+			@Override
+			public String getParameter(final String arg0){
+				
+				
+				return super.getParameter(arg0);
+				
+			}
+		};
 
 		if (request instanceof HttpServletRequest && response instanceof HttpServletResponse) {
 
-			req = (HttpServletRequest) request;
+			req = new FilteredRequest((HttpServletRequest) request);
 			rep = (HttpServletResponse) response;
 			String loginPage = req.getContextPath() + "/"
 					+ ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "params.permissions.login.address");
@@ -65,28 +82,15 @@ public class AuthentificationFilter implements Filter {
 				 * User  is already logged or requests login servlet so letting him login
 				 * 
 				 */
-				Enumeration<String> enu = request.getParameterNames();
 				
-				while (enu.hasMoreElements()){
-					
-					String el = enu.nextElement();
-					logger.info("* "+el+" : "+request.getParameter(el));
-				}
-
-				if (request.getParameter("username") != null && !request.getParameter("username").equals("")){
-					logger.info("User "+request.getParameter("username")+" is trying to login");
-				}
-				logger.info("User -"+currentSession.getAttribute("user")+" is trying to login");
-
-				
-				chain.doFilter(request, response);
+				chain.doFilter(req, response);
 
 			} else {
 				
 				/*
 				 * Go login
 				 */
-				logger.info("User "+request.getParameter("username")+" is trying to login");
+				logger.info("User "+request.getParameter("username")+" is trying to login. Type = "+request.getParameter("formType"));
 				
 				
 				rep.sendRedirect(shortLoginPage);

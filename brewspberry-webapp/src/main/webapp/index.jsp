@@ -30,7 +30,7 @@
   <h1>Brewspberry connection page</h1>
 
 </hgroup>
-<form action="Accueil" method="post">
+<form action="user" method="post">
   <div class="group">
      <label>Username</label>
     <input type="text" name="username" id="username"><span class="highlight"></span><span class="bar"></span>
@@ -40,7 +40,7 @@
     <input type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
 
   </div>
-  <input type="hidden" name="formType" value="connection">
+  <input type="hidden" name="formType" id="formType" value="connection">
   <input type="submit" class="button buttonBlue" />
   <div class="ripples buttonRipples"><span class="ripplesCircle">
     </span></div>

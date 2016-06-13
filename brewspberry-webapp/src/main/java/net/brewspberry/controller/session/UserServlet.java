@@ -37,6 +37,7 @@ public class UserServlet extends HttpServlet {
 	private ISpecificUserService userSpecService;
 	private IGenericService<User> userService;
 	private HttpSession currentSession;
+	Logger logger = LogManager.getInstance(UserServlet.class.getName());
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -45,8 +46,8 @@ public class UserServlet extends HttpServlet {
 
 		userService = new UserServiceImpl();
 		userSpecService = new UserServiceImpl();
-		Logger logger = LogManager.getInstance(UserServlet.class.getName());
 
+		logger.info("Entering doPost");
 		String hiddenParam = request.getParameter("formType");
 
 		switch (hiddenParam) {
@@ -93,6 +94,7 @@ public class UserServlet extends HttpServlet {
 				} else {
 					
 					request.setAttribute("errors", userSpecService.getErrors());
+					response.sendRedirect("/");
 					
 				}
 			}
@@ -107,6 +109,8 @@ public class UserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		logger.info("Entering doGet");
+
 		request.getRequestDispatcher("index.jsp").forward(request, response);	
 		
 	}
