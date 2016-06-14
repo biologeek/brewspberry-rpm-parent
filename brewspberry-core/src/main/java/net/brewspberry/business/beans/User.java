@@ -37,18 +37,6 @@ public class User implements Serializable {
 	
 	us_session_token;
 
-	public String getUs_session_token() {
-		return us_session_token;
-	}
-	public void setUs_session_token(String us_session_token) {
-		this.us_session_token = us_session_token;
-	}
-	public String getUs_login() {
-		return us_login;
-	}
-	public void setUs_login(String us_login) {
-		this.us_login = us_login;
-	}
 	// User profile to manage authorizations
 	private UserProfile us_profile;
 	
@@ -64,7 +52,19 @@ public class User implements Serializable {
 	private Date us_first_connection;
 	private Date us_birthday;
 	
-	
+
+	public String getUs_session_token() {
+		return us_session_token;
+	}
+	public void setUs_session_token(String us_session_token) {
+		this.us_session_token = us_session_token;
+	}
+	public String getUs_login() {
+		return us_login;
+	}
+	public void setUs_login(String us_login) {
+		this.us_login = us_login;
+	}
 	public int getUs_id() {
 		return us_id;
 	}

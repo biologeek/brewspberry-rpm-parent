@@ -30,6 +30,16 @@
   <h1>Brewspberry connection page</h1>
 
 </hgroup>
+<c:forEach begin="0" end="${errors.size()}" var="err">
+
+	<c:if test="${err.getSeverity() < 3">
+		<div class="alert alert-danger">
+		    <a class="close" data-dismiss="alert" href="#">&times;</a>
+		    <strong>Error!</strong> ${err.getError()}.
+		</div>
+	</c:if>
+
+</c:forEach>
 <form action="user" method="post">
   <div class="group">
      <label>Username</label>
@@ -45,6 +55,8 @@
   <div class="ripples buttonRipples"><span class="ripplesCircle">
     </span></div>
 </form>
+
+<a href="register"> Pas encore inscrit ?</a>
 
 </body>
 </html>

@@ -27,7 +27,7 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-@WebServlet({"/user", "/"})
+@WebServlet({"/user", "/", "/register"})
 public class UserServlet extends HttpServlet {
 
 	/**
@@ -53,6 +53,8 @@ public class UserServlet extends HttpServlet {
 		switch (hiddenParam) {
 
 		case "registration":
+			
+			
 
 			break;
 

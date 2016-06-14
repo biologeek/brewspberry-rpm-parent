@@ -32,7 +32,7 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 
 
-//@WebFilter("/*")
+@WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 
 	private HttpSession currentSession;
