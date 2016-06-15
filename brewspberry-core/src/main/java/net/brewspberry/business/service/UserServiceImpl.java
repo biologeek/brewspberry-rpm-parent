@@ -1,5 +1,6 @@
 package net.brewspberry.business.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -24,25 +25,33 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	@Override
 	@Transactional
 	public User save(User arg0) throws DAOException {
+		User res = null;
 		this.setErrors(null);
 
-		List<UserValidatorErrors> err = UserValidator.getInstance().isCompleteUserValid(arg0);
 
-		if (err.isEmpty()) {
+		if (arg0.getUs_registration() == null){
+			arg0.setUs_registration(new Date());
+		} 
+		
+		String encryptedPasswd = EncryptionUtils.encryptPassword(arg0.getUs_password(), "MD5");
+		
+		arg0.setUs_password(encryptedPasswd);
+		arg0.setUs_force_inactivated(false);
+		arg0.setUs_active(false);
+		
+		// Everything is OK
 
-			// Everything is OK
-
-			try {
-				userDao.save(arg0);
-			} catch (DAOException e) {
-				e.printStackTrace();
-			}
-
+		try {
+			res = userDao.save(arg0);
+		} catch (DAOException e) {
+			e.printStackTrace();
 		}
-		this.setErrors(err);
-		return arg0;
+
+		
+		return res;
 	}
 
+	
 	@Override
 	public User update(User arg0) {
 		// TODO Auto-generated method stub

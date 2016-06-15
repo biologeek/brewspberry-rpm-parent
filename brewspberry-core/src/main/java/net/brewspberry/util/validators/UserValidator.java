@@ -3,6 +3,8 @@ package net.brewspberry.util.validators;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.brewspberry.business.beans.User;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
@@ -49,6 +51,26 @@ public class UserValidator {
 		
 		
 		return null;	
+	}
+	
+	public List<UserValidatorErrors> validateFormUser(User userToValidate){
+		
+		List<UserValidatorErrors> errors = new ArrayList<UserValidatorErrors>();
+	
+		if (this.isUserMandatoryFieldsNullity(userToValidate)){
+			
+		}
+		
+		return errors;
+	}
+
+
+	private boolean isUserMandatoryFieldsNullity(User userToValidate) {
+
+		if (userToValidate.getUs_login() != null && userToValidate.getUs_login() )
+		
+		
+		return false;
 	}
 	
 }

@@ -46,6 +46,7 @@ public class UserServlet extends HttpServlet {
 
 		userService = new UserServiceImpl();
 		userSpecService = new UserServiceImpl();
+		List<UserValidatorErrors> errs;
 
 		logger.info("Entering doPost");
 		String hiddenParam = request.getParameter("formType");
@@ -55,15 +56,44 @@ public class UserServlet extends HttpServlet {
 		case "registration":
 			
 			
+			User userToValidate = new User();
+			
+			userToValidate = feedUserWithFormData(request);
+			
+			
+			errs = UserValidator.getInstance().validateFormUser(userToValidate);
+			
+			
+			if (errs.size() == 0){
+				/*
+				 * User is valid
+				 */
+				
+				userService.save(userToValidate);
+				
+				
+			} else {
+				/*
+				 * Treating the errors
+				 */
+				
+				request.setAttribute("errors", errs);
+				
+				request.setAttribute("user", userToValidate);
+				
+			}
+			
+		
+			
 
 			break;
 
 		case "connection":
 
+			errs = UserValidator.getInstance()
+					.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"));
 			logger.info(request.getParameter("username") + "trnzrjgelfg");
-			if (UserValidator.getInstance()
-					.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"))
-					.isEmpty()) {
+			if (errs.isEmpty()) {
 
 				// error list is empty so it's OK
 				String encryptedPassword = EncryptionUtils.encryptPassword(request.getParameter("password"), "MD5");
@@ -108,6 +138,44 @@ public class UserServlet extends HttpServlet {
 	}
 	
 	
+	private User feedUserWithFormData(HttpServletRequest request) {
+		
+		
+		String userName = request.getParameter("username");
+		String password = request.getParameter("password");
+		String age = request.getParameter("age");
+		String firstName = request.getParameter("first_name");
+		String lastName = request.getParameter("last_name");
+		//String birthday = request.getParameter("birthday");
+
+		if (userName != null && !userName.equals("")){
+			
+			userToValidate.setUs_login(userName);
+			
+		}
+		if (password != null && !password.equals("")){
+			userToValidate.setUs_password(password);
+		}
+		if (age != null && !age.equals("")){
+			try {
+				userToValidate.setUs_age(Integer.parseInt(age));
+			} catch (Exception e){
+				
+				logger.severe(age+" is not a valid number !");
+			}
+		}
+		if (firstName != null && !firstName.equals("")){
+			userToValidate.setUs_prenom(firstName);
+		}
+		if (lastName != null && !lastName.equals("")){
+			userToValidate.setUs_nom(lastName);
+		}
+
+		
+		return userToValidate;
+	}
+
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		

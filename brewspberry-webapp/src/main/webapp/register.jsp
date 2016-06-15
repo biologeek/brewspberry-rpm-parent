@@ -20,7 +20,11 @@
         <![endif]-->
 <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 <script src="js/connection/index.js"></script>
-
+<script>
+ $(function() {
+    $( "#birthday" ).datepicker();
+  });
+</script>
 </head>
 
 
@@ -46,12 +50,12 @@
 	<fieldset name="Login info">
 		<div class="group">
 		    <label>Username</label>
-		  	<input type="text" name="username" id="username"><span class="highlight"></span><span class="bar"></span>
+		  	<input type="text" name="username" id="username" value="${user.getUs_login()}"><span class="highlight"></span><span class="bar"></span>
 		  	<span id="v_username"></span> 
 		</div>
 		<div class="group">
 		    <label>Password</label>
-		    <input type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
+		    <input type="password" name="password" id="password" value="${user.getUs_password()}"><span class="highlight"></span><span class="bar"></span>
 		  	<span id="v_password"></span> 
 		</div>
 		
@@ -63,16 +67,16 @@
 	</fieldset>
   
   
-  		<fieldset name="User info">
-			  
+	<fieldset name="User info">
+		  
 		<div class="group">
 		    <label>First name</label>
-		  	<input type="text" name="first_name" id="first_name"><span class="highlight"></span><span class="bar"></span>
+		  	<input type="text" name="first_name" id="first_name" value="${user.getUs_prenom()}"><span class="highlight"></span><span class="bar"></span>
 		  	<span id="v_first_name"></span> 
 		</div>
 		<div class="group">
 		    <label>Last name</label>
-		  	<input type="text" name="last_name" id="last_name"><span class="highlight"></span><span class="bar"></span>
+		  	<input type="text" name="last_name" id="last_name" value="${user.getUs_nom()}"><span class="highlight"></span><span class="bar"></span>
 		  	<span id="v_last_name"></span> 
 		</div>
 		
@@ -87,20 +91,13 @@
 		  	<span id="v_age"></span> 
 		</div>
 		
-		<div class="group">
-		    <label>Birthday</label>
-		  <select name="birthday">
-			
-		  </select>
-		  </span><span class="bar"></span>
-		  	<span id="v_birthday"></span> 
-		</div>
- 		</fieldset>
+		
+	</fieldset>
  
-	  <input type="hidden" name="formType" id="formType" value="registration">
-	  <input type="submit" class="button buttonBlue" />
-	  <div class="ripples buttonRipples"><span class="ripplesCircle">
-	    </span>
+	<input type="hidden" name="formType" id="formType" value="registration">
+	<input type="submit" class="button buttonBlue" />
+	<div class="ripples buttonRipples"><span class="ripplesCircle">
+	</span>
 	</div>
 </form>
 

@@ -55,7 +55,8 @@ function execute (htmlID, step, probe){
 }
 	
 	/**
-	 * probe is a list of probes Receiving data formatted as such :
+	 * probe is a list of probes Receiving 
+	 * data formatted as such :
 	 * 
 	 * probe;date;temperature
 	 * 

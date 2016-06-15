@@ -49,10 +49,17 @@ public class User implements Serializable {
 	private Date us_date_inactivation;
 	
 	private Date us_last_connection;
+	private Date us_registration;
 	private Date us_first_connection;
 	private Date us_birthday;
 	
 
+	public Date getUs_registration() {
+		return us_registration;
+	}
+	public void setUs_registration(Date us_registration) {
+		this.us_registration = us_registration;
+	}
 	public String getUs_session_token() {
 		return us_session_token;
 	}
