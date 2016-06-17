@@ -12,7 +12,6 @@ import net.brewspberry.business.ISpecificBrassinService;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.dao.BrassinDaoImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
 public class BrassinServiceImpl implements IGenericService<Brassin>,
@@ -22,7 +21,7 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 	ISpecificBrassinDAO specBrassinDAO = new BrassinDaoImpl();
 
 	@Override
-	public Brassin save(Brassin arg0) throws DAOException {
+	public Brassin save(Brassin arg0) throws Exception {
 		
 		return brassinDAO.save(arg0);
 	}

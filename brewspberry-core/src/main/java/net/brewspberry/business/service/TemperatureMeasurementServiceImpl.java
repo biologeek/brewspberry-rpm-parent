@@ -19,7 +19,6 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.dao.TemperatureMeasurementDaoImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.ChartPointsCalculator;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
@@ -287,7 +286,7 @@ public class TemperatureMeasurementServiceImpl implements
 
 	@Override
 	public ConcreteTemperatureMeasurement save(ConcreteTemperatureMeasurement arg0)
-			throws DAOException {
+			throws Exception {
 		return tmesDao.save(arg0);
 	}
 

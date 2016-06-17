@@ -10,7 +10,6 @@ import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.dao.SimpleYeastDAOImpl;
 import net.brewspberry.dao.YeastDAOImpl;
-import net.brewspberry.exceptions.DAOException;
 
 public class YeastServiceImpl implements IGenericService<Levure>,
 		ISpecificIngredientService {
@@ -46,7 +45,7 @@ public class YeastServiceImpl implements IGenericService<Levure>,
 	}
 
 	@Override
-	public Levure save(Levure arg0) throws DAOException {
+	public Levure save(Levure arg0) throws Exception {
 		return levureDao.save(arg0);
 
 	}
@@ -133,7 +132,7 @@ public class YeastServiceImpl implements IGenericService<Levure>,
 		}
 
 		@Override
-		public SimpleLevure save(SimpleLevure arg0) throws DAOException {
+		public SimpleLevure save(SimpleLevure arg0) throws Exception {
 			
 			return levureDao.save(arg0);
 		}

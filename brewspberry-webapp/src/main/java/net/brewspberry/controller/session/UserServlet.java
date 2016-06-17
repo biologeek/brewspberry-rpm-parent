@@ -30,6 +30,9 @@ import net.brewspberry.util.validators.UserValidatorErrors;
 @WebServlet({"/user", "/", "/register"})
 public class UserServlet extends HttpServlet {
 
+	
+	// (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
+
 	/**
 	 * 
 	 */
@@ -69,7 +72,12 @@ public class UserServlet extends HttpServlet {
 				 * User is valid
 				 */
 				
-				userService.save(userToValidate);
+				try {
+					userService.save(userToValidate);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				
 			} else {
@@ -110,10 +118,13 @@ public class UserServlet extends HttpServlet {
 						} catch (Exception e) {
 
 							logger.severe("Could not create session for user " + user.toString());
-							List<UserValidatorErrors> errs = new ArrayList<UserValidatorErrors>();
+							errs = new ArrayList<UserValidatorErrors>();
 							errs.add(UserValidatorErrors.SESSION_BUILDING);
+							
+							
+							//If there's an error, putting errors in JSP
 							request.setAttribute("errors", errs);
-							response.sendRedirect("/");
+							request.getRequestDispatcher("index.jsp").forward(request, response);
 
 						}
 					} else {
@@ -140,6 +151,7 @@ public class UserServlet extends HttpServlet {
 	
 	private User feedUserWithFormData(HttpServletRequest request) {
 		
+		User userToValidate = new User();
 		
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");

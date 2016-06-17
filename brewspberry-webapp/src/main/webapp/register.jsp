@@ -20,6 +20,7 @@
         <![endif]-->
 <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 <script src="js/connection/index.js"></script>
+<script src="js/registration_validator.js"></script>
 <script>
  $(function() {
     $( "#birthday" ).datepicker();
@@ -53,6 +54,13 @@
 		  	<input type="text" name="username" id="username" value="${user.getUs_login()}"><span class="highlight"></span><span class="bar"></span>
 		  	<span id="v_username"></span> 
 		</div>
+		
+		<div class="group">
+		    <label>Email</label>
+		  	<input type="text" name="email" id="email" value="${user.getUs_email()}"><span class="highlight"></span><span class="bar"></span>
+		  	<span id="v_email"></span> 
+		</div>
+		
 		<div class="group">
 		    <label>Password</label>
 		    <input type="password" name="password" id="password" value="${user.getUs_password()}"><span class="highlight"></span><span class="bar"></span>

@@ -11,7 +11,6 @@ import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.dao.HopDaoImpl;
 import net.brewspberry.dao.SimpleHopDaoImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.LogManager;
 
 public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngredientService {
@@ -27,7 +26,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 	
 	
 	@Override
-	public Houblon save(Houblon arg0) throws DAOException {
+	public Houblon save(Houblon arg0) throws Exception {
 
 		
 			return hopDao.save(arg0);
@@ -137,7 +136,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 		
 		final Logger logger = LogManager.getInstance(SimpleHopServiceImpl.class.getName());
 		@Override
-		public SimpleHoublon save(SimpleHoublon arg0) throws DAOException {
+		public SimpleHoublon save(SimpleHoublon arg0) throws Exception {
 
 				return sHopDao.save(arg0);
 

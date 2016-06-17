@@ -49,7 +49,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	}
 
 	@Override
-	public Actioner save(Actioner arg0) throws DAOException {
+	public Actioner save(Actioner arg0) throws Exception {
 
 		return actionerDao.save(arg0);
 	}

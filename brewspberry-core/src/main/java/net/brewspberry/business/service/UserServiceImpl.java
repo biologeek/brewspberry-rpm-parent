@@ -24,7 +24,7 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 
 	@Override
 	@Transactional
-	public User save(User arg0) throws DAOException {
+	public User save(User arg0) throws Exception {
 		User res = null;
 		this.setErrors(null);
 

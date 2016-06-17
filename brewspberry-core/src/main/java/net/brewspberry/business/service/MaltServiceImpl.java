@@ -11,7 +11,6 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.dao.MaltDAOImpl;
 import net.brewspberry.dao.SimpleMaltDAOImpl;
-import net.brewspberry.exceptions.DAOException;
 
 public class MaltServiceImpl implements IGenericService<Malt>,
 		ISpecificMaltDAO, ISpecificIngredientService {
@@ -20,7 +19,7 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 	IGenericDao<Malt> maltDAO = new MaltDAOImpl();
 
 	@Override
-	public Malt save(Malt arg0) throws DAOException {
+	public Malt save(Malt arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return maltDAO.save(arg0);
 	}
@@ -112,7 +111,7 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 		IGenericDao<SimpleMalt> maltDAO = new SimpleMaltDAOImpl();
 
 		@Override
-		public SimpleMalt save(SimpleMalt arg0) throws DAOException {
+		public SimpleMalt save(SimpleMalt arg0) throws Exception {
 			// TODO Auto-generated method stub
 			return maltDAO.save(arg0);
 		}

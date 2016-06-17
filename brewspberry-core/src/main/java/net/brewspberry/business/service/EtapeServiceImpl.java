@@ -13,7 +13,6 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
 import net.brewspberry.business.beans.DurationBO;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.DateManipulator;
 import net.brewspberry.dao.EtapeDaoImpl;
 
@@ -23,7 +22,7 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 	
 	IGenericDao<Etape> etapeDao = new EtapeDaoImpl();
 	@Override
-	public Etape save(Etape arg0) throws DAOException {
+	public Etape save(Etape arg0) throws Exception {
 		
 		return etapeDao.save(arg0);
 	}
