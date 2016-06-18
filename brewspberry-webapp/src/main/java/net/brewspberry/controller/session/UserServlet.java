@@ -27,10 +27,9 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-@WebServlet({"/user", "/", "/register"})
+@WebServlet({ "/user", "/", "/register" })
 public class UserServlet extends HttpServlet {
 
-	
 	// (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
 
 	/**
@@ -51,61 +50,55 @@ public class UserServlet extends HttpServlet {
 		userSpecService = new UserServiceImpl();
 		List<UserValidatorErrors> errs;
 
-		logger.info("Entering doPost");
+		logger.fine("Entering doPost");
 		String hiddenParam = request.getParameter("formType");
 
 		switch (hiddenParam) {
 
 		case "registration":
-			
-			
+
 			User userToValidate = new User();
-			
+
 			userToValidate = feedUserWithFormData(request);
-			
-			
+
 			errs = UserValidator.getInstance().validateFormUser(userToValidate);
-			
-			
-			if (errs.size() == 0){
+
+			if (errs.size() == 0) {
 				/*
 				 * User is valid
 				 */
-				
+
 				try {
 					userService.save(userToValidate);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				
+
 			} else {
 				/*
 				 * Treating the errors
 				 */
-				
+
 				request.setAttribute("errors", errs);
-				
+
 				request.setAttribute("user", userToValidate);
-				
+
 			}
-			
-		
-			
 
 			break;
 
 		case "connection":
 
-			errs = UserValidator.getInstance()
-					.isUsernameAndPasswordUserValid(request.getParameter("username"), request.getParameter("password"));
+			errs = UserValidator.getInstance().isUsernameAndPasswordUserValid(request.getParameter("username"),
+					request.getParameter("password"));
 			logger.info(request.getParameter("username") + "trnzrjgelfg");
 			if (errs.isEmpty()) {
 
 				// error list is empty so it's OK
 				String encryptedPassword = EncryptionUtils.encryptPassword(request.getParameter("password"), "MD5");
-				User user = userSpecService.returnUserByCredentials(request.getParameter("username"), encryptedPassword);
+				User user = userSpecService.returnUserByCredentials(request.getParameter("username"),
+						encryptedPassword);
 
 				if (user != null && !user.equals(new User())) {
 
@@ -120,84 +113,77 @@ public class UserServlet extends HttpServlet {
 							logger.severe("Could not create session for user " + user.toString());
 							errs = new ArrayList<UserValidatorErrors>();
 							errs.add(UserValidatorErrors.SESSION_BUILDING);
-							
-							
-							//If there's an error, putting errors in JSP
+
+							// If there's an error, putting errors in JSP
 							request.setAttribute("errors", errs);
 							request.getRequestDispatcher("index.jsp").forward(request, response);
 
 						}
 					} else {
-						
+
 						request.setAttribute("errors", userSpecService.getErrors());
 						response.sendRedirect("/");
 
 					}
-					
+
 				} else {
-					
+
 					request.setAttribute("errors", userSpecService.getErrors());
 					response.sendRedirect("/");
-					
+
 				}
 			}
-			
 
 			break;
 		}
 
 	}
-	
-	
+
 	private User feedUserWithFormData(HttpServletRequest request) {
-		
+
 		User userToValidate = new User();
-		
+
 		String userName = request.getParameter("username");
 		String password = request.getParameter("password");
 		String age = request.getParameter("age");
 		String firstName = request.getParameter("first_name");
 		String lastName = request.getParameter("last_name");
-		//String birthday = request.getParameter("birthday");
+		// String birthday = request.getParameter("birthday");
 
-		if (userName != null && !userName.equals("")){
-			
+		if (userName != null && !userName.equals("")) {
+
 			userToValidate.setUs_login(userName);
-			
+
 		}
-		if (password != null && !password.equals("")){
+		if (password != null && !password.equals("")) {
 			userToValidate.setUs_password(password);
 		}
-		if (age != null && !age.equals("")){
+		if (age != null && !age.equals("")) {
 			try {
 				userToValidate.setUs_age(Integer.parseInt(age));
-			} catch (Exception e){
-				
-				logger.severe(age+" is not a valid number !");
+			} catch (Exception e) {
+
+				logger.severe(age + " is not a valid number !");
 			}
 		}
-		if (firstName != null && !firstName.equals("")){
+		if (firstName != null && !firstName.equals("")) {
 			userToValidate.setUs_prenom(firstName);
 		}
-		if (lastName != null && !lastName.equals("")){
+		if (lastName != null && !lastName.equals("")) {
 			userToValidate.setUs_nom(lastName);
 		}
 
-		
 		return userToValidate;
 	}
 
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+
 		logger.info("Entering doGet");
 
-		request.getRequestDispatcher("index.jsp").forward(request, response);	
-		
+		request.getRequestDispatcher("index.jsp").forward(request, response);
+
 	}
-
-
 
 	/**
 	 * Method creating cookies, checking their presence, updating user and
