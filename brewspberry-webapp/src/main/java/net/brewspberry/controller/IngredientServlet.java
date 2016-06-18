@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Houblon;
@@ -34,12 +36,16 @@ import net.brewspberry.util.LogManager;
 public class IngredientServlet extends HttpServlet {
 
 	/**
-	 * 
+	 *  
 	 */
 	private static final long serialVersionUID = 1L;
-	IGenericService<SimpleMalt> simpleMaltService= (new MaltServiceImpl ()).new SimpleMaltServiceImpl(); 
-	IGenericService<SimpleHoublon> simpleHopService= (new HopServiceImpl ()).new SimpleHopServiceImpl(); 
-	IGenericService<SimpleLevure> simpleYeastService= (new YeastServiceImpl ()).new SimpleYeastServiceImpl(); 
+	
+	@Autowired
+	IGenericService<SimpleMalt> simpleMaltService; 
+	@Autowired
+	IGenericService<SimpleHoublon> simpleHopService; 
+	@Autowired
+	IGenericService<SimpleLevure> simpleYeastService; 
 	
 	
 	private static final Logger logger = LogManager.getInstance(IngredientServlet.class.getName());

@@ -11,9 +11,12 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.stereotype.Component;
+
 
 @Entity
 @DiscriminatorValue("m")
+@Component
 public class Malt extends SimpleMalt implements Serializable{
 
     /**

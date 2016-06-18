@@ -9,6 +9,7 @@ import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificBrassinDAO;
@@ -18,6 +19,7 @@ import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 
+@Repository
 public class BrassinDaoImpl implements IGenericDao<Brassin>,
 		ISpecificBrassinDAO {
 

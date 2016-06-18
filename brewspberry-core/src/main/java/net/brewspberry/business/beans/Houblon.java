@@ -5,10 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.springframework.stereotype.Component;
+
 import net.brewspberry.business.beans.SimpleHoublon;
 
 
 @Entity
+@Component
 public class Houblon extends SimpleHoublon implements Serializable {
     
     /**

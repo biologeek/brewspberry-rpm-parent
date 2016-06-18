@@ -6,6 +6,9 @@ import java.util.List;
 import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificUserDao;
@@ -16,9 +19,12 @@ import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
+@Service
 public class UserServiceImpl implements IGenericService<User>, ISpecificUserService {
 
+	@Autowired
 	private IGenericDao<User> userDao;
+	@Autowired
 	private ISpecificUserDao userSpecDao;
 	private List<UserValidatorErrors> errors;
 

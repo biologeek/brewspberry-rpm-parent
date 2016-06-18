@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificUserDao;
@@ -17,6 +18,7 @@ import net.brewspberry.business.beans.User;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
+@Repository
 public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 	@Override

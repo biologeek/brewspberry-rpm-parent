@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
@@ -27,7 +29,8 @@ import net.brewspberry.util.DeviceParser;
 public class Accueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	IGenericService<Brassin> brassinService = (IGenericService<Brassin>) new BrassinServiceImpl();
+	@Autowired
+	IGenericService<Brassin> brassinService;
 	
 	static Logger logger = Logger.getLogger(Accueil.class.toString());
 

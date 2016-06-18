@@ -12,6 +12,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
@@ -24,6 +27,7 @@ import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
+@Service
 public class TemperatureMeasurementServiceImpl implements
 		ISpecificTemperatureMeasurementService,
 		IGenericService<ConcreteTemperatureMeasurement> {
@@ -32,13 +36,18 @@ public class TemperatureMeasurementServiceImpl implements
 
 	SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-dd hh:MM:ss.SSSSSS");
 
-	private ISpecificTemperatureMeasurementService tempDao = new TemperatureMeasurementDaoImpl();
-	private IGenericService<Brassin> brassinService = new BrassinServiceImpl();
+	@Autowired
+	private ISpecificTemperatureMeasurementService tempDao;
+	@Autowired
+	private IGenericService<Brassin> brassinService;
 
-	private IGenericService<Etape> etapeService = new EtapeServiceImpl();
+	@Autowired
+	private IGenericService<Etape> etapeService;
 
-	private IGenericDao<ConcreteTemperatureMeasurement> tmesDao = new TemperatureMeasurementDaoImpl();
-	private ISpecificTemperatureMeasurementService tmesSpecDao = new TemperatureMeasurementDaoImpl();
+	@Autowired
+	private IGenericDao<ConcreteTemperatureMeasurement> tmesDao;
+	@Autowired
+	private ISpecificTemperatureMeasurementService tmesSpecDao;
 	
 	static final Logger logger = LogManager.getInstance(TemperatureMeasurementServiceImpl.class.getName());
 

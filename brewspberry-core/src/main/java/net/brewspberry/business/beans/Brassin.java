@@ -17,11 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.ManyToAny;
+import org.springframework.stereotype.Component;
 
 
 
 
 @Entity
+@Component
 public class Brassin implements Serializable{
 
 	/**

@@ -1,26 +1,26 @@
 package net.brewspberry.business.service;
 
-import java.math.BigDecimal;
-import java.time.Duration;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import javax.xml.datatype.DatatypeConstants.Field;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
-import net.brewspberry.business.beans.DurationBO;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.util.DateManipulator;
-import net.brewspberry.dao.EtapeDaoImpl;
 
+@Service
 public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeService {
 
 	
 	
-	IGenericDao<Etape> etapeDao = new EtapeDaoImpl();
+	@Autowired
+	IGenericDao<Etape> etapeDao;
+	
+	
 	@Override
 	public Etape save(Etape arg0) throws Exception {
 		

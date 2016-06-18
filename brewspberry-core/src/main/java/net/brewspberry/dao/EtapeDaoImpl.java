@@ -8,12 +8,14 @@ import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
+@Repository
 public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 	private Session session = HibernateUtil.getSession();

@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -14,11 +16,14 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.dao.BrassinDaoImpl;
 import net.brewspberry.util.HibernateUtil;
 
+@Service
 public class BrassinServiceImpl implements IGenericService<Brassin>,
 		ISpecificBrassinService {
 
-	IGenericDao<Brassin> brassinDAO = new BrassinDaoImpl();
-	ISpecificBrassinDAO specBrassinDAO = new BrassinDaoImpl();
+	@Autowired
+	IGenericDao<Brassin> brassinDAO;
+	@Autowired
+	ISpecificBrassinDAO specBrassinDAO;
 
 	@Override
 	public Brassin save(Brassin arg0) throws Exception {

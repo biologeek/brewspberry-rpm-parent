@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.adapter.RelayAdapter;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -25,6 +28,8 @@ import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
+
+@Service
 public class ActionerServiceImpl implements IGenericService<Actioner>,
 		ISpecificActionerService {
 
@@ -35,8 +40,10 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 	Pattern pattern = Pattern.compile(commandLineRegexp);
 
-	IGenericDao<Actioner> actionerDao = new ActionerDaoImpl();
-	ISpecificActionerDao actionerSpecDao = new ActionerDaoImpl();
+	@Autowired
+	IGenericDao<Actioner> actionerDao;
+	@Autowired
+	ISpecificActionerDao actionerSpecDao;
 
 
 	String getTemperatureRunningGrep = "ps -ef | grep bchrectemp.py";
@@ -228,12 +235,17 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 				
 			} else {
 				
-				result = this.save(arg0);
+				try {
+					result = this.save(arg0);
+				} catch (Exception e) {
+					throw new ServiceException("Couldn't update Actioner "
+							+ arg0.toString());
+				}
 				
 			}
-		} catch (DAOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			throw new ServiceException("Couldn't save Actioner "
+			throw new ServiceException("Couldn't update Actioner "
 					+ arg0.toString());
 		}
 		return result;

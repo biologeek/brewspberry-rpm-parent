@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TheoreticalTemperatureMeasurement extends TemperatureMeasurement implements Serializable,
 		Comparable<TheoreticalTemperatureMeasurement> {
 

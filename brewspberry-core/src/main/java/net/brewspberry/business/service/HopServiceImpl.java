@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
@@ -13,11 +16,14 @@ import net.brewspberry.dao.HopDaoImpl;
 import net.brewspberry.dao.SimpleHopDaoImpl;
 import net.brewspberry.util.LogManager;
 
+@Service
 public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngredientService {
 
 	
-	IGenericDao<Houblon> hopDao = new HopDaoImpl ();
-	IGenericDao<SimpleHoublon> shopDao = new SimpleHopDaoImpl ();
+	@Autowired
+	IGenericDao<Houblon> hopDao;
+	@Autowired
+	IGenericDao<SimpleHoublon> shopDao;
 	
 	
 	

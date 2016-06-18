@@ -67,7 +67,9 @@ public class UserValidator {
 
 	private boolean isUserMandatoryFieldsNullity(User userToValidate) {
 
-		if (userToValidate.getUs_login() != null && userToValidate.getUs_login() )
+		if (userToValidate.getUs_login() != null && !userToValidate.getUs_login().equals("") ){
+			
+		}
 		
 		
 		return false;

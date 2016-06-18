@@ -2,6 +2,8 @@ package net.brewspberry.business.beans;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 public enum UserProfile {
 	
 	

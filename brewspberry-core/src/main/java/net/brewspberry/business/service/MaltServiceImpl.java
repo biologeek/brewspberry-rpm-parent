@@ -3,6 +3,9 @@ package net.brewspberry.business.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
@@ -12,11 +15,14 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.dao.MaltDAOImpl;
 import net.brewspberry.dao.SimpleMaltDAOImpl;
 
+@Service
 public class MaltServiceImpl implements IGenericService<Malt>,
 		ISpecificMaltDAO, ISpecificIngredientService {
 
-	IGenericDao<SimpleMalt> smaltDAO = new SimpleMaltDAOImpl();
-	IGenericDao<Malt> maltDAO = new MaltDAOImpl();
+	@Autowired
+	IGenericDao<SimpleMalt> smaltDAO;
+	@Autowired
+	IGenericDao<Malt> maltDAO;
 
 	@Override
 	public Malt save(Malt arg0) throws Exception {

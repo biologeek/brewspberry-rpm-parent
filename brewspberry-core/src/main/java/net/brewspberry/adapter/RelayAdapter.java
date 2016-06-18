@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
+import net.brewspberry.util.OSUtils;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -22,11 +23,16 @@ public class RelayAdapter {
 	 */
 
 	static RelayAdapter instance;
-	final GpioController gpioController = GpioFactory.getInstance();
+	final GpioController gpioController;
 	static final Logger logger = LogManager.getInstance(RelayAdapter.class.getName());
 
 	public RelayAdapter() {
-		// TODO Auto-generated constructor stub
+		
+		if (OSUtils.isRaspbian()){
+			gpioController= GpioFactory.getInstance();
+		} else {
+			gpioController = null;
+		}
 	}
 
 	public static RelayAdapter getInstance() {

@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Brassin;
@@ -54,16 +56,22 @@ public class AddOrUpdateBrew extends HttpServlet {
 	private List<SimpleLevure> yeastList = new ArrayList<SimpleLevure>();
 
 	private Brassin currentBrassin = new Brassin();
-
-	IGenericService<Brassin> brassinService = (IGenericService<Brassin>) new BrassinServiceImpl();
-	ISpecificIngredientService maltIngSpecService = (ISpecificIngredientService) new MaltServiceImpl();
-	IGenericService<Malt> maltService = new MaltServiceImpl();
-	IGenericService<Houblon> hopService = new HopServiceImpl();
-	IGenericService<Levure> yeastService = new YeastServiceImpl();
-	ISpecificIngredientService hopIngSpecService = (ISpecificIngredientService) new HopServiceImpl();
-	ISpecificIngredientService levureIngSpecService = (ISpecificIngredientService) new YeastServiceImpl();
-
-	IGenericService<Etape> etapeService = new EtapeServiceImpl();
+	@Autowired
+	IGenericService<Brassin> brassinService;
+	@Autowired
+	ISpecificIngredientService maltIngSpecService;
+	@Autowired
+	IGenericService<Malt> maltService;
+	@Autowired
+	IGenericService<Houblon> hopService;
+	@Autowired
+	IGenericService<Levure> yeastService;
+	@Autowired
+	ISpecificIngredientService hopIngSpecService;
+	@Autowired
+	ISpecificIngredientService levureIngSpecService;
+	@Autowired
+	IGenericService<Etape> etapeService;
 
 	/**
 	 * @see HttpServlet#HttpServlet()

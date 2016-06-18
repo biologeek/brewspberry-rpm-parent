@@ -13,12 +13,14 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
+@Repository
 public class MaltDAOImpl implements IGenericDao<Malt> {
 
 	private Session session = HibernateUtil.getSession();

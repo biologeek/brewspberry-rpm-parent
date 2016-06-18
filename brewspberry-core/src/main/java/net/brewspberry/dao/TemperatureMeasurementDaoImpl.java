@@ -17,6 +17,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
@@ -30,6 +31,7 @@ import net.brewspberry.util.DateManipulator;
 import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 
+@Repository
 public class TemperatureMeasurementDaoImpl implements
 		ISpecificTemperatureMeasurementService,
 		IGenericDao<ConcreteTemperatureMeasurement> {

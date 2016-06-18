@@ -3,6 +3,9 @@ package net.brewspberry.business.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
@@ -11,11 +14,14 @@ import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.dao.SimpleYeastDAOImpl;
 import net.brewspberry.dao.YeastDAOImpl;
 
+@Service
 public class YeastServiceImpl implements IGenericService<Levure>,
 		ISpecificIngredientService {
 
-	IGenericDao<Levure> levureDao = new YeastDAOImpl();
-	IGenericDao<SimpleLevure> slevureDao = new SimpleYeastDAOImpl();
+	@Autowired
+	IGenericDao<Levure> levureDao;
+	@Autowired
+	IGenericDao<SimpleLevure> slevureDao;
 
 	@Override
 	public void deleteElement(long arg0) {

@@ -11,7 +11,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.stereotype.Component;
+
 @Entity
+@Component
 public class Levure extends SimpleLevure implements Serializable {
     
     /**

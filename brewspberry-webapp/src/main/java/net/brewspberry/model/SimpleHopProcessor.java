@@ -98,7 +98,7 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 					simpleHopService.save(parentObject);
 					return true;
 
-				} catch (DAOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return false;

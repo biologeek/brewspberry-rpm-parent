@@ -8,12 +8,14 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
+@Repository
 public class HopDaoImpl implements IGenericDao<Houblon> {
 
 	private Session session = HibernateUtil.getSession();

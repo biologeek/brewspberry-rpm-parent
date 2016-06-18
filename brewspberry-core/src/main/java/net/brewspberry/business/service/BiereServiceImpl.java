@@ -2,17 +2,22 @@ package net.brewspberry.business.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificBiereDAO;
 import net.brewspberry.business.beans.Biere;
-import net.brewspberry.dao.BiereDaoImpl;
 import net.brewspberry.exceptions.DAOException;
 
+@Service
 public class BiereServiceImpl implements IGenericDao<Biere>, ISpecificBiereDAO{
 
+	@Autowired
+	IGenericDao<Biere> biereDAO;
+	@Autowired
+	ISpecificBiereDAO specBiereDAO;
 	
-	IGenericDao<Biere> biereDAO = new BiereDaoImpl ();
-	ISpecificBiereDAO specBiereDAO = new BiereDaoImpl ();
 	@Override
 	public Biere save(Biere arg0) throws DAOException {
 		// TODO Auto-generated method stub

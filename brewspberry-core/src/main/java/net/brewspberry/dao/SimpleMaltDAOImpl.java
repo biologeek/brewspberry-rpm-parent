@@ -12,6 +12,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.SimpleHoublon;
@@ -19,6 +20,7 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
+@Repository
 public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
 	private Session session = HibernateUtil.getSession();

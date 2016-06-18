@@ -32,7 +32,7 @@
 </hgroup>
 <c:forEach begin="0" end="${errors.size()}" var="err">
 
-	<c:if test="${err.getSeverity() < 3">
+	<c:if test="${err.getSeverity() < 3}">
 		<div class="alert alert-danger">
 		    <a class="close" data-dismiss="alert" href="#">&times;</a>
 		    <strong>Error!</strong> ${err.getError()}.

@@ -5,9 +5,13 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
+import org.springframework.stereotype.Component;
+
 import net.brewspberry.business.beans.AbstractIngredient;
 
 @Entity
+@Component
 public class SimpleHoublon extends AbstractIngredient implements Serializable {
     
     /**

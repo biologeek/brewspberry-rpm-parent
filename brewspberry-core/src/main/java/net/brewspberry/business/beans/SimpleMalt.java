@@ -13,8 +13,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.stereotype.Component;
+
 
 @Entity
+@Component
 public class SimpleMalt extends AbstractIngredient implements Serializable{
 
     /**

@@ -87,7 +87,7 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 					simpleYeastService.save(parentObject);
 					return true;
 
-				} catch (DAOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					return false;

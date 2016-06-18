@@ -9,7 +9,10 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
+import org.springframework.stereotype.Component;
+
 @Entity
+@Component
 public class DurationBO implements Serializable{
 	
 	
