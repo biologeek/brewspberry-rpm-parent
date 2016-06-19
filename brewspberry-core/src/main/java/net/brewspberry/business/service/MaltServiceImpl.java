@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import net.brewspberry.business.IGenericDao;
@@ -15,7 +16,7 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.dao.MaltDAOImpl;
 import net.brewspberry.dao.SimpleMaltDAOImpl;
 
-@Service
+@Service(value="maltServiceImpl")
 public class MaltServiceImpl implements IGenericService<Malt>,
 		ISpecificMaltDAO, ISpecificIngredientService {
 
@@ -111,6 +112,8 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 		return result;
 	}
 
+
+	@Service("simpleMaltServiceImpl")
 	public class SimpleMaltServiceImpl implements IGenericService<SimpleMalt>,
 			ISpecificIngredientService {
 

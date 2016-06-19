@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
@@ -26,9 +29,12 @@ public class SimpleMaltProcessor implements Processor<SimpleMalt> {
 	private int smal_couleur;
 	
 
-	IGenericService<SimpleMalt> simpleMaltService= (new MaltServiceImpl ()).new SimpleMaltServiceImpl(); 
-	IGenericService<SimpleHoublon> simpleHopService= (new HopServiceImpl ()).new SimpleHopServiceImpl(); 
-	IGenericService<SimpleLevure> simpleYeastService= (new YeastServiceImpl ()).new SimpleYeastServiceImpl(); 
+	@Autowired
+	IGenericService<SimpleMalt> simpleMaltService; 
+	@Autowired
+	IGenericService<SimpleHoublon> simpleHopService; 
+	@Autowired
+	IGenericService<SimpleLevure> simpleYeastService; 
 	
 	
 	
@@ -126,6 +132,79 @@ public class SimpleMaltProcessor implements Processor<SimpleMalt> {
 		 }
 		
 		return false;
+	}
+
+	public String getIng_desc() {
+		return ing_desc;
+	}
+
+	public void setIng_desc(String ing_desc) {
+		this.ing_desc = ing_desc;
+	}
+
+	public String getIng_four() {
+		return ing_four;
+	}
+
+	public void setIng_four(String ing_four) {
+		this.ing_four = ing_four;
+	}
+
+	public String getSmal_cereale() {
+		return smal_cereale;
+	}
+
+	public void setSmal_cereale(String smal_cereale) {
+		this.smal_cereale = smal_cereale;
+	}
+
+	public String getSmal_type() {
+		return smal_type;
+	}
+
+	public void setSmal_type(String smal_type) {
+		this.smal_type = smal_type;
+	}
+
+	public int getSmal_couleur() {
+		return smal_couleur;
+	}
+
+	public void setSmal_couleur(int smal_couleur) {
+		this.smal_couleur = smal_couleur;
+	}
+
+	public IGenericService<SimpleMalt> getSimpleMaltService() {
+		return simpleMaltService;
+	}
+
+	public void setSimpleMaltService(IGenericService<SimpleMalt> simpleMaltService) {
+		this.simpleMaltService = simpleMaltService;
+	}
+
+	public IGenericService<SimpleHoublon> getSimpleHopService() {
+		return simpleHopService;
+	}
+
+	public void setSimpleHopService(IGenericService<SimpleHoublon> simpleHopService) {
+		this.simpleHopService = simpleHopService;
+	}
+
+	public IGenericService<SimpleLevure> getSimpleYeastService() {
+		return simpleYeastService;
+	}
+
+	public void setSimpleYeastService(
+			IGenericService<SimpleLevure> simpleYeastService) {
+		this.simpleYeastService = simpleYeastService;
+	}
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
 	}
 
 }

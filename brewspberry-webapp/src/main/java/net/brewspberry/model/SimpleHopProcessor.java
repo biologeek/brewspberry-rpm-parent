@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.SimpleHoublon;
@@ -15,7 +18,8 @@ import net.brewspberry.util.LogManager;
 public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 
 	private Logger logger = LogManager.getInstance(SimpleHopProcessor.class.getName());
-	IGenericService<SimpleHoublon> simpleHopService= (new HopServiceImpl ()).new SimpleHopServiceImpl(); 
+	@Autowired
+	IGenericService<SimpleHoublon> simpleHopService; 
 
 	
 	
@@ -127,6 +131,86 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 		 }
 		
 		return false;
+	}
+
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+
+	public IGenericService<SimpleHoublon> getSimpleHopService() {
+		return simpleHopService;
+	}
+
+
+	public void setSimpleHopService(IGenericService<SimpleHoublon> simpleHopService) {
+		this.simpleHopService = simpleHopService;
+	}
+
+
+	public String getIng_desc() {
+		return ing_desc;
+	}
+
+
+	public void setIng_desc(String ing_desc) {
+		this.ing_desc = ing_desc;
+	}
+
+
+	public String getIng_four() {
+		return ing_four;
+	}
+
+
+	public void setIng_four(String ing_four) {
+		this.ing_four = ing_four;
+	}
+
+
+	public String getShbl_variete() {
+		return shbl_variete;
+	}
+
+
+	public void setShbl_variete(String shbl_variete) {
+		this.shbl_variete = shbl_variete;
+	}
+
+
+	public double getShbl_acide_alpha() {
+		return shbl_acide_alpha;
+	}
+
+
+	public void setShbl_acide_alpha(double shbl_acide_alpha) {
+		this.shbl_acide_alpha = shbl_acide_alpha;
+	}
+
+
+	public String getShbl_aromes() {
+		return shbl_aromes;
+	}
+
+
+	public void setShbl_aromes(String shbl_aromes) {
+		this.shbl_aromes = shbl_aromes;
+	}
+
+
+	public Integer getShbl_type() {
+		return shbl_type;
+	}
+
+
+	public void setShbl_type(Integer shbl_type) {
+		this.shbl_type = shbl_type;
 	}
 
 }

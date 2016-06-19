@@ -32,7 +32,7 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 
 
-@WebFilter("/*")
+//@WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 
 	private HttpSession currentSession;
@@ -75,13 +75,17 @@ public class AuthentificationFilter implements Filter {
 					+ ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "params.permissions.login.address");
 			String shortLoginPage = req.getContextPath() + "/";
 			currentSession = req.getSession();
+			logger.info("FILTER PARAMS : "+req.getRequestURI()+" "+loginPage+" "+shortLoginPage);
 
+			
 			if (currentSession.getAttribute("user") != null || req.getRequestURI().equals(loginPage) || req.getRequestURI().equals(shortLoginPage)) {
 				
 				/*
 				 * User  is already logged or requests login servlet so letting him login
 				 * 
 				 */
+				if (currentSession.getAttribute("user") != null)
+					logger.info("Logged as : "+((User) currentSession.getAttribute("user")).getUs_login());
 				
 				chain.doFilter(req, response);
 

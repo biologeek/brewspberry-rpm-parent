@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.AbstractIngredient;
@@ -33,6 +35,7 @@ import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 @WebServlet("/ingredientServlet")
+@Controller
 public class IngredientServlet extends HttpServlet {
 
 	/**
@@ -41,10 +44,13 @@ public class IngredientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
+	@Qualifier("simpleMaltServiceImpl")
 	IGenericService<SimpleMalt> simpleMaltService; 
 	@Autowired
+	@Qualifier("simpleHopServiceImpl")
 	IGenericService<SimpleHoublon> simpleHopService; 
 	@Autowired
+	@Qualifier("simpleYeastServiceImpl")
 	IGenericService<SimpleLevure> simpleYeastService; 
 	
 	
@@ -320,5 +326,46 @@ public class IngredientServlet extends HttpServlet {
 		request.setAttribute("maltSpecificCerealMenuOptions", buildHTMLMenu(Constants.CEREALS, "barley"));
 		request.setAttribute("maltTypeSpecificMenuOptions", buildHTMLMenu(Constants.MALT_TYPE, "blond"));
 		request.setAttribute("hopTypeSpecificMenuOptions", buildHTMLMenu(Constants.HOP_TYPE, "0"));
+	}
+
+
+	public IGenericService<SimpleMalt> getSimpleMaltService() {
+		return simpleMaltService;
+	}
+
+
+	public void setSimpleMaltService(IGenericService<SimpleMalt> simpleMaltService) {
+		this.simpleMaltService = simpleMaltService;
+	}
+
+
+	public IGenericService<SimpleHoublon> getSimpleHopService() {
+		return simpleHopService;
+	}
+
+
+	public void setSimpleHopService(IGenericService<SimpleHoublon> simpleHopService) {
+		this.simpleHopService = simpleHopService;
+	}
+
+
+	public IGenericService<SimpleLevure> getSimpleYeastService() {
+		return simpleYeastService;
+	}
+
+
+	public void setSimpleYeastService(
+			IGenericService<SimpleLevure> simpleYeastService) {
+		this.simpleYeastService = simpleYeastService;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+	public static Logger getLogger() {
+		return logger;
 	}
 }

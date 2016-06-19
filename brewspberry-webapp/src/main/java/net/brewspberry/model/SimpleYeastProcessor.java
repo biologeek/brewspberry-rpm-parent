@@ -4,6 +4,9 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.service.YeastServiceImpl;
@@ -14,7 +17,8 @@ import net.brewspberry.util.LogManager;
 public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 
 	private Logger logger = LogManager.getInstance(SimpleHopProcessor.class.getName());
-	IGenericService<SimpleLevure> simpleYeastService= (new YeastServiceImpl()).new SimpleYeastServiceImpl(); 
+	@Autowired
+	IGenericService<SimpleLevure> simpleYeastService; 
 
 	
 
@@ -118,6 +122,77 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 		 }
 		
 		return false;
+	}
+
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+
+	public IGenericService<SimpleLevure> getSimpleYeastService() {
+		return simpleYeastService;
+	}
+
+
+	public void setSimpleYeastService(
+			IGenericService<SimpleLevure> simpleYeastService) {
+		this.simpleYeastService = simpleYeastService;
+	}
+
+
+	public String getIng_desc() {
+		return ing_desc;
+	}
+
+
+	public void setIng_desc(String ing_desc) {
+		this.ing_desc = ing_desc;
+	}
+
+
+	public String getIng_four() {
+		return ing_four;
+	}
+
+
+	public void setIng_four(String ing_four) {
+		this.ing_four = ing_four;
+	}
+
+
+	public String getSlev_espece() {
+		return slev_espece;
+	}
+
+
+	public void setSlev_espece(String slev_espece) {
+		this.slev_espece = slev_espece;
+	}
+
+
+	public String getSlev_floculation() {
+		return slev_floculation;
+	}
+
+
+	public void setSlev_floculation(String slev_floculation) {
+		this.slev_floculation = slev_floculation;
+	}
+
+
+	public String getSlev_aromes() {
+		return slev_aromes;
+	}
+
+
+	public void setSlev_aromes(String slev_aromes) {
+		this.slev_aromes = slev_aromes;
 	}
 
 }

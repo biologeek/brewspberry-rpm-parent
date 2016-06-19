@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan("net.brewspberry")
+@ComponentScan(basePackages = { "net.brewspberry.*" })
 @EnableTransactionManagement
 @PropertySources(value={@PropertySource("classpath:config.properties")
 	, @PropertySource("classpath:c3po.properties")
@@ -52,7 +52,7 @@ public class SpringCoreConfiguration {
 	 
 	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 	 
-	    sessionBuilder.scanPackages("net.brewspberry.business.beans");
+	    sessionBuilder.scanPackages("net.brewspberry");
 	 
 	    return sessionBuilder.buildSessionFactory();
 	}

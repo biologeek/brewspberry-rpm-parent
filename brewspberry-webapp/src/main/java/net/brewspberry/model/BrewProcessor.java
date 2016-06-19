@@ -343,4 +343,69 @@ public class BrewProcessor implements Processor<Brassin> {
 		}
 
 	}
+
+	public IGenericService<Brassin> getBrassinService() {
+		return brassinService;
+	}
+
+	public void setBrassinService(IGenericService<Brassin> brassinService) {
+		this.brassinService = brassinService;
+	}
+
+	public ISpecificIngredientService getMaltIngSpecService() {
+		return maltIngSpecService;
+	}
+
+	public void setMaltIngSpecService(ISpecificIngredientService maltIngSpecService) {
+		this.maltIngSpecService = maltIngSpecService;
+	}
+
+	public IGenericService<Malt> getMaltService() {
+		return maltService;
+	}
+
+	public void setMaltService(IGenericService<Malt> maltService) {
+		this.maltService = maltService;
+	}
+
+	public IGenericService<Houblon> getHopService() {
+		return hopService;
+	}
+
+	public void setHopService(IGenericService<Houblon> hopService) {
+		this.hopService = hopService;
+	}
+
+	public IGenericService<Levure> getYeastService() {
+		return yeastService;
+	}
+
+	public void setYeastService(IGenericService<Levure> yeastService) {
+		this.yeastService = yeastService;
+	}
+
+	public ISpecificIngredientService getHopIngSpecService() {
+		return hopIngSpecService;
+	}
+
+	public void setHopIngSpecService(ISpecificIngredientService hopIngSpecService) {
+		this.hopIngSpecService = hopIngSpecService;
+	}
+
+	public ISpecificIngredientService getLevureIngSpecService() {
+		return levureIngSpecService;
+	}
+
+	public void setLevureIngSpecService(
+			ISpecificIngredientService levureIngSpecService) {
+		this.levureIngSpecService = levureIngSpecService;
+	}
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
 }

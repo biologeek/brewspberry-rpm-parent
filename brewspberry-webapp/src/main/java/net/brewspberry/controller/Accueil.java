@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Actioner;
@@ -26,6 +27,7 @@ import net.brewspberry.util.DeviceParser;
  * Servlet implementation class Accueil
  */
 @WebServlet("/Accueil")
+@Controller
 public class Accueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -118,6 +120,26 @@ public class Accueil extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+	}
+
+	public IGenericService<Brassin> getBrassinService() {
+		return brassinService;
+	}
+
+	public void setBrassinService(IGenericService<Brassin> brassinService) {
+		this.brassinService = brassinService;
+	}
+
+	public static Logger getLogger() {
+		return logger;
+	}
+
+	public static void setLogger(Logger logger) {
+		Accueil.logger = logger;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

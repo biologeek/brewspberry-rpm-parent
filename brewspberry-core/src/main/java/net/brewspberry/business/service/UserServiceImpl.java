@@ -19,7 +19,7 @@ import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-@Service
+@Service("userServiceImpl")
 public class UserServiceImpl implements IGenericService<User>, ISpecificUserService {
 
 	@Autowired

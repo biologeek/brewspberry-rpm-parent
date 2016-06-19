@@ -50,7 +50,7 @@ public class UserValidator {
 			errors.add(UserValidatorErrors.SHORT_PASSWORD);
 		
 		
-		return null;	
+		return errors;	
 	}
 	
 	public List<UserValidatorErrors> validateFormUser(User userToValidate){

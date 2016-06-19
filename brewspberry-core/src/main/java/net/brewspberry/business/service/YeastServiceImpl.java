@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import net.brewspberry.business.IGenericDao;
@@ -14,7 +15,7 @@ import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.dao.SimpleYeastDAOImpl;
 import net.brewspberry.dao.YeastDAOImpl;
 
-@Service
+@Service(value="yeastServiceImpl")
 public class YeastServiceImpl implements IGenericService<Levure>,
 		ISpecificIngredientService {
 
@@ -105,6 +106,8 @@ public class YeastServiceImpl implements IGenericService<Levure>,
 		return result;
 	}
 
+
+	@Service("simpleYeastServiceImpl")
 	public class SimpleYeastServiceImpl implements IGenericService<SimpleLevure>,
 			ISpecificIngredientService {
 

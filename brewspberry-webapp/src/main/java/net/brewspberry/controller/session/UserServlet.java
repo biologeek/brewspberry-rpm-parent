@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.omg.CORBA.Request;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificUserService;
@@ -28,26 +31,28 @@ import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
 @WebServlet({ "/user", "/", "/register" })
+@Controller
 public class UserServlet extends HttpServlet {
 
-	// (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5053309074376760642L;
+	@Autowired
+	@Qualifier("userServiceImpl")
 	private ISpecificUserService userSpecService;
+	@Autowired
+	@Qualifier("userServiceImpl")
 	private IGenericService<User> userService;
 	private HttpSession currentSession;
 	Logger logger = LogManager.getInstance(UserServlet.class.getName());
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		currentSession = request.getSession();
 
-		userService = new UserServiceImpl();
-		userSpecService = new UserServiceImpl();
 		List<UserValidatorErrors> errs;
 
 		logger.fine("Entering doPost");
@@ -90,38 +95,44 @@ public class UserServlet extends HttpServlet {
 
 		case "connection":
 
-			errs = UserValidator.getInstance().isUsernameAndPasswordUserValid(request.getParameter("username"),
+			errs = UserValidator.getInstance().isUsernameAndPasswordUserValid(
+					request.getParameter("username"),
 					request.getParameter("password"));
-			logger.info(request.getParameter("username") + "trnzrjgelfg");
+			logger.info(request.getParameter("username") + "  trnzrjgelfg");
 			if (errs.isEmpty()) {
 
 				// error list is empty so it's OK
-				String encryptedPassword = EncryptionUtils.encryptPassword(request.getParameter("password"), "MD5");
-				User user = userSpecService.returnUserByCredentials(request.getParameter("username"),
-						encryptedPassword);
+				String encryptedPassword = EncryptionUtils.encryptPassword(
+						request.getParameter("password"), "MD5");
+				User user = userSpecService.returnUserByCredentials(
+						request.getParameter("username"), encryptedPassword);
 
 				if (user != null && !user.equals(new User())) {
 
 					if (userSpecService.checkIfUserIsActiveAndNotBlocked(user)) {
 
 						try {
-							connectUserAndBuildHisSession(user, request, response);
+							connectUserAndBuildHisSession(user, request,
+									response);
 							response.sendRedirect("/Accueil");
 
 						} catch (Exception e) {
 
-							logger.severe("Could not create session for user " + user.toString());
+							logger.severe("Could not create session for user "
+									+ user.toString());
 							errs = new ArrayList<UserValidatorErrors>();
 							errs.add(UserValidatorErrors.SESSION_BUILDING);
 
 							// If there's an error, putting errors in JSP
 							request.setAttribute("errors", errs);
-							request.getRequestDispatcher("index.jsp").forward(request, response);
+							request.getRequestDispatcher("index.jsp").forward(
+									request, response);
 
 						}
 					} else {
 
-						request.setAttribute("errors", userSpecService.getErrors());
+						request.setAttribute("errors",
+								userSpecService.getErrors());
 						response.sendRedirect("/");
 
 					}
@@ -176,8 +187,8 @@ public class UserServlet extends HttpServlet {
 		return userToValidate;
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 
 		logger.info("Entering doGet");
 
@@ -193,14 +204,17 @@ public class UserServlet extends HttpServlet {
 	 * @param req
 	 * @param rep
 	 */
-	private void connectUserAndBuildHisSession(User user, HttpServletRequest req, HttpServletResponse rep) {
+	private void connectUserAndBuildHisSession(User user,
+			HttpServletRequest req, HttpServletResponse rep) {
 
 		if (this.currentSession.isNew()) {
 
 			rep.addCookie(new Cookie("user.login", user.getUs_login()));
-			rep.addCookie(new Cookie("user.status", user.getUs_profile().getClass().getSimpleName()));
+			rep.addCookie(new Cookie("user.status", user.getUs_profile()
+					.getClass().getSimpleName()));
 			rep.addCookie(new Cookie("user.token", this.currentSession.getId()));
-			rep.addCookie(new Cookie("user.connectionTime", String.valueOf(this.currentSession.getCreationTime())));
+			rep.addCookie(new Cookie("user.connectionTime", String
+					.valueOf(this.currentSession.getCreationTime())));
 
 			this.currentSession.setAttribute("user", user);
 
@@ -223,6 +237,10 @@ public class UserServlet extends HttpServlet {
 			}
 
 		}
+
+		logger.info("User : "
+				+ ((User) currentSession.getAttribute("user")).getUs_login()
+				+ " successfully logged in !!!!!!");
 
 	}
 
@@ -262,6 +280,42 @@ public class UserServlet extends HttpServlet {
 		}
 
 		return str.toString();
+	}
+
+	public ISpecificUserService getUserSpecService() {
+		return userSpecService;
+	}
+
+	public void setUserSpecService(ISpecificUserService userSpecService) {
+		this.userSpecService = userSpecService;
+	}
+
+	public IGenericService<User> getUserService() {
+		return userService;
+	}
+
+	public void setUserService(IGenericService<User> userService) {
+		this.userService = userService;
+	}
+
+	public HttpSession getCurrentSession() {
+		return currentSession;
+	}
+
+	public void setCurrentSession(HttpSession currentSession) {
+		this.currentSession = currentSession;
+	}
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

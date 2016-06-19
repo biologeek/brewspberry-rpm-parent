@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
@@ -41,6 +43,7 @@ import net.brewspberry.model.StepProcessor;
  * Servlet implementation class AddOrUpdateBrew
  */
 @WebServlet("/AddOrUpdateBrew")
+@Controller
 public class AddOrUpdateBrew extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +62,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 	@Autowired
 	IGenericService<Brassin> brassinService;
 	@Autowired
+	@Qualifier("maltServiceImpl")
 	ISpecificIngredientService maltIngSpecService;
 	@Autowired
 	IGenericService<Malt> maltService;
@@ -67,8 +71,10 @@ public class AddOrUpdateBrew extends HttpServlet {
 	@Autowired
 	IGenericService<Levure> yeastService;
 	@Autowired
+	@Qualifier("hopServiceImpl")
 	ISpecificIngredientService hopIngSpecService;
 	@Autowired
+	@Qualifier("yeastServiceImpl")
 	ISpecificIngredientService levureIngSpecService;
 	@Autowired
 	IGenericService<Etape> etapeService;
@@ -339,6 +345,127 @@ public class AddOrUpdateBrew extends HttpServlet {
 		String result = "{" + JSONmalts + JSONhops + JSONyeasts + "}";
 		result = result.replace(",]", "]");
 		return result;
+	}
+
+	public SimpleDateFormat getSdf() {
+		return sdf;
+	}
+
+	public void setSdf(SimpleDateFormat sdf) {
+		this.sdf = sdf;
+	}
+
+	public Long getBrewid() {
+		return brewid;
+	}
+
+	public void setBrewid(Long brewid) {
+		this.brewid = brewid;
+	}
+
+	public List<SimpleMalt> getMaltList() {
+		return maltList;
+	}
+
+	public void setMaltList(List<SimpleMalt> maltList) {
+		this.maltList = maltList;
+	}
+
+	public List<SimpleHoublon> getHopList() {
+		return hopList;
+	}
+
+	public void setHopList(List<SimpleHoublon> hopList) {
+		this.hopList = hopList;
+	}
+
+	public List<SimpleLevure> getYeastList() {
+		return yeastList;
+	}
+
+	public void setYeastList(List<SimpleLevure> yeastList) {
+		this.yeastList = yeastList;
+	}
+
+	public Brassin getCurrentBrassin() {
+		return currentBrassin;
+	}
+
+	public void setCurrentBrassin(Brassin currentBrassin) {
+		this.currentBrassin = currentBrassin;
+	}
+
+	public IGenericService<Brassin> getBrassinService() {
+		return brassinService;
+	}
+
+	public void setBrassinService(IGenericService<Brassin> brassinService) {
+		this.brassinService = brassinService;
+	}
+
+	public ISpecificIngredientService getMaltIngSpecService() {
+		return maltIngSpecService;
+	}
+
+	public void setMaltIngSpecService(ISpecificIngredientService maltIngSpecService) {
+		this.maltIngSpecService = maltIngSpecService;
+	}
+
+	public IGenericService<Malt> getMaltService() {
+		return maltService;
+	}
+
+	public void setMaltService(IGenericService<Malt> maltService) {
+		this.maltService = maltService;
+	}
+
+	public IGenericService<Houblon> getHopService() {
+		return hopService;
+	}
+
+	public void setHopService(IGenericService<Houblon> hopService) {
+		this.hopService = hopService;
+	}
+
+	public IGenericService<Levure> getYeastService() {
+		return yeastService;
+	}
+
+	public void setYeastService(IGenericService<Levure> yeastService) {
+		this.yeastService = yeastService;
+	}
+
+	public ISpecificIngredientService getHopIngSpecService() {
+		return hopIngSpecService;
+	}
+
+	public void setHopIngSpecService(ISpecificIngredientService hopIngSpecService) {
+		this.hopIngSpecService = hopIngSpecService;
+	}
+
+	public ISpecificIngredientService getLevureIngSpecService() {
+		return levureIngSpecService;
+	}
+
+	public void setLevureIngSpecService(
+			ISpecificIngredientService levureIngSpecService) {
+		this.levureIngSpecService = levureIngSpecService;
+	}
+
+	public IGenericService<Etape> getEtapeService() {
+		return etapeService;
+	}
+
+	public void setEtapeService(IGenericService<Etape> etapeService) {
+		this.etapeService = etapeService;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public static Logger getLogger() {
+		return logger;
 	}
 
 }
