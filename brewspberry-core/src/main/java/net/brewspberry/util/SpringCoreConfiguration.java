@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = { "net.brewspberry.*" })
+@ComponentScan(basePackages = { "net.brewspberry" })
 @EnableTransactionManagement
 @PropertySources(value={@PropertySource("classpath:config.properties")
 	, @PropertySource("classpath:c3po.properties")

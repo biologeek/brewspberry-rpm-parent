@@ -12,7 +12,7 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-
+<!-- 
 	<context-param>
 		<param-name>contextClass</param-name>
         <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
@@ -22,9 +22,9 @@
 		<param-value>net.brewspberry.util</param-value>
 	</context-param>
 
-	<!-- Bootstrap the root application context as usual using ContextLoaderListener -->
+	 Bootstrap the root application context as usual using ContextLoaderListener 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
+ -->
 </web-app>

@@ -42,7 +42,7 @@ import net.brewspberry.model.StepProcessor;
 /**
  * Servlet implementation class AddOrUpdateBrew
  */
-@WebServlet("/AddOrUpdateBrew")
+@WebServlet("/AddOrUpdateBrew.do")
 @Controller
 public class AddOrUpdateBrew extends HttpServlet {
 	private static final long serialVersionUID = 1L;

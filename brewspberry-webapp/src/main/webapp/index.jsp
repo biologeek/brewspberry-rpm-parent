@@ -40,7 +40,7 @@
 	</c:if>
 
 </c:forEach>
-<form action="user" method="post">
+<form action="user.do" method="post">
   <div class="group">
      <label>Username</label>
     <input type="text" name="username" id="username"><span class="highlight"></span><span class="bar"></span>

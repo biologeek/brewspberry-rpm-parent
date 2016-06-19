@@ -34,7 +34,7 @@ import net.brewspberry.model.SimpleYeastProcessor;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-@WebServlet("/ingredientServlet")
+@WebServlet("/ingredientServlet.do")
 @Controller
 public class IngredientServlet extends HttpServlet {
 

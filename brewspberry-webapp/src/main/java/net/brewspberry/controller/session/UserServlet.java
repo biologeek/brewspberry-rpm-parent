@@ -30,7 +30,7 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-@WebServlet({ "/user", "/", "/register" })
+@WebServlet({ "/user.do", "/", "/register.do" })
 @Controller
 public class UserServlet extends HttpServlet {
 
@@ -114,7 +114,7 @@ public class UserServlet extends HttpServlet {
 						try {
 							connectUserAndBuildHisSession(user, request,
 									response);
-							response.sendRedirect("/Accueil");
+							response.sendRedirect("/Accueil.do");
 
 						} catch (Exception e) {
 
