@@ -1,4 +1,4 @@
-package net.brewspberry.util;
+package net.brewspberry.test.util.config;
 
 import java.util.Properties;
 
@@ -26,7 +26,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 	, @PropertySource("classpath:c3po.properties")
 	, @PropertySource("classpath:devices.properties")
 })
-public class SpringCoreConfiguration {
+public class SpringCoreTestConfiguration {
 	
 	
 	

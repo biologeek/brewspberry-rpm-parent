@@ -5,6 +5,10 @@ import net.brewspberry.business.beans.UserProfile;
 
 public class DefaultUserBuilder extends UserBuilder {
 
+	public DefaultUserBuilder() {
+		super();
+	}
+
 	@Override
 	public User profile() {
 		user.setUs_profile(UserProfile.READER);

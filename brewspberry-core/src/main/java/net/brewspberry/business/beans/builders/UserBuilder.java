@@ -8,37 +8,42 @@ public abstract class UserBuilder {
 	protected User user;
 	
 	public abstract User profile();
-	
 
-	public User login (String login){
+	public UserBuilder() {
+		super();
+		this.user = new User();
+		// TODO Auto-generated constructor stub
+	}
+
+	public UserBuilder login (String login){
 		
 		user.setUs_login(login);
-		return user;		
+		return this;		
 	}
 
-	public User password (String passwd){
+	public UserBuilder password (String passwd){
 		
 		user.setUs_password(passwd);
-		return user;		
+		return this;		
 	}
 
-	public User firstName (String firstName){
+	public UserBuilder firstName (String firstName){
 		
 		user.setUs_prenom(firstName);
-		return user;		
+		return this;		
 	}
 	
 
-	public User lastName (String lastName){
+	public UserBuilder lastName (String lastName){
 		
 		user.setUs_nom(lastName);
-		return user;		
+		return this;		
 	}
 	
-	public User age (int age){
+	public UserBuilder age (int age){
 		
 		user.setUs_age(age);
-		return user;		
+		return this;		
 	}
 	
 	

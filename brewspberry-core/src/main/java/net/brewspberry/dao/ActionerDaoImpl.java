@@ -92,7 +92,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	public Actioner getElementByName(String name) {
 		
 		Actioner result = new Actioner();
-		sessionFactory.getCurrentSession() = HibernateUtil.getSession();
+
 		result = (Actioner) sessionFactory.getCurrentSession().createQuery("from Actioner where act_nom = "+name).uniqueResult();
 		HibernateUtil.closeSession();
 		return result;
