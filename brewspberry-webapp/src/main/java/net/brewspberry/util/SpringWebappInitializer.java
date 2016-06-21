@@ -23,6 +23,7 @@ public class SpringWebappInitializer implements WebApplicationInitializer {
 		
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
 				"DispatcherServlet", new DispatcherServlet(mvcContext));
+		
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("*.do");
 	}
@@ -31,7 +32,7 @@ public class SpringWebappInitializer implements WebApplicationInitializer {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 		context.setConfigLocation("net.brewspberry.util");
 		
-		context.register(SpringCoreConfiguration.class);
+		context.register(AppConfig.class);
 		return context;
 	}
 

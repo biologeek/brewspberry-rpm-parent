@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "net.brewspberry" })
+@Import({SpringCoreConfiguration.class, SpringHibernateCoreConfiguration.class})
 public class SpringWebappConfiguration extends  WebMvcConfigurerAdapter {
 
 	

@@ -5,8 +5,10 @@ import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
@@ -26,16 +28,17 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	static final Logger logger = LogManager.getInstance(ActionerDaoImpl.class
 			.toString());
 
-	Session session = HibernateUtil.getSession();
+	@Autowired
+	SessionFactory sessionFactory;
 
 	@Override
 	public Actioner save(Actioner arg0) throws DAOException {
-		Transaction tx = session.beginTransaction();
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		Long actID;
 
 		try {
 			logger.info("Saving Actioner whith uuid " + arg0.getAct_uuid());
-			actID = (Long) session.save(arg0);
+			actID = (Long) sessionFactory.getCurrentSession().save(arg0);
 
 			tx.commit();
 			if (arg0.getAct_id() == 0 && actID != 0) {
@@ -57,11 +60,11 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 
 	@Override
 	public Actioner update(Actioner arg0) {
-		Transaction tx = session.beginTransaction();
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		
 		try {
 			
-			session.update (arg0);
+			sessionFactory.getCurrentSession().update (arg0);
 			tx.commit();
 			
 		} catch (HibernateException e){
@@ -79,7 +82,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	public Actioner getElementById(long id) {
 		Actioner result = new Actioner();
 
-		result = (Actioner) session.get(Actioner.class, id);
+		result = (Actioner) sessionFactory.getCurrentSession().get(Actioner.class, id);
 		HibernateUtil.closeSession();
 
 		return result;
@@ -89,8 +92,8 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	public Actioner getElementByName(String name) {
 		
 		Actioner result = new Actioner();
-		session = HibernateUtil.getSession();
-		result = (Actioner) session.createQuery("from Actioner where act_nom = "+name).uniqueResult();
+		sessionFactory.getCurrentSession() = HibernateUtil.getSession();
+		result = (Actioner) sessionFactory.getCurrentSession().createQuery("from Actioner where act_nom = "+name).uniqueResult();
 		HibernateUtil.closeSession();
 		return result;
 	}
@@ -99,20 +102,20 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	public List<Actioner> getAllElements() {
 		
 
-		return (List<Actioner>) session.createQuery("from Actioner");
+		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("from Actioner");
 	}
 
 	@Override
 	public void deleteElement(long id) {
 		
-		Transaction tx = session.beginTransaction();
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		Actioner toDel = new Actioner();
 		
 		try {
 			
 			toDel = this.getElementById(id);
 			
-			session.delete(toDel);
+			sessionFactory.getCurrentSession().delete(toDel);
 			tx.commit();
 			
 		} catch (HibernateException e){
@@ -125,12 +128,12 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 
 	@Override
 	public void deleteElement(Actioner arg0) {
-		Transaction tx = session.beginTransaction();
+		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		
 		
 		try {
 			
-			session.delete(arg0);
+			sessionFactory.getCurrentSession().delete(arg0);
 			tx.commit();
 			
 		} catch (HibernateException e){
@@ -146,7 +149,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	@Override
 	public List<Actioner> getAllDistinctElements() {
 
-		return (List<Actioner>) session.createQuery("from Actioner");
+		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("from Actioner");
 	}
 
 	@Override
@@ -158,7 +161,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 				+ actioner.getAct_type() + " AND act_uuid = "
 				+ actioner.getAct_uuid();
 
-		Actioner result = (Actioner) session.createQuery(hqlReq).uniqueResult();
+		Actioner result = (Actioner) sessionFactory.getCurrentSession().createQuery(hqlReq).uniqueResult();
 
 		HibernateUtil.closeSession();
 
@@ -167,12 +170,12 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 
 	@Override
 	public List<Actioner> getActionerByBrassin(Brassin brassin) {
-		return session.createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("act_brassin", brassin)).list();
+		return sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("act_brassin", brassin)).list();
 	}
 
 	@Override
 	public List<Actioner> getActionnerByEtape(Etape etape) {
-		return session.createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("act_etape", etape)).list();
+		return sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("act_etape", etape)).list();
 	}
 
 }

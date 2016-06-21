@@ -37,11 +37,17 @@ public class SpringCoreConfiguration {
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 	    BasicDataSource dataSource = new BasicDataSource();
+	    dataSource.setDriverClassName("org.h2.Driver");
+	    dataSource.setUrl("jdbc:h2:tcp://localhost/~/test");
+	    dataSource.setUsername("sa");
+	    dataSource.setPassword("");
+	   
+	    /*
 	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 	    dataSource.setUrl("jdbc:mysql://localhost:3306/brewspberry");
 	    dataSource.setUsername("root");
 	    dataSource.setPassword("raspberry");
-	 
+	 */
 	    return dataSource;
 	}
 	

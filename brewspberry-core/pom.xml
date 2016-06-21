@@ -10,6 +10,10 @@
 	<properties>
 		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
 		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
+		
+		<hsqldb.version>2.3.2</hsqldb.version>
+		<dbh2.version>1.4.187</dbh2.version>
+		
 	</properties>
 	<dependencies>
 		<dependency>
@@ -61,9 +65,15 @@
 			<version>5.1.6</version>
 		</dependency>
 		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>${hsqldb.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>1.4.191</version>
+			<version>${dbh2.version}</version>
 		</dependency>
 
 		<!-- Core utilities used by other modules. Define this if you use Spring 

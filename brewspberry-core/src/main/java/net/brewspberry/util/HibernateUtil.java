@@ -31,6 +31,7 @@ public class HibernateUtil {
 
 	private static final ThreadLocal<Session> threadLocal = new ThreadLocal<Session>();
 	private static final ThreadLocal<StatelessSession> threadLocalState = new ThreadLocal<StatelessSession>();
+	
 	private static SessionFactory sessionFactory;
 	private static Logger logger = LogManager.getInstance(HibernateUtil.class
 			.getName());
