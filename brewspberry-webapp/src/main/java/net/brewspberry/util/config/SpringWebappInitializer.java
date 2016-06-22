@@ -1,24 +1,23 @@
-package net.brewspberry.util;
+package net.brewspberry.util.config;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+
 
 public class SpringWebappInitializer implements WebApplicationInitializer {
 
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
+		AnnotationConfigWebApplicationContext mvcContext = getMVCContext();
+/*
 		WebApplicationContext context = getContext();
 		servletContext.addListener(new ContextLoaderListener(context));
-		
-		AnnotationConfigWebApplicationContext mvcContext = getMVCContext();
+*/	
 		
 		
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
@@ -30,9 +29,12 @@ public class SpringWebappInitializer implements WebApplicationInitializer {
 
 	private AnnotationConfigWebApplicationContext getContext() {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-		context.setConfigLocation("net.brewspberry.util");
 		
-		context.register(AppConfig.class);
+		
+		//context.setConfigLocation("net.brewspberry.util");
+		
+		context.register(AppConfig.class, SpringCoreConfiguration.class);
+		context.refresh();
 		return context;
 	}
 
@@ -40,6 +42,7 @@ public class SpringWebappInitializer implements WebApplicationInitializer {
 	private  AnnotationConfigWebApplicationContext getMVCContext(){
 		 // now the config for the Dispatcher servlet
 		   AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
+		   mvcContext.setConfigLocation("net.brewspberry.util.config");
 		   mvcContext.register(SpringWebappConfiguration.class);
 		return mvcContext;
 			

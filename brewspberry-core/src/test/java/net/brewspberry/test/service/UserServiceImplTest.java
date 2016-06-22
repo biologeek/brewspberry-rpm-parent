@@ -3,9 +3,7 @@ package net.brewspberry.test.service;
 import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.business.beans.builders.DefaultUserBuilder;
-import net.brewspberry.business.beans.builders.UserBuilder;
-import net.brewspberry.util.SpringCoreConfiguration;
-
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = SpringCoreConfiguration.class)
+@ContextConfiguration(classes = SpringCoreTestConfiguration.class)
 public class UserServiceImplTest {
 
 	@Autowired

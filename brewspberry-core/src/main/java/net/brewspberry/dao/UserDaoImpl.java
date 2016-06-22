@@ -21,6 +21,11 @@ import net.brewspberry.util.HibernateUtil;
 @Repository
 public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
+	public UserDaoImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	@Transactional
 	public User save(User arg0) throws DAOException {
@@ -79,7 +84,8 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	@Override
 	public User returnUserByCredentials(User user) {
 
-		Criteria userCriteria = HibernateUtil.getSession().createCriteria(User.class);
+		Criteria userCriteria = HibernateUtil.getSession().createCriteria(
+				User.class);
 
 		userCriteria.add(Restrictions.eq("us_login", user.getUs_login()));
 		userCriteria.add(Restrictions.eq("us_password", user.getUs_password()));
@@ -100,19 +106,20 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	 * Returns User with cookie data (login and session token required)
 	 */
 	public User getUserByCookieData(User user) {
-		
-		if (user.getUs_session_token() != null){
-			if (user.getUs_login() != null){
-				Criteria crt = HibernateUtil.getSession().createCriteria(User.class);
-				
+
+		if (user.getUs_session_token() != null) {
+			if (user.getUs_login() != null) {
+				Criteria crt = HibernateUtil.getSession().createCriteria(
+						User.class);
 
 				crt.add(Restrictions.eq("us_login", user.getUs_login()));
-				crt.add(Restrictions.eq("us_session_token", user.getUs_session_token()));
-				
+				crt.add(Restrictions.eq("us_session_token",
+						user.getUs_session_token()));
+
 				user = (User) crt.uniqueResult();
 			}
 		}
-		
+
 		return user;
 	}
 }

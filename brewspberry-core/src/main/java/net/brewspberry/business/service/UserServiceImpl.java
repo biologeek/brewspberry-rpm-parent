@@ -20,7 +20,8 @@ import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
 @Service("userServiceImpl")
-public class UserServiceImpl implements IGenericService<User>, ISpecificUserService {
+public class UserServiceImpl implements IGenericService<User>,
+		ISpecificUserService {
 
 	@Autowired
 	private IGenericDao<User> userDao;
@@ -28,23 +29,28 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	private ISpecificUserDao userSpecDao;
 	private List<UserValidatorErrors> errors;
 
+	public UserServiceImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	@Transactional
 	public User save(User arg0) throws Exception {
 		User res = null;
 		this.setErrors(null);
 
-
-		if (arg0.getUs_registration() == null){
+		if (arg0.getUs_registration() == null) {
 			arg0.setUs_registration(new Date());
-		} 
-		
-		String encryptedPasswd = EncryptionUtils.encryptPassword(arg0.getUs_password(), "MD5");
-		
+		}
+
+		String encryptedPasswd = EncryptionUtils.encryptPassword(
+				arg0.getUs_password(), "MD5");
+
 		arg0.setUs_password(encryptedPasswd);
 		arg0.setUs_force_inactivated(false);
 		arg0.setUs_active(false);
-		
+
 		// Everything is OK
 
 		try {
@@ -53,11 +59,9 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 			e.printStackTrace();
 		}
 
-		
 		return res;
 	}
 
-	
 	@Override
 	public User update(User arg0) {
 		// TODO Auto-generated method stub
@@ -98,26 +102,28 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	}
 
 	@Override
-	public User returnUserByCredentials(String username, String notYetEncryptedPassword) {
+	public User returnUserByCredentials(String username,
+			String notYetEncryptedPassword) {
 		this.setErrors(null);
 		User res = new User();
-		List <UserValidatorErrors> errs = UserValidator.getInstance().isUsernameAndPasswordUserValid(username, notYetEncryptedPassword);
-		
-		
-		
-		if (errs.isEmpty()){
-			
-			String encryptedPasswd = EncryptionUtils.encryptPassword(notYetEncryptedPassword, "MD5");
+		List<UserValidatorErrors> errs = UserValidator.getInstance()
+				.isUsernameAndPasswordUserValid(username,
+						notYetEncryptedPassword);
+
+		if (errs.isEmpty()) {
+
+			String encryptedPasswd = EncryptionUtils.encryptPassword(
+					notYetEncryptedPassword, "MD5");
 			res.setUs_login(username);
 			res.setUs_password(encryptedPasswd);
 			res = userSpecDao.returnUserByCredentials(res);
-			
-			if (this.checkIfUserIsActiveAndNotBlocked(res)){
+
+			if (this.checkIfUserIsActiveAndNotBlocked(res)) {
 				return res;
 			}
-			
+
 		}
-		
+
 		this.setErrors(errs);
 		return null;
 	}
@@ -125,7 +131,7 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	@Override
 	public boolean checkIfUserIsActiveAndNotBlocked(User user) {
 
-		if (user.isUs_active() && user.isUs_force_inactivated()) {
+		if (user.isUs_active() && !user.isUs_force_inactivated()) {
 			return true;
 		} else {
 
@@ -166,26 +172,24 @@ public class UserServiceImpl implements IGenericService<User>, ISpecificUserServ
 	public User getUserByCookieData(Cookie[] cookies) {
 
 		User user = new User();
-		
-		
-		if (cookies.length > 0){
-			for (Cookie cookie : cookies){
-				
-				if (cookie.getName().equals("user.login")){
-					
+
+		if (cookies.length > 0) {
+			for (Cookie cookie : cookies) {
+
+				if (cookie.getName().equals("user.login")) {
+
 					user.setUs_login(cookie.getValue());
-				
-				} else if (cookie.getName().equals("user.token")){
-					
+
+				} else if (cookie.getName().equals("user.token")) {
+
 					user.setUs_session_token(cookie.getValue());
-				
-				}			
+
+				}
 			}
-			
+
 			return userSpecDao.getUserByCookieData(user);
 		}
 
-		
 		return user;
 	}
 

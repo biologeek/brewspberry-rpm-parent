@@ -48,6 +48,11 @@ public class UserServlet extends HttpServlet {
 	private HttpSession currentSession;
 	Logger logger = LogManager.getInstance(UserServlet.class.getName());
 
+	public UserServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
@@ -104,6 +109,8 @@ public class UserServlet extends HttpServlet {
 				// error list is empty so it's OK
 				String encryptedPassword = EncryptionUtils.encryptPassword(
 						request.getParameter("password"), "MD5");
+				
+				User us = userService.getElementById(1);
 				User user = userSpecService.returnUserByCredentials(
 						request.getParameter("username"), encryptedPassword);
 

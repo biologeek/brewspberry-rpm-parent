@@ -1,4 +1,4 @@
-package net.brewspberry.util;
+package net.brewspberry.util.config;
 
 import java.util.Properties;
 

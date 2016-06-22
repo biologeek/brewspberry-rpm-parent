@@ -1,6 +1,6 @@
 package net.brewspberry.batches.util;
 
-import net.brewspberry.util.SpringCoreConfiguration;
+import net.brewspberry.util.config.SpringCoreConfiguration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
