@@ -23,10 +23,10 @@ public class User implements Serializable {
 
 	// ID -> primary key
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)
-	private int us_id, 
+	private long us_id; 
 	
 	// age 
-	us_age;
+	private int us_age;
 	
 	//Last name
 	private String us_nom,
@@ -75,10 +75,10 @@ public class User implements Serializable {
 	public void setUs_login(String us_login) {
 		this.us_login = us_login;
 	}
-	public int getUs_id() {
+	public long getUs_id() {
 		return us_id;
 	}
-	public void setUs_id(int us_id) {
+	public void setUs_id(long us_id) {
 		this.us_id = us_id;
 	}
 	public int getUs_age() {

@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -18,6 +19,7 @@ import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificUserService;
@@ -27,12 +29,14 @@ import net.brewspberry.business.service.UserServiceImpl;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.LogManager;
+import net.brewspberry.util.config.AbstractServletInitiator;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
 @WebServlet({ "/user.do", "/", "/register.do" })
 @Controller
-public class UserServlet extends HttpServlet {
+@RequestMapping("/user")
+public class UserServlet extends AbstractServletInitiator {
 
 
 	/**
@@ -41,9 +45,8 @@ public class UserServlet extends HttpServlet {
 	private static final long serialVersionUID = -5053309074376760642L;
 	@Autowired
 	@Qualifier("userServiceImpl")
-	private ISpecificUserService userSpecService;
+	private ISpecificUserService userSpecService = new UserServiceImpl();
 	@Autowired
-	@Qualifier("userServiceImpl")
 	private IGenericService<User> userService;
 	private HttpSession currentSession;
 	Logger logger = LogManager.getInstance(UserServlet.class.getName());
@@ -52,7 +55,9 @@ public class UserServlet extends HttpServlet {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 
+	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
@@ -109,8 +114,7 @@ public class UserServlet extends HttpServlet {
 				// error list is empty so it's OK
 				String encryptedPassword = EncryptionUtils.encryptPassword(
 						request.getParameter("password"), "MD5");
-				
-				User us = userService.getElementById(1);
+				logger.info(encryptedPassword);
 				User user = userSpecService.returnUserByCredentials(
 						request.getParameter("username"), encryptedPassword);
 
@@ -140,14 +144,14 @@ public class UserServlet extends HttpServlet {
 
 						request.setAttribute("errors",
 								userSpecService.getErrors());
-						response.sendRedirect("/");
+						response.sendRedirect("user.do");
 
 					}
 
 				} else {
 
 					request.setAttribute("errors", userSpecService.getErrors());
-					response.sendRedirect("/");
+					response.sendRedirect("user.do");
 
 				}
 			}

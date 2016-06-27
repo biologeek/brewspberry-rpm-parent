@@ -1,26 +1,29 @@
 package net.brewspberry.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificUserDao;
-import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.exceptions.DAOException;
-import net.brewspberry.util.HibernateUtil;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
+	@Autowired
+	SessionFactory sessionFactory;
+	
+	
 	public UserDaoImpl() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -30,7 +33,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	@Transactional
 	public User save(User arg0) throws DAOException {
 
-		Session session = HibernateUtil.getSession();
+		Session session = sessionFactory.getCurrentSession();
 
 		long id = (long) session.save(arg0);
 
@@ -48,7 +51,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	@Override
 	public User getElementById(long id) {
 
-		return (User) HibernateUtil.getSession().get(User.class, id);
+		return (User) sessionFactory.getCurrentSession().get(User.class, id);
 	}
 
 	@Override
@@ -84,7 +87,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	@Override
 	public User returnUserByCredentials(User user) {
 
-		Criteria userCriteria = HibernateUtil.getSession().createCriteria(
+		Criteria userCriteria = sessionFactory.getCurrentSession().createCriteria(
 				User.class);
 
 		userCriteria.add(Restrictions.eq("us_login", user.getUs_login()));
@@ -109,7 +112,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 		if (user.getUs_session_token() != null) {
 			if (user.getUs_login() != null) {
-				Criteria crt = HibernateUtil.getSession().createCriteria(
+				Criteria crt = sessionFactory.getCurrentSession().createCriteria(
 						User.class);
 
 				crt.add(Restrictions.eq("us_login", user.getUs_login()));

@@ -131,12 +131,12 @@ public class UserServiceImpl implements IGenericService<User>,
 	@Override
 	public boolean checkIfUserIsActiveAndNotBlocked(User user) {
 
-		if (user.isUs_active() && !user.isUs_force_inactivated()) {
-			return true;
-		} else {
-
-			return false;
+		if (user != null) {
+			if (user.isUs_active() && !user.isUs_force_inactivated()) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public IGenericDao<User> getUserDao() {
