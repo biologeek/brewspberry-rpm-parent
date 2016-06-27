@@ -35,7 +35,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		long id = (long) session.save(arg0);
+		long id = (long) sessionFactory.getCurrentSession().save(arg0);
 
 		User result = this.getElementById(id);
 
