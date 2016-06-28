@@ -1,4 +1,4 @@
-package net.brewspberry.batches.util;
+package net.brewspberry.batches.util.config;
 
 import net.brewspberry.util.config.SpringCoreConfiguration;
 
@@ -11,4 +11,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Import(SpringCoreConfiguration.class)
 public class BatchesSpringConfiguration {
 
+	
+	
 }

@@ -6,9 +6,11 @@ import java.util.logging.Logger;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
@@ -25,41 +27,43 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 
 	static final Logger logger = LogManager.getInstance(BrassinDaoImpl.class
 			.getName());
-	private Session session = HibernateUtil.getSession();
-	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
+
+	@Autowired
+	SessionFactory sessionFactory;
+
 
 	@Override
 	public Brassin save(Brassin arg0) throws DAOException {
-		Transaction tx = session.beginTransaction();
+		
 
 		try {
-			long id = (long) session.save(arg0);
-			tx.commit();
+			long id = (long) sessionFactory.getCurrentSession().save(arg0);
+			
 			logger.info("Saved ID : " + id);
 			arg0.setBra_id(id);
 			return arg0;
 		} catch (HibernateException e) {
-			tx.rollback();
+			
 			return new Brassin();
 		} finally {
-			HibernateUtil.closeSession();
+			
 		}
 	}
 
 	@Override
 	public Brassin update(Brassin arg0) {
-		Transaction tx = session.beginTransaction();
+		
 
 		if (arg0.getBra_id() != null) {
 			try {
-				session.update(arg0);
-				tx.commit();
+				sessionFactory.getCurrentSession().update(arg0);
+				
 				return arg0;
 			} catch (HibernateException e) {
-				tx.rollback();
+				
 				return new Brassin();
 			}finally {
-				HibernateUtil.closeSession();
+				
 			}
 		}
 		return new Brassin();
@@ -70,8 +74,8 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 	public Brassin getElementById(long id) {
 		Brassin result = new Brassin();
 
-		result = (Brassin) session.get(Brassin.class, id);
-		HibernateUtil.closeSession();
+		result = (Brassin) sessionFactory.getCurrentSession().get(Brassin.class, id);
+		
 		return result;
 	}
 
@@ -81,21 +85,21 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 
 		List<Brassin> result = null;
 
-		result = (List<Brassin>) session.createQuery("from Brassin").list();
+		result = (List<Brassin>) sessionFactory.getCurrentSession().createQuery("from Brassin").list();
 
-		HibernateUtil.closeSession();
+		
 
 		return result;
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		Transaction tx = session.beginTransaction();
+		
 		
 		Brassin brassin = this.getElementById(id);
 		
 		try{
-			session.delete(brassin);
+			sessionFactory.getCurrentSession().delete(brassin);
 			
 		} catch (HibernateException e){
 			
@@ -106,15 +110,15 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 
 	@Override
 	public void deleteElement(Brassin arg0) {
-		Transaction tx = session.beginTransaction();
+		
 
 		try {
-			session.delete(arg0);
+			sessionFactory.getCurrentSession().delete(arg0);
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			tx.rollback();
+			
 		} finally {
-			HibernateUtil.closeSession();
+			
 		}
 	}
 
@@ -123,22 +127,22 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 	public List<Brassin> getAllDistinctElements() {
 
 		List<Brassin> result = new ArrayList<Brassin>();
-		result = session.createQuery("from Brassin group by ing_desc").list();
+		result = sessionFactory.getCurrentSession().createQuery("from Brassin group by ing_desc").list();
 
-		HibernateUtil.closeSession();
+		
 
 		return result;
 	}
 
 	@Override
 	public Brassin getBrassinByBeer(Biere beer) {
-		Brassin result = (Brassin) session.createCriteria(Brassin.class).add(Restrictions.eq("bra_beer", beer)).uniqueResult();
+		Brassin result = (Brassin) sessionFactory.getCurrentSession().createCriteria(Brassin.class).add(Restrictions.eq("bra_beer", beer)).uniqueResult();
 		return result;
 	}
 
 	@Override
 	public Brassin getElementByName(String name) {
-		Brassin result = (Brassin) session.createCriteria(Brassin.class).add(Restrictions.eq("bra_nom", name)).uniqueResult();
+		Brassin result = (Brassin) sessionFactory.getCurrentSession().createCriteria(Brassin.class).add(Restrictions.eq("bra_nom", name)).uniqueResult();
 		return result;
 	}
 

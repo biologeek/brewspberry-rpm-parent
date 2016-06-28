@@ -12,11 +12,13 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
@@ -38,19 +40,20 @@ public class TemperatureMeasurementDaoImpl implements
 
 	Logger logger = LogManager.getInstance(TemperatureMeasurementDaoImpl.class
 			.getName());
-	Session session = HibernateUtil.getSession();
-	StatelessSession statelessSession = HibernateUtil.getStatelessSession();
+
+	@Autowired
+	SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(
 			Brassin brassin) {
 
-		List<ConcreteTemperatureMeasurement> result = session
+		List<ConcreteTemperatureMeasurement> result = sessionFactory
+				.getCurrentSession()
 				.createCriteria(ConcreteTemperatureMeasurement.class)
 				.add(Restrictions.eq("tmes_brassin", brassin)).list();
 
-		HibernateUtil.closeSession();
 		return result;
 	}
 
@@ -58,10 +61,11 @@ public class TemperatureMeasurementDaoImpl implements
 	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByEtape(
 			Etape etape) {
 		@SuppressWarnings("unchecked")
-		List<ConcreteTemperatureMeasurement> result = (List<ConcreteTemperatureMeasurement>) session
+		List<ConcreteTemperatureMeasurement> result = (List<ConcreteTemperatureMeasurement>) sessionFactory
+				.getCurrentSession()
 				.createCriteria(ConcreteTemperatureMeasurement.class)
 				.add(Restrictions.eq("tmes_etape", etape)).list();
-		HibernateUtil.closeSession();
+
 		return result;
 	}
 
@@ -74,24 +78,25 @@ public class TemperatureMeasurementDaoImpl implements
 		if (uuid != null) {
 
 			if (uuid != "") {
-				Criteria cr = session
+				Criteria cr = sessionFactory.getCurrentSession()
 						.createCriteria(ConcreteTemperatureMeasurement.class);
 
 				cr.add(Restrictions.eq("tmes_probeUI", uuid));
 				cr.addOrder(Order.desc("tmes_date"));
 
-				result = ((List<ConcreteTemperatureMeasurement>) cr.list()).get(0);
+				result = ((List<ConcreteTemperatureMeasurement>) cr.list())
+						.get(0);
 
 			}
 		} else {
 			throw new Exception("Empty string is not permitted !!");
 		}
-		if (result == null || result.equals(new ConcreteTemperatureMeasurement())) {
+		if (result == null
+				|| result.equals(new ConcreteTemperatureMeasurement())) {
 			throw new EntityNotFoundException(
 					"Temperature measurement not found for uuid " + uuid);
 		}
 
-		HibernateUtil.closeSession();
 		return result;
 	}
 
@@ -118,9 +123,11 @@ public class TemperatureMeasurementDaoImpl implements
 				 * but it's ok if you do only 1 brew or step at a time
 				 */
 
-				Query request = session.createQuery(sqlQuery).setMaxResults(1);
+				Query request = sessionFactory.getCurrentSession()
+						.createQuery(sqlQuery).setMaxResults(1);
 
-				result = (ConcreteTemperatureMeasurement) request.uniqueResult();
+				result = (ConcreteTemperatureMeasurement) request
+						.uniqueResult();
 
 			} else {
 				throw new Exception("Empty string is not permitted !!");
@@ -128,12 +135,12 @@ public class TemperatureMeasurementDaoImpl implements
 
 		}
 
-		if (result == null || result.equals(new ConcreteTemperatureMeasurement())) {
+		if (result == null
+				|| result.equals(new ConcreteTemperatureMeasurement())) {
 			throw new EntityNotFoundException(
 					"Temperature measurement not found for name " + name);
 		}
 
-		HibernateUtil.closeSession();
 		return result;
 	}
 
@@ -159,14 +166,14 @@ public class TemperatureMeasurementDaoImpl implements
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement save(ConcreteTemperatureMeasurement arg0)
-			throws DAOException {
-		Transaction tx = (Transaction) session.beginTransaction();
+	public ConcreteTemperatureMeasurement save(
+			ConcreteTemperatureMeasurement arg0) throws DAOException {
+		Transaction tx = (Transaction) sessionFactory.getCurrentSession()
+				.beginTransaction();
 		ConcreteTemperatureMeasurement result = null;
 		try {
 
-			long id = (long) session.save(arg0);
-			tx.commit();
+			long id = (long) sessionFactory.getCurrentSession().save(arg0);
 
 			result = this.getElementById(id);
 
@@ -174,29 +181,25 @@ public class TemperatureMeasurementDaoImpl implements
 
 		} catch (HibernateException e) {
 
-			tx.rollback();
 			e.printStackTrace();
 		} finally {
-			HibernateUtil.closeSession();
 
 		}
 		return result;
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement update(ConcreteTemperatureMeasurement arg0) {
-		Transaction tx = session.beginTransaction();
+	public ConcreteTemperatureMeasurement update(
+			ConcreteTemperatureMeasurement arg0) {
+
 		ConcreteTemperatureMeasurement result = null;
 
 		try {
-			session.update(arg0);
-			tx.commit();
+			sessionFactory.getCurrentSession().update(arg0);
+
 		} catch (HibernateException e) {
 
-			tx.rollback();
 		} finally {
-
-			HibernateUtil.closeSession();
 
 		}
 
@@ -206,8 +209,9 @@ public class TemperatureMeasurementDaoImpl implements
 	@Override
 	public ConcreteTemperatureMeasurement getElementById(long id) {
 
-		return (ConcreteTemperatureMeasurement) session.get(
-				ConcreteTemperatureMeasurement.class, id);
+		return (ConcreteTemperatureMeasurement) sessionFactory
+				.getCurrentSession().get(ConcreteTemperatureMeasurement.class,
+						id);
 	}
 
 	@Override
@@ -221,31 +225,29 @@ public class TemperatureMeasurementDaoImpl implements
 
 		List<ConcreteTemperatureMeasurement> result = null;
 
-		result = session.createQuery("from TemperatureMeasurement").list();
+		result = sessionFactory.getCurrentSession()
+				.createQuery("from TemperatureMeasurement").list();
 		return result;
 	}
 
 	@Override
 	public void deleteElement(long id) {
 
-		Transaction tx = session.beginTransaction();
-
 		try {
 
 			ConcreteTemperatureMeasurement toDel = this.getElementById(id);
 			if (toDel != null) {
 
-				session.delete(toDel);
-				tx.commit();
+				sessionFactory.getCurrentSession().delete(toDel);
+
 			} else {
-				tx.rollback();
+
 			}
 
 		} catch (HibernateException e) {
-			tx.rollback();
 
 		} finally {
-			HibernateUtil.closeSession();
+
 		}
 
 	}
@@ -253,23 +255,20 @@ public class TemperatureMeasurementDaoImpl implements
 	@Override
 	public void deleteElement(ConcreteTemperatureMeasurement arg0) {
 
-		Transaction tx = session.beginTransaction();
-
 		try {
 
 			if (arg0 != null) {
 
-				session.delete(arg0);
-				tx.commit();
+				sessionFactory.getCurrentSession().delete(arg0);
+
 			} else {
-				tx.rollback();
+
 			}
 
 		} catch (HibernateException e) {
-			tx.rollback();
 
 		} finally {
-			HibernateUtil.closeSession();
+
 		}
 
 	}
@@ -279,10 +278,11 @@ public class TemperatureMeasurementDaoImpl implements
 	public List<ConcreteTemperatureMeasurement> getAllDistinctElements() {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
-		result = session.createQuery(
-				"from TemperatureMeasurement group by tmes_probe_name").list();
-
-		HibernateUtil.closeSession();
+		result = sessionFactory
+				.getCurrentSession()
+				.createQuery(
+						"from TemperatureMeasurement group by tmes_probe_name")
+				.list();
 
 		return result;
 	}
@@ -307,13 +307,13 @@ public class TemperatureMeasurementDaoImpl implements
 		if (etape != null) {
 			if (tmesID > 0) {
 
-				query = session
+				query = sessionFactory.getCurrentSession()
 						.createCriteria(ConcreteTemperatureMeasurement.class)
 						.add(Restrictions.gt("tmes_id", tmesID))
 						.add(Restrictions.eq("tmes_etape", etape))
 						.add(Restrictions.gt("tmes_date", cal.getTime()));
-					//	.add(Restrictions.sqlRestriction("tmes_id mod "
-						//		+ modulo + " = 0"));
+				// .add(Restrictions.sqlRestriction("tmes_id mod "
+				// + modulo + " = 0"));
 
 				if (uuid != null && !uuid.equals("all")) {
 
@@ -340,7 +340,8 @@ public class TemperatureMeasurementDaoImpl implements
 
 		Session session = HibernateUtil.getSession();
 
-		Criteria crit = session.createCriteria(ConcreteTemperatureMeasurement.class);
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(
+				ConcreteTemperatureMeasurement.class);
 		crit.add(Restrictions.eq("tmes_etape", stepID));
 		crit.add(Restrictions.eq("tmes_probeUI", uuid));
 		crit.addOrder(Order.desc("tmes_date"));

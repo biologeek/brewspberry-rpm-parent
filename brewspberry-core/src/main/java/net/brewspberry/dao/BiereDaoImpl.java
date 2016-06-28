@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
@@ -19,24 +21,26 @@ import net.brewspberry.util.HibernateUtil;
 @Repository
 public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 
-	private Session session = HibernateUtil.getSession();
-	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
+
+	@Autowired
+	SessionFactory sessionFactory;
+
 
 	@Override
 	public Biere save(Biere arg0) throws DAOException {
-		Transaction tx = session.beginTransaction();
+		
 
 		try {
-			long id = (long) session.save(arg0);
-			tx.commit();
+			long id = (long) sessionFactory.getCurrentSession().save(arg0);
+			
 
 			arg0.setBeer_id(id);
 			return arg0;
 		} catch (HibernateException e) {
-			tx.rollback();
+			
 			return new Biere();
 		} finally {
-			HibernateUtil.closeSession();
+			
 		}
 	}
 
@@ -49,7 +53,7 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 	@Override
 	public Biere getElementById(long id) {
 
-		Biere result = (Biere) session.get(Biere.class, id);
+		Biere result = (Biere) sessionFactory.getCurrentSession().get(Biere.class, id);
 		return result;
 
 	}
@@ -58,24 +62,24 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 	@Override
 	public List<Biere> getAllElements() {
 
-		return (List<Biere>) session.createQuery("from Biere").list();
+		return (List<Biere>) sessionFactory.getCurrentSession().createQuery("from Biere").list();
 	}
 
 	@Override
 	public void deleteElement(long id) {
 
 		Biere beer = this.getElementById(id);
-		Transaction tx = session.beginTransaction();
+		
 
 		try {
 
-			session.delete(beer);
+			sessionFactory.getCurrentSession().delete(beer);
 
-			tx.commit();
+			
 
 		} catch (HibernateException e) {
 
-			tx.rollback();
+			
 			e.printStackTrace();
 
 		}
@@ -84,17 +88,17 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 	@Override
 	public void deleteElement(Biere arg0) {
 
-		Transaction tx = session.beginTransaction();
+		
 
 		try {
 
-			session.delete(arg0);
+			sessionFactory.getCurrentSession().delete(arg0);
 
-			tx.commit();
+			
 
 		} catch (HibernateException e) {
 
-			tx.rollback();
+			
 			e.printStackTrace();
 
 		}
@@ -106,9 +110,9 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 	public List<Biere> getAllDistinctElements() {
 
 		List<Biere> result = new ArrayList<Biere>();
-		result = session.createQuery("from Biere group by ing_desc").list();
+		result = sessionFactory.getCurrentSession().createQuery("from Biere group by ing_desc").list();
 
-		HibernateUtil.closeSession();
+		
 
 		return result;
 		
@@ -117,7 +121,7 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 	@Override
 	public Biere getElementByName(String name) {
 
-		return (Biere) session.createQuery("from Biere where act_nom = "+name).list();
+		return (Biere) sessionFactory.getCurrentSession().createQuery("from Biere where act_nom = "+name).list();
 		
 	}
 

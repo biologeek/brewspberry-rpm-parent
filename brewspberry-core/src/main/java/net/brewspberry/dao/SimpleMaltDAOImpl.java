@@ -6,12 +6,14 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
@@ -23,46 +25,48 @@ import net.brewspberry.util.HibernateUtil;
 @Repository
 public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
-	private Session session = HibernateUtil.getSession();
-	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
+
+	@Autowired
+	SessionFactory sessionFactory;
+
 
 	@Override
 	public SimpleMalt save(SimpleMalt arg0) throws DAOException {
-		Transaction tx = session.beginTransaction();
+		
 
 		long resultId;
 		SimpleMalt result = new SimpleMalt();
 		try {
-			resultId = (long) session.save(arg0);
-			result = (SimpleMalt) session.get(SimpleMalt.class, resultId);
-			tx.commit();
+			resultId = (long) sessionFactory.getCurrentSession().save(arg0);
+			result = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, resultId);
+			
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			tx.rollback();
+			
 		} finally {
-			HibernateUtil.closeSession();
+			
 		}
 		return result;
 	}
 
 	@Override
 	public SimpleMalt update(SimpleMalt arg0) {
-		Transaction tx = session.beginTransaction();
+		
 
 		SimpleMalt result = new SimpleMalt();
 
 		if (arg0.getIng_id() != 0) {
 			try {
-				session.update(arg0);
-				tx.commit();
+				sessionFactory.getCurrentSession().update(arg0);
+				
 				result = arg0;
 
 			} catch (HibernateException e) {
 				e.printStackTrace();
-				tx.rollback();
+				
 			} finally {
-				HibernateUtil.closeSession();
+				
 			}
 		} else {
 
@@ -70,9 +74,9 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 				result = this.save(arg0);
 			} catch (HibernateException | DAOException e) {
 				e.printStackTrace();
-				tx.rollback();
+				
 			} finally {
-				HibernateUtil.closeSession();
+				
 			}
 		}
 		return result;
@@ -81,9 +85,9 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 	@Override
 	public SimpleMalt getElementById(long id) {
 
-		SimpleMalt malt = (SimpleMalt) session.get(SimpleMalt.class, id);
+		SimpleMalt malt = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, id);
 
-		HibernateUtil.closeSession();
+		
 		return malt;
 
 	}
@@ -95,32 +99,32 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 		long resultId;
 		List<SimpleMalt> result = new ArrayList<SimpleMalt>();
 
-		result = (List<SimpleMalt>) session.createQuery("from SimpleMalt")
+		result = (List<SimpleMalt>) sessionFactory.getCurrentSession().createQuery("from SimpleMalt")
 				.list();
-		HibernateUtil.closeSession();
+		
 		return result;
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		Transaction tx = session.beginTransaction();
+		
 
 		try {
-			SimpleMalt malt = (SimpleMalt) session.get(SimpleMalt.class, id);
-			session.delete(malt);
+			SimpleMalt malt = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, id);
+			sessionFactory.getCurrentSession().delete(malt);
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			tx.rollback();
+			
 		} finally {
-			HibernateUtil.closeSession();
+			
 		}
 	}
 
 	@Override
 	public void deleteElement(SimpleMalt arg0) {
-		session.delete(arg0);
+		sessionFactory.getCurrentSession().delete(arg0);
 
-		HibernateUtil.closeSession();
+		
 
 	}
 
@@ -129,21 +133,21 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 	public List<SimpleMalt> getAllDistinctElements() {
 
 		List<SimpleMalt> result = new ArrayList<SimpleMalt>();
-		result = session.createQuery("from SimpleMalt group by ing_desc")
+		result = sessionFactory.getCurrentSession().createQuery("from SimpleMalt group by ing_desc")
 				.list();
 
-		HibernateUtil.closeSession();
+		
 		return result;
 	}
 
 	@Override
 	public SimpleMalt getElementByName(String name) {
 
-		SimpleMalt result = (SimpleMalt) session.createQuery(
+		SimpleMalt result = (SimpleMalt) sessionFactory.getCurrentSession().createQuery(
 				"from SimpleMalt where ing_desc = '" + name + "'")
 				.uniqueResult();
 
-		HibernateUtil.closeSession();
+		
 		return result;
 
 	}

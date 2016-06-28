@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
@@ -17,20 +19,21 @@ import net.brewspberry.util.HibernateUtil;
 @Repository
 public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 
-	private Session session = HibernateUtil.getSession();
-	private StatelessSession statelessSession = HibernateUtil.getStatelessSession();
-	
+
+	@Autowired
+	SessionFactory sessionFactory;
+
 	@Override
 	public void deleteElement(long arg0) {
 
-		session.delete((SimpleHoublon) session.get(SimpleHoublon.class, arg0));
-		HibernateUtil.closeSession();
+		sessionFactory.getCurrentSession().delete((SimpleHoublon) sessionFactory.getCurrentSession().get(SimpleHoublon.class, arg0));
+		
 	}
 
 	@Override
 	public void deleteElement(SimpleHoublon arg0) {
-		session.delete(arg0);
-		HibernateUtil.closeSession();
+		sessionFactory.getCurrentSession().delete(arg0);
+		
 	}
 
 	@SuppressWarnings("unchecked")
@@ -39,64 +42,64 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 
 		List<SimpleHoublon> result = new ArrayList<SimpleHoublon>();
 
-		result = session.createQuery("from SimpleHoublon group by ing_desc")
+		result = sessionFactory.getCurrentSession().createQuery("from SimpleHoublon group by ing_desc")
 				.list();
-		HibernateUtil.closeSession();
+		
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SimpleHoublon> getAllElements() {
-		List<SimpleHoublon> result = (List<SimpleHoublon>) session.createQuery("from SimpleHoublon")
+		List<SimpleHoublon> result = (List<SimpleHoublon>) sessionFactory.getCurrentSession().createQuery("from SimpleHoublon")
 				.list();
-		HibernateUtil.closeSession();
+		
 		return result;
 	}
 
 	@Override
 	public SimpleHoublon getElementById(long arg0) {
 		SimpleHoublon result = new SimpleHoublon();
-		result = (SimpleHoublon) session.get(SimpleHoublon.class, arg0);
-		HibernateUtil.closeSession();
+		result = (SimpleHoublon) sessionFactory.getCurrentSession().get(SimpleHoublon.class, arg0);
+		
 		return result;
 	}
 
 	@Override
 	public SimpleHoublon save(SimpleHoublon arg0) throws DAOException {
-		Transaction tx = session.beginTransaction();
+		
 		SimpleHoublon result = new SimpleHoublon();
 		try {
 
-			long resultId = (long) session.save(arg0);
-			result = (SimpleHoublon) session.get(SimpleHoublon.class, resultId);
-			tx.commit();
+			long resultId = (long) sessionFactory.getCurrentSession().save(arg0);
+			result = (SimpleHoublon) sessionFactory.getCurrentSession().get(SimpleHoublon.class, resultId);
+			
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			tx.rollback();
+			
 		} finally {
-			HibernateUtil.closeSession();
+			
 		}
 		return result;
 	}
 
 	@Override
 	public SimpleHoublon update(SimpleHoublon arg0) {
-		Transaction tx = session.beginTransaction();
+		
 
 		SimpleHoublon result = new SimpleHoublon();
 
 		if (arg0.getIng_id() != 0) {
 			try {
-				session.update(arg0);
-				tx.commit();
+				sessionFactory.getCurrentSession().update(arg0);
+				
 				result = arg0;
 
 			} catch (HibernateException e) {
 				e.printStackTrace();
-				tx.rollback();
+				
 			} finally {
-				HibernateUtil.closeSession();
+				
 			}
 		} else {
 
@@ -104,9 +107,9 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 				result = this.save(arg0);
 			} catch (HibernateException | DAOException e) {
 				e.printStackTrace();
-				tx.rollback();
+				
 			} finally {
-				HibernateUtil.closeSession();
+				
 			}
 		}
 		return result;
@@ -115,11 +118,11 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 	@Override
 	public SimpleHoublon getElementByName(String name) {
 
-		SimpleHoublon result = (SimpleHoublon) session.createQuery(
+		SimpleHoublon result = (SimpleHoublon) sessionFactory.getCurrentSession().createQuery(
 				"from SimpleHoublon where ing_desc = '" + name + "'")
 				.uniqueResult();
 
-		HibernateUtil.closeSession();
+		
 		return result;
 
 	}
