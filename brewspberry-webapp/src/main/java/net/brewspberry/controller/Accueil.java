@@ -26,7 +26,7 @@ import net.brewspberry.util.DeviceParser;
 /**
  * Servlet implementation class Accueil
  */
-@WebServlet("/Accueil.do")
+@WebServlet({"/Accueil.do", "/Accueil", "/accueil"})
 @Controller
 public class Accueil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
