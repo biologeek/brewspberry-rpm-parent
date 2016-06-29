@@ -7,6 +7,8 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Value;
+
 public class LogManager {
 	
 	
@@ -14,11 +16,12 @@ public class LogManager {
 	private static Handler handler;
 	private static FileHandler fh;
 	
+	@Value("${param.logger.level}")
+	public String loggerLevel;
+	
 	public static String logFile = "/home/pi/logger.log";
 
 	public static Logger getInstance(String name){
-		
-		Level newLevel = Level.parse(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.logger.level"));
 		
 		if (logger == null){
 			handler = new ConsoleHandler();
@@ -32,7 +35,7 @@ public class LogManager {
 				e.printStackTrace();
 			}
 			logger = Logger.getLogger(name);
-			logger.setLevel(newLevel);
+			logger.setLevel(Level.INFO);
 			logger.addHandler(handler);
 			
 		}
@@ -45,6 +48,46 @@ public class LogManager {
 		if (logger != null){
 			logger.setLevel(Level.ALL);
 		}
+	}
+
+	public static Logger getLogger() {
+		return logger;
+	}
+
+	public static void setLogger(Logger logger) {
+		LogManager.logger = logger;
+	}
+
+	public static Handler getHandler() {
+		return handler;
+	}
+
+	public static void setHandler(Handler handler) {
+		LogManager.handler = handler;
+	}
+
+	public static FileHandler getFh() {
+		return fh;
+	}
+
+	public static void setFh(FileHandler fh) {
+		LogManager.fh = fh;
+	}
+
+	public static String getLogFile() {
+		return logFile;
+	}
+
+	public static void setLogFile(String logFile) {
+		LogManager.logFile = logFile;
+	}
+
+	public String getLoggerLevel() {
+		return loggerLevel;
+	}
+
+	public void setLoggerLevel(String loggerLevel) {
+		this.loggerLevel = loggerLevel;
 	}
 
 }

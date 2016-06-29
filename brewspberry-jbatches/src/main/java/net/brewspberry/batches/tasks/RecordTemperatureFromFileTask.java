@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.batches.exceptions.NotTheGoodNumberOfArgumentsException;
 import net.brewspberry.batches.util.DS18b20TemperatureMeasurementParser;
 import net.brewspberry.business.IGenericService;
@@ -46,7 +48,8 @@ public class RecordTemperatureFromFileTask implements Task {
 	List<Path> filesToRead;
 	Map<String, Integer> valuesMap = new HashMap<String, Integer>();
 
-	IGenericService<ConcreteTemperatureMeasurement> tmesService = new TemperatureMeasurementServiceImpl();
+	@Autowired
+	IGenericService<ConcreteTemperatureMeasurement> tmesService;
 
 	String entityToWrite = "ALL";
 

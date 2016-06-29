@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import javax.naming.spi.DirStateFactory.Result;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.batches.tasks.RecordTemperatureFromFileTask;
 import net.brewspberry.batches.tasks.Task;
 import net.brewspberry.business.IGenericService;
@@ -22,10 +24,12 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 	Logger logger = LogManager.getInstance(BatchRecordTemperatures.class
 			.getName());
 	Task currentTask = null;
-
-	IGenericService<Brassin> brassinService = new BrassinServiceImpl();
-	IGenericService<Etape> etapeService = new EtapeServiceImpl();
-	IGenericService<Actioner> actionerService = new ActionerServiceImpl();
+	@Autowired
+	IGenericService<Brassin> brassinService;
+	@Autowired
+	IGenericService<Etape> etapeService;
+	@Autowired
+	IGenericService<Actioner> actionerService;
 	String[] batchParams;
 
 	public BatchRecordTemperatures() {
