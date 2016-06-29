@@ -2,6 +2,7 @@ package net.brewspberry.business.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
 import javax.transaction.Transactional;
@@ -16,6 +17,7 @@ import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.EncryptionUtils;
+import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
@@ -28,6 +30,7 @@ public class UserServiceImpl implements IGenericService<User>,
 	@Autowired
 	private ISpecificUserDao userSpecDao;
 	private List<UserValidatorErrors> errors;
+	private Logger logger = LogManager.getInstance(UserServiceImpl.class.getName());
 
 	public UserServiceImpl() {
 		super();
@@ -102,6 +105,11 @@ public class UserServiceImpl implements IGenericService<User>,
 	}
 
 	@Override
+	/**
+	 * Checks if user credentials are correct, then checks if user is active and not blocked
+	 * 
+	 * @return a full user if he/she's OK, else null 
+	 */
 	public User returnUserByCredentials(String username,
 			String notYetEncryptedPassword) {
 		this.setErrors(null);
@@ -114,9 +122,11 @@ public class UserServiceImpl implements IGenericService<User>,
 
 			String encryptedPasswd = EncryptionUtils.encryptPassword(
 					notYetEncryptedPassword, "MD5");
+			logger.info("Incoming password"+encryptedPasswd);
 			res.setUs_login(username);
 			res.setUs_password(encryptedPasswd);
 			res = userSpecDao.returnUserByCredentials(res);
+			logger.info("DB user" +res.toString());
 
 			if (this.checkIfUserIsActiveAndNotBlocked(res)) {
 				return res;

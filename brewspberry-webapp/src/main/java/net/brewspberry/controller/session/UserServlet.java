@@ -114,7 +114,6 @@ public class UserServlet extends AbstractServletInitiator {
 				// error list is empty so it's OK
 				String encryptedPassword = EncryptionUtils.encryptPassword(
 						request.getParameter("password"), "MD5");
-				logger.info(encryptedPassword);
 				User user = userSpecService.returnUserByCredentials(
 						request.getParameter("username"), encryptedPassword);
 
