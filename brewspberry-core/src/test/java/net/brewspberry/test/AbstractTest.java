@@ -6,14 +6,26 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringCoreTestConfiguration.class)
 public abstract class AbstractTest {
 
 	@Autowired
 	SessionFactory sessFact;
+	@Autowired
+	private EntityManagerFactory entmanFact;
 
 	public AbstractTest() {
 
@@ -33,7 +45,7 @@ public abstract class AbstractTest {
 		
 		
 		Session sess = sessFact.getCurrentSession();
-		
+		//EntityManager ent = entmanFact.createEntityManager();
 		
 		BufferedReader br = new BufferedReader(
 				new FileReader(
@@ -51,7 +63,7 @@ public abstract class AbstractTest {
 			wholeQueryBuilder.append(cur);
 		}
 
-		sess.createSQLQuery(wholeQueryBuilder.toString()).executeUpdate();
+		sess.createQuery(wholeQueryBuilder.toString()).executeUpdate();
 		
 	}
 }

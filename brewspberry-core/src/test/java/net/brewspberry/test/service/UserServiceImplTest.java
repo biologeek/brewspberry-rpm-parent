@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringCoreTestConfiguration.class)
-public class UserServiceImplTest extends AbstractTest{
+public class UserServiceImplTest {
 
 	@Autowired
 	ISpecificUserService service;
@@ -24,7 +24,7 @@ public class UserServiceImplTest extends AbstractTest{
 	IGenericService<User> userService;
 
 	public UserServiceImplTest() {
-		super();
+		//super();
 	}
 
 	@Test
