@@ -11,37 +11,32 @@ import javax.persistence.EntityManagerFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringCoreTestConfiguration.class)
+@Transactional
 public abstract class AbstractTest {
 
 	@Autowired
 	SessionFactory sessFact;
-	@Autowired
-	private EntityManagerFactory entmanFact;
+//	@Autowired
+//	private EntityManagerFactory entmanFact;
 
 	public AbstractTest() {
 
-		try {
-			this.createDB();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 
-	private void createDB() throws IOException {
+	@Before
+	public void createDB() throws IOException {
 		
 		
 		Session sess = sessFact.getCurrentSession();
@@ -60,10 +55,10 @@ public abstract class AbstractTest {
 		
 		
 		while ((cur = br.readLine()) != null){
-			wholeQueryBuilder.append(cur);
+			wholeQueryBuilder.append(cur+"\n");
 		}
 
-		sess.createQuery(wholeQueryBuilder.toString()).executeUpdate();
-		
+		sess.createSQLQuery(wholeQueryBuilder.toString()).executeUpdate();
+
 	}
 }

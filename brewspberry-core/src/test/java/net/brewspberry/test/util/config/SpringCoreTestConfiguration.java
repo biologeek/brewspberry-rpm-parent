@@ -3,13 +3,12 @@ package net.brewspberry.test.util.config;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
-import org.h2.jdbcx.JdbcDataSource;
 import org.h2.tools.Server;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,19 +18,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
-import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.sql.Connection;
@@ -39,7 +30,8 @@ import java.sql.Connection;
 @Configuration
 @ComponentScan(basePackages = { "net.brewspberry" })
 @EnableTransactionManagement
-@PropertySources(value = { @PropertySource("classpath:config.properties"), @PropertySource("classpath:c3po.properties"),
+@PropertySources(value = { @PropertySource("classpath:config.properties"),
+		@PropertySource("classpath:c3po.properties"),
 		@PropertySource("classpath:devices.properties") })
 public class SpringCoreTestConfiguration {
 
@@ -55,6 +47,7 @@ public class SpringCoreTestConfiguration {
 
 	Server server;
 
+	@Autowired
 	private Environment env;
 
 	@Bean(name = "dataSource")
@@ -62,10 +55,9 @@ public class SpringCoreTestConfiguration {
 		BasicDataSource dataSource = new BasicDataSource();
 
 		dataSource.setDriverClassName("org.h2.Driver");
-		dataSource.setUrl("jdbc:h2:target/test");
+		dataSource.setUrl("jdbc:h2:./target/test");
 		dataSource.setUsername("sa");
 		dataSource.setPassword("");
-		
 
 		/*
 		 * dataSource.setDriverClassName("org");
@@ -78,7 +70,8 @@ public class SpringCoreTestConfiguration {
 	@Bean(name = "server")
 	public EmbeddedDatabase getServer() {
 
-		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder().setType(EmbeddedDatabaseType.H2).setName("test")
+		EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder()
+				.setType(EmbeddedDatabaseType.H2).setName("test")
 				.addScript("net/brewspberry/test/db/create-db.sql");
 
 		return builder.build();
@@ -88,13 +81,16 @@ public class SpringCoreTestConfiguration {
 	@Bean(name = "sessionFactory")
 	public SessionFactory getSessionFactory(DataSource dataSource) {
 
-		this.startDatabase();
+		getServer();
+//		this.startDatabase();
 
-		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
+		LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(
+				dataSource);
 
 		sessionBuilder.scanPackages("net.brewspberry");
 
-		return sessionBuilder.buildSessionFactory();
+		return sessionBuilder
+				.buildSessionFactory();
 	}
 
 	private void startDatabase() {
@@ -102,9 +98,11 @@ public class SpringCoreTestConfiguration {
 		try {
 			server = Server.createTcpServer("-tcpAllowOthers").start();
 			Class.forName("org.h2.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:h2:target/test", "sa", "");
-			System.out.println(
-					"Connection Established: " + conn.getMetaData().getDatabaseProductName() + "/" + conn.getCatalog());
+			Connection conn = DriverManager.getConnection(
+					"jdbc:h2:./target/test", "sa", "");
+			System.out.println("Connection Established: "
+					+ conn.getMetaData().getDatabaseProductName() + "/"
+					+ conn.getCatalog());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,8 +112,10 @@ public class SpringCoreTestConfiguration {
 
 	@Autowired
 	@Bean(name = "transactionManager")
-	public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
-		HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
+	public HibernateTransactionManager getTransactionManager(
+			SessionFactory sessionFactory) {
+		HibernateTransactionManager transactionManager = new HibernateTransactionManager(
+				sessionFactory);
 
 		return transactionManager;
 	}
@@ -126,8 +126,10 @@ public class SpringCoreTestConfiguration {
 			private static final long serialVersionUID = 3546518510147677728L;
 
 			{
-				setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-				setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
+				setProperty("hibernate.hbm2ddl.auto",
+						env.getProperty("hibernate.hbm2ddl.auto"));
+				setProperty("hibernate.dialect",
+						env.getProperty("hibernate.dialect"));
 				setProperty("hibernate.globally_quoted_identifiers", "true");
 			}
 		};
