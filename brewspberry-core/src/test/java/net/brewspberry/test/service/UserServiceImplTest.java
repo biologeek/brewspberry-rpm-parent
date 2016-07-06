@@ -30,6 +30,7 @@ public class UserServiceImplTest extends AbstractTest{
 	}
 
 	@Test
+	@Transactional
 	public void shouldNotBeNull() {
 
 		Assert.assertNotNull(service);
@@ -37,6 +38,7 @@ public class UserServiceImplTest extends AbstractTest{
 	}
 
 	@Test
+	@Transactional
 	public void shouldCheckIfUserIsActiveAndNotBlocked() {
 
 		System.out.println("**** shouldCheckIfUserIsActiveAndNotBlocked ****");
@@ -57,6 +59,7 @@ public class UserServiceImplTest extends AbstractTest{
 	}
 
 	@Test
+	@Transactional
 	public void shouldSaveUserInDB() {
 		System.out.println("**** shouldSaveUserInDB ****");
 

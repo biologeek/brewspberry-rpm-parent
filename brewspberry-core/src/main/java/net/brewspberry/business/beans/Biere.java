@@ -13,10 +13,12 @@ import javax.persistence.OneToOne;
 
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.business.beans.stock.Stockable;
+
 
 @Entity
 @Component
-public class Biere  implements Serializable{
+public class Biere implements Serializable, Stockable{
 
 	
 	/**

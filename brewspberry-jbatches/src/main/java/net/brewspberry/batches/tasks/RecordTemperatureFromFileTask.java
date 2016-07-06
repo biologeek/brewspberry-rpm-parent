@@ -28,10 +28,6 @@ import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.business.service.ActionerServiceImpl;
-import net.brewspberry.business.service.BrassinServiceImpl;
-import net.brewspberry.business.service.EtapeServiceImpl;
-import net.brewspberry.business.service.TemperatureMeasurementServiceImpl;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
@@ -77,6 +73,8 @@ public class RecordTemperatureFromFileTask implements Task {
 
 		this.specificParameters = specificParameters;
 	}
+	
+	
 	public void run() {
 
 		try {

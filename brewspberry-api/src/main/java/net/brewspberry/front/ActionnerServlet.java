@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificActionerLauncherService;
 import net.brewspberry.business.ISpecificActionerService;
@@ -37,12 +39,17 @@ public class ActionnerServlet extends HttpServlet {
 	 * of actionners
 	 */
 	private static final long serialVersionUID = 1L;
-	private ISpecificActionerService actionerService = new ActionerServiceImpl();
-	private ISpecificActionerLauncherService actionerLauncherService = new BatchLauncherService();
-	private IGenericService<Actioner> genActionerService = new ActionerServiceImpl();
+	@Autowired
+	private ISpecificActionerService actionerService;
+	@Autowired
+	private ISpecificActionerLauncherService actionerLauncherService;
+	@Autowired
+	private IGenericService<Actioner> genActionerService;
 
-	private IGenericService<Brassin> brassinService = new BrassinServiceImpl();
-	private IGenericService<Etape> etapeService = new EtapeServiceImpl();
+	@Autowired
+	private IGenericService<Brassin> brassinService;
+	@Autowired
+	private IGenericService<Etape> etapeService;
 	static Logger logger = LogManager.getInstance(ActionnerServlet.class
 			.toString());
 

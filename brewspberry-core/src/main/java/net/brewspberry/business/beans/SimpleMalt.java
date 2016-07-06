@@ -15,10 +15,12 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.business.beans.stock.Stockable;
+
 
 @Entity
 @Component
-public class SimpleMalt extends AbstractIngredient implements Serializable{
+public class SimpleMalt extends AbstractIngredient implements Serializable, Stockable {
 
     /**
      * 

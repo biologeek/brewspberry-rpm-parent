@@ -9,10 +9,11 @@ import javax.persistence.InheritanceType;
 import org.springframework.stereotype.Component;
 
 import net.brewspberry.business.beans.AbstractIngredient;
+import net.brewspberry.business.beans.stock.Stockable;
 
 @Entity
 @Component
-public class SimpleHoublon extends AbstractIngredient implements Serializable {
+public class SimpleHoublon extends AbstractIngredient implements Serializable, Stockable {
     
     /**
 	 * 

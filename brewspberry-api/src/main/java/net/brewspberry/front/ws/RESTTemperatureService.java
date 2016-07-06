@@ -1,6 +1,5 @@
 package net.brewspberry.front.ws;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,6 +18,7 @@ import javax.ws.rs.core.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
@@ -37,8 +36,11 @@ import net.brewspberry.util.LogManager;
 @Path("/")
 public class RESTTemperatureService {
 
+	@Autowired
 	IGenericService<ConcreteTemperatureMeasurement> tmesService;
+	@Autowired
 	ISpecificTemperatureMeasurementService tmesSpecService;
+	@Autowired
 	IGenericService<Etape> stepService;
 	private Etape currentStep;
 
@@ -61,9 +63,7 @@ public class RESTTemperatureService {
 		JSONObject thResult = null;
 		JSONObject result = null;
 		int limit = 0;
-		tmesService = new TemperatureMeasurementServiceImpl();
-		tmesSpecService = new TemperatureMeasurementServiceImpl();
-		stepService = new EtapeServiceImpl();
+		
 		
 		List<ConcreteTemperatureMeasurement> filteredList = new ArrayList<ConcreteTemperatureMeasurement>();
 
@@ -117,9 +117,6 @@ public class RESTTemperatureService {
 		JSONObject json = new JSONObject();
 		JSONObject result = null;
 
-		tmesService = new TemperatureMeasurementServiceImpl();
-		tmesSpecService = new TemperatureMeasurementServiceImpl();
-		stepService = new EtapeServiceImpl();
 		if (stepID > 0) {
 
 			currentStep = stepService.getElementById(stepID);
@@ -157,9 +154,6 @@ public class RESTTemperatureService {
 		JSONObject jsonResult = null;
 		JSONObject thResult = null;
 
-		tmesService = new TemperatureMeasurementServiceImpl();
-		tmesSpecService = new TemperatureMeasurementServiceImpl();
-		stepService = new EtapeServiceImpl();
 		
 		if (lastID > 0) {
 
@@ -212,9 +206,6 @@ public class RESTTemperatureService {
 		List<ConcreteTemperatureMeasurement> response = new ArrayList<ConcreteTemperatureMeasurement>();
 		JSONObject jsonResult = null;
 
-		tmesService = new TemperatureMeasurementServiceImpl();
-		tmesSpecService = new TemperatureMeasurementServiceImpl();
-		stepService = new EtapeServiceImpl();
 
 		if (stepID > 0 && uuid != null) {
 

@@ -6,10 +6,10 @@
 	<version>0.1.0-SNAPSHOT</version>
 	<name>brewspberry-jbatches</name>
 	<description>java batches</description>
-<properties>
+	<packaging>jar</packaging>
+	<properties>
 		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
 		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
-
 		<hsqldb.version>2.3.2</hsqldb.version>
 		<dbh2.version>1.4.187</dbh2.version>
 
@@ -26,7 +26,7 @@
 		</dependency>
 
 
-	<!-- Core utilities used by other modules. Define this if you use Spring 
+		<!-- Core utilities used by other modules. Define this if you use Spring 
 			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -146,14 +146,14 @@
 			<artifactId>pi4j-core</artifactId>
 			<version>1.0</version>
 		</dependency>
-	</dependencies>
-	
-	<!-- https://mvnrepository.com/artifact/junit/junit -->
+
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
+	</dependencies>
 	<build>
 		<pluginManagement>
 			<plugins>

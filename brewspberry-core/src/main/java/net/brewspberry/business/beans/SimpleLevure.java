@@ -8,9 +8,11 @@ import javax.persistence.InheritanceType;
 
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.business.beans.stock.Stockable;
+
 @Entity
 @Component
-public class SimpleLevure extends AbstractIngredient implements Serializable {
+public class SimpleLevure extends AbstractIngredient implements Serializable, Stockable {
     
     /**
 	 * 
