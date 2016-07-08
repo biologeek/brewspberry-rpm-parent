@@ -109,7 +109,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 		Levure result = new Levure();
 
-		if (arg0.getIng_id() != 0) {
+		if (arg0.getStb_id() != 0) {
 			try {
 				sessionFactory.getCurrentSession().update(arg0);
 				

@@ -11,6 +11,10 @@ import javax.persistence.Id;
 @Entity
 public class CompteurType implements Serializable {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9182613664605339295L;
+	/**
 	 * Represents a stock counter type. Example : 75cl bottles, 33cl bottles, 25kg Malt bag 
 	 */
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)	

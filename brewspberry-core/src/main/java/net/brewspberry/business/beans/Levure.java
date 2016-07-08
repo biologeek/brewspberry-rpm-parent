@@ -1,21 +1,14 @@
 package net.brewspberry.business.beans;
 
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
 import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-public class Levure extends SimpleLevure implements Serializable {
+public class Levure extends SimpleLevure {
     
     /**
 	 * 

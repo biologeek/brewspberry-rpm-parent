@@ -12,7 +12,7 @@ import net.brewspberry.business.beans.stock.Stockable;
 
 @Entity
 @Component
-public class SimpleLevure extends AbstractIngredient implements Serializable, Stockable {
+public class SimpleLevure extends AbstractIngredient  {
     
     /**
 	 * 

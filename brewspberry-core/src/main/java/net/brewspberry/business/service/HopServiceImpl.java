@@ -117,7 +117,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 					currentIngredient.setShbl_variete(currentSimpleHop.getShbl_variete());
 					
 					//Resetting ID so that it is saved when creating new brew
-					currentIngredient.setIng_id((long) 0);
+					currentIngredient.setStb_id((long) 0);
 					//currentIngredient.getIng_ingredientEtape().(0.0);
 					currentIngredient.setHbl_brassin(null);
 					
@@ -213,7 +213,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 						SimpleHoublon currentIngredient = hopDao.getElementById(currentNameNumeric);
 						
 						//Resetting ID so that it is saved when creating new brew
-						currentIngredient.setIng_id((long) 0);
+						currentIngredient.setStb_id((long) 0);
 						//currentIngredient.getIng_ingredientEtape().(0.0);
 						
 						if (currentIngredient != null){

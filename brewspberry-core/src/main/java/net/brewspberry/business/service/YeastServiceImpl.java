@@ -172,7 +172,7 @@ public class YeastServiceImpl implements IGenericService<Levure>,
 
 						SimpleLevure currentIngredient = levureDao
 								.getElementById(currentID);
-						currentIngredient.setIng_id((long) 0);
+						currentIngredient.setStb_id((long) 0);
 
 						if (!currentIngredient.equals(new SimpleLevure())) {
 							result.add(currentIngredient);

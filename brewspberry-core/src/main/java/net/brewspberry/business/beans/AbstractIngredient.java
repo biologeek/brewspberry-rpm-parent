@@ -21,11 +21,13 @@ import javax.persistence.Table;
 import org.hibernate.type.descriptor.java.JavaTypeDescriptorRegistry.FallbackJavaTypeDescriptor;
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.business.beans.stock.Stockable;
+
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Component
-public abstract class AbstractIngredient implements Serializable {
+public abstract class AbstractIngredient extends Stockable {
 
 	/**
 	 * Abstract Ingredient represents ingredient general characteristics
@@ -35,27 +37,21 @@ public abstract class AbstractIngredient implements Serializable {
 	 */
 	private static final long serialVersionUID = -5363007498088123647L;
 	
-	@Id@GeneratedValue(strategy=GenerationType.TABLE)
-	@Column(nullable=false)
-	private long ing_id;
 	private String ing_desc;
 	
     private String ing_fournisseur;
     
-
+    private float ing_unitary_price;
     
-	public long getIng_id() {
-		return ing_id;
-	}
+
+   
 	public String getIng_desc() {
 		return ing_desc;
 	}
 	public void setIng_desc(String ing_desc) {
 		this.ing_desc = ing_desc;
 	}
-	public void setIng_id(long ing_id) {
-		this.ing_id = ing_id;
-	}
+	
 	public String getIng_fournisseur() {
 		return ing_fournisseur;
 	}
@@ -72,9 +68,15 @@ public abstract class AbstractIngredient implements Serializable {
 		return serialVersionUID;
 	}
 
+	public float getIng_unitary_price() {
+		return ing_unitary_price;
+	}
+	public void setIng_unitary_price(float ing_unitary_price) {
+		this.ing_unitary_price = ing_unitary_price;
+	}
 	@Override
 	public String toString() {
-		return "Ingredient [ing_id=" + ing_id + ", ing_desc=" + ing_desc
+		return "Ingredient [ing_desc=" + ing_desc
 				+ ", ing_fournisseur=" + ing_fournisseur + "]";
 	}
 }

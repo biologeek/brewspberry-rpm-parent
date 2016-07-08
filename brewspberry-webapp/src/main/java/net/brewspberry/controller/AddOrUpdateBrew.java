@@ -308,7 +308,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 			for (Malt malt : malts) {
 				JSONmalts = JSONmalts + "{\"typeIng\" :\"malt\",";
 
-				JSONmalts = JSONmalts + "\"id\" : \"" + malt.getIng_id()
+				JSONmalts = JSONmalts + "\"id\" : \"" + malt.getStb_id()
 						+ "\", " + "\"desc\" : \"" + malt.getIng_desc()
 						+ "\", " + "\"cereale\" : \"" + malt.getSmal_cereale()
 						+ "\", " + "\"type\" : \"" + malt.getSmal_type()
@@ -321,7 +321,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 			for (Houblon hop : hops) {
 				JSONhops = JSONhops + "{\"typeIng\" :\"hop\",";
 
-				JSONhops = JSONhops + "\"id\" : \"" + hop.getIng_id() + "\", "
+				JSONhops = JSONhops + "\"id\" : \"" + hop.getStb_id() + "\", "
 						+ "\"variete\" : \"" + hop.getShbl_variete() + "\", "
 						+ "\"acide_alpha\" : \"" + hop.getShbl_acide_alpha()
 						+ "\", " + "\"qte\" : \"" + hop.getIng_quantite()
@@ -332,7 +332,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 			for (Levure yeast : yeasts) {
 				JSONyeasts = JSONyeasts + "{\"typeIng\" :\"yeast\",";
 
-				JSONyeasts = JSONyeasts + "\"id\" : \"" + yeast.getIng_id()
+				JSONyeasts = JSONyeasts + "\"id\" : \"" + yeast.getStb_id()
 						+ "\", " + "\"desc\" : \"" + yeast.getIng_desc()
 						+ "\", " + "\"qte\" : \"" + yeast.getIng_quantite()
 						+ "\"},";

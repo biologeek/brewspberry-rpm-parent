@@ -89,7 +89,7 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 
 		SimpleHoublon result = new SimpleHoublon();
 
-		if (arg0.getIng_id() != 0) {
+		if (arg0.getStb_id() != 0) {
 			try {
 				sessionFactory.getCurrentSession().update(arg0);
 				

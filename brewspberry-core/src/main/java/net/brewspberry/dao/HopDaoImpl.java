@@ -87,7 +87,7 @@ public class HopDaoImpl implements IGenericDao<Houblon> {
 
 		Houblon result = new Houblon();
 
-		if (arg0.getIng_id() != 0) {
+		if (arg0.getStb_id() != 0) {
 			try {
 				sessionFactory.getCurrentSession().update(arg0);
 				

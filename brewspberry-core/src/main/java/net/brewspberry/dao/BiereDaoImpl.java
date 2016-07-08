@@ -34,7 +34,7 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 			long id = (long) sessionFactory.getCurrentSession().save(arg0);
 			
 
-			arg0.setBeer_id(id);
+			arg0.setStb_id(id);
 			return arg0;
 		} catch (HibernateException e) {
 			

@@ -95,7 +95,7 @@ public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 
 		SimpleLevure result = new SimpleLevure();
 
-		if (arg0.getIng_id() != 0) {
+		if (arg0.getStb_id() != 0) {
 			try {
 				sessionFactory.getCurrentSession().update(arg0);
 				

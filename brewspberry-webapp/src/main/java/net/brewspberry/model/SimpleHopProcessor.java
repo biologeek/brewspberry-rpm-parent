@@ -96,7 +96,7 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 			 
 
 			 
-			 if (parentObject.getIng_id() == 0){
+			 if (parentObject.getStb_id() == 0){
 				 
 				 try {
 					simpleHopService.save(parentObject);
@@ -110,7 +110,7 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 				}
 				 				 
 			 }
-			 else if (parentObject.getIng_id() > 0){
+			 else if (parentObject.getStb_id() > 0){
 				 
 				 simpleHopService.update(parentObject);
 				return true;
@@ -118,10 +118,10 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 			 }
 			 else {
 				 try {
-					throw new Exception("Ingredient ID is not correct : "+parentObject.getIng_id());
+					throw new Exception("Ingredient ID is not correct : "+parentObject.getStb_id());
 				} catch (Exception e) {
 
-					logger.severe("Ingredient ID is not correct : "+parentObject.getIng_id());
+					logger.severe("Ingredient ID is not correct : "+parentObject.getStb_id());
 					
 				}
 					return false;

@@ -84,7 +84,7 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 			 }
 
 			 
-			 if (parentObject.getIng_id() == 0){
+			 if (parentObject.getStb_id() == 0){
 				 
 				 // Saving yeast
 				 try {
@@ -99,7 +99,7 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 				}
 				 				 
 			 }
-			 else if (parentObject.getIng_id() > 0){
+			 else if (parentObject.getStb_id() > 0){
 				 
 				 // Updating yeast
 				 
@@ -109,10 +109,10 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 			 }
 			 else {
 				 try {
-					throw new Exception("Ingredient ID is not correct : "+parentObject.getIng_id());
+					throw new Exception("Ingredient ID is not correct : "+parentObject.getStb_id());
 				} catch (Exception e) {
 
-					logger.severe("Ingredient ID is not correct : "+parentObject.getIng_id());
+					logger.severe("Ingredient ID is not correct : "+parentObject.getStb_id());
 					
 				}
 					return false;

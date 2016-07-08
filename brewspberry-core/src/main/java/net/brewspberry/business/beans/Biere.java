@@ -18,15 +18,14 @@ import net.brewspberry.business.beans.stock.Stockable;
 
 @Entity
 @Component
-public class Biere implements Serializable, Stockable{
+public class Biere extends AbstractFinishedProduct {
 
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8568385997181631075L;
-	@Id@GeneratedValue(strategy=GenerationType.AUTO)
-	private long beer_id;
+
 	private String beer_name;
 	private String beer_style;
 	private float beer_alcohol;
@@ -62,17 +61,6 @@ public class Biere implements Serializable, Stockable{
 
 	public void setBeer_brassin(Brassin brassin) {
 		this.beer_brassin = brassin;
-	}
-
-
-
-	public long getBeer_id() {
-		return beer_id;
-	}
-
-
-	public void setBeer_id(long beer_id) {
-		this.beer_id = beer_id;
 	}
 
 
@@ -225,7 +213,7 @@ public class Biere implements Serializable, Stockable{
 
 	@Override
 	public String toString() {
-		return "Biere [beer_id=" + beer_id + ", beer_name=" + beer_name
+		return "Biere [beer_name=" + beer_name
 				+ ", beer_style=" + beer_style + ", beer_alcohol="
 				+ beer_alcohol + ", beer_density=" + beer_density
 				+ ", beer_color_ebc=" + beer_color_ebc + ", beer_aroma="

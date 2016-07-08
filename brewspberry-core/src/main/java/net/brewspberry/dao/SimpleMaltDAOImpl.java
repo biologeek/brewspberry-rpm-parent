@@ -56,7 +56,7 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
 		SimpleMalt result = new SimpleMalt();
 
-		if (arg0.getIng_id() != 0) {
+		if (arg0.getStb_id() != 0) {
 			try {
 				sessionFactory.getCurrentSession().update(arg0);
 				

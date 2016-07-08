@@ -13,7 +13,7 @@ import net.brewspberry.business.beans.stock.Stockable;
 
 @Entity
 @Component
-public class SimpleHoublon extends AbstractIngredient implements Serializable, Stockable {
+public class SimpleHoublon extends AbstractIngredient implements Serializable {
     
     /**
 	 * 
@@ -28,7 +28,6 @@ public class SimpleHoublon extends AbstractIngredient implements Serializable, S
     
 	public SimpleHoublon() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 

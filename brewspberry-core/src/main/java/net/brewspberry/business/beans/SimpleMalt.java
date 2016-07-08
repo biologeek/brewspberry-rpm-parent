@@ -20,7 +20,7 @@ import net.brewspberry.business.beans.stock.Stockable;
 
 @Entity
 @Component
-public class SimpleMalt extends AbstractIngredient implements Serializable, Stockable {
+public class SimpleMalt extends AbstractIngredient {
 
     /**
      * 

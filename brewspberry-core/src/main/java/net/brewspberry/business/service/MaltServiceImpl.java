@@ -95,7 +95,7 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 					currentIngredient.setSmal_cereale(currentSimpleMalt.getSmal_cereale());
 					currentIngredient.setSmal_couleur(currentSimpleMalt.getSmal_couleur());
 					currentIngredient.setSmal_type(currentSimpleMalt.getSmal_type());
-					currentIngredient.setIng_id(0);
+					currentIngredient.setStb_id(0);
 
 					currentIngredient.setIng_quantite((float) 0.0);
 					currentIngredient.setMalt_brassin(null);
@@ -182,7 +182,7 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 						SimpleMalt currentIngredient = maltDAO
 								.getElementById(currentID);
 
-						currentIngredient.setIng_id(0);
+						currentIngredient.setStb_id(0);
 
 						if (!currentIngredient.equals(new SimpleMalt())) {
 							result.add(currentIngredient);
