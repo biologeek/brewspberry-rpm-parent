@@ -160,24 +160,24 @@
 						<th>Ingredient</th>
 						<th>Unitary Value</th>
 						<th>Unitary Weight</th>
-						<th>Total</th>
+						<th colspan="2">Total</th>
 						</tr>
 						
 						<tr>
 						<th></th>
 						<th></th>
 						<th></th>
-						<th>kg</th>
+						<th>kg/L</th>
 						<th>€</th>
 						</tr>
 						
 						
 						<tr>
-						<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_desc()}</td>
-						<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_</td>
-						<td>(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price</td>
-						<td></td>
-						<td></td>
+							<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_desc()}</td>
+							<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price()}</td>
+							<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_weight()}</td>
+							<td>${counter.getCpt_value()}</td>
+							<td>${counter.getStd_stock_value()}</td>
 						</tr>
 						</table>
 						

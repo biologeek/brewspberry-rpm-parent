@@ -13,6 +13,7 @@ public class StockCounter implements Serializable {
 	 * 
 	 * Example : you have half the 30L production that is already bottled in 5L
 	 * keg and half in 33cL bottles. Thus you'll have 2 counters.
+	 * 
 	 */
 	private static final long serialVersionUID = -3853891928120391252L;
 	private long cpt_id;

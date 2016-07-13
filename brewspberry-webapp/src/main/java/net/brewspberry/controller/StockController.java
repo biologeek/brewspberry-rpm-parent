@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.stock.StockCounter;
+import net.brewspberry.util.StockCounterToTableStockConverter;
 
 @Controller
 @WebServlet("/stock.do")
@@ -27,53 +28,43 @@ public class StockController extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 2916648763166648082L;
 
-	
-	
-	
 	private IGenericService<StockCounter> stockCounterService;
-	
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		
-		
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String option = request.getParameter("o");
-		
-		
-		if (option == null || option.equals("")){
-			option = "dispstk";			
+
+		if (option == null || option.equals("")) {
+			option = "dispstk";
 		}
-		
-		switch (option){
-		
-		case "dispstk" :
-			
+
+		switch (option) {
+
+		case "dispstk":
+
 			/*
 			 * Displaying whole stock
 			 */
-			
+
 			List<StockCounter> stockCounters = this.stockCounterService.getAllElements();
-			
-			if (stockCounters.size()>0){
-				
-							
-				request.setAttribute("counters", stockCounters);
-				
+
+			if (stockCounters.size() > 0) {
+
+				request.setAttribute("counters", StockCounterToTableStockConverter.convertList(stockCounters));
+
 			}
-			
+
 			request.getRequestDispatcher("dispstk.jsp").forward(request, response);
-		break;
-		
+			break;
+
 		}
-		
-		
+
 	}
-	
-	
-	
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 	}
-	
-	
+
 }

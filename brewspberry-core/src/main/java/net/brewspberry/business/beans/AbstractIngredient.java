@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import org.hibernate.type.descriptor.java.JavaTypeDescriptorRegistry.FallbackJavaTypeDescriptor;
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.beans.stock.Stockable;
 
 
@@ -40,11 +41,40 @@ public abstract class AbstractIngredient extends Stockable {
 	private String ing_desc;
 	
     private String ing_fournisseur;
-    
+
+    /**
+     * In €/StockUnit
+     */
     private float ing_unitary_price;
+    
+    
+    private StockUnit ing_unitary_price_unit;
+    /**
+     * Stored in StockUnit
+     */
+    private float ing_unitary_weight;
+    private StockUnit ing_unitary_weight_unit;
     
 
    
+	public float getIng_unitary_weight() {
+		return ing_unitary_weight;
+	}
+	public void setIng_unitary_weight(float ing_unitary_weight) {
+		this.ing_unitary_weight = ing_unitary_weight;
+	}
+	public StockUnit getIng_unitary_weight_unit() {
+		return ing_unitary_weight_unit;
+	}
+	public void setIng_unitary_weight_unit(StockUnit ing_unitary_weight_unit) {
+		this.ing_unitary_weight_unit = ing_unitary_weight_unit;
+	}
+	public StockUnit getIng_unitary_price_unit() {
+		return ing_unitary_price_unit;
+	}
+	public void setIng_unitary_price_unit(StockUnit ing_unitary_price_unit) {
+		this.ing_unitary_price_unit = ing_unitary_price_unit;
+	}
 	public String getIng_desc() {
 		return ing_desc;
 	}
