@@ -52,7 +52,7 @@ public class StockController extends HttpServlet {
 			if (stockCounters.size() > 0) {
 
 				request.setAttribute("counters", StockCounterToTableStockConverter.convertList(stockCounters));
-
+				
 			}
 
 			request.getRequestDispatcher("dispstk.jsp").forward(request, response);

@@ -39,94 +39,7 @@
         <![endif]-->
 <script src="vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 
-<script type="text/javascript">
-	function changeActionerState(brew, step, actionerUUID, actionerID,
-			actionerType) {
 
-		if (brew != null && step != null) {
-
-			if (actionerID > 0) {
-
-				jQuery
-						.ajax(
-								{
-									url : "${actionerServiceAddress}?type=deactivate&id="
-											+ actionerUUID
-											+ "&bid="
-											+ brew
-											+ "&eid=" + step,
-									context : document.body
-								}).done(
-								function() {
-									switch (actionerType) {
-									case '1':
-										/*
-										 * DS18B20
-										 */
-										$('#IMGACT' + actionerUUID).attr('src',
-												'images/thermo-off.jpg');
-										break;
-
-									case '2':
-										/*
-										 * PUMP
-										 */
-										$('#IMGACT' + actionerUUID).attr('src',
-												'images/pump-off.jpg');
-										break;
-
-									case '3':
-										/*
-										 * ENGINE
-										 */
-										$('#IMGACT' + actionerUUID).attr('src',
-												'images/engine-off.png');
-										break;
-
-									}
-								});
-
-			}
-			jQuery.ajax(
-					{
-						url : "${actionerServiceAddress}?type=activate&uuid="
-								+ actionerUUID + "&bid=" + brew + "&eid="
-								+ step,
-						context : document.body
-					}).done(
-					function() {
-						switch (actionerType) {
-						case '1':
-							/*
-							 * DS18B20
-							 */
-							$('#IMGACT' + actionerUUID).attr('src',
-									'images/thermo-on.jpg');
-							break;
-
-						case '2':
-							/*
-							 * PUMP
-							 */
-							$('#IMGACT' + actionerUUID).attr('src',
-									'images/pump-on.jpg');
-							break;
-
-						case '3':
-							/*
-							 * ENGINE
-							 */
-							$('#IMGACT' + actionerUUID).attr('src',
-									'images/engine-on.png');
-							break;
-
-						}
-					});
-
-		}
-
-	}
-</script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Brassin n°${brassin.getBra_id()}</title>
 </head>
@@ -153,34 +66,36 @@
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left" style="font-size: 10px;">
-						
-						<table>
-						
-						<tr>
-						<th>Ingredient</th>
-						<th>Unitary Value</th>
-						<th>Unitary Weight</th>
-						<th colspan="2">Total</th>
-						</tr>
-						
-						<tr>
-						<th></th>
-						<th></th>
-						<th></th>
-						<th>kg/L</th>
-						<th>€</th>
-						</tr>
-						
-						
-						<tr>
-							<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_desc()}</td>
-							<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price()}</td>
-							<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_weight()}</td>
-							<td>${counter.getCpt_value()}</td>
-							<td>${counter.getStd_stock_value()}</td>
-						</tr>
-						</table>
-						
+
+							<table>
+
+								<tr>
+									<th>Ingredient</th>
+									<th>Unitary Value</th>
+									<th>Unitary Weight</th>
+									<th colspan="2">Total</th>
+								</tr>
+
+								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th>kg/L</th>
+									<th>€</th>
+								</tr>
+								<c:forEach begin="0" end="${counters.size()}" var="counter">
+
+									<tr>
+										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_desc()}</td>
+										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price()}</td>
+										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_weight()}</td>
+										<td>${counter.getCpt_value()}</td>
+										<td>${counter.getStd_stock_value()}</td>
+									</tr>
+
+								</c:forEach>
+							</table>
+
 						</div>
 					</div>
 				</div>

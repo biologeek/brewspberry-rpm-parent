@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
+import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.stock.CompteurType;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
-import net.brewspberry.business.service.ISpecificStockDao;
 import net.brewspberry.exceptions.DAOException;
 
 
@@ -121,6 +121,16 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@Override
 	public StockCounter geStockCounterByProductAndType(Stockable arg0, CompteurType arg1) {
 		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<StockCounter> getStockCountersByTypes(List<CompteurType> ar0) {
+		
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
+		
+		crit.add(Restrictions.or())
+		
 		return null;
 	}
 

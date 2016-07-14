@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
+import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
@@ -152,6 +153,18 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 			}
 		}
 		
+		
+		return null;
+	}
+
+	@Override
+	public List<StockCounter> getStockCountersByTypes(List<CompteurType> ar0) {
+
+		if (ar0 != null && ar0.size() > 0){
+			
+			specDAO.getStockCountersByTypes(ar0);
+			
+		}
 		
 		return null;
 	}

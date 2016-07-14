@@ -21,7 +21,7 @@ public class StockCounterToTableStockConverter {
 	public static TableDisplayStockCounter convert(StockCounter arg0) {
 		TableDisplayStockCounter tbl = new TableDisplayStockCounter();
 
-		tbl = (TableDisplayStockCounter) arg0;
+		tbl = new TableDisplayStockCounter(arg0);
 
 		double stockValue = 0;
 

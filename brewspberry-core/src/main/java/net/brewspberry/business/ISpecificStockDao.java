@@ -1,4 +1,4 @@
-package net.brewspberry.business.service;
+package net.brewspberry.business;
 
 import java.util.List;
 
@@ -20,4 +20,6 @@ public interface ISpecificStockDao {
 	public List<StockCounter> getStockForFinishedProducts();
 	
 	public StockCounter geStockCounterByProductAndType (Stockable arg0, CompteurType arg1); 
+	
+	public List<StockCounter> getStockCountersByTypes (List<CompteurType> ar0);
 }

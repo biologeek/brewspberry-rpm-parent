@@ -18,5 +18,6 @@ public interface ISpecificStockService {
 			throws StockException, ServiceException;
 	
 	
-	
+	public List<StockCounter> getStockCountersByTypes (List<CompteurType> ar0);
+
 }
