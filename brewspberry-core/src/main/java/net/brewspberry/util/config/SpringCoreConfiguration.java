@@ -73,6 +73,8 @@ public class SpringCoreConfiguration {
 	    return transactionManager;
 	}
 	
+	
+	
 	Properties hibernateProperties() {
 	      return new Properties() {
 	         /**
@@ -81,7 +83,7 @@ public class SpringCoreConfiguration {
 			private static final long serialVersionUID = 3546518510147677728L;
 
 			{
-	            setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
+	            setProperty("hibernate.hbm2ddl.auto", "update");
 	            setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
 	            setProperty("hibernate.globally_quoted_identifiers", "true");
 	            setProperty("show_sql", "true");

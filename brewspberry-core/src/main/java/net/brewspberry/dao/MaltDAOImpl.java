@@ -1,26 +1,16 @@
 package net.brewspberry.dao;
 
-import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.exceptions.DAOException;
-import net.brewspberry.util.HibernateUtil;
 
 @Repository
 public class MaltDAOImpl implements IGenericDao<Malt> {

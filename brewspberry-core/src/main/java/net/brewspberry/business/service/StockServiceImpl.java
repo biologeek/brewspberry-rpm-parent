@@ -8,6 +8,7 @@ import javax.sql.rowset.serial.SerialException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -27,7 +28,8 @@ import net.brewspberry.exceptions.ServiceException;
  * 
  * 
  */
-@Service
+@Service 
+@Transactional
 public class StockServiceImpl implements ISpecificStockService, IGenericService<StockCounter> {
 	
 	
@@ -56,8 +58,10 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 	@Override
 	public List<StockCounter> getAllElements() {
-		// TODO Auto-generated method stub
-		return null;
+		List<StockCounter> res = new ArrayList<StockCounter>();
+		
+		res = genericDAO.getAllElements();
+		return res;
 	}
 
 	@Override

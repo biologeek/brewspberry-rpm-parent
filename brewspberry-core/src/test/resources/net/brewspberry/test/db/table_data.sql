@@ -1,0 +1,1 @@
+INSERT INTO `SimpleMalt` (`ing_id`, `ing_desc`, `ing_fournisseur`, `smal_cereale`, `smal_couleur`, `smal_type`) VALUES (1, 'test1', 'bla', 'blé', '20', 'Caramel')

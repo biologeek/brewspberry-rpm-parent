@@ -18,3 +18,21 @@ CREATE TABLE IF NOT EXISTS "users" (
   `us_registration` datetime DEFAULT NULL,
   PRIMARY KEY (`us_id`,`us_age`)
 ) ;
+
+
+
+
+
+CREATE TABLE "SimpleMalt" (
+  `ing_id` bigint(20) NOT NULL,
+  `ing_desc` varchar(255) DEFAULT NULL,
+  `ing_fournisseur` varchar(255) DEFAULT NULL,
+  `smal_cereale` varchar(255) DEFAULT NULL,
+  `smal_couleur` int(11) DEFAULT NULL,
+  `smal_type` varchar(255) DEFAULT NULL
+);
+
+
+
+ALTER TABLE `SimpleMalt`
+  ADD PRIMARY KEY (`ing_id`);

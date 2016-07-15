@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.servlet.http.Cookie;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -21,7 +21,8 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-@Service("userServiceImpl")
+@Service ("userServiceImpl")
+@Transactional
 public class UserServiceImpl implements IGenericService<User>,
 		ISpecificUserService {
 

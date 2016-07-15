@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -12,7 +13,8 @@ import net.brewspberry.business.ISpecificEtapeService;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.util.DateManipulator;
 
-@Service
+@Service 
+@Transactional
 public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeService {
 
 	

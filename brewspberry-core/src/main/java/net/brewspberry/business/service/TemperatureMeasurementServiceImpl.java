@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -27,7 +28,8 @@ import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-@Service
+@Service 
+@Transactional
 public class TemperatureMeasurementServiceImpl implements
 		ISpecificTemperatureMeasurementService,
 		IGenericService<ConcreteTemperatureMeasurement> {

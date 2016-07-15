@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,8 +68,8 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 
 	@Override
 	public List<StockCounter> getAllElements() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return sessionFactory.getCurrentSession().createQuery("from StockCounter").list();
 	}
 
 	@Override
@@ -124,14 +125,24 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getStockCountersByTypes(List<CompteurType> ar0) {
 		
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
+		Disjunction or = Restrictions.disjunction();
 		
-		crit.add(Restrictions.or())
+		for(CompteurType cpt : ar0){
+			
+			or.add(Restrictions.eq("cpt_counter_type", cpt));
+			
+		}
 		
-		return null;
+		crit.add(or);
+		
+		
+		
+		return (List<StockCounter>) crit.list();
 	}
 
 

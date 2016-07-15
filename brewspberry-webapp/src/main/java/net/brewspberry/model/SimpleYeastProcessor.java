@@ -5,12 +5,8 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleLevure;
-import net.brewspberry.business.service.YeastServiceImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.model.Processor;
 import net.brewspberry.util.LogManager;
 

@@ -5,19 +5,10 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
-import net.brewspberry.business.service.HopServiceImpl;
-import net.brewspberry.business.service.MaltServiceImpl;
-import net.brewspberry.business.service.YeastServiceImpl;
-import net.brewspberry.business.service.HopServiceImpl.SimpleHopServiceImpl;
-import net.brewspberry.business.service.MaltServiceImpl.SimpleMaltServiceImpl;
-import net.brewspberry.business.service.YeastServiceImpl.SimpleYeastServiceImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.util.LogManager;
 
 public class SimpleMaltProcessor implements Processor<SimpleMalt> {

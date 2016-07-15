@@ -4,13 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificBiereDAO;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.exceptions.DAOException;
 
-@Service
+@Service 
+@Transactional
 public class BiereServiceImpl implements IGenericDao<Biere>, ISpecificBiereDAO{
 
 	@Autowired

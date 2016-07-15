@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -26,7 +27,8 @@ import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-@Service
+@Service 
+@Transactional
 public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 	private Logger logger = LogManager.getInstance(BatchLauncherService.class.getName());

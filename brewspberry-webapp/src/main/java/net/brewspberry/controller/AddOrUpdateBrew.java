@@ -1,10 +1,8 @@
 package net.brewspberry.controller;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.logging.Logger;
@@ -29,12 +27,6 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
-import net.brewspberry.business.service.BrassinServiceImpl;
-import net.brewspberry.business.service.EtapeServiceImpl;
-import net.brewspberry.business.service.HopServiceImpl;
-import net.brewspberry.business.service.MaltServiceImpl;
-import net.brewspberry.business.service.YeastServiceImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.model.BrewProcessor;
 import net.brewspberry.model.Processor;
 import net.brewspberry.model.StepProcessor;
@@ -64,12 +56,24 @@ public class AddOrUpdateBrew extends HttpServlet {
 	@Autowired
 	@Qualifier("maltServiceImpl")
 	ISpecificIngredientService maltIngSpecService;
+
 	@Autowired
+	@Qualifier("maltServiceImpl")
 	IGenericService<Malt> maltService;
 	@Autowired
 	IGenericService<Houblon> hopService;
 	@Autowired
 	IGenericService<Levure> yeastService;
+	
+
+	@Autowired
+	@Qualifier("simpleMaltServiceImpl")
+	IGenericService<SimpleMalt> simpleMaltService;
+	@Autowired
+	IGenericService<SimpleHoublon> simpleHopService;
+	@Autowired
+	IGenericService<SimpleLevure> simpleYeastService;
+	
 	@Autowired
 	@Qualifier("hopServiceImpl")
 	ISpecificIngredientService hopIngSpecService;
@@ -151,9 +155,9 @@ public class AddOrUpdateBrew extends HttpServlet {
 		// On passe les paramètres pour peupler les listes
 		logger.fine("Création d'un brassin");
 
-		maltList = (new MaltServiceImpl()).new SimpleMaltServiceImpl().getAllDistinctElements();
-		hopList = (new HopServiceImpl()).new SimpleHopServiceImpl().getAllDistinctElements();
-		yeastList = (new YeastServiceImpl()).new SimpleYeastServiceImpl().getAllDistinctElements();
+		maltList = simpleMaltService.getAllDistinctElements();
+		hopList = simpleHopService.getAllDistinctElements();
+		yeastList = simpleYeastService.getAllDistinctElements();
 
 		System.out.print("bloublou");
 		System.out.print(maltList);

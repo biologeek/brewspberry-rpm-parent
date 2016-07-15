@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -16,7 +17,8 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.dao.BrassinDaoImpl;
 import net.brewspberry.util.HibernateUtil;
 
-@Service
+@Service 
+@Transactional
 public class BrassinServiceImpl implements IGenericService<Brassin>,
 		ISpecificBrassinService {
 

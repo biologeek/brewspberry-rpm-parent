@@ -43,7 +43,7 @@ public abstract class AbstractIngredient extends Stockable {
     private String ing_fournisseur;
 
     /**
-     * In €/StockUnit
+     * In euro/StockUnit
      */
     private float ing_unitary_price;
     
