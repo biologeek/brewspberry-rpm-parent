@@ -4,6 +4,8 @@ package net.brewspberry.test.service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericService;
@@ -15,7 +17,8 @@ import net.brewspberry.test.AbstractTest;
 @Transactional
 public class SimpleMaltServiceImpl extends AbstractTest {
 
-	
+	@Autowired
+	@Qualifier("simpleMaltServiceImpl")
 	IGenericService<SimpleMalt> sMalService;
 
 	SimpleMalt sm = new SimpleMalt();

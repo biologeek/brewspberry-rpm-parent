@@ -37,7 +37,8 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 		long resultId;
 		SimpleMalt result = new SimpleMalt();
 		try {
-			resultId = (long) sessionFactory.getCurrentSession().save(arg0);
+			Session session = sessionFactory.getCurrentSession();
+			resultId = (long) session.save(arg0);
 			result = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, resultId);
 			
 
@@ -150,6 +151,14 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 		
 		return result;
 
+	}
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
 	}
 
 }

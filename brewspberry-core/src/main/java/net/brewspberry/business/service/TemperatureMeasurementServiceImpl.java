@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,12 +42,15 @@ public class TemperatureMeasurementServiceImpl implements
 	@Autowired
 	private ISpecificTemperatureMeasurementService tempDao;
 	@Autowired
+	@Qualifier("brassinServiceImpl")
 	private IGenericService<Brassin> brassinService;
 
 	@Autowired
+	@Qualifier("etapeServiceImpl")
 	private IGenericService<Etape> etapeService;
 
 	@Autowired
+	@Qualifier("temperatureMeasurementDaoImpl")
 	private IGenericDao<ConcreteTemperatureMeasurement> tmesDao;
 	@Autowired
 	private ISpecificTemperatureMeasurementService tmesSpecDao;
