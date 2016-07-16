@@ -1,5 +1,12 @@
 package net.brewspberry.business.beans.stock;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+
+
+@Entity
+@DiscriminatorValue("finished")
 public class FinishedProductCounter extends StockCounter {
 
 	/**

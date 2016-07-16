@@ -56,6 +56,7 @@ public class SpringCoreTestConfiguration {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		properties.put("hibernate.hbm2ddl.auto", "create-drop");
+		properties.put("hibernate.hbm2ddl.import_files", "/net/brewspberry/test/db/table-data.sql");
 		return properties;
 	}
 

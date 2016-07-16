@@ -1,5 +1,11 @@
 package net.brewspberry.business.beans.stock;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
+
+@Entity
+@DiscriminatorValue("raw")
 public class RawMaterialCounter extends StockCounter {
 
 	/**

@@ -3,6 +3,18 @@ package net.brewspberry.business.beans.stock;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+
+
+@Entity
+@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="cpt_discriminator")
 public class StockCounter implements Serializable {
 
 	/**
@@ -16,6 +28,7 @@ public class StockCounter implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3853891928120391252L;
+	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	private long cpt_id;
 	private CompteurType cpt_counter_type;
 	private Stockable cpt_product;

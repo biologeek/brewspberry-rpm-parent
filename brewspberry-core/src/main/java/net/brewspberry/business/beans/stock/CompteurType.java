@@ -22,6 +22,10 @@ public class CompteurType implements Serializable {
 	private String cty_libelle;
 	private Date cty_date_cre;
 	
+	public CompteurType() {
+		super();
+	}
+
 	public CompteurType(int cty_id, String cty_libelle){
 		this.cty_id = cty_id;
 		this.cty_libelle = cty_libelle;
