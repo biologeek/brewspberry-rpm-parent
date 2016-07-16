@@ -2,6 +2,7 @@ package net.brewspberry.batches.test;
 
 import net.brewspberry.batches.exceptions.NotTheGoodNumberOfArgumentsException;
 import net.brewspberry.batches.tasks.RecordTemperatureFromFileTask;
+import net.brewspberry.batches.tasks.Task;
 import net.brewspberry.batches.test.config.BatchesSpringTestConfiguration;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
@@ -11,6 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -20,7 +22,8 @@ public class RecordTemperatureFromFileTaskTest {
 
 	
 	@Autowired
-	public RecordTemperatureFromFileTask task;
+	@Qualifier("recordTemperatureFromFileTask")
+	public Task task;
 
 	@Test
 	public void shouldBeAutowired(){

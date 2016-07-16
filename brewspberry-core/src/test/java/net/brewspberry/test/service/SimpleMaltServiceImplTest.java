@@ -4,18 +4,23 @@ package net.brewspberry.test.service;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleMalt;
+import net.brewspberry.business.beans.User;
 import net.brewspberry.business.beans.stock.StockUnit;
+import net.brewspberry.business.service.SimpleMaltServiceImpl;
 import net.brewspberry.test.AbstractTest;
 
 
 @Transactional
-public class SimpleMaltServiceImpl extends AbstractTest {
+public class SimpleMaltServiceImplTest extends AbstractTest {
 
 	@Autowired
 	@Qualifier("simpleMaltServiceImpl")
@@ -43,6 +48,8 @@ public class SimpleMaltServiceImpl extends AbstractTest {
 		
 		SimpleMalt result = null;
 		try {
+			
+			
 			result = sMalService.save(sm);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
