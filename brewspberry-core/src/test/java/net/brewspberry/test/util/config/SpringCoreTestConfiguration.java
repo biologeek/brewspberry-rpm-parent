@@ -36,7 +36,7 @@ public class SpringCoreTestConfiguration {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
 		sessionFactory
-				.setPackagesToScan(new String[] { "net.brewspberry" });
+				.setPackagesToScan(new String[] {"net.brewspberry"});
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		return sessionFactory;
 	}
@@ -56,7 +56,8 @@ public class SpringCoreTestConfiguration {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
 		properties.put("hibernate.hbm2ddl.auto", "create-drop");
-		properties.put("hibernate.hbm2ddl.import_files", "/net/brewspberry/test/db/table-data.sql");
+		properties.put("hibernate.show_sql", "true");
+		properties.put("hibernate.hbm2ddl.import_files", "/net/brewspberry/test/db/table_data.sql, /net/brewspberry/test/db/table-data.sql");
 		return properties;
 	}
 

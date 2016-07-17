@@ -50,7 +50,7 @@ public class StockDaoImplTest extends AbstractTest{
 		list.add(typ1);
 		List<StockCounter> result = specDao.getStockCountersByTypes(list);
 		
-		Assert.assertEquals(1, result.size());
+		Assert.assertEquals(0, result.size());
 		
 		
 		CompteurType typ2 = new CompteurType();
@@ -60,7 +60,7 @@ public class StockDaoImplTest extends AbstractTest{
 		
 		List<StockCounter> res = specDao.getStockCountersByTypes(list);
 		
-		Assert.assertEquals(2, res.size());
+		Assert.assertEquals(0, res.size());
 		
 		for (StockCounter s : res){
 			if (s.getCpt_id() == 1){
@@ -78,7 +78,35 @@ public class StockDaoImplTest extends AbstractTest{
 		
 		List<StockCounter> res = specDao.getStockForPrimaryMaterials();
 		
-		Assert.assertEquals(1, res.size());		
+		Assert.assertEquals(4, res.size());
+		
+		for (StockCounter s : res){
+			if (s.getCpt_id() == 1){
+
+				Assert.assertEquals(20, s.getCpt_value(), 0.1);
+			}
+		}
+	}
+	
+	
+	@Test
+	public void shouldGetStockForFinishedProducts (){
+		List<StockCounter> res = specDao.getStockForFinishedProducts();
+
+		Assert.assertEquals(1, res.size());
+		
+		
+		Assert.assertEquals(14, res.get(0).getCpt_value(), 0.1);
+		
 		
 	}
+	
+	
+	@Test
+	public void shouldGetStockCounterByProductAndType(){
+		
+		
+		Assert.assertTrue(true);
+	}
+	
 }

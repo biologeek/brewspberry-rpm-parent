@@ -138,7 +138,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	 */
 	public StockCounter toogleStockCounterForProduct(double valueToDecrease, Stockable arg0, CompteurType type) throws StockException, ServiceException {
 		
-		StockCounter cptToDecrease = this.specDAO.geStockCounterByProductAndType(arg0, type);
+		StockCounter cptToDecrease = this.specDAO.getStockCounterByProductAndType(arg0, type);
 		
 		if (cptToDecrease.getCpt_value() <= 0){
 			

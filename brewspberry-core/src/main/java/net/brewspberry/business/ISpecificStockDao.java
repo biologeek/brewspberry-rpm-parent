@@ -19,7 +19,7 @@ public interface ISpecificStockDao {
 
 	public List<StockCounter> getStockForFinishedProducts();
 	
-	public StockCounter geStockCounterByProductAndType (Stockable arg0, CompteurType arg1); 
+	public StockCounter getStockCounterByProductAndType (Stockable arg0, CompteurType arg1); 
 	
 	public List<StockCounter> getStockCountersByTypes (List<CompteurType> ar0);
 }

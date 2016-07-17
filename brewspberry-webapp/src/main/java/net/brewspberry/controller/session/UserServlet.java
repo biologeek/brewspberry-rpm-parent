@@ -45,8 +45,9 @@ public class UserServlet extends AbstractServletInitiator {
 	private static final long serialVersionUID = -5053309074376760642L;
 	@Autowired
 	@Qualifier("userServiceImpl")
-	private ISpecificUserService userSpecService = new UserServiceImpl();
+	private ISpecificUserService userSpecService;
 	@Autowired
+	@Qualifier("userServiceImpl")
 	private IGenericService<User> userService;
 	private HttpSession currentSession;
 	Logger logger = LogManager.getInstance(UserServlet.class.getName());

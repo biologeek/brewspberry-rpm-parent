@@ -103,7 +103,7 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
 		
 		// Getting all Abstract ingedients
-		crit.add(Restrictions.eq("cpt_produit.class", AbstractIngredient.class));
+		crit.add(Restrictions.eq("cpt_product.class", AbstractIngredient.class));
 				
 		return (List<StockCounter>) crit.list();
 	}
@@ -120,7 +120,7 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	}
 
 	@Override
-	public StockCounter geStockCounterByProductAndType(Stockable arg0, CompteurType arg1) {
+	public StockCounter getStockCounterByProductAndType(Stockable arg0, CompteurType arg1) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -1,4 +1,3 @@
-INSERT INTO `SimpleMalt` (`ing_id`, `ing_desc`, `ing_fournisseur`, `smal_cereale`, `smal_couleur`, `smal_type`) VALUES (1, 'test1', 'bla', 'blé', '20', 'Caramel')
 
 
 INSERT INTO `CompteurType` (cty_id, cty_libelle, cty_date_cre) VALUES (1, 'Stock dispo à la fabrication', NOW());
