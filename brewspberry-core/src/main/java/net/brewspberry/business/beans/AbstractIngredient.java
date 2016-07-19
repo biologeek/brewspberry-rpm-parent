@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import org.hibernate.type.descriptor.java.JavaTypeDescriptorRegistry.FallbackJavaTypeDescriptor;
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.business.beans.stock.RawMaterialCounter;
+import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.beans.stock.Stockable;
 
@@ -42,6 +44,8 @@ public abstract class AbstractIngredient extends Stockable {
 	
     private String ing_fournisseur;
 
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_product")
+	private List<RawMaterialCounter> stb_counters;
     /**
      * In euro/StockUnit
      */
@@ -103,6 +107,12 @@ public abstract class AbstractIngredient extends Stockable {
 	}
 	public void setIng_unitary_price(float ing_unitary_price) {
 		this.ing_unitary_price = ing_unitary_price;
+	}
+	public List<RawMaterialCounter> getStb_counters() {
+		return stb_counters;
+	}
+	public void setStb_counters(List<RawMaterialCounter> stb_counters) {
+		this.stb_counters = stb_counters;
 	}
 	@Override
 	public String toString() {

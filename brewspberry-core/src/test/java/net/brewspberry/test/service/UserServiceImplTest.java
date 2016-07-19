@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringCoreTestConfiguration.class)
-
 public class UserServiceImplTest extends AbstractTest{
 
 	@Autowired

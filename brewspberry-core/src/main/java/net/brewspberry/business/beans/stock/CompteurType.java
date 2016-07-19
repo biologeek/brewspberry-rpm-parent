@@ -2,11 +2,14 @@ package net.brewspberry.business.beans.stock;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class CompteurType implements Serializable {
@@ -21,6 +24,9 @@ public class CompteurType implements Serializable {
 	private int cty_id;
 	private String cty_libelle;
 	private Date cty_date_cre;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_counter_type")
+	private List<StockCounter> cty_counters;
 	
 	public CompteurType() {
 		super();

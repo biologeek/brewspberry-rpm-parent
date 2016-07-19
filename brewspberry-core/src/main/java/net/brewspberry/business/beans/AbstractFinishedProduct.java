@@ -1,9 +1,15 @@
 package net.brewspberry.business.beans;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
+import net.brewspberry.business.beans.stock.FinishedProductCounter;
+import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.beans.stock.Stockable;
 
@@ -20,8 +26,16 @@ public class AbstractFinishedProduct extends Stockable{
 	
 	private float afp_unitary_value;
 	private StockUnit afp_unitary_value_unit;
+
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_product")
+	private List<FinishedProductCounter> stb_counters;
 	
-	
+	public List<FinishedProductCounter> getStb_counters() {
+		return stb_counters;
+	}
+	public void setStb_counters(List<FinishedProductCounter> stb_counters) {
+		this.stb_counters = stb_counters;
+	}
 	public float getAfp_unitary_value() {
 		return afp_unitary_value;
 	}

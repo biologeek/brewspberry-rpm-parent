@@ -1,7 +1,6 @@
 package net.brewspberry.business.beans.stock;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,9 +8,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-
-import net.brewspberry.business.beans.AbstractIngredient;
-import net.brewspberry.business.beans.Biere;
 
 
 @Entity
@@ -29,6 +25,7 @@ public abstract class Stockable implements Serializable {
 	@Id@GeneratedValue(strategy=GenerationType.TABLE)
 	@Column(nullable=false)
 	public long stb_id;
+	
 
 
 	public long getStb_id() {
@@ -44,6 +41,8 @@ public abstract class Stockable implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+
 	
 	
 }

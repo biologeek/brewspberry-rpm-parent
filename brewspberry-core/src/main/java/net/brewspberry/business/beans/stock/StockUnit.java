@@ -1,11 +1,15 @@
 package net.brewspberry.business.beans.stock;
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-@Entity
+
 public enum StockUnit {
 	
 	METRE(1, 1, "m", 1),
@@ -26,8 +30,18 @@ public enum StockUnit {
 	private double stu_multi;
 	private String stu_value;
 	private int stu_parent;
-	@Id@GeneratedValue(strategy=GenerationType.AUTO)	
+	//@Id@GeneratedValue(strategy=GenerationType.AUTO)	
 	private int stu_id;
+
+	
+//	@OneToMany(mappedBy="cpt_unit", fetch=FetchType.LAZY)
+	private List<StockCounter> stu_counters;
+	
+	
+	
+	StockUnit() {
+		// TODO Auto-generated constructor stub
+	}
 
 	StockUnit(int stu_id, int stu_parent, String stu_value, double stu_multi) {
 

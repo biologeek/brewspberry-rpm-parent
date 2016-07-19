@@ -7,6 +7,7 @@ import java.util.Date;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.service.ActionerServiceImpl;
 import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.HibernateUtil;
 
@@ -16,9 +17,15 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pi4j.io.gpio.RaspiPin;
 
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = SpringCoreTestConfiguration.class)
 public class ActionerServiceImplTest {
 
 	private ActionerServiceImpl actionerService;	

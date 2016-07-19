@@ -16,6 +16,8 @@ import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.FinishedProductCounter;
+import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.exceptions.DAOException;
@@ -56,8 +58,8 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 
 	@Override
 	public StockCounter getElementById(long id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return (StockCounter) sessionFactory.getCurrentSession().get(StockCounter.class, id);
 	}
 
 	@Override
@@ -66,10 +68,11 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getAllElements() {
 		
-		return sessionFactory.getCurrentSession().createQuery("from StockCounter").list();
+		return (List<StockCounter>) sessionFactory.getCurrentSession().createQuery("from StockCounter").list();
 	}
 
 	@Override
@@ -97,24 +100,24 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 		this.sessionFactory = sessionFactory;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getStockForPrimaryMaterials() {
 		
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(RawMaterialCounter.class);
 		
 		// Getting all Abstract ingedients
-		crit.add(Restrictions.eq("cpt_product.class", AbstractIngredient.class));
 				
 		return (List<StockCounter>) crit.list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getStockForFinishedProducts() {
 
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(FinishedProductCounter.class);
 		
 		// Getting all Abstract ingedients
-		crit.add(Restrictions.eq("cpt_produit.class", AbstractFinishedProduct.class));
 				
 		return (List<StockCounter>) crit.list();
 	}

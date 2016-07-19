@@ -5,11 +5,16 @@ import java.util.Date;
 
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 
 @Entity
@@ -30,9 +35,14 @@ public class StockCounter implements Serializable {
 	private static final long serialVersionUID = -3853891928120391252L;
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	private long cpt_id;
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="cpt_cty_id")
 	private CompteurType cpt_counter_type;
-	private Stockable cpt_product;
+	
 	private double cpt_value;
+//	@ManyToOne(fetch=FetchType.EAGER)
+	//@JoinColumn(name="cpt_stu_id")
+	@Enumerated
 	private StockUnit cpt_unit;
 	private Date cpt_date_cre;
 	private Date cpt_date_maj;
@@ -58,13 +68,6 @@ public class StockCounter implements Serializable {
 		this.cpt_counter_type = cpt_counter_type;
 	}
 
-	public Stockable getCpt_product() {
-		return cpt_product;
-	}
-
-	public void setCpt_product(Stockable cpt_product) {
-		this.cpt_product = cpt_product;
-	}
 
 	public double getCpt_value() {
 		return cpt_value;
