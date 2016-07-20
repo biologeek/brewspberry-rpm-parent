@@ -125,7 +125,7 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@Override
 	public StockCounter getStockCounterByProductAndType(Stockable arg0, CompteurType arg1) {
 		// TODO Auto-generated method stub
-		return null;
+		return new StockCounter();
 	}
 
 	@SuppressWarnings("unchecked")

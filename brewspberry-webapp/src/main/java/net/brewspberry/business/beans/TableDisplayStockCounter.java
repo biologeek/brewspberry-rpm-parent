@@ -38,7 +38,6 @@ public class TableDisplayStockCounter extends StockCounter {
 		this.setCpt_date_cre(arg0.getCpt_date_cre());
 		this.setCpt_date_maj(arg0.getCpt_date_maj());
 		this.setCpt_id(arg0.getCpt_id());
-		this.setCpt_product(arg0.getCpt_product());
 		this.setCpt_unit(arg0.getCpt_unit());
 		this.setCpt_value(arg0.getCpt_value());
 		

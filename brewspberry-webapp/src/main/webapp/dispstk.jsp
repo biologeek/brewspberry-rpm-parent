@@ -59,7 +59,7 @@
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left"
-							style="font-weight: bold; text-align: center;">Stocks</div>
+							style="font-weight: bold; text-align: center;">Stocks ingrédients</div>
 					</div>
 				</div>
 
@@ -99,6 +99,53 @@
 						</div>
 					</div>
 				</div>
+				
+				
+				<div class="block">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left"
+							style="font-weight: bold; text-align: center;">Stocks produits</div>
+					</div>
+				</div>
+				
+				
+				<div class="block">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left" style="font-size: 10px;">
+
+							<table>
+
+								<tr>
+									<th>Product</th>
+									<th>Unitary Value</th>
+									<th>Unitary Weight</th>
+									<th colspan="2">Total</th>
+								</tr>
+
+								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+									<th>kg/L</th>
+									<th>€</th>
+								</tr>
+								<c:forEach begin="0" end="${counters.size()}" var="counter">
+
+									<tr>
+										<td>${(AbstractFinishedProduct) (counter.getCpt_product()).getIng_desc()}</td>
+										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price()}</td>
+										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_weight()}</td>
+										<td>${counter.getCpt_value()}</td>
+										<td>${counter.getStd_stock_value()}</td>
+									</tr>
+
+								</c:forEach>
+							</table>
+
+						</div>
+					</div>
+				</div>
+				
 			</div>
 		</div>
 </body>

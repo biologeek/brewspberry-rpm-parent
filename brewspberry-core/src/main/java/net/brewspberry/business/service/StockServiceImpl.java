@@ -135,7 +135,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	public StockCounter toogleStockCounterForProduct(double valueToDecrease, Stockable arg0, CompteurType type)
 			throws StockException, ServiceException {
 
-		StockCounter cptToDecrease = this.specDAO.getStockCounterByProductAndType(arg0, type);
+		StockCounter cptToDecrease = specDAO.getStockCounterByProductAndType(arg0, type);
 
 		boolean isAnIngredient = ((cptToDecrease instanceof RawMaterialCounter) ? true : false);
 
@@ -144,8 +144,6 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 			throw new StockException("Stock must be positive to be decremented");
 
 		} else if (isAnIngredient) {
-
-			
 
 			/*
 			 * Checking validity for an ingredient
@@ -194,12 +192,12 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 			}
 
-		}
+		}		
+			
 
 		cptToDecrease.setCpt_value(cptToDecrease.getCpt_value() - valueToDecrease);
 		cptToDecrease.setCpt_date_maj(new Date());
 		
-
 		
 		if (cptToDecrease.getCpt_value() < 0){
 			throw new StockException("Stock is < 0 after motion !");

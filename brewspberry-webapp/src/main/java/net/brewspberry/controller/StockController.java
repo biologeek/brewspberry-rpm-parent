@@ -65,6 +65,10 @@ public class StockController extends AbstractAutowiredHttpServlet {
 						StockCounterToTableStockConverter
 								.convertList(stockCounters));
 
+				request.setAttribute("counters",
+						StockCounterToTableStockConverter
+								.convertList(stockCounters));
+
 			}
 
 			request.getRequestDispatcher("dispstk.jsp").forward(request,
