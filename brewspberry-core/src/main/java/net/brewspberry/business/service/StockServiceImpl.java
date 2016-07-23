@@ -97,9 +97,9 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	}
 
 	@Override
-	public List<StockCounter> getStockForPrimaryMaterials() {
+	public List<RawMaterialCounter> getStockForPrimaryMaterials() {
 
-		List<StockCounter> res = new ArrayList<StockCounter>();
+		List<RawMaterialCounter> res = new ArrayList<RawMaterialCounter>();
 
 		res = this.specDAO.getStockForPrimaryMaterials();
 
@@ -107,9 +107,9 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	}
 
 	@Override
-	public List<StockCounter> getStockForFinishedProducts() {
+	public List<FinishedProductCounter> getStockForFinishedProducts() {
 
-		List<StockCounter> res = new ArrayList<StockCounter>();
+		List<FinishedProductCounter> res = new ArrayList<FinishedProductCounter>();
 
 		res = this.specDAO.getStockForFinishedProducts();
 
@@ -202,6 +202,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 		if (cptToDecrease.getCpt_value() < 0){
 			throw new StockException("Stock is < 0 after motion !");
 		}
+		
 		return this.genericDAO.update(cptToDecrease);
 
 	}

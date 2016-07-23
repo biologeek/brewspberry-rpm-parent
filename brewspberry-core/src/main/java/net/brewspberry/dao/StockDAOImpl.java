@@ -102,24 +102,24 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StockCounter> getStockForPrimaryMaterials() {
+	public List<RawMaterialCounter> getStockForPrimaryMaterials() {
 		
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(RawMaterialCounter.class);
 		
 		// Getting all Abstract ingedients
 				
-		return (List<StockCounter>) crit.list();
+		return (List<RawMaterialCounter>) crit.list();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StockCounter> getStockForFinishedProducts() {
+	public List<FinishedProductCounter> getStockForFinishedProducts() {
 
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(FinishedProductCounter.class);
 		
 		// Getting all Abstract ingedients
 				
-		return (List<StockCounter>) crit.list();
+		return (List<FinishedProductCounter>) crit.list();
 	}
 
 	@Override

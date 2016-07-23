@@ -59,7 +59,8 @@
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left"
-							style="font-weight: bold; text-align: center;">Stocks ingrédients</div>
+							style="font-weight: bold; text-align: center;">Stocks
+							ingrédients</div>
 					</div>
 				</div>
 
@@ -83,12 +84,12 @@
 									<th>kg/L</th>
 									<th>€</th>
 								</tr>
-								<c:forEach begin="0" end="${counters.size()}" var="counter">
+								<c:forEach begin="0" end="${rawCounters.size()}" var="counter">
 
 									<tr>
-										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_desc()}</td>
-										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price()}</td>
-										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_weight()}</td>
+										<td>${(AbstractIngredient) (counter.getStr_ingredient()).getIng_desc()}</td>
+										<td>${(AbstractIngredient) (counter.getStr_ingredient()).getIng_unitary_price()}</td>
+										<td>${(AbstractIngredient) (counter.getStr_ingredient()).getIng_unitary_weight()}</td>
 										<td>${counter.getCpt_value()}</td>
 										<td>${counter.getStd_stock_value()}</td>
 									</tr>
@@ -99,16 +100,17 @@
 						</div>
 					</div>
 				</div>
-				
-				
+
+
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left"
-							style="font-weight: bold; text-align: center;">Stocks produits</div>
+							style="font-weight: bold; text-align: center;">Stocks
+							produits</div>
 					</div>
 				</div>
-				
-				
+
+
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left" style="font-size: 10px;">
@@ -129,12 +131,13 @@
 									<th>kg/L</th>
 									<th>€</th>
 								</tr>
-								<c:forEach begin="0" end="${counters.size()}" var="counter">
+								<c:forEach begin="0" end="${finishedCounters.size()}"
+									var="counter">
 
 									<tr>
-										<td>${(AbstractFinishedProduct) (counter.getCpt_product()).getIng_desc()}</td>
-										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_price()}</td>
-										<td>${(AbstractIngredient) (counter.getCpt_product()).getIng_unitary_weight()}</td>
+										<td>${(AbstractFinishedProduct) (counter.getStf_product()).getIng_desc()}</td>
+										<td>${(AbstractFinishedProduct) (counter.getStf_product()).getIng_unitary_price()}</td>
+										<td>${(AbstractFinishedProduct) (counter.getStf_product()).getIng_unitary_weight()}</td>
 										<td>${counter.getCpt_value()}</td>
 										<td>${counter.getStd_stock_value()}</td>
 									</tr>
@@ -145,7 +148,7 @@
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 		</div>
 </body>

@@ -102,7 +102,7 @@ public class StockCounterToTableStockConverter {
 	 * @param clazz
 	 * @return
 	 */
-	public static List<? extends StockCounter> sortListByType(List<StockCounter> counters, Class<? extends StockCounter> clazz) {
+	public static List<? extends StockCounter> sortListByType(List<? extends TableDisplayStockCounter> counters, Class<? extends StockCounter> clazz) {
 		
 		
 		List<StockCounter> res = new ArrayList<>();

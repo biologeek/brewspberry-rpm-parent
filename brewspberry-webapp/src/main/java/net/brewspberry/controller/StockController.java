@@ -17,6 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import net.brewspberry.business.IGenericService;
+import net.brewspberry.business.beans.TableDisplayRawMaterialStockCounter;
+import net.brewspberry.business.beans.TableToDisplayFinishedProductCounter;
+import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.service.StockServiceImpl;
 import net.brewspberry.util.StockCounterToTableStockConverter;
@@ -61,15 +64,15 @@ public class StockController extends AbstractAutowiredHttpServlet {
 
 			if (stockCounters.size() > 0) {
 
-				request.setAttribute("counters",
-						StockCounterToTableStockConverter
-								.convertList(stockCounters));
+				request.setAttribute("rawCounters",
+						StockCounterToTableStockConverter.sortListByType(StockCounterToTableStockConverter
+								.convertList(stockCounters), RawMaterialCounter.class));
 
-				request.setAttribute("counters",
-						StockCounterToTableStockConverter
-								.convertList(stockCounters));
-
-			}
+				request.setAttribute("finishedCounters",
+						StockCounterToTableStockConverter.sortListByType(StockCounterToTableStockConverter
+								.convertList(stockCounters), RawMaterialCounter.class));
+				
+				}
 
 			request.getRequestDispatcher("dispstk.jsp").forward(request,
 					response);

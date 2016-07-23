@@ -34,7 +34,5 @@ public class TableDisplayRawMaterialStockCounter extends TableDisplayStockCounte
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
-	
 	
 }
