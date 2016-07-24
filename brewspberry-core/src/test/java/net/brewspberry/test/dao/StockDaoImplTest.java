@@ -8,7 +8,8 @@ import org.junit.Test;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificStockDao;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
@@ -44,9 +45,9 @@ public class StockDaoImplTest extends AbstractTest{
 	public void shouldGetCountersByTypes(){
 		
 		
-		List<CompteurType> list = new ArrayList<CompteurType>();
+		List<CounterType> list = new ArrayList<CounterType>();
 		
-		CompteurType typ1 = new CompteurType();
+		CounterType typ1 = new CounterType();
 		typ1.setCty_id(4);
 		
 		list.add(typ1);
@@ -55,7 +56,7 @@ public class StockDaoImplTest extends AbstractTest{
 		Assert.assertEquals(0, result.size());
 		
 		
-		CompteurType typ2 = new CompteurType();
+		CounterType typ2 = new CounterType();
 		
 		typ2.setCty_id(1);
 		list.add(typ2);
@@ -78,7 +79,7 @@ public class StockDaoImplTest extends AbstractTest{
 	public void shouldGetStockForPrimaryMaterials(){
 		
 		
-		List<StockCounter> res = specDao.getStockForPrimaryMaterials();
+		List<RawMaterialCounter> res = specDao.getStockForPrimaryMaterials();
 		
 		Assert.assertEquals(4, res.size());
 		
@@ -93,7 +94,7 @@ public class StockDaoImplTest extends AbstractTest{
 	
 	@Test
 	public void shouldGetStockForFinishedProducts (){
-		List<StockCounter> res = specDao.getStockForFinishedProducts();
+		List<FinishedProductCounter> res = specDao.getStockForFinishedProducts();
 
 		Assert.assertEquals(1, res.size());
 		

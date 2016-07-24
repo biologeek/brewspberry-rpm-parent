@@ -26,7 +26,7 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 	
 
 	@Override
-	public Boolean record(SimpleHoublon parentObject, HttpServletRequest request) {
+	public boolean record(SimpleHoublon parentObject, HttpServletRequest request) {
 
 		 if (request != null){
 			 

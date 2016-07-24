@@ -27,7 +27,8 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
-import net.brewspberry.model.BrewProcessor;
+import net.brewspberry.exceptions.ServiceException;
+import net.brewspberry.model.BrewProcessorDelegate;
 import net.brewspberry.model.Processor;
 import net.brewspberry.model.StepProcessor;
 
@@ -116,7 +117,12 @@ public class AddOrUpdateBrew extends HttpServlet {
 			brewid = Long.parseLong(request.getParameter("bid"));
 			if (brewid > 0) {
 
-				currentBrassin = brassinService.getElementById(brewid);
+				try {
+					currentBrassin = brassinService.getElementById(brewid);
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				if (currentBrassin != null) {
 
@@ -215,7 +221,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 			 */
 			case "brew":
 
-				Processor<Brassin> brewProc = new BrewProcessor();
+				Processor<Brassin> brewProc = new BrewProcessorDelegate();
 
 				if (request.getParameter("brassinID") != null && !request.getParameter("brassinID").equals("")) {
 

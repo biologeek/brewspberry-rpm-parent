@@ -3,6 +3,7 @@ package net.brewspberry.front.ws.stock;
 import java.util.List;
 import java.util.zip.DataFormatException;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificStockService;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -33,8 +34,11 @@ public class StockRESTServiceImpl implements IStockRESTService {
 	@Qualifier("stockServiceImpl")
 	IGenericService<StockCounter> genericStockService;
 	@Autowired
+	@Qualifier("stockableServiceImpl")
+	IGenericService<Stockable> genericStockableService;
+	@Autowired
 	@Qualifier("compteurTypeServiceImpl")
-	IGenericService<CompteurType> genericCompteurTypeService;
+	IGenericService<CounterType> genericCompteurTypeService;
 	@Autowired
 	ISpecificStockService specificStockService;
 	
@@ -42,43 +46,73 @@ public class StockRESTServiceImpl implements IStockRESTService {
 	@GET
 	@Path("/stock/product/{p}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStockForProduct(@PathParam("p") long productID) {
+	/**
+	 * Returns stock for product by product ID
+	 * @param productID
+	 * @return
+	 */
+	public List<StockCounter> getStockForProduct(@PathParam("p") long productID) {
 
+		
+		List<StockCounter> result = null;
+		
 		if (productID > 0) {
+			Stockable stockable = null;
+			try {
+				stockable = genericStockableService.getElementById(productID);
+			} catch (ServiceException e) {
+				e.printStackTrace();
+			}
+			result = specificStockService.getWholeStockForProduct(stockable);
 
+		} else {
+			try {
+				throw new DataFormatException();
+			} catch (DataFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
-		return null;
+		return result;
 	}
 
 	@Override
 	@GET
-	@Path("/stock/product/{p}")
+	@Path("/stock/product")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStockForFinishedProducts() {
+	/**
+	 * Method used for getting finished products stock counters such as beer, ...
+	 * Will return stock counters for every finished product stored in DB
+	 */
+	public List<FinishedProductCounter> getStockForFinishedProducts() {
 
 
 		List<FinishedProductCounter> result =  (List<FinishedProductCounter>) specificStockService.getStockForFinishedProducts();
 		
-		return Response.status(200).entity(result).build();
+		return result;
 	}
 
 	@Override
 	@GET
-	@Path("/stock/product/{p}")
+	@Path("/stock/product")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getStockForIngredients() {
+	public List<RawMaterialCounter> getStockForIngredients() {
 		List<RawMaterialCounter> result = (List<RawMaterialCounter>) specificStockService.getStockForPrimaryMaterials();
+		return result;
 	}
 
 	@Override
 	@POST
-	@Path("/stock/product/{p}/s/{s}/t/{t}")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/stock/product/modifyStockForProduct")
+	@Consumes(MediaType.APPLICATION_JSON)
+	/**
+	 * Will update stock currently stored in DB with stockMotion value for stock counter of type counterTypeID
+	 */
 	public Response modifyStockForCounter(long productID, double stockMotion, long counterTypeID) {
 		
 		Stockable stockable;
-		CompteurType counterType;
+		CounterType counterType;
 		StockCounter stockCounterAfterMotion = null;
 		if (productID > 0){
 			

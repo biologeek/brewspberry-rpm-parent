@@ -7,41 +7,35 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
-import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.exceptions.ServiceException;
 
-public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
+public class StockableServiceImpl implements IGenericService<Stockable> {
 
-	
 	@Autowired
-	@Qualifier("compteurTypeDaoImpl")
-	private IGenericDao<CounterType> genericDao;
+	@Qualifier("stockableDaoImpl")
+	private IGenericDao<Stockable> genericDao;
 
 	@Override
-	public CounterType save(CounterType arg0) throws Exception {
+	public Stockable save(Stockable arg0) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CounterType update(CounterType arg0) {
+	public Stockable update(Stockable arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CounterType getElementById(long id) throws ServiceException {
+	public Stockable getElementById(long id) throws ServiceException {
 		
-		if (id > 0){
-			
-			return genericDao.getElementById(id);
-		}
-		
-		throw new ServiceException("ID must be > 0");
+		return genericDao.getElementById(id);
 	}
 
 	@Override
-	public List<CounterType> getAllElements() {
+	public List<Stockable> getAllElements() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,13 +47,13 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 	}
 
 	@Override
-	public void deleteElement(CounterType arg0) {
+	public void deleteElement(Stockable arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public List<CounterType> getAllDistinctElements() {
+	public List<Stockable> getAllDistinctElements() {
 		// TODO Auto-generated method stub
 		return null;
 	}

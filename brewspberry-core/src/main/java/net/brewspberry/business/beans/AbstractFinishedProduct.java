@@ -23,6 +23,7 @@ public class AbstractFinishedProduct extends Stockable{
 	 */
 	private static final long serialVersionUID = 8663439504086317844L;
 
+	private String afp_name;
 	
 	private float afp_unitary_value;
 	private StockUnit afp_unitary_value_unit;

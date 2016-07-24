@@ -18,7 +18,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.service.BrassinServiceImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.DeviceParser;
@@ -78,7 +78,13 @@ public class Accueil extends HttpServlet {
 		else if (bid > 0){
 			
 			logger.fine("Retrieving brew from DB for id : "+bid);
-			Brassin currentBrew = brassinService.getElementById(bid);
+			Brassin currentBrew = null;
+			try {
+				currentBrew = brassinService.getElementById(bid);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			if (currentBrew != null){
 				logger.fine("Found 1 brew : "+currentBrew);

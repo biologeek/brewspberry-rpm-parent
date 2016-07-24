@@ -26,7 +26,7 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
     
     
 	@Override
-	public Boolean record(SimpleLevure parentObject, HttpServletRequest request) {
+	public boolean record(SimpleLevure parentObject, HttpServletRequest request) {
 
 		 if (request != null){
 			 

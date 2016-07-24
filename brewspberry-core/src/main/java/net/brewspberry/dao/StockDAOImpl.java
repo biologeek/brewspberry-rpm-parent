@@ -15,7 +15,7 @@ import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -123,19 +123,19 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	}
 
 	@Override
-	public StockCounter getStockCounterByProductAndType(Stockable arg0, CompteurType arg1) {
+	public StockCounter getStockCounterByProductAndType(Stockable arg0, CounterType arg1) {
 		// TODO Auto-generated method stub
 		return new StockCounter();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<StockCounter> getStockCountersByTypes(List<CompteurType> ar0) {
+	public List<StockCounter> getStockCountersByTypes(List<CounterType> ar0) {
 		
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
 		Disjunction or = Restrictions.disjunction();
 		
-		for(CompteurType cpt : ar0){
+		for(CounterType cpt : ar0){
 			
 			or.add(Restrictions.eq("cpt_counter_type", cpt));
 			

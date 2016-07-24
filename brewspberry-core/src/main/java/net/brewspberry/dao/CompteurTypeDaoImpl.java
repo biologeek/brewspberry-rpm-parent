@@ -7,41 +7,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.exceptions.DAOException;
 
 @Repository
-public class CompteurTypeDaoImpl implements IGenericDao<CompteurType> {
+public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 
 	@Override
-	public CompteurType save(CompteurType arg0) throws DAOException {
+	public CounterType save(CounterType arg0) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CompteurType update(CompteurType arg0) {
+	public CounterType update(CounterType arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CompteurType getElementById(long id) {
-		return (CompteurType) sessionFactory.getCurrentSession().get(CompteurType.class, id);
+	public CounterType getElementById(long id) {
+		return (CounterType) sessionFactory.getCurrentSession().get(CounterType.class, id);
 		
 	}
 
 	@Override
-	public CompteurType getElementByName(String name) {
+	public CounterType getElementByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CompteurType> getAllElements() {
+	public List<CounterType> getAllElements() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -53,13 +53,13 @@ public class CompteurTypeDaoImpl implements IGenericDao<CompteurType> {
 	}
 
 	@Override
-	public void deleteElement(CompteurType arg0) {
+	public void deleteElement(CounterType arg0) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public List<CompteurType> getAllDistinctElements() {
+	public List<CounterType> getAllDistinctElements() {
 		// TODO Auto-generated method stub
 		return null;
 	}

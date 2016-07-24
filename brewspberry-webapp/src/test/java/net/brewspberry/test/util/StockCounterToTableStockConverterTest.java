@@ -11,8 +11,10 @@ import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.SimpleHoublon;
+import net.brewspberry.business.beans.TableDisplayRawMaterialStockCounter;
 import net.brewspberry.business.beans.TableDisplayStockCounter;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.TableToDisplayFinishedProductCounter;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -22,12 +24,14 @@ import net.brewspberry.util.StockCounterToTableStockConverter;
 public class StockCounterToTableStockConverterTest {
 
 	List<StockCounter> countersList = new ArrayList<StockCounter>();
+	
+	List<TableDisplayStockCounter> tableDisplayList = new ArrayList<TableDisplayStockCounter>();
 	StockCounter stk1 = new RawMaterialCounter();
 
 	@Before
 	public void init() {
 
-		stk1.setCpt_counter_type(new CompteurType(1, "blabla"));
+		stk1.setCpt_counter_type(new CounterType(1, "blabla"));
 		stk1.setCpt_unit(StockUnit.BOUTEILLE_33_CL);
 		stk1.setCpt_value(10); // 10 33cL bottles
 
@@ -42,7 +46,7 @@ public class StockCounterToTableStockConverterTest {
 
 		StockCounter stk2 = new FinishedProductCounter();
 
-		stk2.setCpt_counter_type(new CompteurType(2, "azerty"));
+		stk2.setCpt_counter_type(new CounterType(2, "azerty"));
 		stk2.setCpt_unit(StockUnit.GRAMME);
 		stk2.setCpt_value(123); // 123g
 		
@@ -53,10 +57,14 @@ public class StockCounterToTableStockConverterTest {
 		fp.setStb_id(2);
 		((FinishedProductCounter) stk2).setCpt_product(fp);
 		
-		
+		TableDisplayRawMaterialStockCounter tbl1 = new TableDisplayRawMaterialStockCounter((RawMaterialCounter) stk1);
+		TableToDisplayFinishedProductCounter tbl2 = new TableToDisplayFinishedProductCounter((FinishedProductCounter) stk2);
 
 		countersList.add(stk1);
 		countersList.add(stk2);
+
+		tableDisplayList.add(tbl1);
+		tableDisplayList.add(tbl2);
 
 	}
 
@@ -90,13 +98,13 @@ public class StockCounterToTableStockConverterTest {
 
 		Assert.assertTrue(countersList.size() > 0);
 
-		List<RawMaterialCounter> list = (List<RawMaterialCounter>) StockCounterToTableStockConverter
-				.sortListByType(countersList, RawMaterialCounter.class);
+		List<TableDisplayRawMaterialStockCounter> list = (List<TableDisplayRawMaterialStockCounter>) StockCounterToTableStockConverter
+				.sortListByType(tableDisplayList, RawMaterialCounter.class);
 
 		Assert.assertTrue(list.size() == 1);
 
 		List<FinishedProductCounter> list1 = (List<FinishedProductCounter>) StockCounterToTableStockConverter
-				.sortListByType(countersList, FinishedProductCounter.class);
+				.sortListByType(tableDisplayList, FinishedProductCounter.class);
 		Assert.assertTrue(list1.size() == 1);
 	}
 }

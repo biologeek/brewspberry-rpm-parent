@@ -32,6 +32,13 @@ public class Etape implements Serializable{
     private String etp_nom;
     private Date etp_debut;
     private Date etp_fin;
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="etp_ety_id")
+    /**
+     * etape type object contains tops to allow rules to apply or not for various algorithms
+     * Fetching it eagerly, and cascading modfications to linked EtapeType object
+     */     
+    private EtapeType etp_etape_type;
     
     @OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="dur_step")
     private DurationBO etp_duree;
@@ -196,6 +203,19 @@ public class Etape implements Serializable{
 				+ ", etp_temperature_theorique=" + etp_temperature_theorique
 				+ ", etp_remarque=" + etp_remarque 
 				+ "]";
+	}
+
+	public boolean hasIngredients() {
+		if (etp_malts == null && etp_houblons == null && etp_levures == null){
+			return false;
+		} else if(etp_malts.size() == 0 && etp_houblons.size() == 0 && etp_levures.size() == 0){
+			return false;
+		}
+		else if (etp_malts.size() > 0 || etp_houblons.size() > 0 || etp_levures.size() > 0){
+			return true;
+		}
+		return false;
+	
 	}
     
     

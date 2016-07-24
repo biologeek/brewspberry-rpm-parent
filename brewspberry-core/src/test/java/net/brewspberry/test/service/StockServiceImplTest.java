@@ -20,7 +20,7 @@ import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.builders.IngredientStockCounterBuilder;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.exceptions.StockException;
@@ -59,7 +59,7 @@ public class StockServiceImplTest extends AbstractTest {
 
 
 	SimpleMalt malt;
-	CompteurType type;
+	CounterType type;
 
 	
 	@Before
@@ -80,7 +80,7 @@ public class StockServiceImplTest extends AbstractTest {
 		malt.setSmal_couleur(3);
 		malt.setSmal_type("Blond");
 
-		type = new CompteurType();
+		type = new CounterType();
 		type.setCty_id(3);
 		type.setCty_date_cre(Calendar.getInstance().getTime());
 		type.setCty_libelle("Stock reserve fabrication");
@@ -119,7 +119,7 @@ public class StockServiceImplTest extends AbstractTest {
 		IGenericDao<StockCounter> daoMock = Mockito.mock(StockDAOImpl.class);
 
 		SimpleMalt malt = null;
-		CompteurType type = null;
+		CounterType type = null;
 		buildDataset(malt, type);
 		Mockito.when(daoMock.getElementById(1))
 				.thenReturn((StockCounter) ((IngredientStockCounterBuilder) new IngredientStockCounterBuilder()
@@ -134,7 +134,7 @@ public class StockServiceImplTest extends AbstractTest {
 
 	}
 
-	private void buildDataset(SimpleMalt malt, CompteurType type) {
+	private void buildDataset(SimpleMalt malt, CounterType type) {
 
 
 	}

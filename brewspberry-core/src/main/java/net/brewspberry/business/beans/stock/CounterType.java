@@ -12,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class CompteurType implements Serializable {
+public class CounterType implements Serializable {
 	/**
 	 * 
 	 */
@@ -28,11 +28,11 @@ public class CompteurType implements Serializable {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_counter_type")
 	private List<StockCounter> cty_counters;
 	
-	public CompteurType() {
+	public CounterType() {
 		super();
 	}
 
-	public CompteurType(int cty_id, String cty_libelle){
+	public CounterType(int cty_id, String cty_libelle){
 		this.cty_id = cty_id;
 		this.cty_libelle = cty_libelle;
 	}

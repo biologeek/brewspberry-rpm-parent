@@ -29,6 +29,7 @@ import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.beans.TheoreticalTemperatureMeasurement;
 import net.brewspberry.business.service.EtapeServiceImpl;
 import net.brewspberry.business.service.TemperatureMeasurementServiceImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
@@ -119,7 +120,12 @@ public class RESTTemperatureService {
 
 		if (stepID > 0) {
 
-			currentStep = stepService.getElementById(stepID);
+			try {
+				currentStep = stepService.getElementById(stepID);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			List<ConcreteTemperatureMeasurement> tmesList = tmesSpecService
 					.getTemperatureMeasurementByEtape(currentStep);
@@ -159,7 +165,12 @@ public class RESTTemperatureService {
 
 			Etape etape = new Etape();
 
-			etape = stepService.getElementById(stepID);
+			try {
+				etape = stepService.getElementById(stepID);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			if (maxPointsNumber <= 0) {
 				maxPointsNumber = Integer.parseInt(ConfigLoader.getConfigByKey(
@@ -209,7 +220,13 @@ public class RESTTemperatureService {
 
 		if (stepID > 0 && uuid != null) {
 
-			Etape step = stepService.getElementById(stepID);
+			Etape step = null;
+			try {
+				step = stepService.getElementById(stepID);
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			response = tmesSpecService.getLastTemperatureByStepAndUUID(step,
 					uuid);

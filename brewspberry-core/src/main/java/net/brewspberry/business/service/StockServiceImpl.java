@@ -16,7 +16,7 @@ import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -97,6 +97,10 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	}
 
 	@Override
+	/**
+	 * Method used to return all stock counters for primary material such as
+	 * amlt, hops and yeasts
+	 */
 	public List<RawMaterialCounter> getStockForPrimaryMaterials() {
 
 		List<RawMaterialCounter> res = new ArrayList<RawMaterialCounter>();
@@ -107,6 +111,9 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	}
 
 	@Override
+	/**
+	 * Method used to return all stock counters for finished products
+	 */
 	public List<FinishedProductCounter> getStockForFinishedProducts() {
 
 		List<FinishedProductCounter> res = new ArrayList<FinishedProductCounter>();
@@ -132,7 +139,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	 * 
 	 * @returns the stock counter with its new value
 	 */
-	public StockCounter toogleStockCounterForProduct(double valueToDecrease, Stockable arg0, CompteurType type)
+	public StockCounter toogleStockCounterForProduct(double valueToDecrease, Stockable arg0, CounterType type)
 			throws StockException, ServiceException {
 
 		StockCounter cptToDecrease = specDAO.getStockCounterByProductAndType(arg0, type);
@@ -169,7 +176,6 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 		} else if (!isAnIngredient) {
 
-			
 			/*
 			 * Checking validity for a finished product
 			 */
@@ -192,31 +198,34 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 			}
 
-		}		
-			
+		}
 
 		cptToDecrease.setCpt_value(cptToDecrease.getCpt_value() - valueToDecrease);
 		cptToDecrease.setCpt_date_maj(new Date());
-		
-		
-		if (cptToDecrease.getCpt_value() < 0){
+
+		if (cptToDecrease.getCpt_value() < 0) {
 			throw new StockException("Stock is < 0 after motion !");
 		}
-		
+
 		return this.genericDAO.update(cptToDecrease);
 
 	}
 
 	@Override
-	public List<StockCounter> getStockCountersByTypes(List<CompteurType> ar0) {
-
+	/**
+	 * Gets stockCounters from list provided
+	 */
+	public List<StockCounter> getStockCountersByTypes(List<CounterType> ar0) {
+		
+		List<StockCounter> result = null;
+		
 		if (ar0 != null && ar0.size() > 0) {
 
-			specDAO.getStockCountersByTypes(ar0);
+			result = specDAO.getStockCountersByTypes(ar0);
 
 		}
 
-		return null;
+		return result;
 	}
 
 }

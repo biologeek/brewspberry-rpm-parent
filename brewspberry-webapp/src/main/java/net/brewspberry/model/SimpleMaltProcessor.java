@@ -32,7 +32,7 @@ public class SimpleMaltProcessor implements Processor<SimpleMalt> {
 	Logger logger = LogManager.getInstance(SimpleMaltProcessor.class.getName());
 	
 	@Override
-	public Boolean record(SimpleMalt parentObject, HttpServletRequest request) {
+	public boolean record(SimpleMalt parentObject, HttpServletRequest request) {
 		
 		 if (request != null){
 			 

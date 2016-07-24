@@ -7,6 +7,9 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Brassin;
@@ -24,20 +27,34 @@ import net.brewspberry.util.LogManager;
 
 public class StepProcessor implements Processor<Object> {
 
-	IGenericService<Etape> etapeService = (IGenericService<Etape>) new EtapeServiceImpl();
-	ISpecificIngredientService maltIngSpecService = (ISpecificIngredientService) new MaltServiceImpl();
-	IGenericService<Malt> maltService = new MaltServiceImpl();
-	IGenericService<Houblon> hopService = new HopServiceImpl();
-	IGenericService<Levure> yeastService = new YeastServiceImpl();
-	ISpecificIngredientService hopIngSpecService = (ISpecificIngredientService) new HopServiceImpl();
-	ISpecificIngredientService levureIngSpecService = (ISpecificIngredientService) new YeastServiceImpl();
+	@Autowired
+	@Qualifier("etapeServiceImpl")
+	IGenericService<Etape> etapeService;
+	@Autowired
+	ISpecificIngredientService maltIngSpecService;
+
+	@Autowired
+	@Qualifier("maltServiceImpl")
+	IGenericService<Malt> maltService;
+	@Autowired
+	@Qualifier("hopServiceImpl")
+	IGenericService<Houblon> hopService;
+	@Autowired
+	@Qualifier("yeastServiceImpl")
+	IGenericService<Levure> yeastService;
+	@Autowired
+	ISpecificIngredientService hopIngSpecService;
+	@Autowired
+	ISpecificIngredientService levureIngSpecService;
+	
+	
 	private Logger logger = LogManager.getInstance(StepProcessor.class
 			.getName());
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 
 	@Override
-	public Boolean record(Object parent, HttpServletRequest request) {
+	public boolean record(Object parent, HttpServletRequest request) {
 
 		/**
 		 * Whether stepID is null or not this will fill the fields
@@ -57,7 +74,7 @@ public class StepProcessor implements Processor<Object> {
 
 			/*
 			 * If parent object parameter is Etape, parent brew is already
-			 * attached
+			 * attached. It's an update of parent step
 			 */
 
 			currentStep = (Etape) parent;

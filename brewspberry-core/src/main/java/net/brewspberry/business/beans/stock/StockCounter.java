@@ -37,7 +37,7 @@ public class StockCounter implements Serializable {
 	private long cpt_id;
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="cpt_cty_id")
-	private CompteurType cpt_counter_type;
+	private CounterType cpt_counter_type;
 	
 	private double cpt_value;
 //	@ManyToOne(fetch=FetchType.EAGER)
@@ -60,11 +60,11 @@ public class StockCounter implements Serializable {
 		this.cpt_id = cpt_id;
 	}
 
-	public CompteurType getCpt_counter_type() {
+	public CounterType getCpt_counter_type() {
 		return cpt_counter_type;
 	}
 
-	public void setCpt_counter_type(CompteurType cpt_counter_type) {
+	public void setCpt_counter_type(CounterType cpt_counter_type) {
 		this.cpt_counter_type = cpt_counter_type;
 	}
 

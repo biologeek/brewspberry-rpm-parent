@@ -2,7 +2,7 @@ package net.brewspberry.business;
 
 import java.util.List;
 
-import net.brewspberry.business.beans.stock.CompteurType;
+import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -16,10 +16,13 @@ public interface ISpecificStockService {
 	public List<RawMaterialCounter> getStockForPrimaryMaterials();
 	public List<FinishedProductCounter> getStockForFinishedProducts();
 	
-	StockCounter toogleStockCounterForProduct(double valueToDecrease, Stockable arg0, CompteurType type)
+	StockCounter toogleStockCounterForProduct(double valueToDecrease, Stockable arg0, CounterType type)
 			throws StockException, ServiceException;
 	
 	
-	public List<StockCounter> getStockCountersByTypes (List<CompteurType> ar0);
+	public List<StockCounter> getStockCountersByTypes (List<CounterType> ar0);
 
+	
+	
+	
 }

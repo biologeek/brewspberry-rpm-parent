@@ -26,7 +26,6 @@ public class Biere extends AbstractFinishedProduct {
 	 */
 	private static final long serialVersionUID = -8568385997181631075L;
 
-	private String beer_name;
 	private String beer_style;
 	private float beer_alcohol;
 	private int beer_density;
@@ -64,14 +63,6 @@ public class Biere extends AbstractFinishedProduct {
 	}
 
 
-	public String getBeer_name() {
-		return beer_name;
-	}
-
-
-	public void setBeer_name(String beer_name) {
-		this.beer_name = beer_name;
-	}
 
 
 	public String getBeer_style() {
@@ -213,8 +204,7 @@ public class Biere extends AbstractFinishedProduct {
 
 	@Override
 	public String toString() {
-		return "Biere [beer_name=" + beer_name
-				+ ", beer_style=" + beer_style + ", beer_alcohol="
+		return "Biere [beer_style=" + beer_style + ", beer_alcohol="
 				+ beer_alcohol + ", beer_density=" + beer_density
 				+ ", beer_color_ebc=" + beer_color_ebc + ", beer_aroma="
 				+ beer_aroma + ", beer_bubbles=" + beer_bubbles
