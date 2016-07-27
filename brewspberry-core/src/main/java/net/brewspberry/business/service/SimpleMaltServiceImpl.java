@@ -8,6 +8,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.dao.SimpleMaltDAOImpl;
+import net.brewspberry.exceptions.ServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -100,6 +101,12 @@ public class SimpleMaltServiceImpl implements IGenericService<SimpleMalt>,
 		}
 
 		return result;
+	}
+
+	@Override
+	public SimpleMalt getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

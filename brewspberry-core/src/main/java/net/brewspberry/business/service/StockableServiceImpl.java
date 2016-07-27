@@ -58,4 +58,10 @@ public class StockableServiceImpl implements IGenericService<Stockable> {
 		return null;
 	}
 
+	@Override
+	public Stockable getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -15,6 +15,7 @@ import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.dao.SimpleHopDaoImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.LogManager;
 
 @Service (value="hopServiceImpl")
@@ -135,6 +136,12 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 		
 		
 		return result;
+	}
+
+	@Override
+	public Houblon getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

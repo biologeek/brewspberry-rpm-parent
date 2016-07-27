@@ -64,4 +64,10 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 		return null;
 	}
 
+	@Override
+	public CounterType getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -10,6 +10,7 @@ import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.dao.SimpleHopDaoImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.LogManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +116,12 @@ public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISp
 		
 		
 		return result;
+	}
+
+	@Override
+	public SimpleHoublon getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

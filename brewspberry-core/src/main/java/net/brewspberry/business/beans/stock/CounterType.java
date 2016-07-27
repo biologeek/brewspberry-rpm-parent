@@ -12,13 +12,23 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class CounterType implements Serializable {
+public enum CounterType implements Serializable {
+
+
+	
+	STOCK_DISPO_FAB(1, "Stock disponible à la fabrication"),
+	STOCK_DLC_DEPASSEE(2, "Stock DLC depassee"),
+	STOCK_RESERVE_FAB(3, "Stock reserve fabrication"),
+	STOCK_DISPO_VENTE(4, "Stock dispo vente"),
+	STOCK_RESERVE_CC(5, "Stock reserve CC"), 
+	STOCK_DEM_CASSE(6, "Demarque casse"),
+	STOCK_EN_FAB(8, "Stock en cours de fabrication"),
+	STOCK_BLOQUE_VENTE(9, "Stock bloqué à la vente"),
+	NONE(99, "none"),
+	STOCK_DEM_QUALITE(7, "Demarque qualite");
+	
 	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9182613664605339295L;
-	/**
-	 * Represents a stock counter type. Example : 75cl bottles, 33cl bottles, 25kg Malt bag 
+	 * Represents a stock counter type. Example : fabrication available stock
 	 */
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)	
 	private int cty_id;
@@ -28,13 +38,11 @@ public class CounterType implements Serializable {
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_counter_type")
 	private List<StockCounter> cty_counters;
 	
-	public CounterType() {
-		super();
-	}
 
-	public CounterType(int cty_id, String cty_libelle){
+	CounterType(int cty_id, String cty_libelle){
 		this.cty_id = cty_id;
 		this.cty_libelle = cty_libelle;
+		this.setCty_date_cre(new Date());
 	}
 
 	public int getCty_id() {

@@ -433,4 +433,10 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 		return logger;
 	}
 
+	@Override
+	public Actioner getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -228,4 +228,10 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 		return result;
 	}
 
+	@Override
+	public StockCounter getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

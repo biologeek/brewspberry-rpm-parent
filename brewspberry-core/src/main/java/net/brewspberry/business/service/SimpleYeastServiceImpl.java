@@ -8,6 +8,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.dao.SimpleYeastDAOImpl;
+import net.brewspberry.exceptions.ServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -95,6 +96,12 @@ public class SimpleYeastServiceImpl implements IGenericService<SimpleLevure>,
 		}
 
 		return result;
+	}
+
+	@Override
+	public SimpleLevure getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

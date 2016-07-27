@@ -17,6 +17,7 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.dao.MaltDAOImpl;
 import net.brewspberry.dao.SimpleMaltDAOImpl;
+import net.brewspberry.exceptions.ServiceException;
 
 @Service (value="maltServiceImpl")
 @Transactional
@@ -115,6 +116,12 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 		}
 
 		return result;
+	}
+
+	@Override
+	public Malt getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

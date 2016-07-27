@@ -15,6 +15,7 @@ import net.brewspberry.business.ISpecificBrassinService;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.dao.BrassinDaoImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.HibernateUtil;
 
 @Service 
@@ -72,6 +73,12 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 	public Brassin getBrassinByBeer(Biere beer) {
 		// TODO Auto-generated method stub
 		return specBrassinDAO.getBrassinByBeer(beer);
+	}
+
+	@Override
+	public Brassin getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

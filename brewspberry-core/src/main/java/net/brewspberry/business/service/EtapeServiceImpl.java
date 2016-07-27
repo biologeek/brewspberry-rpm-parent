@@ -11,6 +11,7 @@ import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.DateManipulator;
 
 @Service 
@@ -75,6 +76,12 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 		
 		this.update(etape);
 		return etape;
+	}
+
+	@Override
+	public Etape getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

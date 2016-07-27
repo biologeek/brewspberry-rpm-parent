@@ -1,6 +1,7 @@
 package net.brewspberry.business.beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -74,6 +76,8 @@ public class Etape implements Serializable{
     @JoinColumn(name="etp_plt_id", updatable=true)
     PalierType etp_palier_type;
     
+    @Transient
+    private List<AbstractIngredient> etp_ingredients;
     
 	public Etape() {
 		super();
@@ -217,8 +221,24 @@ public class Etape implements Serializable{
 		return false;
 	
 	}
-    
-    
-    
+
+	public EtapeType getEtp_etape_type() {
+		return etp_etape_type;
+	}
+
+	public void setEtp_etape_type(EtapeType etp_etape_type) {
+		this.etp_etape_type = etp_etape_type;
+	}
+
+	public List<AbstractIngredient> getEtp_ingredients() {
+		
+		ArrayList<AbstractIngredient> result = new ArrayList<AbstractIngredient>();
+		
+		result.addAll(getEtp_malts());
+		result.addAll(getEtp_houblons());
+		result.addAll(getEtp_levures());
+		
+		return result;
+	}
 
 }

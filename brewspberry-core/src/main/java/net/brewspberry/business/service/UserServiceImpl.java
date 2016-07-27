@@ -16,6 +16,7 @@ import net.brewspberry.business.ISpecificUserDao;
 import net.brewspberry.business.ISpecificUserService;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
@@ -202,6 +203,12 @@ public class UserServiceImpl implements IGenericService<User>,
 		}
 
 		return user;
+	}
+
+	@Override
+	public User getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

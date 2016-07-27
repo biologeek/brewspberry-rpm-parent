@@ -24,6 +24,7 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.dao.TemperatureMeasurementDaoImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.ChartPointsCalculator;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
@@ -442,6 +443,12 @@ public class TemperatureMeasurementServiceImpl implements
 				ChartPointsCalculator.computePointsFrequencyDisplay(numberOfPoints, result.size(), delay));
 
 		return sortedResult;
+	}
+
+	@Override
+	public ConcreteTemperatureMeasurement getElementByName(String name) throws ServiceException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
