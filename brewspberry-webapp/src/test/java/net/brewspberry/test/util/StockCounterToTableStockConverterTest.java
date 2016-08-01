@@ -31,7 +31,7 @@ public class StockCounterToTableStockConverterTest {
 	@Before
 	public void init() {
 
-		stk1.setCpt_counter_type(new CounterType(1, "blabla"));
+		stk1.setCpt_counter_type(CounterType.STOCK_DISPO_FAB);
 		stk1.setCpt_unit(StockUnit.BOUTEILLE_33_CL);
 		stk1.setCpt_value(10); // 10 33cL bottles
 
@@ -46,7 +46,7 @@ public class StockCounterToTableStockConverterTest {
 
 		StockCounter stk2 = new FinishedProductCounter();
 
-		stk2.setCpt_counter_type(new CounterType(2, "azerty"));
+		stk2.setCpt_counter_type(CounterType.STOCK_DLC_DEPASSEE);
 		stk2.setCpt_unit(StockUnit.GRAMME);
 		stk2.setCpt_value(123); // 123g
 		

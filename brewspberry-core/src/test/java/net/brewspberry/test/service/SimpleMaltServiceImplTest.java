@@ -21,6 +21,7 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.service.SimpleMaltServiceImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.test.AbstractTest;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 
@@ -70,7 +71,7 @@ public class SimpleMaltServiceImplTest extends AbstractTest {
 	
 	
 	@Test
-	public void shouldGetById(){
+	public void shouldGetById() throws ServiceException{
 		
 		
 		SimpleMalt res = sMalService.getElementById(1);

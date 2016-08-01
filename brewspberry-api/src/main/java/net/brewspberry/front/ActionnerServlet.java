@@ -24,6 +24,7 @@ import net.brewspberry.business.service.ActionerServiceImpl;
 import net.brewspberry.business.service.BatchLauncherService;
 import net.brewspberry.business.service.BrassinServiceImpl;
 import net.brewspberry.business.service.EtapeServiceImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.DeviceParser;
 import net.brewspberry.util.LogManager;
@@ -235,7 +236,12 @@ public class ActionnerServlet extends HttpServlet {
 					}
 					
 					
-					dactioner = genActionerService.getElementById(did);
+					try {
+						dactioner = genActionerService.getElementById(did);
+					} catch (ServiceException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					
 					if (dactioner.getAct_id() != 0) {
 

@@ -2,6 +2,7 @@ package net.brewspberry.business;
 
 import java.util.List;
 
+import net.brewspberry.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
@@ -23,6 +24,6 @@ public interface ISpecificStockService {
 	public List<StockCounter> getStockCountersByTypes (List<CounterType> ar0);
 
 	
-	
+	public void processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException;
 	
 }

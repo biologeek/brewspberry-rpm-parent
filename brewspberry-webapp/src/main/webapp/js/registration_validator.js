@@ -44,8 +44,8 @@ function validateForm (){
 		 
 		if (writtenField == null && writtenSelect == null && divSelect == null){
 		
-			$(".errormessages").append("<div class="alert alert-danger"> \
-			    <a class="close" data-dismiss="alert" href="#">&times;</a> \
+			$(".errormessages").append("<div class=\"alert alert-danger\"> \
+			    <a class=\"close\" data-dismiss=\"alert\" href=\"#\">&times;</a> \
 			    <strong>Error!</strong> No type found for field "+value.find("label").text()+". \
 			</div>");
 			
@@ -123,7 +123,7 @@ function blockSubmitButton(){
 
 	var submit = curElement.closest('form').find(':submit');
 
-	if (submit.is(':disabled'){
+	if (submit.is(':disabled')){
 		submit.attr('disabled', true);
 	}
 }

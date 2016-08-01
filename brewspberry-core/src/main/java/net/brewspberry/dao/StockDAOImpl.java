@@ -1,5 +1,6 @@
 package net.brewspberry.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -22,7 +23,6 @@ import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.exceptions.DAOException;
 
-
 @Repository
 public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDao {
 
@@ -32,15 +32,13 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getWholeStockForProduct(Stockable arg0) {
-		
+
 		Session session = sessionFactory.getCurrentSession();
-		
-		
+
 		Criteria crit = session.createCriteria(StockCounter.class);
 		crit.add(Restrictions.eqOrIsNull("cpt_product", arg0));
 		crit.addOrder(Order.asc("cpt_id"));
-		
-		
+
 		return (List<StockCounter>) crit.list();
 	}
 
@@ -71,20 +69,20 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getAllElements() {
-		
+
 		return (List<StockCounter>) sessionFactory.getCurrentSession().createQuery("from StockCounter").list();
 	}
 
 	@Override
 	public void deleteElement(long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void deleteElement(StockCounter arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -92,6 +90,7 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
@@ -103,11 +102,11 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<RawMaterialCounter> getStockForPrimaryMaterials() {
-		
+
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(RawMaterialCounter.class);
-		
+
 		// Getting all Abstract ingedients
-				
+
 		return (List<RawMaterialCounter>) crit.list();
 	}
 
@@ -116,9 +115,9 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	public List<FinishedProductCounter> getStockForFinishedProducts() {
 
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(FinishedProductCounter.class);
-		
+
 		// Getting all Abstract ingedients
-				
+
 		return (List<FinishedProductCounter>) crit.list();
 	}
 
@@ -131,22 +130,52 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getStockCountersByTypes(List<CounterType> ar0) {
-		
+
 		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
 		Disjunction or = Restrictions.disjunction();
-		
-		for(CounterType cpt : ar0){
-			
+
+		for (CounterType cpt : ar0) {
+
 			or.add(Restrictions.eq("cpt_counter_type", cpt));
-			
+
 		}
-		
+
 		crit.add(or);
-		
-		
-		
+
 		return (List<StockCounter>) crit.list();
 	}
 
+	@Override
+	public List<StockCounter> batchSaveStockCounter(List<StockCounter> listOfStockCounters) {
+
+		int i = 0;
+		List<StockCounter> result = new ArrayList<StockCounter>();
+		
+		
+		Session session = sessionFactory.getCurrentSession();
+
+		for (StockCounter object : listOfStockCounters) {
+
+			try {
+				long stkID = (long) session.save(object);
+
+				if (i % 50 == 0) { // Same as the JDBC batch size
+					// flush a batch of inserts and release memory:
+					session.flush();
+					session.clear();
+				}
+				i++;
+				
+				result.add(object);
+				
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+
+		}
+
+		return null;
+	}
 
 }

@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Etape;
@@ -23,16 +24,19 @@ import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.util.StockMotionValidator;
 
+@Component
 public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> {
 
 	@Autowired
 	@Qualifier("counterTypeServiceImpl")
 	IGenericService<CounterType> counterTypeService;
+	
+	
 	private Logger logger = LogManager.getInstance(RawMaterialStockCounterParserForStep.class.getName());
 
 	@Override
 	/**
-	 * Parses a step to extract stock counters from
+	 * Parses a step to extract stock counters from ingredients
 	 */
 	public List<RawMaterialCounter> parse(Etape objectToBeParsed) {
 
@@ -100,7 +104,7 @@ public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialC
 						 */
 
 						double stockMotionValue = newObj.getCpt_value() - oldObj.getCpt_value();
-						
+
 						// VALIDATING STOCK MOTION AND ADDING IT TO LIST
 						if (StockMotionValidator.checkIfStockMotionSatisfiesRules(
 								currentStockMotion.getStm_counter_from(), currentStockMotion.getStm_counter_to())) {
@@ -126,7 +130,11 @@ public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialC
 				currentStockMotion.setStm_counter_to(CounterType.STOCK_EN_FAB);
 
 				currentStockMotion.setStm_value(newObj.getCpt_value());
-				stockMotionsResult.add(currentStockMotion);
+				// VALIDATING STOCK MOTION AND ADDING IT TO LIST
+				if (StockMotionValidator.checkIfStockMotionSatisfiesRules(currentStockMotion.getStm_counter_from(),
+						currentStockMotion.getStm_counter_to())) {
+					stockMotionsResult.add(currentStockMotion);
+				}
 			}
 
 		}

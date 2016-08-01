@@ -2,7 +2,7 @@
  * @author : Xavier CARON
  * @version : 0.1
  * 
- * This script retrieves last temperature from service and displays it 
+ * This script retrieves last temperature from service and displays it
  * 
  ******************************************************************************/
 
@@ -14,7 +14,8 @@ var refreshDelay = 5000; // Refreshes every 5 s
 
 
 /**
- * divTofillIDsList contains IDs of fields to fill in page. Values are UUIDs o each actionner 
+ * divTofillIDsList contains IDs of fields to fill in page. Values are UUIDs o
+ * each actionner
  * 
  * format of divToFillIDsList : TEMP\step\uuid
  * 
@@ -39,7 +40,7 @@ function execute (step, uuid, divToFillIDsList, maxNumberOfPoints, timeRange){
 			
 			for (element in rawData){
 				
-				if (checkIfUUIDExistsInPage('TEMP'+element.step+element.uuid, divToFillIDsList){
+				if (checkIfUUIDExistsInPage('TEMP'+element.step+element.uuid, divToFillIDsList)){
 					
 					/*
 					 * Modifies div element text with data retrieved from serice
@@ -93,12 +94,13 @@ function getDataFromService (params, callback){
 		}
 	
 }
+}
 	
 	
 	
 /**
  * Checks if UUID from service is present in page
- *  
+ * 
  * @param uuidFromService
  * @param uuidListFromPage
  * @returns

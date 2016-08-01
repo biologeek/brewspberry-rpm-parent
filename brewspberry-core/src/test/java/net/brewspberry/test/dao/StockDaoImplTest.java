@@ -46,20 +46,19 @@ public class StockDaoImplTest extends AbstractTest{
 		
 		
 		List<CounterType> list = new ArrayList<CounterType>();
-		
+		/*
 		CounterType typ1 = new CounterType();
 		typ1.setCty_id(4);
+		*/
 		
-		list.add(typ1);
+		
+		list.add(CounterType.STOCK_DISPO_VENTE);
 		List<StockCounter> result = specDao.getStockCountersByTypes(list);
 		
 		Assert.assertEquals(0, result.size());
 		
 		
-		CounterType typ2 = new CounterType();
-		
-		typ2.setCty_id(1);
-		list.add(typ2);
+		list.add(CounterType.STOCK_DISPO_FAB);
 		
 		List<StockCounter> res = specDao.getStockCountersByTypes(list);
 		

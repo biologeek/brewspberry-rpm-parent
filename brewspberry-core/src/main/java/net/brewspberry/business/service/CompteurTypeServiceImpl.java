@@ -4,12 +4,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.exceptions.ServiceException;
 
+@Service("compteurTypeServiceImpl")
+@Transactional
 public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 
 	
@@ -20,13 +24,13 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 	@Override
 	public CounterType save(CounterType arg0) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return genericDao.save(arg0);
 	}
 
 	@Override
 	public CounterType update(CounterType arg0) {
 		// TODO Auto-generated method stub
-		return null;
+		return genericDao.update(arg0);
 	}
 
 	@Override
@@ -43,31 +47,31 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 	@Override
 	public List<CounterType> getAllElements() {
 		// TODO Auto-generated method stub
-		return null;
+		return genericDao.getAllElements();
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		genericDao.deleteElement(id);
 
 	}
 
 	@Override
 	public void deleteElement(CounterType arg0) {
-		// TODO Auto-generated method stub
+		genericDao.deleteElement(arg0);
 
 	}
 
 	@Override
 	public List<CounterType> getAllDistinctElements() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return genericDao.getAllDistinctElements();
 	}
 
 	@Override
 	public CounterType getElementByName(String name) throws ServiceException {
 		// TODO Auto-generated method stub
-		return null;
+		return genericDao.getElementByName(name);
 	}
 
 }

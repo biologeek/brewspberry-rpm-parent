@@ -65,7 +65,6 @@ public class AddOrUpdateBrew extends HttpServlet {
 	IGenericService<Houblon> hopService;
 	@Autowired
 	IGenericService<Levure> yeastService;
-	
 
 	@Autowired
 	@Qualifier("simpleMaltServiceImpl")
@@ -74,7 +73,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 	IGenericService<SimpleHoublon> simpleHopService;
 	@Autowired
 	IGenericService<SimpleLevure> simpleYeastService;
-	
+
 	@Autowired
 	@Qualifier("hopServiceImpl")
 	ISpecificIngredientService hopIngSpecService;
@@ -83,6 +82,14 @@ public class AddOrUpdateBrew extends HttpServlet {
 	ISpecificIngredientService levureIngSpecService;
 	@Autowired
 	IGenericService<Etape> etapeService;
+
+	@Autowired
+	@Qualifier("stepProcessor")
+	Processor<Object> stepProc;
+
+	@Autowired
+	@Qualifier("brewProcessorDelegate")
+	Processor<Brassin> brewProc;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -98,16 +105,15 @@ public class AddOrUpdateBrew extends HttpServlet {
 	 * 
 	 *      Lors de l'affichage
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-		
-		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+		response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP
+																					// 1.1.
 		response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
 		response.setDateHeader("Expires", 0); // Proxies.
-			
-		if (request.getParameter("bid") != null
-				&& request.getParameter("bid") != "") {
+
+		if (request.getParameter("bid") != null && request.getParameter("bid") != "") {
 
 			/*
 			 * Mise à jour du brassin, - on récupère les données du brassin - on
@@ -126,29 +132,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 
 				if (currentBrassin != null) {
 
-					request.setAttribute("dateDebutValue",
-							sdf.format(currentBrassin.getBra_debut()));
-					if (currentBrassin.getBra_fin() != null){
-					request.setAttribute("dateFinValue",
-							sdf.format(currentBrassin.getBra_fin()));
-					}
-
-					request.setAttribute("brassinNomValue",
-							currentBrassin.getBra_nom());
-					request.setAttribute("brassinQteValue",
-							currentBrassin.getBra_quantiteEnLitres());
-					request.setAttribute("statutValue",
-							currentBrassin.getBra_statut());
-					request.setAttribute(
-							"JSONIngredientsValue",
-							generateJSON(maltService.getAllElements(),
-									hopService.getAllElements(),
-									yeastService.getAllElements()));
-					// Les ingrédients sont gérés par la suite dans la page web
-					// via du JS
-
-					request.setAttribute("brassinIDValue",
-							currentBrassin.getBra_id());
+					setBrewAttributes(request);
 				} else
 					throw new NullPointerException();
 
@@ -156,7 +140,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 				throw new NumberFormatException();
 
 		}
-		
+
 		// Création de brassin
 		// On passe les paramètres pour peupler les listes
 		logger.fine("Création d'un brassin");
@@ -173,9 +157,25 @@ public class AddOrUpdateBrew extends HttpServlet {
 		request.setAttribute("yeastList", yeastList);
 		System.out.print(request.getAttribute("maltList"));
 
-		request.getRequestDispatcher("add_update.jsp").forward(request,
-				response);
+		request.getRequestDispatcher("add_update.jsp").forward(request, response);
 
+	}
+
+	private void setBrewAttributes(HttpServletRequest request) {
+		request.setAttribute("dateDebutValue", sdf.format(currentBrassin.getBra_debut()));
+		if (currentBrassin.getBra_fin() != null) {
+			request.setAttribute("dateFinValue", sdf.format(currentBrassin.getBra_fin()));
+		}
+
+		request.setAttribute("brassinNomValue", currentBrassin.getBra_nom());
+		request.setAttribute("brassinQteValue", currentBrassin.getBra_quantiteEnLitres());
+		request.setAttribute("statutValue", currentBrassin.getBra_statut());
+		request.setAttribute("JSONIngredientsValue",
+				generateJSON(maltService.getAllElements(), hopService.getAllElements(), yeastService.getAllElements()));
+		// Les ingrédients sont gérés par la suite dans la page web
+		// via du JS
+
+		request.setAttribute("brassinIDValue", currentBrassin.getBra_id());
 	}
 
 	/**
@@ -184,8 +184,8 @@ public class AddOrUpdateBrew extends HttpServlet {
 	 * 
 	 *      Lors de l'envoi du formulaire
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 		Enumeration<String> parameterNames = request.getParameterNames();
@@ -213,7 +213,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 
 		if (request.getParameter("typeOfAdding") != null) {
 			String typeOfAdding = (String) request.getParameter("typeOfAdding");
-			
+
 			switch (typeOfAdding) {
 
 			/*
@@ -221,19 +221,15 @@ public class AddOrUpdateBrew extends HttpServlet {
 			 */
 			case "brew":
 
-				Processor<Brassin> brewProc = new BrewProcessorDelegate();
-
 				if (request.getParameter("brassinID") != null && !request.getParameter("brassinID").equals("")) {
 
 					/*
 					 * Updating
 					 */
-					logger.info("Updating brew with ID : "
-							+ request.getParameter("brassinID"));
+					logger.info("Updating brew with ID : " + request.getParameter("brassinID"));
 					try {
 						Brassin currentBrew = brassinService
-								.getElementById(Long.parseLong((String) request
-										.getParameter("brassinID")));
+								.getElementById(Long.parseLong((String) request.getParameter("brassinID")));
 
 						brewProc.record(currentBrew, request);
 
@@ -254,20 +250,15 @@ public class AddOrUpdateBrew extends HttpServlet {
 
 			case "step":
 
-				Processor<Object> stepProc = new StepProcessor();
 				Etape currentStep = null;
-				
 
 				String stepID = (String) request.getAttribute("step_id");
 
-				
-				
 				if (stepID != null) {
 					// Updating step
 
 					try {
-						currentStep = etapeService.getElementById(Long
-								.parseLong(stepID));
+						currentStep = etapeService.getElementById(Long.parseLong(stepID));
 
 						logger.info("Updating step with ID " + stepID);
 
@@ -280,15 +271,15 @@ public class AddOrUpdateBrew extends HttpServlet {
 					}
 				} else {
 
-					if (request.getParameter("bid") != null){
-						
+					if (request.getParameter("bid") != null) {
+
 						try {
-							
+
 							currentBrassin = brassinService.getElementById(Long.parseLong(request.getParameter("bid")));
-						} catch (Exception e){
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
+
 					}
 					stepProc.record(currentBrassin, request);
 
@@ -299,16 +290,14 @@ public class AddOrUpdateBrew extends HttpServlet {
 
 		}
 
-		
 		if (currentBrassin.getBra_id() > 0)
-			response.sendRedirect("Accueil?bid="+currentBrassin.getBra_id());
+			response.sendRedirect("Accueil?bid=" + currentBrassin.getBra_id());
 		else
 			response.sendRedirect("Accueil");
 
 	}
 
-	public String generateJSON(List<Malt> malts, List<Houblon> hops,
-			List<Levure> yeasts) {
+	public String generateJSON(List<Malt> malts, List<Houblon> hops, List<Levure> yeasts) {
 
 		String JSONmalts = "";
 		String JSONhops = "";
@@ -318,12 +307,9 @@ public class AddOrUpdateBrew extends HttpServlet {
 			for (Malt malt : malts) {
 				JSONmalts = JSONmalts + "{\"typeIng\" :\"malt\",";
 
-				JSONmalts = JSONmalts + "\"id\" : \"" + malt.getStb_id()
-						+ "\", " + "\"desc\" : \"" + malt.getIng_desc()
-						+ "\", " + "\"cereale\" : \"" + malt.getSmal_cereale()
-						+ "\", " + "\"type\" : \"" + malt.getSmal_type()
-						+ "\", " + "\"qte\" : \"" + malt.getIng_quantite()
-						+ "\"},";
+				JSONmalts = JSONmalts + "\"id\" : \"" + malt.getStb_id() + "\", " + "\"desc\" : \"" + malt.getIng_desc()
+						+ "\", " + "\"cereale\" : \"" + malt.getSmal_cereale() + "\", " + "\"type\" : \""
+						+ malt.getSmal_type() + "\", " + "\"qte\" : \"" + malt.getIng_quantite() + "\"},";
 			}
 		}
 		if (hops != null && hops.size() > 0) {
@@ -331,21 +317,17 @@ public class AddOrUpdateBrew extends HttpServlet {
 			for (Houblon hop : hops) {
 				JSONhops = JSONhops + "{\"typeIng\" :\"hop\",";
 
-				JSONhops = JSONhops + "\"id\" : \"" + hop.getStb_id() + "\", "
-						+ "\"variete\" : \"" + hop.getShbl_variete() + "\", "
-						+ "\"acide_alpha\" : \"" + hop.getShbl_acide_alpha()
-						+ "\", " + "\"qte\" : \"" + hop.getIng_quantite()
-						+ "\"},";
+				JSONhops = JSONhops + "\"id\" : \"" + hop.getStb_id() + "\", " + "\"variete\" : \""
+						+ hop.getShbl_variete() + "\", " + "\"acide_alpha\" : \"" + hop.getShbl_acide_alpha() + "\", "
+						+ "\"qte\" : \"" + hop.getIng_quantite() + "\"},";
 			}
 		}
 		if (yeasts != null && yeasts.size() > 0) {
 			for (Levure yeast : yeasts) {
 				JSONyeasts = JSONyeasts + "{\"typeIng\" :\"yeast\",";
 
-				JSONyeasts = JSONyeasts + "\"id\" : \"" + yeast.getStb_id()
-						+ "\", " + "\"desc\" : \"" + yeast.getIng_desc()
-						+ "\", " + "\"qte\" : \"" + yeast.getIng_quantite()
-						+ "\"},";
+				JSONyeasts = JSONyeasts + "\"id\" : \"" + yeast.getStb_id() + "\", " + "\"desc\" : \""
+						+ yeast.getIng_desc() + "\", " + "\"qte\" : \"" + yeast.getIng_quantite() + "\"},";
 
 			}
 			JSONyeasts = JSONyeasts.substring(0, JSONyeasts.length() - 1);
@@ -457,8 +439,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 		return levureIngSpecService;
 	}
 
-	public void setLevureIngSpecService(
-			ISpecificIngredientService levureIngSpecService) {
+	public void setLevureIngSpecService(ISpecificIngredientService levureIngSpecService) {
 		this.levureIngSpecService = levureIngSpecService;
 	}
 

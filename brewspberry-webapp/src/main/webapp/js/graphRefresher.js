@@ -21,10 +21,29 @@ var chartData = {};
 
 
 var currentLastID = 0;
-	//var testData = [{"date": "2016-03-16 18:15:55.0","temp": 16155,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:56.0","temp": 15980,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:57.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:58.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:59.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:00.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:01.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:02.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:03.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"},{"date": "2016-03-16 18:15:04.0","temp": 16187,"name": "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"}];
+	// var testData = [{"date": "2016-03-16 18:15:55.0","temp": 16155,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:56.0","temp": 15980,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:57.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:58.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:59.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:00.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:01.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:02.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:03.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid":
+	// "28-000006ddab6e"},{"date": "2016-03-16 18:15:04.0","temp": 16187,"name":
+	// "PROBE0","step": 8,"id": 1277,"brew": 7,"uuid": "28-000006ddab6e"}];
 
 
-//buildGraph(buildDataSetsForChartJS(testData), 'graph');
+// buildGraph(buildDataSetsForChartJS(testData), 'graph');
 
 function execute (htmlID, step, probe){
 	
@@ -55,8 +74,7 @@ function execute (htmlID, step, probe){
 }
 	
 	/**
-	 * probe is a list of probes Receiving 
-	 * data formatted as such :
+	 * probe is a list of probes Receiving data formatted as such :
 	 * 
 	 * probe;date;temperature
 	 * 
@@ -129,13 +147,13 @@ function execute (htmlID, step, probe){
 
 			/* if null => all probes */
 		
-		//console.log('Calling '+address);
+		// console.log('Calling '+address);
 		rawDataFromServlet = null;
 		// If query is OK setting rawDataFromServlet
 		jQuery.ajax (address,{
 			
 			success : function (result){
-				//console.log('Call success');
+				// console.log('Call success');
 		
 				rawDataFromServlet = result;
 			
@@ -168,8 +186,8 @@ function execute (htmlID, step, probe){
 	}
 	
 	/**
-	 * Receiving data as a list of "uuid":[{probe;date;temperature}, ...] converting them to
-	 * ChartJS datasets. Example :
+	 * Receiving data as a list of "uuid":[{probe;date;temperature}, ...]
+	 * converting them to ChartJS datasets. Example :
 	 * 
 	 * [{"date":"2016-03-16
 	 * 18:15:55.0","temp":16187,"name":"PROBE0","step":8,"id":1277,"brew":7,"uuid":"28-000006ddab6e"},...]
@@ -184,7 +202,7 @@ function execute (htmlID, step, probe){
 		var datasets = {};
 		var data = [];
 		
-		//console.log (rawDataFromServlet);		
+		// console.log (rawDataFromServlet);
 
 		if (typeof rawDataFromServlet == "string"){
 			
@@ -195,8 +213,8 @@ function execute (htmlID, step, probe){
 		}
 		
 		/*
-		 * Starting with concreteTemperatureMeasurements,
-		 * For each item (uuid: [ temperature, ...]), puts temperature value in yValues 
+		 * Starting with concreteTemperatureMeasurements, For each item (uuid: [
+		 * temperature, ...]), puts temperature value in yValues
 		 */
 
 		jQuery.each (data.ConcreteTemperatureMeasurement, function (i, item){
@@ -218,9 +236,9 @@ function execute (htmlID, step, probe){
 		});
 
 		/*
-		 * Now working on Theoretical values.
-		 * Usually, there is only one theoretical temperature but in case
-		 * there is more than one, keeps looping over object
+		 * Now working on Theoretical values. Usually, there is only one
+		 * theoretical temperature but in case there is more than one, keeps
+		 * looping over object
 		 * 
 		 */
 		jQuery.each (data.TheoreticalTemperatureMeasurement, function (i, item){
@@ -289,14 +307,14 @@ function execute (htmlID, step, probe){
 		var array=[];
 
 		jQuery.each (data, function (i, item){
-			//console.log(formatDateFromJavaToJS(item.date)+ ' '+array[0]);
-			//console.log(array);
+			// console.log(formatDateFromJavaToJS(item.date)+ ' '+array[0]);
+			// console.log(array);
 			if (typeof array[formatDateFromJavaToJS(item.date)] != 'undefined'){
 				array[formatDateFromJavaToJS(item.date)].push(item.temp);
 			} else {
 				array[formatDateFromJavaToJS(item.date)] = [item.temp];
 			}
-						//console.log(array);
+						// console.log(array);
 
 			currentLastID = item.id;
 			
@@ -352,12 +370,13 @@ function execute (htmlID, step, probe){
 					var length = 0;
 				}
 				
-				//console.log(length);
+				// console.log(length);
 		
 				for (var i = 0; i < length; i++){
 					var remainingToRemove = liveChart.datasets[i].points.length - maxPointsNumber;
 					for (var j = 0; j < remainingToRemove ; j++){
-					//	console.log('Removing data : '+ liveChart.datasets[i].points.length-maxPointsNumber);
+					// console.log('Removing data : '+
+					// liveChart.datasets[i].points.length-maxPointsNumber);
 						liveChart.removeData();	
 					}
 				}

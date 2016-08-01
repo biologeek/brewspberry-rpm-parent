@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.sql.rowset.serial.SerialException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +14,16 @@ import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
+import net.brewspberry.business.beans.builders.IngredientStockCounterBuilder;
+import net.brewspberry.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
+import net.brewspberry.business.beans.stock.FinishedProductStockMotion;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
+import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.business.exceptions.StockException;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.exceptions.ServiceException;
 
 /**
@@ -200,6 +201,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 		}
 
+		// Decreasing stock value
 		cptToDecrease.setCpt_value(cptToDecrease.getCpt_value() - valueToDecrease);
 		cptToDecrease.setCpt_date_maj(new Date());
 
@@ -216,9 +218,9 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	 * Gets stockCounters from list provided
 	 */
 	public List<StockCounter> getStockCountersByTypes(List<CounterType> ar0) {
-		
+
 		List<StockCounter> result = null;
-		
+
 		if (ar0 != null && ar0.size() > 0) {
 
 			result = specDAO.getStockCountersByTypes(ar0);
@@ -232,6 +234,150 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	public StockCounter getElementByName(String name) throws ServiceException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	/**
+	 * From the stock motions list, retrieves corresponding stock counters and
+	 * updates stock value
+	 */
+	public void processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException {
+
+		if (motions.size() > 0) {
+
+			for (AbstractStockMotion stockMotion : motions) {
+				Stockable reference = null;
+
+				// Getting either ingredient or product
+				if (stockMotion instanceof RawMaterialStockMotion) {
+					reference = ((RawMaterialStockMotion) stockMotion).getStr_product();
+				} else if (stockMotion instanceof FinishedProductStockMotion) {
+
+					reference = ((FinishedProductStockMotion) stockMotion).getStf_product();
+
+				}
+
+				// Retrieving stock counters in datasource
+				List<StockCounter> currentStockCountersForProduct = this.getWholeStockForProduct(reference);
+
+				StockCounter isStockCounterFromExistingInDB = checkIfStockCountersListContainsCounterType(
+						currentStockCountersForProduct, stockMotion.getStm_counter_from());
+				StockCounter isStockCounterToExistingInDB = checkIfStockCountersListContainsCounterType(
+						currentStockCountersForProduct, stockMotion.getStm_counter_to());
+
+				isStockCounterFromExistingInDB = createOrUpdateStockCounterWithStockValue(stockMotion,
+						isStockCounterFromExistingInDB);
+				isStockCounterToExistingInDB = createOrUpdateStockCounterWithStockValue(stockMotion,
+						isStockCounterToExistingInDB);
+
+				// Deleting unnecessary counters
+
+				try {
+					if (isStockCounterFromExistingInDB.getCpt_value() == 0) {
+						this.deleteElement(isStockCounterFromExistingInDB);
+					} else {
+
+						this.saveOrUpdate(isStockCounterFromExistingInDB);
+					}
+					if (isStockCounterToExistingInDB.getCpt_value() == 0) {
+						this.deleteElement(isStockCounterToExistingInDB);
+					} else {
+
+						this.saveOrUpdate(isStockCounterToExistingInDB);
+
+					}
+				} catch (Exception e) {
+
+					throw new ServiceException("Could not save stock counter");
+
+				}
+
+			}
+		}
+
+	}
+
+	/**
+	 * Saves stockCounter if does not have an ID, updates if ID > 0
+	 * 
+	 * @param isStockCounterToExistingInDB
+	 * @return
+	 * @throws Exception
+	 */
+	private StockCounter saveOrUpdate(StockCounter isStockCounterToExistingInDB) throws Exception {
+		StockCounter result = null;
+
+		if (isStockCounterToExistingInDB.getCpt_id() > 0) {
+			result = this.update(isStockCounterToExistingInDB);
+		} else {
+			result = this.save(isStockCounterToExistingInDB);
+		}
+
+		return result;
+
+	}
+
+	private StockCounter createOrUpdateStockCounterWithStockValue(AbstractStockMotion stockMotion,
+			StockCounter isStockCounterExistingInDB) {
+		if (isStockCounterExistingInDB != null) {
+
+			/*
+			 * if stock counter exists updating value
+			 */
+			updateStockValueWithStockMotion(isStockCounterExistingInDB, stockMotion);
+
+		} else {
+
+			/*
+			 * if stock counter does not exist create it
+			 */
+			if (stockMotion instanceof RawMaterialStockMotion) {
+				isStockCounterExistingInDB = (StockCounter) new IngredientStockCounterBuilder()
+						.type(stockMotion.getStm_counter_from()).unit(stockMotion.getStm_unit())
+						.value(-stockMotion.getStm_value()).build();
+			}
+
+		}
+		return isStockCounterExistingInDB;
+	}
+
+	private void updateStockValueWithStockMotion(StockCounter isStockCounterFromExistingInDB,
+			AbstractStockMotion stockMotion) {
+
+		if (isStockCounterFromExistingInDB.getCpt_value() > Math.abs(stockMotion.getStm_value())) {
+			double newStock = 0.0D;
+
+			/*
+			 * Stock motion from counter1 to counter2 with value 2 means "I
+			 * transfer 2 quantities from counter1 to counter2 Thus, decrease
+			 * counter1 and increase counter2
+			 */
+			if (isStockCounterFromExistingInDB.getCpt_counter_type().equals(stockMotion.getStm_counter_from())) {
+
+				newStock = isStockCounterFromExistingInDB.getCpt_value() - stockMotion.getStm_value();
+
+			} else if (isStockCounterFromExistingInDB.getCpt_counter_type().equals(stockMotion.getStm_counter_to())) {
+
+				newStock = isStockCounterFromExistingInDB.getCpt_value() + stockMotion.getStm_value();
+
+			}
+			isStockCounterFromExistingInDB.setCpt_date_maj(new Date());
+
+		}
+
+	}
+
+	private StockCounter checkIfStockCountersListContainsCounterType(List<StockCounter> list, CounterType type) {
+
+		for (StockCounter stk : list) {
+
+			if (stk.getCpt_counter_type().equals(type)) {
+				return stk;
+			}
+		}
+
+		return null;
+
 	}
 
 }

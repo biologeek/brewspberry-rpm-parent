@@ -24,4 +24,6 @@ public interface ISpecificStockDao {
 	public StockCounter getStockCounterByProductAndType (Stockable arg0, CounterType arg1); 
 	
 	public List<StockCounter> getStockCountersByTypes (List<CounterType> ar0);
+	
+	public List<StockCounter> batchSaveStockCounter(List<StockCounter> listOfStockCounters);
 }

@@ -18,14 +18,32 @@ public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {
 
 	@Override
 	public CounterType save(CounterType arg0) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		CounterType result = null;
+		long id = (long) sessionFactory.getCurrentSession().save(arg0);
+		
+		if (id > 0){
+			
+			result = this.getElementById(id);
+			
+		}
+		
+		
+		return result;
 	}
 
 	@Override
 	public CounterType update(CounterType arg0) {
-		// TODO Auto-generated method stub
-		return null;
+
+		try{
+			sessionFactory.getCurrentSession().update(arg0);
+			return arg0;
+
+		} catch(Exception e){
+			return null;
+			
+		}
+		
 	}
 
 	@Override
