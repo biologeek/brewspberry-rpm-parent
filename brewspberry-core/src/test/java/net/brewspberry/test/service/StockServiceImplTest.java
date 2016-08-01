@@ -28,6 +28,7 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.StockUnit;
@@ -145,7 +146,7 @@ public class StockServiceImplTest extends AbstractTest {
 
 	}
 
-	public void shouldProcessStockMotionsForUpdatingStockCounters() {
+	public void shouldProcessStockMotionsForUpdatingStockCounters() throws ServiceException {
 
 		List<AbstractStockMotion> stockMotions = new ArrayList<AbstractStockMotion>();
 		List<StockCounter> stockCounters = new ArrayList<StockCounter>();
@@ -158,8 +159,17 @@ public class StockServiceImplTest extends AbstractTest {
 		
 		for (StockCounter stick : stockCounters){
 			
+			
+			if (stick.getCpt_counter_type().equals(CounterType.STOCK_DISPO_FAB)){
+				Assert.assertTrue(stick instanceof RawMaterialCounter);
+				if(((RawMaterialCounter) stick).getCpt_product().getIng_fournisseur().equals("Weyermann")){
+					
+					Assert.assertTrue(stick.getCpt_value() == 2);
+					
+				}
+			}
 		}
-		Assert.assertEquals(stockCounters.get(0).getCpt_value(), actual);
+		
 
 	}
 

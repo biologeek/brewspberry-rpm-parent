@@ -241,8 +241,9 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	 * From the stock motions list, retrieves corresponding stock counters and
 	 * updates stock value
 	 */
-	public void processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException {
+	public List<StockCounter> processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException {
 
+		List<StockCounter> result = new ArrayList<StockCounter>();
 		if (motions.size() > 0) {
 
 			for (AbstractStockMotion stockMotion : motions) {
@@ -271,21 +272,23 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 						isStockCounterToExistingInDB);
 
 				// Deleting unnecessary counters
-
+				StockCounter savedCounter = null;
 				try {
 					if (isStockCounterFromExistingInDB.getCpt_value() == 0) {
 						this.deleteElement(isStockCounterFromExistingInDB);
 					} else {
 
-						this.saveOrUpdate(isStockCounterFromExistingInDB);
+						savedCounter = this.saveOrUpdate(isStockCounterFromExistingInDB);
 					}
 					if (isStockCounterToExistingInDB.getCpt_value() == 0) {
 						this.deleteElement(isStockCounterToExistingInDB);
 					} else {
 
-						this.saveOrUpdate(isStockCounterToExistingInDB);
+						savedCounter = this.saveOrUpdate(isStockCounterToExistingInDB);
 
 					}
+					
+					result.add(savedCounter);
 				} catch (Exception e) {
 
 					throw new ServiceException("Could not save stock counter");
@@ -294,6 +297,8 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 			}
 		}
+		
+		return result;
 
 	}
 

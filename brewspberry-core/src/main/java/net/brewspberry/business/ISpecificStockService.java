@@ -24,6 +24,6 @@ public interface ISpecificStockService {
 	public List<StockCounter> getStockCountersByTypes (List<CounterType> ar0);
 
 	
-	public void processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException;
+	public List<StockCounter> processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException;
 	
 }
