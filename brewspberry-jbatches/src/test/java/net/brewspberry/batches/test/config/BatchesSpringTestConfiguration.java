@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan(basePackages = { "net.brewspberry" })
+@ComponentScan(basePackages = { "net.brewspberry.*" })
 public class BatchesSpringTestConfiguration {
 
 	

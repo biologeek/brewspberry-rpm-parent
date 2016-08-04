@@ -14,13 +14,16 @@
 --INSERT INTO StockUnit (stu_id, stu_parent, stu_value, stu_multi) VALUES (14 , 4 , 'sac 25 kg', 25 );
 --INSERT INTO StockUnit (stu_id, stu_parent, stu_value, stu_multi) VALUES (5 , 5 , 'g'  , 1 );
 
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (1, 'Stock dispo a  la fabrication', NOW());
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (2, 'Stock DLC depassee', NOW());
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (3, 'Stock reserve fabrication', NOW());
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (4, 'Stock dispo vente', NOW());
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (5, 'Stock reserve CC', NOW());
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (6, 'Demarque casse', NOW());
-INSERT INTO CompteurType (cty_id, cty_libelle, cty_date_cre) VALUES (7, 'Demarque qualite', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (0, 'Stock disponible à la fabrication', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (1, 'Stock DLC depassee', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (2, 'Stock reserve fabrication', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (3, 'Stock dispo vente', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (4, 'Stock reserve CC', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (5, 'Demarque casse', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (6, 'Demarque qualite', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (7, 'Stock en cours de fabrication', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (8, 'Stock bloqué à la vente', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (99, 'Autre', NOW());
 
 INSERT INTO SimpleMalt (stb_id, ing_desc, ing_fournisseur, ing_unitary_price, ing_unitary_price_unit, ing_unitary_weight, ing_unitary_weight_unit, smal_cereale, smal_type, smal_couleur) VALUES (1, 'test', 'Weyermann', 5, 4, 1, 4, 'Orge', 'Blond', 3);
 
@@ -28,15 +31,15 @@ INSERT INTO SimpleHoublon (stb_id, ing_desc, ing_fournisseur, ing_unitary_price,
 
 
 
-INSERT INTO Biere (stb_id, afp_unitary_value, afp_unitary_value_unit, beer_name, beer_style, beer_alcohol, beer_density, beer_color_ebc, beer_aroma, beer_bubbles, beer_notation, beer_comment, beer_quantity, beer_conso_progress, beer_init_bottles, beer_remaining_bottles, beer_first_drink_date) VALUES (3, 4, 4, 'Biere test', 'blonde', 8.5, 1031, 25, 'fruits genre test', 3, 4, 'pas trop mal', 50, 0.2, 70, 30, NOW());
+INSERT INTO Biere (stb_id, afp_unitary_value, afp_unitary_value_unit, afp_name, beer_style, beer_alcohol, beer_density, beer_color_ebc, beer_aroma, beer_bubbles, beer_notation, beer_comment, beer_quantity, beer_conso_progress, beer_init_bottles, beer_remaining_bottles, beer_first_drink_date) VALUES (3, 4, 4, 'Biere test', 'blonde', 8.5, 1031, 25, 'fruits genre test', 3, 4, 'pas trop mal', 50, 0.2, 70, 30, NOW());
 
 
 
-INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_unit, cpt_date_cre, cpt_date_maj) VALUES ('raw', 1, 1, 1, 20.0, 4, NOW(), NOW());
-INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_unit, cpt_date_cre, cpt_date_maj) VALUES ('raw', 2, 1, 2, 0.1, 4, NOW(), NOW());
-INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_unit, cpt_date_cre, cpt_date_maj) VALUES ('raw', 3, 3, 1, 5.0, 4, NOW(), NOW());
-INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_unit, cpt_date_cre, cpt_date_maj) VALUES ('raw', 4, 2, 2, 0.05, 4, NOW(), NOW());
+INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 1, 0, 1, 20.0, 4, NOW(), NOW());
+INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 2, 0, 2, 0.1, 4, NOW(), NOW());
+INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 3, 2, 1, 5.0, 4, NOW(), NOW());
+INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 4, 1, 2, 0.05, 4, NOW(), NOW());
 
 
-INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_unit, cpt_date_cre, cpt_date_maj) VALUES ('finished', 5, 2, 3, 0.05, 4, NOW(), NOW());
+INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('finished', 5, 2, 3, 0.05, 4, NOW(), NOW());
 

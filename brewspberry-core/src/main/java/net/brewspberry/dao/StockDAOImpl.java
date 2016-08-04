@@ -44,14 +44,22 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 
 	@Override
 	public StockCounter save(StockCounter arg0) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+
+		long id = (long) sessionFactory.getCurrentSession().save(arg0);
+		
+		return this.getElementById(id);
 	}
 
 	@Override
 	public StockCounter update(StockCounter arg0) {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			sessionFactory.getCurrentSession().update(arg0);
+			return arg0;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
@@ -122,9 +130,25 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	}
 
 	@Override
-	public StockCounter getStockCounterByProductAndType(Stockable arg0, CounterType arg1) {
-		// TODO Auto-generated method stub
-		return new StockCounter();
+	public StockCounter getStockCounterByProductAndType(Stockable arg0, CounterType arg1) throws DAOException {
+		Session session = sessionFactory.getCurrentSession();
+		
+		Criteria crit;
+		if (arg0 instanceof AbstractFinishedProduct){
+			crit = session.createCriteria(FinishedProductCounter.class);
+		} else if (arg0 instanceof AbstractIngredient) {
+			
+			crit = session.createCriteria(RawMaterialCounter.class);
+			
+		} else {
+			throw new DAOException("This type of stockable is not usable !");
+		}
+		
+		
+		crit.add(Restrictions.eq("cpt_product", arg0));
+		crit.add(Restrictions.eq("cpt_counter_type", arg1));
+		
+		return (StockCounter) crit.uniqueResult();
 	}
 
 	@SuppressWarnings("unchecked")

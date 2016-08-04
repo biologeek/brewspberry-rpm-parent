@@ -33,7 +33,7 @@ public class FinishedProductCounter extends StockCounter {
 		// TODO Auto-generated constructor stub
 	}
 	public AbstractFinishedProduct getCpt_product() {
-		return cpt_product;
+		return this.getCpt_product();
 	}
 	public void setCpt_product(AbstractFinishedProduct cpt_product) {
 		this.cpt_product = cpt_product;

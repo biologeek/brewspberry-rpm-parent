@@ -9,6 +9,7 @@ import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
+import net.brewspberry.exceptions.DAOException;
 
 public interface ISpecificStockDao {
 
@@ -21,7 +22,7 @@ public interface ISpecificStockDao {
 
 	public List<FinishedProductCounter> getStockForFinishedProducts();
 	
-	public StockCounter getStockCounterByProductAndType (Stockable arg0, CounterType arg1); 
+	public StockCounter getStockCounterByProductAndType (Stockable arg0, CounterType arg1) throws DAOException; 
 	
 	public List<StockCounter> getStockCountersByTypes (List<CounterType> ar0);
 	

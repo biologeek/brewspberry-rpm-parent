@@ -9,6 +9,7 @@ import org.junit.Test;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -29,6 +30,13 @@ public class StockDaoImplTest extends AbstractTest{
 	@Autowired
 	@Qualifier("stockDAOImpl")
 	ISpecificStockDao specDao;
+	
+	
+	@Autowired
+	@Qualifier("compteurTypeDaoImpl")
+	private IGenericDao<CounterType> genericCounterTypeDAO;
+	
+	private List<CounterType> counterTypeList;
 
 	
 	
@@ -36,7 +44,8 @@ public class StockDaoImplTest extends AbstractTest{
 	@Before
 	public void initTest (){
 		
-		
+		counterTypeList = genericCounterTypeDAO.getAllElements();
+
 		
 	}
 
@@ -52,13 +61,13 @@ public class StockDaoImplTest extends AbstractTest{
 		*/
 		
 		
-		list.add(CounterType.STOCK_DISPO_VENTE);
+		list.add(CounterTypeConstants.STOCK_DISPO_VENTE.toDBCouter(counterTypeList));
 		List<StockCounter> result = specDao.getStockCountersByTypes(list);
 		
 		Assert.assertEquals(0, result.size());
 		
 		
-		list.add(CounterType.STOCK_DISPO_FAB);
+		list.add(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(counterTypeList));
 		
 		List<StockCounter> res = specDao.getStockCountersByTypes(list);
 		

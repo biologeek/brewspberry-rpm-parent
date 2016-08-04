@@ -60,8 +60,8 @@ public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {
 
 	@Override
 	public List<CounterType> getAllElements() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return sessionFactory.getCurrentSession().createQuery("from CounterType").list();
 	}
 
 	@Override

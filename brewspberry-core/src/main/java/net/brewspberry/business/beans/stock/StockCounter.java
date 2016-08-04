@@ -3,8 +3,10 @@ package net.brewspberry.business.beans.stock;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,6 +37,9 @@ public class StockCounter implements Serializable {
 	private static final long serialVersionUID = -3853891928120391252L;
 	@Id@GeneratedValue(strategy=GenerationType.AUTO)
 	private long cpt_id;
+	
+	
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="cpt_cty_id")
 	private CounterType cpt_counter_type;
@@ -43,9 +48,11 @@ public class StockCounter implements Serializable {
 //	@ManyToOne(fetch=FetchType.EAGER)
 	//@JoinColumn(name="cpt_stu_id")
 	@Enumerated
+	@Column(name="cpt_stu_id")
 	private StockUnit cpt_unit;
 	private Date cpt_date_cre;
 	private Date cpt_date_maj;
+	
 
 	public StockCounter() {
 		super();

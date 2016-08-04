@@ -15,14 +15,14 @@ import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.service.ActionerServiceImpl;
 import net.brewspberry.business.service.BrassinServiceImpl;
 import net.brewspberry.business.service.EtapeServiceImpl;
+import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 public class BatchRecordTemperatures implements Batch, Runnable {
 
-	Logger logger = LogManager.getInstance(BatchRecordTemperatures.class
-			.getName());
+	Logger logger = LogManager.getInstance(BatchRecordTemperatures.class.getName());
 	Task currentTask = null;
 	@Autowired
 	IGenericService<Brassin> brassinService;
@@ -47,8 +47,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		 */
 		if (args.length != 5) {
 
-			logger.severe("Could not initialize batch, number of arguments wrong : "
-					+ args.length + " (5 expected)");
+			logger.severe("Could not initialize batch, number of arguments wrong : " + args.length + " (5 expected)");
 			System.exit(1);
 		}
 		this.batchParams = args;
@@ -67,25 +66,31 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		String[] specParams = new String[3];
 		Object[] result = new Object[3];
 
-
-		logger.info("Params : "+String.valueOf(String.join(";",batchParams)+" | "+String.join(";",specParams)));
+		logger.info("Params : " + String.valueOf(String.join(";", batchParams) + " | " + String.join(";", specParams)));
 
 		if (batchParams.length > 0 && batchParams.length > firstElement) {
 
-			System.arraycopy(batchParams, firstElement, specParams, 0,
-					result.length);
+			System.arraycopy(batchParams, firstElement, specParams, 0, result.length);
 
-			Brassin brassin = brassinService.getElementById(Long
-					.parseLong(specParams[0]));
-			Etape etape = etapeService.getElementById(Long
-					.parseLong(specParams[1]));
-			Actioner actioner = actionerService.getElementById(Long
-					.parseLong(specParams[2]));
+			Brassin brassin = null;
+			Etape etape = null;
+			Actioner actioner = null;
+			try {
+				brassin = brassinService.getElementById(Long.parseLong(specParams[0]));
 
+				etape = etapeService.getElementById(Long.parseLong(specParams[1]));
+				actioner = actionerService.getElementById(Long.parseLong(specParams[2]));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			result[0] = brassin;
 			result[1] = etape;
 			result[2] = actioner;
-			logger.fine("Transmitting " + result[0]+ result[1]+ result[2]+ " to task");
+			logger.fine("Transmitting " + result[0] + result[1] + result[2] + " to task");
 
 		}
 
@@ -104,19 +109,15 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		Object[] taskParams = this.getTaskParameters(batchParams, 2);
 
 		Integer threadSleep = Integer.parseInt(ConfigLoader.getConfigByKey(
-				Constants.PROJECT_ROOT_PATH + "/" + Constants.BREW_CONF
-						+ "/batches.properties",
+				Constants.PROJECT_ROOT_PATH + "/" + Constants.BREW_CONF + "/batches.properties",
 				"brewspberry.batches.threads.delay"));
-		
-		
+
 		double timeLength;
 		long startTime;
 
-		
 		logger.fine("Thread sleep param : " + threadSleep);
 		if (batchParams[0] != null) {
 
-			
 			switch (batchParams[0]) {
 
 			case "ONCE":
@@ -141,14 +142,11 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 				while ((System.currentTimeMillis() - startTime) < timeLength) {
 
-					logger.info("--BEGIN : Time length : " + timeLength
-							+ " | Real : "
+					logger.info("--BEGIN : Time length : " + timeLength + " | Real : "
 							+ (System.currentTimeMillis() - startTime));
 
 					try {
-						new Thread(
-								(Runnable) new RecordTemperatureFromFileTask(
-										taskParams)).start();
+						new Thread((Runnable) new RecordTemperatureFromFileTask(taskParams)).start();
 						Thread.sleep(threadSleep);
 					} catch (Throwable e) {
 						// TODO Auto-generated catch block
@@ -162,7 +160,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 			case "MINUTE":
 				try {
 
-					logger.info("Recording temperatures for "+batchParams[1]+" minutes");
+					logger.info("Recording temperatures for " + batchParams[1] + " minutes");
 					timeLength = Double.parseDouble(batchParams[1]) * 1000.0 * 60.0;
 					startTime = System.currentTimeMillis();
 
@@ -188,7 +186,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 			case "HOUR":
 				try {
-					logger.info("Recording temperatures for "+batchParams[1]+" hours");
+					logger.info("Recording temperatures for " + batchParams[1] + " hours");
 
 					timeLength = Double.parseDouble(batchParams[1]) * 1000.0 * 3600.0;
 					startTime = System.currentTimeMillis();

@@ -14,6 +14,10 @@ import net.brewspberry.business.beans.AbstractIngredient;
 public class RawMaterialCounter extends StockCounter {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5798990988485371240L;
+	/**
 	 * Counter used for Raw material (malt, hop, yeast)
 	 */
 	@ManyToOne(fetch=FetchType.EAGER)

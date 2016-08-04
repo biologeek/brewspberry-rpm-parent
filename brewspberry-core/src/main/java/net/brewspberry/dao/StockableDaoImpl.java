@@ -7,11 +7,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.exceptions.DAOException;
 
+@Repository
 public class StockableDaoImpl implements IGenericDao<Stockable> {
 
 	@Autowired

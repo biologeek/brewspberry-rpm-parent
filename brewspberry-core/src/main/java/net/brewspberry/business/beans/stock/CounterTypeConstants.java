@@ -1,7 +1,6 @@
 package net.brewspberry.business.beans.stock;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -12,11 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
-public class CounterType implements Serializable {
+
+public enum CounterTypeConstants implements Serializable {
 
 
-	/*
+	
 	STOCK_DISPO_FAB(0, "Stock disponible à la fabrication"),
 	STOCK_DLC_DEPASSEE(1, "Stock DLC depassee"),
 	STOCK_RESERVE_FAB(2, "Stock reserve fabrication"),
@@ -26,9 +25,9 @@ public class CounterType implements Serializable {
 	STOCK_DEM_QUALITE(6, "Demarque qualite"),
 	STOCK_EN_FAB(7, "Stock en cours de fabrication"),
 	STOCK_BLOQUE_VENTE(8, "Stock bloqué à la vente"),
-	NONE(99, "none")
+	NONE(99, "Autre")
 	;
-	*/
+	
 	
 	/**
 	 * 
@@ -46,11 +45,10 @@ public class CounterType implements Serializable {
 	private List<StockCounter> cty_counters;
 	
 
-	CounterType() {
-		super();
+	CounterTypeConstants() {
 	}
 
-	CounterType(int cty_id, String cty_libelle){
+	CounterTypeConstants(int cty_id, String cty_libelle){
 		this.cty_id = cty_id;
 		this.cty_libelle = cty_libelle;
 		this.setCty_date_cre(new Date());
@@ -79,56 +77,23 @@ public class CounterType implements Serializable {
 	public void setCty_date_cre(Date cty_date_cre) {
 		this.cty_date_cre = cty_date_cre;
 	}
+
 	
-	/**
-	 * Converts {@link CounterType} from DB to {@link CounterTypeConstants}
-	 * @param counterType to be converted
-	 * @return corresponding {@link CounterTypeConstants} or CounterTypeConstants.NONE
-	 */
-	public CounterTypeConstants toConstant(){
-		if (Arrays.asList(CounterTypeConstants.values()).contains(this)){
+	public CounterType toDBCouter(List<CounterType> list){
+		
+		CounterType resIfNone = new CounterType();
+		resIfNone.setCty_date_cre(new Date());
+		resIfNone.setCty_id(99);
+		resIfNone.setCty_libelle("Autre");
+		
+		for (CounterType elt : list){
 			
-			for (CounterTypeConstants counter : CounterTypeConstants.values()){
-				
-				if (counter.getCty_libelle().equals(this.getCty_libelle())){
-					return counter;
-				}
-				
+			if (elt.getCty_libelle().equals(this.getCty_libelle())){
+				return elt;
 			}
-			return CounterTypeConstants.NONE;
 			
-		} else 
-			return CounterTypeConstants.NONE;
+		}
+		return resIfNone;
+		
 	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + cty_id;
-		result = prime * result + ((cty_libelle == null) ? 0 : cty_libelle.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		CounterType other = (CounterType) obj;
-		if (cty_id != other.cty_id)
-			return false;
-		if (cty_libelle == null) {
-			if (other.cty_libelle != null)
-				return false;
-		} else if (!cty_libelle.equals(other.cty_libelle))
-			return false;
-		return true;
-	}
-
-	
-	
 }

@@ -2,7 +2,7 @@ package net.brewspberry.util;
 
 import java.util.Arrays;
 
-import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.StockMotionTypeRules;
 
 public class StockMotionValidator {
@@ -13,14 +13,14 @@ public class StockMotionValidator {
 	 * @param to
 	 * @return
 	 */
-	public static boolean checkIfStockMotionSatisfiesRules(CounterType from, CounterType to){
+	public static boolean checkIfStockMotionSatisfiesRules(CounterTypeConstants from, CounterTypeConstants to){
 		
 		
 		if (from == null){
-			from = CounterType.NONE;
+			from = CounterTypeConstants.NONE;
 		}
 		if (to == null){
-			to = CounterType.NONE;
+			to = CounterTypeConstants.NONE;
 		}
 		
 		for (StockMotionTypeRules rule : StockMotionTypeRules.values()){

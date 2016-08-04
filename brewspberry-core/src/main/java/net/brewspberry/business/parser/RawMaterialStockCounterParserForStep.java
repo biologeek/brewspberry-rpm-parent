@@ -17,6 +17,7 @@ import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
 import net.brewspberry.business.beans.stock.StockUnit;
@@ -28,7 +29,7 @@ import net.brewspberry.util.StockMotionValidator;
 public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> {
 
 	@Autowired
-	@Qualifier("counterTypeServiceImpl")
+	@Qualifier("compteurTypeServiceImpl")
 	IGenericService<CounterType> counterTypeService;
 	
 	
@@ -94,7 +95,12 @@ public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialC
 						currentStockMotion.setStm_motion_date(new Date());
 						currentStockMotion.setStr_product(newObj.getCpt_product());
 						currentStockMotion.setStm_counter_from(newObj.getCpt_counter_type());
-						currentStockMotion.setStm_counter_to(CounterType.STOCK_EN_FAB);
+						try {
+							currentStockMotion.setStm_counter_to(counterTypeService.getElementByName(CounterTypeConstants.STOCK_EN_FAB.getCty_libelle()));
+						} catch (ServiceException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 
 						/*
 						 * Reminder : I had decided to use 5 kg of malt for this
@@ -107,7 +113,7 @@ public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialC
 
 						// VALIDATING STOCK MOTION AND ADDING IT TO LIST
 						if (StockMotionValidator.checkIfStockMotionSatisfiesRules(
-								currentStockMotion.getStm_counter_from(), currentStockMotion.getStm_counter_to())) {
+								currentStockMotion.getStm_counter_from().toConstant(), currentStockMotion.getStm_counter_to().toConstant())) {
 							stockMotionsResult.add(currentStockMotion);
 						}
 					}
@@ -126,13 +132,18 @@ public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialC
 
 				currentStockMotion.setStm_motion_date(new Date());
 				currentStockMotion.setStr_product(newObj.getCpt_product());
-				currentStockMotion.setStm_counter_from(CounterType.STOCK_DISPO_FAB);
-				currentStockMotion.setStm_counter_to(CounterType.STOCK_EN_FAB);
+				try {
+					currentStockMotion.setStm_counter_from(counterTypeService.getElementByName(CounterTypeConstants.STOCK_DISPO_FAB.getCty_libelle()));
+					currentStockMotion.setStm_counter_to(counterTypeService.getElementByName(CounterTypeConstants.STOCK_EN_FAB.getCty_libelle()));
+				} catch (ServiceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				currentStockMotion.setStm_value(newObj.getCpt_value());
 				// VALIDATING STOCK MOTION AND ADDING IT TO LIST
-				if (StockMotionValidator.checkIfStockMotionSatisfiesRules(currentStockMotion.getStm_counter_from(),
-						currentStockMotion.getStm_counter_to())) {
+				if (StockMotionValidator.checkIfStockMotionSatisfiesRules(currentStockMotion.getStm_counter_from().toConstant(),
+						currentStockMotion.getStm_counter_to().toConstant())) {
 					stockMotionsResult.add(currentStockMotion);
 				}
 			}
@@ -155,7 +166,7 @@ public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialC
 
 		Calendar date = Calendar.getInstance();
 		date.setTime(objectToBeParsed.getEtp_debut());
-		CounterType counterType = CounterType.STOCK_EN_FAB;
+		CounterType counterType = counterTypeService.getElementByName(CounterTypeConstants.STOCK_EN_FAB.getCty_libelle());
 
 		for (Malt malt : objectToBeParsed.getEtp_malts()) {
 

@@ -116,7 +116,45 @@ public abstract class AbstractIngredient extends Stockable {
 	}
 	@Override
 	public String toString() {
-		return "Ingredient [ing_desc=" + ing_desc
-				+ ", ing_fournisseur=" + ing_fournisseur + "]";
+		return "AbstractIngredient [ing_desc=" + ing_desc + ", ing_fournisseur=" + ing_fournisseur + ", stb_counters="
+				+ stb_counters + ", ing_unitary_price=" + ing_unitary_price + ", ing_unitary_price_unit="
+				+ ing_unitary_price_unit + ", ing_unitary_weight=" + ing_unitary_weight + ", ing_unitary_weight_unit="
+				+ ing_unitary_weight_unit + "]";
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ing_desc == null) ? 0 : ing_desc.hashCode());
+		result = prime * result + ((ing_fournisseur == null) ? 0 : ing_fournisseur.hashCode());
+		result = prime * result + Float.floatToIntBits(ing_unitary_price);
+		result = prime * result + ((ing_unitary_price_unit == null) ? 0 : ing_unitary_price_unit.hashCode());
+		result = prime * result + Float.floatToIntBits(ing_unitary_weight);
+		result = prime * result + ((ing_unitary_weight_unit == null) ? 0 : ing_unitary_weight_unit.hashCode());
+		result = prime * result + ((stb_counters == null) ? 0 : stb_counters.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractIngredient other = (AbstractIngredient) obj;
+		if (ing_desc == null) {
+			if (other.ing_desc != null)
+				return false;
+		} else if (!ing_desc.equals(other.ing_desc))
+			return false;
+		if (ing_fournisseur == null) {
+			if (other.ing_fournisseur != null)
+				return false;
+		} else if (!ing_fournisseur.equals(other.ing_fournisseur))
+			return false;
+		return true;
+	}
+	
+	
 }

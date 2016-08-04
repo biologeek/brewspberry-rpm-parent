@@ -31,6 +31,12 @@ public class AbstractFinishedProduct extends Stockable{
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_product")
 	private List<FinishedProductCounter> stb_counters;
 	
+	public String getAfp_name() {
+		return afp_name;
+	}
+	public void setAfp_name(String afp_name) {
+		this.afp_name = afp_name;
+	}
 	public List<FinishedProductCounter> getStb_counters() {
 		return stb_counters;
 	}

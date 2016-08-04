@@ -2,6 +2,7 @@ package net.brewspberry.test.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -11,12 +12,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import javassist.compiler.ast.Stmnt;
-
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.junit.Assert;
 
 import net.brewspberry.business.IGenericDao;
@@ -28,16 +30,20 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.exceptions.StockException;
+import net.brewspberry.business.service.StockServiceImpl;
 import net.brewspberry.dao.StockDAOImpl;
+import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.test.AbstractTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 // @ContextConfiguration(classes = SpringCoreTestConfiguration.class)
 public class StockServiceImplTest extends AbstractTest {
 
@@ -51,22 +57,31 @@ public class StockServiceImplTest extends AbstractTest {
 	@Mock
 	private IGenericDao<StockCounter> genericDAO;
 
+	@Autowired
+	@Qualifier("compteurTypeDaoImpl")
+	private IGenericDao<CounterType> genericCounterTypeDAO;
+
 	@Mock
 	private StockCounter cptToDecrease;
 
-	@Autowired
 	@InjectMocks
+	@Autowired
 	ISpecificStockService specStockService;
+	
+	@Mock
+	ISpecificStockService specStockServiceMock;
 
 	StockCounter res = null;
 
 	SimpleMalt malt;
 	SimpleHoublon houblon;
-	CounterType type;
+	CounterTypeConstants type;
+	List<CounterType> counterTypeList;
 
 	@Before
 	public void init() {
 
+		counterTypeList = genericCounterTypeDAO.getAllElements();
 		MockitoAnnotations.initMocks(this);
 
 		// 3 qty for counter 3 and 20 qty for counter 1
@@ -90,22 +105,29 @@ public class StockServiceImplTest extends AbstractTest {
 		houblon.setIng_unitary_weight(100);
 		houblon.setIng_unitary_weight_unit(StockUnit.GRAMME);
 
-		type = CounterType.STOCK_RESERVE_FAB;
+		type = CounterTypeConstants.STOCK_RESERVE_FAB;
 
 		StockCounter stl = (StockCounter) ((IngredientStockCounterBuilder) new IngredientStockCounterBuilder()
-				.type(type).unit(StockUnit.KILO).value(3)).ingredient(malt).build();
+				.type(type.toDBCouter(counterTypeList)).unit(StockUnit.KILO).value(3)).ingredient(malt).build();
 
 		StockCounter st2 = (StockCounter) ((IngredientStockCounterBuilder) new IngredientStockCounterBuilder()
-				.type(CounterType.STOCK_DISPO_FAB).unit(StockUnit.SAC_25_KG).value(10)).ingredient(malt).build();
-
+				.type(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(counterTypeList)).unit(StockUnit.SAC_25_KG)
+				.value(10)).ingredient(malt).build();
 
 		StockCounter st3 = (StockCounter) ((IngredientStockCounterBuilder) new IngredientStockCounterBuilder()
-				.type(CounterType.STOCK_DISPO_FAB).unit(StockUnit.GRAMME).value(200)).ingredient(houblon).build();
-		
-		
-		Mockito.when(specDaoMock.getStockCounterByProductAndType(malt, type)).thenReturn(stl);
+				.type(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(counterTypeList)).unit(StockUnit.GRAMME)
+				.value(200)).ingredient(houblon).build();
 
-		Mockito.when(genericDAO.update(cptToDecrease)).thenReturn(stl);
+		CounterType typeDB = type.toDBCouter(counterTypeList);
+		try {
+			Mockito.when(specDaoMock.getStockCounterByProductAndType(malt, typeDB)).thenReturn(stl);
+
+			Mockito.when(genericDAO.update(cptToDecrease)).thenReturn(stl);
+
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -114,69 +136,87 @@ public class StockServiceImplTest extends AbstractTest {
 
 		Assert.assertNotNull(specStockService);
 		try {
-			res = specStockService.toogleStockCounterForProduct(-3, malt, type);
+			res = specStockService.toogleStockCounterForProduct(-3, malt, type.toDBCouter(counterTypeList));
 		} catch (StockException | ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		Assert.assertEquals(0, res.getCpt_value(), 0.1);
+		Assert.assertEquals(2, res.getCpt_value(), 0.1);
 
 	}
 
 	@Test(expected = StockException.class)
-	public void shouldToogleStockCounterForProductThrowException() {
+	public void shouldToogleStockCounterForProductThrowException() throws StockException, ServiceException {
 		StockCounter res = null;
 
-		IGenericDao<StockCounter> daoMock = Mockito.mock(StockDAOImpl.class);
+		CounterTypeConstants type = CounterTypeConstants.STOCK_DISPO_FAB;
+		StockCounter maltStockCounter = (StockCounter) ((IngredientStockCounterBuilder) new IngredientStockCounterBuilder()
+				.type(type.toDBCouter(counterTypeList)).unit(StockUnit.KILO).value(1)).ingredient(malt).build();
 
-		SimpleMalt malt = null;
-		CounterType type = null;
-		buildDataset(malt, type);
-		Mockito.when(daoMock.getElementById(1))
-				.thenReturn((StockCounter) ((IngredientStockCounterBuilder) new IngredientStockCounterBuilder()
-						.type(type).unit(StockUnit.KILO).value(1)).ingredient(malt).build());
-
+		CounterType typeDB = type.toDBCouter(counterTypeList);
 		try {
-			res = specStockService.toogleStockCounterForProduct(-2, malt, type);
-		} catch (StockException | ServiceException e) {
+			ReflectionTestUtils.setField(specStockService, "specDAO", specDaoMock);
+			Mockito.when(specDaoMock.getStockCounterByProductAndType(malt, typeDB)).thenReturn(maltStockCounter);
+		} catch (DAOException e1) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e1.printStackTrace();
 		}
+
+		res = specStockService.toogleStockCounterForProduct(-2, malt, type.toDBCouter(counterTypeList));
 
 	}
 
+	@Test
 	public void shouldProcessStockMotionsForUpdatingStockCounters() throws ServiceException {
+
+		
 
 		List<AbstractStockMotion> stockMotions = new ArrayList<AbstractStockMotion>();
 		List<StockCounter> stockCounters = new ArrayList<StockCounter>();
 
 		stockMotions.add(move4BagsOfMaltForFab());
-		stockMotions.add(move100gHopToFab());
-		
+		// stockMotions.add(move100gHopToFab());
+
+		List<StockCounter> builtMockStockCountersList = buildMockStockCountersList();
+		Mockito.when(specStockServiceMock.getWholeStockForProduct(malt)).thenReturn(builtMockStockCountersList);
+
 		stockCounters = specStockService.processStockMotionsForUpdatingStockCounters(stockMotions);
-		
-		
-		for (StockCounter stick : stockCounters){
-			
-			
-			if (stick.getCpt_counter_type().equals(CounterType.STOCK_DISPO_FAB)){
+		Assert.assertNotNull(stockCounters);
+
+		for (StockCounter stick : stockCounters) {
+
+			Assert.assertNotNull(stick);
+			if (stick.getCpt_counter_type().equals(CounterTypeConstants.STOCK_DISPO_FAB)) {
+
 				Assert.assertTrue(stick instanceof RawMaterialCounter);
-				if(((RawMaterialCounter) stick).getCpt_product().getIng_fournisseur().equals("Weyermann")){
-					
+
+				if (((RawMaterialCounter) stick).getCpt_product().getIng_fournisseur().equals("Weyermann")) {
+
 					Assert.assertTrue(stick.getCpt_value() == 2);
-					
+
 				}
 			}
 		}
-		
 
+	}
+
+	private List<StockCounter> buildMockStockCountersList() {
+		List<StockCounter> list = new ArrayList<StockCounter>();
+		StockCounter stk1 = (StockCounter) new IngredientStockCounterBuilder().ingredient(malt)
+				.type(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(counterTypeList)).unit(StockUnit.KILO).value(20)
+				.build();
+		stk1.setCpt_id(1);
+
+		list.add(stk1);
+
+		return list;
 	}
 
 	private RawMaterialStockMotion move100gHopToFab() {
 		RawMaterialStockMotion stm2 = new RawMaterialStockMotion();
-		stm2.setStm_counter_from(CounterType.STOCK_DISPO_FAB);
-		stm2.setStm_counter_to(CounterType.STOCK_EN_FAB);
+		stm2.setStm_counter_from(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(counterTypeList));
+		stm2.setStm_counter_to(CounterTypeConstants.STOCK_EN_FAB.toDBCouter(counterTypeList));
 
 		stm2.setStm_unit(StockUnit.GRAMME);
 		stm2.setStr_product(houblon);
@@ -187,8 +227,8 @@ public class StockServiceImplTest extends AbstractTest {
 	private RawMaterialStockMotion move4BagsOfMaltForFab() {
 		RawMaterialStockMotion stm1 = new RawMaterialStockMotion();
 
-		stm1.setStm_counter_from(CounterType.STOCK_DISPO_FAB);
-		stm1.setStm_counter_to(CounterType.STOCK_EN_FAB);
+		stm1.setStm_counter_from(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(counterTypeList));
+		stm1.setStm_counter_to(CounterTypeConstants.STOCK_EN_FAB.toDBCouter(counterTypeList));
 
 		stm1.setStr_product(malt);
 		stm1.setStm_unit(StockUnit.SAC_25_KG);
@@ -197,8 +237,7 @@ public class StockServiceImplTest extends AbstractTest {
 		return stm1;
 	}
 
-	private void buildDataset(SimpleMalt malt, CounterType type) {
+	private void buildDataset(SimpleMalt malt, CounterTypeConstants type) {
 
-		
 	}
 }
