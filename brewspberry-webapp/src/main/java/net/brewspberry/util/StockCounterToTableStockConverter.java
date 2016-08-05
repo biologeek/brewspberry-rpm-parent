@@ -1,5 +1,6 @@
 package net.brewspberry.util;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,8 @@ public class StockCounterToTableStockConverter {
 		 */
 		stockValue = (tbl.getCpt_value() * tbl.getCpt_unit().getStu_multi())
 				* (ing.getIng_unitary_price() / ing.getIng_unitary_price_unit().getStu_multi());
-		return stockValue;
+		
+		return Math.round(stockValue*1000d)/1000d;
 	}
 
 	private static double returnStockValueForAbstractFinishedProduct(TableDisplayStockCounter tbl,

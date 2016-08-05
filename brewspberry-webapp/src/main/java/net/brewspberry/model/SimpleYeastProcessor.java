@@ -5,15 +5,20 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.model.Processor;
 import net.brewspberry.util.LogManager;
 
+@Component
 public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 
 	private Logger logger = LogManager.getInstance(SimpleHopProcessor.class.getName());
 	@Autowired
+	@Qualifier("simpleYeastServiceImpl")
 	IGenericService<SimpleLevure> simpleYeastService; 
 
 	

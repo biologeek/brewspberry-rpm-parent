@@ -5,14 +5,19 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.util.LogManager;
 
+@Component
 public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 
 	private Logger logger = LogManager.getInstance(SimpleHopProcessor.class.getName());
 	@Autowired
+	@Qualifier("simpleHopServiceImpl")
 	IGenericService<SimpleHoublon> simpleHopService; 
 
 	

@@ -24,7 +24,16 @@
 			<version>0.1.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-
+		
+		
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>brewspberry-core</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		
 
 		<!-- Core utilities used by other modules. Define this if you use Spring 
 			Utility APIs (org.springframework.core.*/org.springframework.util.*) -->

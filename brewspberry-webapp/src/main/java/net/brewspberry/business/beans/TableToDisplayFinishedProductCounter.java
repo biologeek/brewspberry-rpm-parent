@@ -20,7 +20,6 @@ public class TableToDisplayFinishedProductCounter extends TableDisplayStockCount
 	public TableToDisplayFinishedProductCounter(FinishedProductCounter arg0) {
 		super(arg0);
 		this.setStf_product(arg0.getCpt_product());
-		
 	}
 
 	public AbstractFinishedProduct getStf_product() {

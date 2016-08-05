@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,7 @@ public class StockController extends AbstractAutowiredHttpServlet {
 	private static final long serialVersionUID = 2916648763166648082L;
 
 	@Autowired
+	@Qualifier("stockServiceImpl")
 	private IGenericService<StockCounter> stockCounterService;
 
 

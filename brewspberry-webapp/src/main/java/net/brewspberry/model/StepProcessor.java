@@ -41,6 +41,7 @@ public class StepProcessor implements Processor<Object> {
 	@Qualifier("etapeServiceImpl")
 	IGenericService<Etape> etapeService;
 	@Autowired
+	@Qualifier("maltServiceImpl")
 	ISpecificIngredientService maltIngSpecService;
 
 	@Autowired
@@ -53,8 +54,10 @@ public class StepProcessor implements Processor<Object> {
 	@Qualifier("yeastServiceImpl")
 	IGenericService<Levure> yeastService;
 	@Autowired
+	@Qualifier("hopServiceImpl")
 	ISpecificIngredientService hopIngSpecService;
 	@Autowired
+	@Qualifier("yeastServiceImpl")
 	ISpecificIngredientService levureIngSpecService;
 
 	@Autowired

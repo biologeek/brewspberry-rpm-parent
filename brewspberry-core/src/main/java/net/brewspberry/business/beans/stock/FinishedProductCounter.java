@@ -21,7 +21,7 @@ public class FinishedProductCounter extends StockCounter {
 	private static final long serialVersionUID = 6599625486711705779L;
 
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="cpt_stb_id")
 	private AbstractFinishedProduct cpt_product;
 	/**

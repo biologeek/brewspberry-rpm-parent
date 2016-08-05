@@ -10,10 +10,10 @@
 	<properties>
 		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
 		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
-	
+
 		<hsqldb.version>2.3.2</hsqldb.version>
 		<dbh2.version>1.4.187</dbh2.version>
-	
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -207,6 +207,18 @@
 						<target>1.8</target>
 						<compilerArgument></compilerArgument>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

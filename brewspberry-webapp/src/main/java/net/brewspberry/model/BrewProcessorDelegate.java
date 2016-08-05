@@ -12,6 +12,7 @@ import org.hibernate.dialect.function.StandardAnsiSqlAggregationFunctions;
 import org.hibernate.engine.jdbc.dialect.internal.StandardDialectResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
@@ -26,26 +27,30 @@ import net.brewspberry.business.service.MaltServiceImpl;
 import net.brewspberry.business.service.YeastServiceImpl;
 import net.brewspberry.util.LogManager;
 
+@Component
 public class BrewProcessorDelegate implements Processor<Brassin> {
 
 	@Autowired
-	@Qualifier("BrassinServiceImpl")
+	@Qualifier("brassinServiceImpl")
 	IGenericService<Brassin> brassinService;
 	@Autowired
-	@Qualifier("BrassinServiceImpl")
+	@Qualifier("maltServiceImpl")
 	IGenericService<Malt> maltService;
 	@Autowired
-	@Qualifier("BrassinServiceImpl")
+	@Qualifier("hopServiceImpl")
 	IGenericService<Houblon> hopService;
 	@Autowired
-	@Qualifier("BrassinServiceImpl")
+	@Qualifier("yeastServiceImpl")
 	IGenericService<Levure> yeastService;
 
 	@Autowired
+	@Qualifier("maltServiceImpl")	
 	ISpecificIngredientService maltIngSpecService;
 	@Autowired
+	@Qualifier("hopServiceImpl")
 	ISpecificIngredientService hopIngSpecService;
 	@Autowired
+	@Qualifier("yeastServiceImpl")
 	ISpecificIngredientService levureIngSpecService;
 
 	private Logger logger = LogManager.getInstance(BrewProcessorDelegate.class.getName());
