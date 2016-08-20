@@ -12,7 +12,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.SimpleLevure;
-import net.brewspberry.exceptions.ServiceException;
+import net.brewspberry.business.exceptions.ServiceException;
 
 @Service (value="yeastServiceImpl")
 @Transactional

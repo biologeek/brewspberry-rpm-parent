@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificUserDao;
 import net.brewspberry.business.beans.User;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 
 @Repository
 @Transactional

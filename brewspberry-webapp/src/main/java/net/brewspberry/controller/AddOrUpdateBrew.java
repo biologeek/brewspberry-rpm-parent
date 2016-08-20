@@ -27,7 +27,7 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
-import net.brewspberry.exceptions.ServiceException;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.model.BrewProcessorDelegate;
 import net.brewspberry.model.Processor;
 import net.brewspberry.model.StepProcessor;

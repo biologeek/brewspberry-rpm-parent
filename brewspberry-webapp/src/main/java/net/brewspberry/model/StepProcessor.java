@@ -22,17 +22,18 @@ import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.stock.AbstractStockMotion;
+import net.brewspberry.business.beans.stock.CounterType;
+import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.parser.Parser;
 import net.brewspberry.business.service.EtapeServiceImpl;
 import net.brewspberry.business.service.HopServiceImpl;
 import net.brewspberry.business.service.MaltServiceImpl;
 import net.brewspberry.business.service.YeastServiceImpl;
-import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.DateManipulator;
 import net.brewspberry.util.LogManager;
-
 
 @Component
 public class StepProcessor implements Processor<Object> {
@@ -54,6 +55,9 @@ public class StepProcessor implements Processor<Object> {
 	@Qualifier("yeastServiceImpl")
 	IGenericService<Levure> yeastService;
 	@Autowired
+	@Qualifier("compteurTypeServiceImpl")
+	IGenericService<CounterType> counterTypeService;
+	@Autowired
 	@Qualifier("hopServiceImpl")
 	ISpecificIngredientService hopIngSpecService;
 	@Autowired
@@ -66,7 +70,8 @@ public class StepProcessor implements Processor<Object> {
 	@Autowired
 	ISpecificStockService specStockService;
 
-	private Logger logger = LogManager.getInstance(StepProcessor.class.getName());
+	private Logger logger = LogManager.getInstance(StepProcessor.class
+			.getName());
 
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
 
@@ -78,14 +83,17 @@ public class StepProcessor implements Processor<Object> {
 		request.getAttribute("step_id");
 		Etape currentStep = new Etape();
 
+		boolean isStockAlreadyReserved = false;
+
 		if (parent instanceof Etape) {
 
 			/*
 			 * If parent object parameter is Etape, parent brew is already
 			 * attached. It's an update of parent step
 			 */
-
+			isStockAlreadyReserved = true;
 			currentStep = (Etape) parent;
+			((Etape) parent).setEtp_update_date(new Date());
 		}
 
 		else if (parent instanceof Brassin) {
@@ -96,37 +104,23 @@ public class StepProcessor implements Processor<Object> {
 			Brassin parentBrew = (Brassin) parent;
 
 			// Attaching brew to step
-			if (parent != null && parentBrew.getBra_id() != null && !parentBrew.getBra_id().equals(new Brassin())) {
+			if (parent != null && parentBrew.getBra_id() > 0
+					&& !parentBrew.equals(new Brassin())) {
 
 				logger.fine("Attaching to brew " + parentBrew);
 				currentStep.setEtp_brassin(parentBrew);
+				currentStep.setEtp_creation_date(new Date());
 			}
 
 		}
 
-		// Building step 
+		CounterType counterTypeFrom = null;
+
+		// Building step
 		parseServletRequestForStepParameters(request, currentStep);
 
-		// Recording stock motions :
-		if (parent instanceof Etape) {
-			stockMotionsDuringStep = stepParserForRawMaterial.compareTwoObjectsAndExtractStockMotions((Etape) parent,
-					currentStep);
-		} else {
-			stockMotionsDuringStep = stepParserForRawMaterial.compareTwoObjectsAndExtractStockMotions(null,
-					currentStep);
-		}
-		/*
-		 * Updating stock counters in datasource :
-		 * 
-		 */
-
-		try {
-			specStockService.processStockMotionsForUpdatingStockCounters(
-					(List<AbstractStockMotion>) (List<?>) stockMotionsDuringStep);
-		} catch (ServiceException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		processStocks(parent, currentStep, isStockAlreadyReserved,
+				counterTypeFrom);
 
 		// Recording step
 		try {
@@ -150,7 +144,62 @@ public class StepProcessor implements Processor<Object> {
 
 	}
 
-	private void parseServletRequestForStepParameters(HttpServletRequest request, Etape currentStep) {
+	private void processStocks(Object parent, Etape currentStep,
+			boolean isStockAlreadyReserved, CounterType counterTypeFrom) {
+		List<RawMaterialStockMotion> stockMotionsDuringStep;
+		// If step is being updated, stock has already been reserved
+		
+		/*
+		 * Reminder :
+		 * 
+		 * - Situation 1 : 
+		 * I create step before delay, stock is changed to STOCK_RESERVE_FAB. 
+		 * At the time I start it for real, stock is changed from STOCK_RESERVE_FAB to STOCK_EN_FAB 
+		 * 
+		 * - Situation 2 : 
+		 * I create step after delay, stock is changed to STOCK_EN_FAB
+		 * When starting for real, stock should not be updated
+		 */
+		try {
+			if (isStockAlreadyReserved) {
+				counterTypeFrom = counterTypeService
+						.getElementByName(CounterTypeConstants.STOCK_RESERVE_FAB
+								.getCty_libelle());
+			} else {
+				counterTypeFrom = counterTypeService
+						.getElementByName(CounterTypeConstants.STOCK_DISPO_FAB
+								.getCty_libelle());
+			}
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Recording stock motions :
+		if (parent instanceof Etape) {
+			stockMotionsDuringStep = stepParserForRawMaterial
+					.compareTwoObjectsAndExtractStockMotions((Etape) parent,
+							currentStep, counterTypeFrom);
+		} else {
+			stockMotionsDuringStep = stepParserForRawMaterial
+					.compareTwoObjectsAndExtractStockMotions(null, currentStep,
+							counterTypeFrom);
+		}
+		/*
+		 * Updating stock counters in datasource :
+		 */
+
+		try {
+			specStockService
+					.processStockMotionsForUpdatingStockCounters((List<AbstractStockMotion>) (List<?>) stockMotionsDuringStep);
+		} catch (ServiceException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	private void parseServletRequestForStepParameters(
+			HttpServletRequest request, Etape currentStep) {
 
 		String currentStepLabel;
 		String currentStepDuration;
@@ -163,38 +212,22 @@ public class StepProcessor implements Processor<Object> {
 		// Step beginning date
 		if (request.getParameter("step_beginning") != null) {
 
+			// Normalizing date
 			currentStepBeginningDate = DateManipulator
-					.formatDateFromVariousPatterns(request.getParameter("step_beginning")).getTime();
+					.formatDateFromVariousPatterns(
+							request.getParameter("step_beginning")).getTime();
 
-			if (currentStep.getEtp_debut() == null) {
-
-				try {
-					currentStepBeginningDate = sdf.parse(request.getParameter("step_beginnging"));
-					currentStep.setEtp_debut(currentStepBeginningDate);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					logger.severe(request.getParameter("step_beginnging")
-							+ " cannot be converted to Date. Considering now ()");
-					currentStep.setEtp_debut(new Date());
-				}
-
-			}
+			currentStep.setEtp_debut(currentStepBeginningDate);
 
 		}
 
 		// Step end date
 		if (request.getParameter("step_end") != null) {
 
-			try {
+			currentStepEndDate = DateManipulator.formatDateFromVariousPatterns(
+					request.getParameter("step_end")).getTime();
 
-				currentStepEndDate = sdf.parse(request.getParameter("step_end"));
-
-				currentStep.setEtp_fin(currentStepEndDate);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				logger.severe(request.getParameter("step_end") + " cannot be converted to Date. Considering now ()");
-				currentStep.setEtp_fin(new Date());
-			}
+			currentStep.setEtp_fin(currentStepEndDate);
 
 		}
 
@@ -229,10 +262,12 @@ public class StepProcessor implements Processor<Object> {
 			currentStepTemperature = request.getParameter("step_temperature");
 
 			try {
-				currentStep.setEtp_temperature_theorique(Double.parseDouble(currentStepTemperature));
+				currentStep.setEtp_temperature_theorique(Double
+						.parseDouble(currentStepTemperature));
 			} catch (Exception e) {
 
-				logger.severe("Couldn't convert temperature " + currentStepTemperature);
+				logger.severe("Couldn't convert temperature "
+						+ currentStepTemperature);
 			}
 		}
 
@@ -269,7 +304,8 @@ public class StepProcessor implements Processor<Object> {
 		return maltIngSpecService;
 	}
 
-	public void setMaltIngSpecService(ISpecificIngredientService maltIngSpecService) {
+	public void setMaltIngSpecService(
+			ISpecificIngredientService maltIngSpecService) {
 		this.maltIngSpecService = maltIngSpecService;
 	}
 
@@ -301,7 +337,8 @@ public class StepProcessor implements Processor<Object> {
 		return hopIngSpecService;
 	}
 
-	public void setHopIngSpecService(ISpecificIngredientService hopIngSpecService) {
+	public void setHopIngSpecService(
+			ISpecificIngredientService hopIngSpecService) {
 		this.hopIngSpecService = hopIngSpecService;
 	}
 
@@ -309,7 +346,8 @@ public class StepProcessor implements Processor<Object> {
 		return levureIngSpecService;
 	}
 
-	public void setLevureIngSpecService(ISpecificIngredientService levureIngSpecService) {
+	public void setLevureIngSpecService(
+			ISpecificIngredientService levureIngSpecService) {
 		this.levureIngSpecService = levureIngSpecService;
 	}
 

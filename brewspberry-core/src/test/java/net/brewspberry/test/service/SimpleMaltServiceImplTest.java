@@ -20,8 +20,8 @@ import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.User;
 import net.brewspberry.business.beans.stock.StockUnit;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.service.SimpleMaltServiceImpl;
-import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.test.AbstractTest;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 

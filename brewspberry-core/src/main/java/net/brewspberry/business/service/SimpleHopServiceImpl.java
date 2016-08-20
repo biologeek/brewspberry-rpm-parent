@@ -9,8 +9,8 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.SimpleHoublon;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.SimpleHopDaoImpl;
-import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.LogManager;
 
 import org.springframework.beans.factory.annotation.Autowired;

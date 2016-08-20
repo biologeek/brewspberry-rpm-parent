@@ -1,4 +1,4 @@
-package net.brewspberry.exceptions;
+package net.brewspberry.business.exceptions;
 
 public class ServiceException extends Exception {
 

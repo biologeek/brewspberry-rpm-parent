@@ -18,7 +18,7 @@ import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.exceptions.ServiceException;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.DeviceParser;

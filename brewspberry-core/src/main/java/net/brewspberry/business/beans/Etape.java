@@ -34,6 +34,10 @@ public class Etape implements Serializable{
     private String etp_nom;
     private Date etp_debut;
     private Date etp_fin;
+    private Date etp_creation_date;
+    private Date etp_update_date;
+    private Date etp_debut_reel;
+    private Date etp_fin_reel;
     @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name="etp_ety_id")
     /**
@@ -239,6 +243,38 @@ public class Etape implements Serializable{
 		result.addAll(getEtp_levures());
 		
 		return result;
+	}
+
+	public Date getEtp_fin_reel() {
+		return etp_fin_reel;
+	}
+
+	public void setEtp_fin_reel(Date etp_fin_reel) {
+		this.etp_fin_reel = etp_fin_reel;
+	}
+
+	public Date getEtp_debut_reel() {
+		return etp_debut_reel;
+	}
+
+	public void setEtp_debut_reel(Date etp_debut_reel) {
+		this.etp_debut_reel = etp_debut_reel;
+	}
+
+	public Date getEtp_creation_date() {
+		return etp_creation_date;
+	}
+
+	public void setEtp_creation_date(Date etp_creation_date) {
+		this.etp_creation_date = etp_creation_date;
+	}
+
+	public Date getEtp_update_date() {
+		return etp_update_date;
+	}
+
+	public void setEtp_update_date(Date etp_update_date) {
+		this.etp_update_date = etp_update_date;
 	}
 
 }

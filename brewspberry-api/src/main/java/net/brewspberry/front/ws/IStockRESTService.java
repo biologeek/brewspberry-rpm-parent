@@ -1,4 +1,4 @@
-package net.brewspberry.front.ws.stock;
+package net.brewspberry.front.ws;
 
 import java.util.List;
 

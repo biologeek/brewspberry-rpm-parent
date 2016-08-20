@@ -2,7 +2,7 @@ package net.brewspberry.business;
 
 import java.util.List;
 
-import net.brewspberry.exceptions.ServiceException;
+import net.brewspberry.business.exceptions.ServiceException;
 
 public interface IGenericService<T> {
 	

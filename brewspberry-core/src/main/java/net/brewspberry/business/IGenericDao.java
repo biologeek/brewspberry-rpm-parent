@@ -2,7 +2,7 @@ package net.brewspberry.business;
 
 import java.util.List;
 
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 
 public interface IGenericDao<T> {
 	

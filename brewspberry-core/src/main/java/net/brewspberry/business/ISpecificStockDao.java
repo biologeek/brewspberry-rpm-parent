@@ -9,7 +9,7 @@ import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.beans.stock.Stockable;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 
 public interface ISpecificStockDao {
 

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.SimpleHoublon;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 
 @Repository

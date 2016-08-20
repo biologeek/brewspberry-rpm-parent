@@ -8,7 +8,7 @@ import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.front.ws.RESTTemperatureService;
+import net.brewspberry.front.ws.impl.RESTTemperatureService;
 
 import org.json.JSONArray;
 import org.json.JSONException;

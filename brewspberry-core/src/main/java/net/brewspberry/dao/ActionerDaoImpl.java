@@ -17,7 +17,7 @@ import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 

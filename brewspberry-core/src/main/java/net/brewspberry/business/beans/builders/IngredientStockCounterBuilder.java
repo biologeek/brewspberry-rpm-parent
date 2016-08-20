@@ -2,6 +2,7 @@ package net.brewspberry.business.beans.builders;
 
 import java.util.Date;
 
+import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -19,9 +20,8 @@ public class IngredientStockCounterBuilder extends StockCounterBuilder<RawMateri
 		counter.setCpt_date_maj(new Date());
 	}
 	
-	
-	
-	public StockCounterBuilder ingredient(AbstractIngredient a){
+	@Override
+	public StockCounterBuilder<RawMaterialCounter> ingredient(AbstractIngredient a){
 		
 		((RawMaterialCounter) counter).setCpt_product(a);
 		return this;
@@ -32,5 +32,13 @@ public class IngredientStockCounterBuilder extends StockCounterBuilder<RawMateri
 	@Override
 	public RawMaterialCounter build() {
 		return (RawMaterialCounter) counter;
+	}
+
+
+	@Override
+	public StockCounterBuilder<RawMaterialCounter> product(
+			AbstractFinishedProduct e) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

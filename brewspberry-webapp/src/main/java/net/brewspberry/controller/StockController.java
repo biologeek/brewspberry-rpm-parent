@@ -19,7 +19,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.TableDisplayRawMaterialStockCounter;
-import net.brewspberry.business.beans.TableToDisplayFinishedProductCounter;
+import net.brewspberry.business.beans.TableDisplayFinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.service.StockServiceImpl;

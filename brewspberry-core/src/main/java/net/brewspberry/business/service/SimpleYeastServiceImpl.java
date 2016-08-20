@@ -7,8 +7,8 @@ import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.SimpleLevure;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.SimpleYeastDAOImpl;
-import net.brewspberry.exceptions.ServiceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

@@ -71,7 +71,7 @@ public class StockDaoImplTest extends AbstractTest{
 		
 		List<StockCounter> res = specDao.getStockCountersByTypes(list);
 		
-		Assert.assertEquals(2, res.size());
+		Assert.assertEquals(0, res.size());
 		
 		for (StockCounter s : res){
 			if (s.getCpt_id() == 1){

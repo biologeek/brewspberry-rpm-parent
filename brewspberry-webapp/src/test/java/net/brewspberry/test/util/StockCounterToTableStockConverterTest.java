@@ -20,7 +20,7 @@ import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.TableDisplayRawMaterialStockCounter;
 import net.brewspberry.business.beans.TableDisplayStockCounter;
-import net.brewspberry.business.beans.TableToDisplayFinishedProductCounter;
+import net.brewspberry.business.beans.TableDisplayFinishedProductCounter;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
@@ -79,14 +79,14 @@ public class StockCounterToTableStockConverterTest {
 		((FinishedProductCounter) stk2).setCpt_product(fp);
 		
 		TableDisplayRawMaterialStockCounter tbl1 = new TableDisplayRawMaterialStockCounter((RawMaterialCounter) stk1);
-		TableToDisplayFinishedProductCounter tbl2 = new TableToDisplayFinishedProductCounter((FinishedProductCounter) stk2);
+		TableDisplayFinishedProductCounter tbl2 = new TableDisplayFinishedProductCounter((FinishedProductCounter) stk2);
 		tbl2.setStf_product(fp);
 		
 		countersList.add(stk1);
 		countersList.add(stk2);
 
 		tableDisplayList.add(tbl1);
-		//tableDisplayList.add(tbl2);
+		tableDisplayList.add(tbl2);
 
 	}
 	
@@ -126,12 +126,12 @@ public class StockCounterToTableStockConverterTest {
 		Assert.assertTrue(countersList.size() > 0);
 
 		List<TableDisplayRawMaterialStockCounter> list = (List<TableDisplayRawMaterialStockCounter>) StockCounterToTableStockConverter
-				.sortListByType(tableDisplayList, RawMaterialCounter.class);
+				.sortListByType(tableDisplayList, TableDisplayRawMaterialStockCounter.class);
 
-		Assert.assertTrue(list.size() == 1);
+		Assert.assertEquals(1, list.size());
 
 		List<FinishedProductCounter> list1 = (List<FinishedProductCounter>) StockCounterToTableStockConverter
-				.sortListByType(tableDisplayList, FinishedProductCounter.class);
-		Assert.assertTrue(list1.size() == 1);
+				.sortListByType(tableDisplayList, TableDisplayFinishedProductCounter.class);
+		Assert.assertEquals(1, list1.size());
 	}
 }

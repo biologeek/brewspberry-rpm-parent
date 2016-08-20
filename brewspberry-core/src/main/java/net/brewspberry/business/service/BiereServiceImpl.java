@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificBiereDAO;
 import net.brewspberry.business.beans.Biere;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 
 @Service 
 @Transactional

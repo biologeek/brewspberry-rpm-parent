@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.stock.CounterType;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 
 @Repository
 public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {

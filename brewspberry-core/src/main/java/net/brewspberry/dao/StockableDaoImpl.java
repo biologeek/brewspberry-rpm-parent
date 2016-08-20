@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.stock.Stockable;
-import net.brewspberry.exceptions.DAOException;
+import net.brewspberry.business.exceptions.DAOException;
 
 @Repository
 public class StockableDaoImpl implements IGenericDao<Stockable> {

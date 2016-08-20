@@ -17,7 +17,7 @@ public class CounterType implements Serializable {
 
 
 	/*
-	STOCK_DISPO_FAB(0, "Stock disponible à la fabrication"),
+	STOCK_DISPO_FAB(0, "Stock disponible Ã  la fabrication"),
 	STOCK_DLC_DEPASSEE(1, "Stock DLC depassee"),
 	STOCK_RESERVE_FAB(2, "Stock reserve fabrication"),
 	STOCK_DISPO_VENTE(3, "Stock dispo vente"),
@@ -25,7 +25,7 @@ public class CounterType implements Serializable {
 	STOCK_DEM_CASSE(5, "Demarque casse"),
 	STOCK_DEM_QUALITE(6, "Demarque qualite"),
 	STOCK_EN_FAB(7, "Stock en cours de fabrication"),
-	STOCK_BLOQUE_VENTE(8, "Stock bloqué à la vente"),
+	STOCK_BLOQUE_VENTE(8, "Stock bloquÃ© Ã  la vente"),
 	NONE(99, "none")
 	;
 	*/

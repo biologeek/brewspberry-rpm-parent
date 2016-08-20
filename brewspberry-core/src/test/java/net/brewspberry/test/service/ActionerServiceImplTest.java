@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import java.util.Date;
 
 import net.brewspberry.business.beans.Actioner;
+import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.business.service.ActionerServiceImpl;
-import net.brewspberry.exceptions.DAOException;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.HibernateUtil;

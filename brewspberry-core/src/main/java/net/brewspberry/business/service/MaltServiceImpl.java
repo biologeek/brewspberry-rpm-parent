@@ -15,9 +15,9 @@ import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.ISpecificMaltDAO;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleMalt;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.MaltDAOImpl;
 import net.brewspberry.dao.SimpleMaltDAOImpl;
-import net.brewspberry.exceptions.ServiceException;
 
 @Service (value="maltServiceImpl")
 @Transactional

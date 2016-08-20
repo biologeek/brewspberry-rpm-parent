@@ -14,7 +14,7 @@
 --INSERT INTO StockUnit (stu_id, stu_parent, stu_value, stu_multi) VALUES (14 , 4 , 'sac 25 kg', 25 );
 --INSERT INTO StockUnit (stu_id, stu_parent, stu_value, stu_multi) VALUES (5 , 5 , 'g'  , 1 );
 
-INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (0, 'Stock disponible à la fabrication', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (0, 'Stock disponible a la fabrication', NOW());
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (1, 'Stock DLC depassee', NOW());
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (2, 'Stock reserve fabrication', NOW());
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (3, 'Stock dispo vente', NOW());
@@ -22,7 +22,7 @@ INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (4, 'Stock re
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (5, 'Demarque casse', NOW());
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (6, 'Demarque qualite', NOW());
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (7, 'Stock en cours de fabrication', NOW());
-INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (8, 'Stock bloqué à la vente', NOW());
+INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (8, 'Stock bloque a la vente', NOW());
 INSERT INTO CounterType (cty_id, cty_libelle, cty_date_cre) VALUES (99, 'Autre', NOW());
 
 INSERT INTO SimpleMalt (stb_id, ing_desc, ing_fournisseur, ing_unitary_price, ing_unitary_price_unit, ing_unitary_weight, ing_unitary_weight_unit, smal_cereale, smal_type, smal_couleur) VALUES (1, 'test', 'Weyermann', 5, 4, 1, 4, 'Orge', 'Blond', 3);

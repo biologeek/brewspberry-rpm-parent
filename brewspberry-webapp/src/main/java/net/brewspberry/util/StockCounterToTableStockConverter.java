@@ -8,7 +8,7 @@ import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.TableDisplayRawMaterialStockCounter;
 import net.brewspberry.business.beans.TableDisplayStockCounter;
-import net.brewspberry.business.beans.TableToDisplayFinishedProductCounter;
+import net.brewspberry.business.beans.TableDisplayFinishedProductCounter;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
@@ -35,8 +35,8 @@ public class StockCounterToTableStockConverter {
 			stockValue = returnStockValueForAbstractIngredient(tbl, ing);
 
 		} else if (arg0 instanceof FinishedProductCounter) {
-			tbl = new TableToDisplayFinishedProductCounter((FinishedProductCounter) arg0);
-			AbstractFinishedProduct fp = (AbstractFinishedProduct) ((TableToDisplayFinishedProductCounter) tbl)
+			tbl = new TableDisplayFinishedProductCounter((FinishedProductCounter) arg0);
+			AbstractFinishedProduct fp = (AbstractFinishedProduct) ((TableDisplayFinishedProductCounter) tbl)
 					.getStf_product();
 
 			stockValue = returnStockValueForAbstractFinishedProduct(tbl, fp);

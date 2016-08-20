@@ -14,8 +14,8 @@ import net.brewspberry.business.ISpecificBrassinDAO;
 import net.brewspberry.business.ISpecificBrassinService;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.BrassinDaoImpl;
-import net.brewspberry.exceptions.ServiceException;
 import net.brewspberry.util.HibernateUtil;
 
 @Service 
