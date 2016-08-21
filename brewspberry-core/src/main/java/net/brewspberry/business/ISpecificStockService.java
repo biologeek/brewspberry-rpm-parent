@@ -2,6 +2,7 @@ package net.brewspberry.business;
 
 import java.util.List;
 
+import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
@@ -24,6 +25,16 @@ public interface ISpecificStockService {
 	public List<StockCounter> getStockCountersByTypes (List<CounterType> ar0);
 
 	
-	public List<StockCounter> processStockMotionsForUpdatingStockCounters(List<AbstractStockMotion> motions) throws ServiceException;
+	public List<StockCounter> processStockMotionsForUpdatingStockCounters(List<? extends AbstractStockMotion> motions) throws ServiceException;
 	
+	/**
+	 * Compares old and new step and extract stock motions. 
+	 * From stock motions, stock counters are updated 
+	 * @param oldEtape step before stock modifications
+	 * @param newEtape step after modifications
+	 * @param counterTypeFrom stock counter From
+	 * @param counterTypeTo stock counter To
+	 * @return updated stock counters
+	 */
+	public List<? extends StockCounter> compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(Etape oldEtape, Etape newEtape, CounterType counterTypeFrom, CounterType counterTypeTo);
 }

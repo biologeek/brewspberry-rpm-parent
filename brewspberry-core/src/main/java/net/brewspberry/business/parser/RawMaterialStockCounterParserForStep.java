@@ -162,7 +162,7 @@ public class RawMaterialStockCounterParserForStep implements
 			 * from step
 			 */
 			newParsedObject = parse(newObject, counterTypeFrom);
-			
+
 			for (RawMaterialCounter newObj : newParsedObject) {
 
 				RawMaterialStockMotion currentStockMotion = new RawMaterialStockMotion();
@@ -202,6 +202,40 @@ public class RawMaterialStockCounterParserForStep implements
 			oldParsedObject = parse(oldObject, counterTypeFrom);
 			newParsedObject = parse(newObject, null);
 
+			// TODO generate reverse stock motions to delete stock in
+			// fabrication when step is terminated
+
+			for (RawMaterialCounter c : oldParsedObject) {
+
+				if (c != null && c.getCpt_value() > 0) {
+
+					RawMaterialStockMotion currentStockMotion = new RawMaterialStockMotion();
+
+					currentStockMotion.setStm_motion_date(new Date());
+					currentStockMotion.setStr_product(c.getCpt_product());
+
+					try {
+						currentStockMotion
+								.setStm_counter_from(counterTypeService
+										.getElementByName(CounterTypeConstants.STOCK_EN_FAB
+												.getCty_libelle()));
+
+						currentStockMotion.setStm_counter_to(null);
+
+					} catch (ServiceException e) {
+						e.printStackTrace();
+					}
+					
+					currentStockMotion.setStm_unit(currentStockMotion.getStm_unit());
+					
+					//Setting value to positive value as motion has direction
+					currentStockMotion.setStm_value(c.getCpt_value());
+					
+
+					stockMotionsResult.add(currentStockMotion);
+				}
+
+			}
 		}
 
 		return stockMotionsResult;

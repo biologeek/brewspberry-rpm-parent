@@ -2,6 +2,7 @@ package net.brewspberry.front.ws.impl;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -25,11 +26,13 @@ public class BrewProcessingRestWs implements IBrewProcessing {
 	@Autowired
 	private ISpecificEtapeService specStepService;
 
+	// TODO : test of methods
 	@Override
-	@Path("startStep")
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response startStep(long etape) throws Exception {
+	@Path("/start/{etapeID}")
+	public Response startStep(@PathParam("etapeID") long etape)
+			throws Exception {
 		Etape stepFromDataSource = null;
 		Etape stepAfterStateUpdate = null;
 
@@ -99,11 +102,10 @@ public class BrewProcessingRestWs implements IBrewProcessing {
 			}
 
 		} else {
-			return Response
-					.status(500)
+			return Response.status(500)
 					.entity(new Exception("ID null or negative")).build();
 		}
 		return Response.status(200).entity(stepAfterStateUpdate).build();
-		}
+	}
 
 }

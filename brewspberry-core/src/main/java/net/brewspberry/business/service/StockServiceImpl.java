@@ -16,6 +16,7 @@ import net.brewspberry.business.ISpecificStockDao;
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.AbstractFinishedProduct;
 import net.brewspberry.business.beans.AbstractIngredient;
+import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.business.beans.stock.CounterType;
@@ -32,6 +33,7 @@ import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.exceptions.StockException;
+import net.brewspberry.business.parser.Parser;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.util.StockUnitUtils;
 
@@ -48,6 +50,11 @@ public class StockServiceImpl implements ISpecificStockService,
 	IGenericDao<StockCounter> genericDAO;
 	@Autowired
 	ISpecificStockDao specDAO;
+	
+
+	@Autowired
+	Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> stepParserForRawMaterial;
+	
 
 	Logger logger;
 
@@ -308,7 +315,7 @@ public class StockServiceImpl implements ISpecificStockService,
 	 * updates stock value
 	 */
 	public List<StockCounter> processStockMotionsForUpdatingStockCounters(
-			List<AbstractStockMotion> motions) throws ServiceException {
+			List<? extends AbstractStockMotion> motions) throws ServiceException {
 
 		List<StockCounter> result = new ArrayList<StockCounter>();
 		if (motions.size() > 0) {
@@ -362,6 +369,9 @@ public class StockServiceImpl implements ISpecificStockService,
 							result.add(savedCounter);
 						}
 					}
+					
+					// Counter To is null means stock is neither modified nor created but deleted. Thus no stock 
+					// counter To is updated
 					if (stockMotion.getStm_counter_to() != null
 							|| stockMotion.getStm_counter_to().toConstant()
 									.equals(CounterTypeConstants.NONE)) {
@@ -555,6 +565,43 @@ public class StockServiceImpl implements ISpecificStockService,
 
 		return null;
 
+	}
+
+	@Override
+
+	/**
+	 * Compares old and new step and extract stock motions. 
+	 * From stock motions, stock counters are updated 
+	 * 
+	 * @param oldEtape step before stock modifications
+	 * @param newEtape step after modifications
+	 * @param counterTypeFrom stock counter From
+	 * @param counterTypeTo stock counter To
+	 * @return updated stock counters
+	 */
+	public List<? extends StockCounter> compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(
+			Etape oldEtape, Etape newEtape, CounterType counterTypeFrom,
+			CounterType counterTypeTo) {
+
+		List<StockCounter> result = null;
+		
+		// STEP 1 - Extract stock motions
+		
+		List<? extends AbstractStockMotion> motions = stepParserForRawMaterial.compareTwoObjectsAndExtractStockMotions(oldEtape, newEtape, counterTypeFrom);
+		
+		
+		// STEP 2 - Process stock motions and update stock counters
+		
+		
+		try {
+			result = this.processStockMotionsForUpdatingStockCounters(motions);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return result;
 	}
 
 }

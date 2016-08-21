@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
+import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.CounterTypeConstants;
@@ -39,7 +40,19 @@ public class EtapeServiceImpl implements IGenericService<Etape>,
 
 	@Autowired
 	Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> stepParserForRawMaterial;
+	
+	@Autowired
+	ISpecificStockService specStockService;
 
+	private List<CounterType> list;
+	
+	
+	public EtapeServiceImpl() {
+		
+		
+		 
+
+	}
 	@Override
 	public Etape save(Etape arg0) throws Exception {
 
@@ -110,9 +123,13 @@ public class EtapeServiceImpl implements IGenericService<Etape>,
 	 */
 	public Etape startStepForReal(Etape step) throws BusinessException {
 
+		
+		list = getList();
 		float delay = Float.parseFloat(ConfigLoader.getConfigByKey(
 				Constants.CONFIG_PROPERTIES,
 				"param.stock.delay.limitToStockInFab.minutes"));
+		
+		Etape oldStepInDatabase = this.getElementById(step.getEtp_id());
 
 		CounterType counterTypeFrom = null;
 
@@ -150,13 +167,24 @@ public class EtapeServiceImpl implements IGenericService<Etape>,
 			e.printStackTrace();
 		}
 
-		// TODO
+		/* 
+		 * Setting stocks to stock IN FAB when starting step
+		 */
+		
+		specStockService.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(oldStepInDatabase, step, counterTypeFrom, CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list));
 
+		
+		// Updating date and persisting
 		step.setEtp_update_date(new Date());
 
 		return etapeDao.update(step);
 	}
 
+	private List<CounterType> getList() {
+		list = counterTypeService.getAllElements();
+		
+		return list;
+	}
 	@Override
 	/**
 	 * Method used to stop a step when it's finished.
@@ -169,7 +197,12 @@ public class EtapeServiceImpl implements IGenericService<Etape>,
 	public Etape stopStepForReal(Etape step) {
 
 		List<RawMaterialCounter> countersFromList = null;
+		list = getList();
+
 		
+		CounterType counterTypeFrom = CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list);
+		
+		CounterType counterTypeTo = CounterTypeConstants.NONE.toDBCouter(list);
 		
 		// First : updating step end date :
 
@@ -177,19 +210,10 @@ public class EtapeServiceImpl implements IGenericService<Etape>,
 
 		step.setEtp_update_date(new Date());
 
+		// Updating stock counters from step. Null step will decrement stocks
+		countersFromList = (List<RawMaterialCounter>) specStockService.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(step, null, counterTypeFrom, counterTypeTo);
 		
-		// Second : parsing step for stock counters
-		try {
-			countersFromList = stepParserForRawMaterial.parse(step, counterTypeService
-					.getElementByName(CounterTypeConstants.STOCK_EN_FAB
-							.getCty_libelle()));
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-
-		return null;
+	
+		return etapeDao.update(step);
 	}
 }
