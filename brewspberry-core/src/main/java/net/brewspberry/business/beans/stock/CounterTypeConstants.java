@@ -16,7 +16,7 @@ public enum CounterTypeConstants implements Serializable {
 
 
 	
-	STOCK_DISPO_FAB(0, "Stock disponible à la fabrication"),
+	STOCK_DISPO_FAB(0, "Stock disponible a� la fabrication"),
 	STOCK_DLC_DEPASSEE(1, "Stock DLC depassee"),
 	STOCK_RESERVE_FAB(2, "Stock reserve fabrication"),
 	STOCK_DISPO_VENTE(3, "Stock dispo vente"),
@@ -24,7 +24,7 @@ public enum CounterTypeConstants implements Serializable {
 	STOCK_DEM_CASSE(5, "Demarque casse"),
 	STOCK_DEM_QUALITE(6, "Demarque qualite"),
 	STOCK_EN_FAB(7, "Stock en cours de fabrication"),
-	STOCK_BLOQUE_VENTE(8, "Stock bloqué à la vente"),
+	STOCK_BLOQUE_VENTE(8, "Stock bloque à la vente"),
 	NONE(99, "Autre")
 	;
 	
@@ -88,7 +88,7 @@ public enum CounterTypeConstants implements Serializable {
 		
 		for (CounterType elt : list){
 			
-			if (elt.getCty_libelle().equals(this.getCty_libelle())){
+			if (elt.getCty_libelle().equals(this.getCty_libelle()) || elt.getCty_id() == this.getCty_id()){
 				return elt;
 			}
 			

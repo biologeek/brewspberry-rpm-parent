@@ -40,10 +40,27 @@ public class Malt extends SimpleMalt implements Serializable{
     private float ing_quantite;
     private float ing_prix;
     
-    
+
 	public Malt() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public Malt(SimpleMalt sm) {
+		
+		super();
+	
+		this.setIng_desc(sm.getIng_desc());
+		this.setIng_disc(sm.getIng_disc());
+		this.setIng_fournisseur(sm.getIng_fournisseur());
+		this.setIng_unitary_price(sm.getIng_unitary_price());
+		this.setIng_unitary_price_unit(sm.getIng_unitary_price_unit());
+		this.setIng_unitary_weight(sm.getIng_unitary_weight());
+		this.setIng_unitary_weight_unit(sm.getIng_unitary_weight_unit());
+		this.setStb_id(sm.getStb_id());
+		this.setStb_counters(sm.getStb_counters());
+		this.setSmal_cereale(sm.getSmal_cereale());
+		this.setSmal_couleur(sm.getSmal_couleur());
+		this.setSmal_type(sm.getSmal_type());
 	}
 
 	public Brassin getMalt_brassin() {

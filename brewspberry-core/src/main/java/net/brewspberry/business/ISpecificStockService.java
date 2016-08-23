@@ -36,5 +36,5 @@ public interface ISpecificStockService {
 	 * @param counterTypeTo stock counter To
 	 * @return updated stock counters
 	 */
-	public List<? extends StockCounter> compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(Etape oldEtape, Etape newEtape, CounterType counterTypeFrom, CounterType counterTypeTo);
+	public List<StockCounter> compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(Etape oldEtape, Etape newEtape, CounterType counterTypeFrom, CounterType counterTypeTo);
 }

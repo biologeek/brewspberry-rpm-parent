@@ -28,22 +28,21 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.StockMotionValidator;
 
 @Component
-public class RawMaterialStockCounterParserForStep implements
-		Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> {
+public class RawMaterialStockCounterParserForStep implements Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> {
 
 	@Autowired
 	@Qualifier("compteurTypeServiceImpl")
 	IGenericService<CounterType> counterTypeService;
 
-	private Logger logger = LogManager
-			.getInstance(RawMaterialStockCounterParserForStep.class.getName());
+	private Logger logger = LogManager.getInstance(RawMaterialStockCounterParserForStep.class.getName());
+
+	private List<CounterType> list;
 
 	@Override
 	/**
 	 * Parses a step to extract stock counters from ingredients
 	 */
-	public List<RawMaterialCounter> parse(Etape objectToBeParsed,
-			CounterType counterType) {
+	public List<RawMaterialCounter> parse(Etape objectToBeParsed, CounterType counterType) {
 
 		try {
 			return parseIngredients(objectToBeParsed, counterType);
@@ -57,8 +56,7 @@ public class RawMaterialStockCounterParserForStep implements
 	/**
 	 * Parses a list of steps to extract stock counters
 	 */
-	public List<RawMaterialCounter> parseList(
-			List<Etape> listOfObjectsToBeParsed, CounterType counterType) {
+	public List<RawMaterialCounter> parseList(List<Etape> listOfObjectsToBeParsed, CounterType counterType) {
 
 		if (listOfObjectsToBeParsed.size() > 0) {
 
@@ -80,8 +78,10 @@ public class RawMaterialStockCounterParserForStep implements
 	 *
 	 * @return a list of stock motions
 	 */
-	public List<RawMaterialStockMotion> compareTwoObjectsAndExtractStockMotions(
-			Etape oldObject, Etape newObject, CounterType counterTypeFrom) {
+	public List<RawMaterialStockMotion> compareTwoObjectsAndExtractStockMotions(Etape oldObject, Etape newObject,
+			CounterType counterTypeFrom) {
+
+		list = getList();
 
 		// Array list containing stock motions during step
 
@@ -107,48 +107,25 @@ public class RawMaterialStockCounterParserForStep implements
 					if (oldObj.getCpt_id() == newObj.getCpt_id()) {
 
 						currentStockMotion.setStm_motion_date(new Date());
-						currentStockMotion.setStr_product(newObj
-								.getCpt_product());
-						currentStockMotion.setStm_counter_from(newObj
-								.getCpt_counter_type());
-						try {
-							if (isStepBeginningSoonSoStockIsInFab(newObject)) {
+						currentStockMotion.setStr_product(newObj.getCpt_product());
+						currentStockMotion.setStm_counter_from(newObj.getCpt_counter_type());
+						if (isStepBeginningSoonSoStockIsInFab(newObject)) {
 
-								currentStockMotion
-										.setStm_counter_to(counterTypeService
-												.getElementByName(CounterTypeConstants.STOCK_EN_FAB
-														.getCty_libelle()));
+							currentStockMotion.setStm_counter_to(CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list));
 
-							} else {
-								currentStockMotion
-										.setStm_counter_to(counterTypeService
-												.getElementByName(CounterTypeConstants.STOCK_RESERVE_FAB
-														.getCty_libelle()));
+						} else {
+							currentStockMotion
+									.setStm_counter_to(CounterTypeConstants.STOCK_RESERVE_FAB.toDBCouter(list));
 
-							}
-						} catch (ServiceException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
 						}
-						/*
-						 * Reminder : I had decided to use 5 kg of malt for this
-						 * recipe. In fact I put only 3 kg in kettle for the
-						 * recipe (by modifying the step). It results 2 kg must
-						 * go back in stock (negative)
-						 */
 
-						double stockMotionValue = newObj.getCpt_value()
-								- oldObj.getCpt_value();
+						double stockMotionValue = newObj.getCpt_value() - oldObj.getCpt_value();
 
 						currentStockMotion.setStm_value(stockMotionValue);
 						// VALIDATING STOCK MOTION AND ADDING IT TO LIST
-						if (StockMotionValidator
-								.checkIfStockMotionSatisfiesRules(
-										currentStockMotion
-												.getStm_counter_from()
-												.toConstant(),
-										currentStockMotion.getStm_counter_to()
-												.toConstant())) {
+						if (StockMotionValidator.checkIfStockMotionSatisfiesRules(
+								currentStockMotion.getStm_counter_from().toConstant(),
+								currentStockMotion.getStm_counter_to().toConstant())) {
 							stockMotionsResult.add(currentStockMotion);
 						}
 					}
@@ -169,18 +146,8 @@ public class RawMaterialStockCounterParserForStep implements
 
 				currentStockMotion.setStm_motion_date(new Date());
 				currentStockMotion.setStr_product(newObj.getCpt_product());
-				try {
-					currentStockMotion
-							.setStm_counter_from(counterTypeService
-									.getElementByName(CounterTypeConstants.STOCK_DISPO_FAB
-											.getCty_libelle()));
-					currentStockMotion.setStm_counter_to(counterTypeService
-							.getElementByName(CounterTypeConstants.STOCK_EN_FAB
-									.getCty_libelle()));
-				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				currentStockMotion.setStm_counter_from(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(list));
+				currentStockMotion.setStm_counter_to(CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list));
 
 				currentStockMotion.setStm_value(newObj.getCpt_value());
 				// VALIDATING STOCK MOTION AND ADDING IT TO LIST
@@ -191,8 +158,7 @@ public class RawMaterialStockCounterParserForStep implements
 				}
 			}
 
-		} else if ((newObject == null || newObject.equals(new Etape()))
-				&& oldObject != null) {
+		} else if ((newObject == null || newObject.equals(new Etape())) && oldObject != null) {
 			/*
 			 * If updated step is null or new, step is being terminated so
 			 * removing stock in fab
@@ -214,23 +180,14 @@ public class RawMaterialStockCounterParserForStep implements
 					currentStockMotion.setStm_motion_date(new Date());
 					currentStockMotion.setStr_product(c.getCpt_product());
 
-					try {
-						currentStockMotion
-								.setStm_counter_from(counterTypeService
-										.getElementByName(CounterTypeConstants.STOCK_EN_FAB
-												.getCty_libelle()));
+					currentStockMotion.setStm_counter_from(CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list));
 
-						currentStockMotion.setStm_counter_to(null);
+					currentStockMotion.setStm_counter_to(CounterTypeConstants.NONE.toDBCouter(list));
 
-					} catch (ServiceException e) {
-						e.printStackTrace();
-					}
-					
 					currentStockMotion.setStm_unit(currentStockMotion.getStm_unit());
-					
-					//Setting value to positive value as motion has direction
+
+					// Setting value to positive value as motion has direction
 					currentStockMotion.setStm_value(c.getCpt_value());
-					
 
 					stockMotionsResult.add(currentStockMotion);
 				}
@@ -239,6 +196,11 @@ public class RawMaterialStockCounterParserForStep implements
 		}
 
 		return stockMotionsResult;
+	}
+
+	private List<CounterType> getList() {
+
+		return counterTypeService.getAllElements();
 	}
 
 	/**
@@ -250,10 +212,8 @@ public class RawMaterialStockCounterParserForStep implements
 	 * @return true if step starts soon. Otherwise false
 	 */
 	private boolean isStepBeginningSoonSoStockIsInFab(Etape etp) {
-		float delayToPutStockInFabInsteadOfReservingIt = Float
-				.parseFloat(ConfigLoader.getConfigByKey(
-						Constants.CONFIG_PROPERTIES,
-						"param.stock.delay.limitToStockInFab.minutes"));
+		float delayToPutStockInFabInsteadOfReservingIt = Float.parseFloat(ConfigLoader
+				.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.stock.delay.limitToStockInFab.minutes"));
 
 		if (delayToPutStockInFabInsteadOfReservingIt > 0)
 			delayToPutStockInFabInsteadOfReservingIt = -delayToPutStockInFabInsteadOfReservingIt;
@@ -265,8 +225,7 @@ public class RawMaterialStockCounterParserForStep implements
 			return true;
 
 		} else {
-			Date date = DateManipulator.getInstance().getDateFromDateAndDelay(
-					etp.getEtp_debut_reel(),
+			Date date = DateManipulator.getInstance().getDateFromDateAndDelay(etp.getEtp_debut(),
 					delayToPutStockInFabInsteadOfReservingIt, "MINUTES");
 
 			// If date - delay < now means step starts soon
@@ -284,68 +243,74 @@ public class RawMaterialStockCounterParserForStep implements
 	 * @return
 	 * @throws Exception
 	 */
-	private List<RawMaterialCounter> parseIngredients(Etape objectToBeParsed,
-			CounterType counterType) throws Exception {
+	private List<RawMaterialCounter> parseIngredients(Etape objectToBeParsed, CounterType counterType)
+			throws Exception {
 
 		List<RawMaterialCounter> result = new ArrayList<RawMaterialCounter>();
 
 		Calendar date = Calendar.getInstance();
-		date.setTime(objectToBeParsed.getEtp_debut());
+		date.setTime((objectToBeParsed.getEtp_debut() == null)? new Date() : objectToBeParsed.getEtp_debut());
 
-		for (Malt malt : objectToBeParsed.getEtp_malts()) {
+		if (objectToBeParsed.getEtp_malts() != null) {
+			for (Malt malt : objectToBeParsed.getEtp_malts()) {
 
-			if (malt.getIng_quantite() > 0) {
+				if (malt.getIng_quantite() > 0) {
 
-				RawMaterialCounter currentCounter = new RawMaterialCounter();
+					RawMaterialCounter currentCounter = new RawMaterialCounter();
 
-				currentCounter.setCpt_date_cre(new Date());
-				currentCounter.setCpt_date_maj(new Date());
-				currentCounter.setCpt_product(malt);
-				currentCounter.setCpt_unit(StockUnit.KILO);
-				currentCounter.setCpt_value(malt.getIng_quantite());
-				currentCounter.setCpt_counter_type(counterType);
+					currentCounter.setCpt_date_cre(new Date());
+					currentCounter.setCpt_date_maj(new Date());
+					currentCounter.setCpt_product(malt);
+					currentCounter.setCpt_unit(StockUnit.KILO);
+					currentCounter.setCpt_value(malt.getIng_quantite());
+					currentCounter.setCpt_counter_type(counterType);
 
-				result.add(currentCounter);
+					result.add(currentCounter);
+				}
+
 			}
-
 		}
 
-		for (Houblon hop : objectToBeParsed.getEtp_houblons()) {
+		if (objectToBeParsed.getEtp_houblons() != null) {
+			for (Houblon hop : objectToBeParsed.getEtp_houblons()) {
 
-			if (hop.getIng_quantite() > 0) {
+				if (hop.getIng_quantite() > 0) {
 
-				RawMaterialCounter currentCounter = new RawMaterialCounter();
+					RawMaterialCounter currentCounter = new RawMaterialCounter();
 
-				currentCounter.setCpt_date_cre(new Date());
-				currentCounter.setCpt_date_maj(new Date());
-				currentCounter.setCpt_product(hop);
-				currentCounter.setCpt_unit(StockUnit.GRAMME);
-				currentCounter.setCpt_value(hop.getIng_quantite());
-				currentCounter.setCpt_counter_type(counterType);
+					currentCounter.setCpt_date_cre(new Date());
+					currentCounter.setCpt_date_maj(new Date());
+					currentCounter.setCpt_product(hop);
+					currentCounter.setCpt_unit(StockUnit.GRAMME);
+					currentCounter.setCpt_value(hop.getIng_quantite());
+					currentCounter.setCpt_counter_type(counterType);
 
-				result.add(currentCounter);
+					result.add(currentCounter);
+				}
+
 			}
-
 		}
 
-		for (Levure lev : objectToBeParsed.getEtp_levures()) {
+		if (objectToBeParsed.getEtp_levures() != null) {
 
-			if (lev.getIng_quantite() > 0) {
+			for (Levure lev : objectToBeParsed.getEtp_levures()) {
 
-				RawMaterialCounter currentCounter = new RawMaterialCounter();
+				if (lev.getIng_quantite() > 0) {
 
-				currentCounter.setCpt_date_cre(new Date());
-				currentCounter.setCpt_date_maj(new Date());
-				currentCounter.setCpt_product(lev);
-				currentCounter.setCpt_unit(StockUnit.GRAMME);
-				currentCounter.setCpt_value(lev.getIng_quantite());
-				currentCounter.setCpt_counter_type(counterType);
+					RawMaterialCounter currentCounter = new RawMaterialCounter();
 
-				result.add(currentCounter);
+					currentCounter.setCpt_date_cre(new Date());
+					currentCounter.setCpt_date_maj(new Date());
+					currentCounter.setCpt_product(lev);
+					currentCounter.setCpt_unit(StockUnit.GRAMME);
+					currentCounter.setCpt_value(lev.getIng_quantite());
+					currentCounter.setCpt_counter_type(counterType);
+
+					result.add(currentCounter);
+				}
+
 			}
-
 		}
-
 		return result;
 	}
 

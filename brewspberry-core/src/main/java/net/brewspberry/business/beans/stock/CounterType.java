@@ -15,21 +15,16 @@ import javax.persistence.OneToMany;
 @Entity
 public class CounterType implements Serializable {
 
-
 	/*
-	STOCK_DISPO_FAB(0, "Stock disponible à la fabrication"),
-	STOCK_DLC_DEPASSEE(1, "Stock DLC depassee"),
-	STOCK_RESERVE_FAB(2, "Stock reserve fabrication"),
-	STOCK_DISPO_VENTE(3, "Stock dispo vente"),
-	STOCK_RESERVE_CC(4, "Stock reserve CC"), 
-	STOCK_DEM_CASSE(5, "Demarque casse"),
-	STOCK_DEM_QUALITE(6, "Demarque qualite"),
-	STOCK_EN_FAB(7, "Stock en cours de fabrication"),
-	STOCK_BLOQUE_VENTE(8, "Stock bloqué à la vente"),
-	NONE(99, "none")
-	;
-	*/
-	
+	 * STOCK_DISPO_FAB(0, "Stock disponible à la fabrication"),
+	 * STOCK_DLC_DEPASSEE(1, "Stock DLC depassee"), STOCK_RESERVE_FAB(2,
+	 * "Stock reserve fabrication"), STOCK_DISPO_VENTE(3, "Stock dispo vente"),
+	 * STOCK_RESERVE_CC(4, "Stock reserve CC"), STOCK_DEM_CASSE(5,
+	 * "Demarque casse"), STOCK_DEM_QUALITE(6, "Demarque qualite"),
+	 * STOCK_EN_FAB(7, "Stock en cours de fabrication"), STOCK_BLOQUE_VENTE(8,
+	 * "Stock bloqué à la vente"), NONE(99, "none") ;
+	 */
+
 	/**
 	 * 
 	 */
@@ -37,20 +32,20 @@ public class CounterType implements Serializable {
 	/**
 	 * Represents a stock counter type. Example : fabrication available stock
 	 */
-	@Id@GeneratedValue(strategy=GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int cty_id;
 	private String cty_libelle;
 	private Date cty_date_cre;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="cpt_counter_type")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cpt_counter_type")
 	private List<StockCounter> cty_counters;
-	
 
 	CounterType() {
 		super();
 	}
 
-	CounterType(int cty_id, String cty_libelle){
+	CounterType(int cty_id, String cty_libelle) {
 		this.cty_id = cty_id;
 		this.cty_libelle = cty_libelle;
 		this.setCty_date_cre(new Date());
@@ -79,26 +74,25 @@ public class CounterType implements Serializable {
 	public void setCty_date_cre(Date cty_date_cre) {
 		this.cty_date_cre = cty_date_cre;
 	}
-	
+
 	/**
 	 * Converts {@link CounterType} from DB to {@link CounterTypeConstants}
-	 * @param counterType to be converted
-	 * @return corresponding {@link CounterTypeConstants} or CounterTypeConstants.NONE
+	 * 
+	 * @param counterType
+	 *            to be converted
+	 * @return corresponding {@link CounterTypeConstants} or
+	 *         CounterTypeConstants.NONE
 	 */
-	public CounterTypeConstants toConstant(){
-		if (Arrays.asList(CounterTypeConstants.values()).contains(this)){
-			
-			for (CounterTypeConstants counter : CounterTypeConstants.values()){
-				
-				if (counter.getCty_libelle().equals(this.getCty_libelle())){
-					return counter;
-				}
-				
+	public CounterTypeConstants toConstant() {
+
+		for (CounterTypeConstants counter : CounterTypeConstants.values()) {
+
+			if (counter.getCty_libelle().equals(this.getCty_libelle())) {
+				return counter;
 			}
-			return CounterTypeConstants.NONE;
-			
-		} else 
-			return CounterTypeConstants.NONE;
+
+		}
+		return CounterTypeConstants.NONE;
 	}
 
 	@Override
@@ -129,6 +123,4 @@ public class CounterType implements Serializable {
 		return true;
 	}
 
-	
-	
 }

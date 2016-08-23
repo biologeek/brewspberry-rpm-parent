@@ -162,7 +162,10 @@
 										<div class="navbar navbar-inner block-header">
 											<div class="muted pull-left">Etape</div>
 											<div class="pull-right">
-												<span class="badge badge-info">${steps[loop].getEtp_numero()}</span>
+												<span class="badge badge-info"><a href="javascript:void(0);" 
+													onClick="startStep(${steps[loop].getEtp_id()});">Demarrer</a></span>
+												<span class="badge badge-info"><a href="javascript:void(0);" 
+													onClick="stopStep(${steps[loop].getEtp_id()});">Arreter</a></span>
 
 											</div>
 										</div>
@@ -173,8 +176,8 @@
 													<tr>
 														<th>#</th>
 														<th>Label</th>
-														<th>Durée</th>
-														<th>Température</th>
+														<th>Duree</th>
+														<th>Temperature</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -242,7 +245,7 @@
 					<!-- block -->
 					<div class="block">
 						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Ajouter une étape</div>
+							<div class="muted pull-left">Ajouter une etape</div>
 							<div class="pull-right">
 								<span class="badge badge-info">${steps.size()}</span>
 
@@ -258,11 +261,11 @@
 											<td>Label</td>
 											<td><input type="text" name="step_label" /><</td>
 
-											<td>Durée théorique</td>
+											<td>Duree theorique</td>
 											<td><input type="text" name="step_duration" /></td>
 										</tr>
 										<tr>
-											<td>Début</td>
+											<td>Debut</td>
 											<td id= "stepBeginningAdd"><input type="text" name="step_beginnging" />
 												<script type="text/javascript">
 													$(function(){
@@ -283,7 +286,7 @@
 												</td>
 										</tr>
 										<tr>
-											<td>Température théorique</td>
+											<td>Temperature theorique</td>
 											<td><input type="text" name="step_temperature" /></td>
 
 											<td>Commentaire</td>
@@ -315,7 +318,7 @@
 					<div class="block">
 
 						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Profil complet de température</div>
+							<div class="muted pull-left">Profil complet de temperature</div>
 
 						</div>
 						<a
@@ -332,7 +335,7 @@
 					<div class="block">
 
 						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Bière</div>
+							<div class="muted pull-left">Biere</div>
 						</div>
 						<div class="block-content collapse in">
 							<table class="table table-striped">
@@ -346,7 +349,7 @@
 								<tr>
 									<td style="width: 20%;">Taux d'alcool :</td>
 									<td style="width: 30%;">${brassin.getBra_beer().getBeer_alcohol()}</td>
-									<td style="width: 20%;">Densité :</td>
+									<td style="width: 20%;">Densite :</td>
 									<td style="width: 30%;">${brassin.getBra_beer().getBeer_density()}</td>
 								</tr>
 								<tr>
@@ -367,7 +370,7 @@
 								</tr>
 
 								<tr>
-									<td style="width: 20%;">Embouteillées :</td>
+									<td style="width: 20%;">Embouteillees :</td>
 									<td style="width: 30%;">${brassin.getBra_beer().getBeer_init_bottles()}</td>
 									<td style="width: 20%;">Restantes :</td>
 									<td style="width: 30%;">${brassin.getBra_beer().getBeer_remaining_bottles()}</td>
@@ -408,10 +411,10 @@
 
 
 										</c:choose></td>
-									<td style="width: 20%;">Première goulée :</td>
+									<td style="width: 20%;">Premiere goulee :</td>
 									<td style="width: 30%;"><fmt:formatDate
 											value="${brassin.getBra_beer().getBeer_first_drink_date()}"
-											pattern="dd/MM/yyyy à HH:mm:ss" /></td>
+											pattern="dd/MM/yyyy a� HH:mm:ss" /></td>
 								</tr>
 
 							</table>

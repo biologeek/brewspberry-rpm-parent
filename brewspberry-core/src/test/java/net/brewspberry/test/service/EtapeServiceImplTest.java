@@ -1,5 +1,6 @@
 package net.brewspberry.test.service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,8 +13,10 @@ import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
+import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.parser.Parser;
+import net.brewspberry.business.service.StockServiceImpl;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 
 import org.junit.Assert;
@@ -22,6 +25,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,9 +42,8 @@ public class EtapeServiceImplTest {
 	Etape etape;
 	Calendar calCrea, calBegin, calEnd;
 
-	@Mock
-	@Autowired
-	private ISpecificStockService specStockService;
+	@Spy
+	private ISpecificStockService specStockService = new StockServiceImpl();
 
 	private Etape newEtape;
 
@@ -51,6 +55,8 @@ public class EtapeServiceImplTest {
 
 	@Before
 	public void init() {
+
+		MockitoAnnotations.initMocks(this);
 
 		calCrea = Calendar.getInstance();
 		calCrea.add(Calendar.HOUR, -1);
@@ -73,13 +79,15 @@ public class EtapeServiceImplTest {
 
 	@Test
 	public void shouldStopStepForReal() {
-
 		List<CounterType> list = getList();
-		Mockito.when(specStockService
-				.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(
-						oldEtape, newEtape,
-						CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list),
-						CounterTypeConstants.NONE.toDBCouter(list)));
+
+		CounterType counterTypeFrom = CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list);
+		CounterType counterTypeTo = CounterTypeConstants.NONE.toDBCouter(list);
+		List<StockCounter> mockResult = new ArrayList<StockCounter>();
+
+		Mockito.doReturn(mockResult).when(specStockService)
+				.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(etape, null, counterTypeFrom,
+						counterTypeTo);
 
 		etape.setEtp_debut_reel(calBegin.getTime());
 		etape.setEtp_fin(calEnd.getTime());
@@ -92,16 +100,11 @@ public class EtapeServiceImplTest {
 		Etape result = specEtapeService.stopStepForReal(etape);
 		calActual.setTime(result.getEtp_fin_reel());
 
-		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK),
-				calActual.get(Calendar.DAY_OF_WEEK));
-		Assert.assertEquals(calExpected.get(Calendar.MONTH),
-				calActual.get(Calendar.MONTH));
-		Assert.assertEquals(calExpected.get(Calendar.YEAR),
-				calActual.get(Calendar.YEAR));
-		Assert.assertEquals(calExpected.get(Calendar.HOUR),
-				calActual.get(Calendar.HOUR));
-		Assert.assertEquals(calExpected.get(Calendar.MINUTE),
-				calActual.get(Calendar.MINUTE));
+		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
+		Assert.assertEquals(calExpected.get(Calendar.MONTH), calActual.get(Calendar.MONTH));
+		Assert.assertEquals(calExpected.get(Calendar.YEAR), calActual.get(Calendar.YEAR));
+		Assert.assertEquals(calExpected.get(Calendar.HOUR), calActual.get(Calendar.HOUR));
+		Assert.assertEquals(calExpected.get(Calendar.MINUTE), calActual.get(Calendar.MINUTE));
 
 	}
 
@@ -120,16 +123,11 @@ public class EtapeServiceImplTest {
 		Etape result = specEtapeService.startStepForReal(etape);
 		calActual.setTime(result.getEtp_fin_reel());
 
-		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK),
-				calActual.get(Calendar.DAY_OF_WEEK));
-		Assert.assertEquals(calExpected.get(Calendar.MONTH),
-				calActual.get(Calendar.MONTH));
-		Assert.assertEquals(calExpected.get(Calendar.YEAR),
-				calActual.get(Calendar.YEAR));
-		Assert.assertEquals(calExpected.get(Calendar.HOUR),
-				calActual.get(Calendar.HOUR));
-		Assert.assertEquals(calExpected.get(Calendar.MINUTE),
-				calActual.get(Calendar.MINUTE));
+		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
+		Assert.assertEquals(calExpected.get(Calendar.MONTH), calActual.get(Calendar.MONTH));
+		Assert.assertEquals(calExpected.get(Calendar.YEAR), calActual.get(Calendar.YEAR));
+		Assert.assertEquals(calExpected.get(Calendar.HOUR), calActual.get(Calendar.HOUR));
+		Assert.assertEquals(calExpected.get(Calendar.MINUTE), calActual.get(Calendar.MINUTE));
 
 	}
 

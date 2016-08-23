@@ -7,7 +7,7 @@ public enum StockMotionTypeRules {
 	 * or reserved for it If ingredient is broken or expired or not usable due
 	 * to quality concerns, it is marked-down for quality or damage
 	 */
-	INGREDIENT_MOTION_DISPO_FAB(CounterTypeConstants.STOCK_DISPO_FAB, CounterTypeConstants.STOCK_RESERVE_FAB, CounterTypeConstants.STOCK_EN_FAB, CounterTypeConstants.STOCK_DEM_CASSE, CounterTypeConstants.STOCK_DEM_QUALITE, CounterTypeConstants.STOCK_DLC_DEPASSEE),
+	INGREDIENT_MOTION_DISPO_FAB(CounterTypeConstants.STOCK_DISPO_FAB, CounterTypeConstants.STOCK_RESERVE_FAB, CounterTypeConstants.STOCK_EN_FAB, CounterTypeConstants.STOCK_DEM_CASSE, CounterTypeConstants.STOCK_DEM_QUALITE, CounterTypeConstants.STOCK_DLC_DEPASSEE, CounterTypeConstants.NONE),
 	/**
 	 * When fabrication is finished for ingredient, stock must disappear.
 	 */
@@ -17,7 +17,7 @@ public enum StockMotionTypeRules {
 	 * transferred to STOCK_BLOQUE_VENTE which refers as stock waiting to be
 	 * finished or STOCK_EN_FAB if being fabricated
 	 */
-	PRODUCT_FROM_FAB(CounterTypeConstants.NONE, CounterTypeConstants.STOCK_BLOQUE_VENTE, CounterTypeConstants.STOCK_EN_FAB),
+	PRODUCT_FROM_FAB(CounterTypeConstants.NONE, CounterTypeConstants.STOCK_BLOQUE_VENTE, CounterTypeConstants.STOCK_EN_FAB, CounterTypeConstants.NONE),
 	/**
 	 * If stock is locked for sale it can be unlocked for example at the end of
 	 * lock for sale or if it does not satisfy quality requirements is marked down
