@@ -162,10 +162,11 @@
 										<div class="navbar navbar-inner block-header">
 											<div class="muted pull-left">Etape</div>
 											<div class="pull-right">
-												<span class="badge badge-info"><a href="javascript:void(0);" 
-													onClick="startStep(${steps[loop].getEtp_id()});">Demarrer</a></span>
-												<span class="badge badge-info"><a href="javascript:void(0);" 
-													onClick="stopStep(${steps[loop].getEtp_id()});">Arreter</a></span>
+												<span class="badge badge-info"><button id="start${steps[loop].getEtp_id()}" onClick="startStep(${steps[loop].getEtp_id()});">
+												Demarrer</button></span>
+												
+												<span class="badge badge-info"><button id="stop${steps[loop].getEtp_id()}" onClick="stopStep(${steps[loop].getEtp_id()});" disabled >
+												Arreter</button></span>
 
 											</div>
 										</div>

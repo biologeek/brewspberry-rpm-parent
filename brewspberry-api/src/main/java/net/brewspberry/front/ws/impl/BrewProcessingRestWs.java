@@ -31,6 +31,9 @@ public class BrewProcessingRestWs implements IBrewProcessing {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/start/{etapeID}")
+	/**
+	 * 
+	 */
 	public Response startStep(@PathParam("etapeID") long etape) throws Exception {
 		Etape stepFromDataSource = null;
 		Etape stepAfterStateUpdate = null;
@@ -62,7 +65,16 @@ public class BrewProcessingRestWs implements IBrewProcessing {
 	}
 
 	@Override
-	public Response endStep(long etape) {
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/stop/{etapeID}")
+	/**
+	 * Ends step when called
+	 * 
+	 * @param etape step ID to stop
+	 * @return step after state update
+	 */
+	public Response endStep(@PathParam("etapeID") long etape) {
 		Etape stepFromDataSource = null;
 		Etape stepAfterStateUpdate = null;
 
