@@ -41,6 +41,10 @@
 
 <script src="vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
 
+<script src="https://code.angularjs.org/1.3.0/angular.min.js"></script>
+<script src="https://code.angularjs.org/1.3.0/angular-messages.min.js"></script>
+
+
 <script type="text/javascript"
 	src="vendors/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="assets/form-validation.js"></script>
@@ -76,7 +80,8 @@
 						$('#rootwizard').find('.bar').css({
 							width : $percent + '%'
 						});
-						// If it's the last tab then hide the last button and show the finish instead
+						// If it's the last tab then hide the last button and
+						// show the finish instead
 						if ($current >= $total) {
 							$('#rootwizard').find('.pager .next').hide();
 							$('#rootwizard').find('.pager .finish').show();
@@ -248,12 +253,12 @@ jQuery(document).ready(function(){
 
 </head>
 
-<body class="wysihtml5-supported">
+<body class="wysihtml5-supported" ng-app="ingredientApp">
 
 	<jsp:include page="tpl/header.jsp"></jsp:include>
 
 
-	<div class="container-fluid">
+	<div class="container-fluid" ng-controller="ingredientController">
 
 		<div class="row-fluid">
 			<jsp:include page="tpl/sidebar.jsp"></jsp:include>
@@ -266,8 +271,7 @@ jQuery(document).ready(function(){
 					</div>
 					<div class="block-content collapse in">
 						<div class="span12">
-							<form action="ingredientServlet" class="form-horizontal"
-								method="post">
+							<form name="addIngredient" ng-submit="submitToIngredientService()" class="form-horizontal">
 								<fieldset>
 									<legend>Ingrédient</legend>
 
@@ -286,7 +290,7 @@ jQuery(document).ready(function(){
 														${ing.value}</option>
 
 												</c:forEach>
-
+												<div ng-messages="addIngredient.ingredient_type.$error" ng-messages-include="tpl/error_mmessages.html"></div>
 											</select>
 										</div>
 									</div>
@@ -301,6 +305,8 @@ jQuery(document).ready(function(){
 											<input type="text" name="ing_description" class="span6"
 												id="typeahead" data-provide="typeahead" data-items="4"
 												value="${ing_fdescription_val}">
+											<div ng-messages="addIngredient.ing_description.$error" ng-messages-include="tpl/error_mmessages.html"></div>
+												
 										</div>
 									</div>
 									<div id="specific-parameters"></div>
@@ -316,6 +322,7 @@ jQuery(document).ready(function(){
 											<input type="text" name="ing_fournisseur" class="span6"
 												id="typeahead" data-provide="typeahead" data-items="4"
 												value="${ing_fournisseur_val}">
+											<div ng-messages="addIngredient.ing_fournisseur.$error" ng-messages-include="tpl/error_mmessages_add_ingredient.html"></div>
 										</div>
 									</div>
 
