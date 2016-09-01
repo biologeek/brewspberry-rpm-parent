@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -72,8 +74,7 @@ public class Etape implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "lev_etape", cascade = CascadeType.ALL)
 	private List<Levure> etp_levures;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "etp_plt_id", updatable = true)
+	@Enumerated(EnumType.ORDINAL)
 	PalierType etp_palier_type;
 
 	@Transient

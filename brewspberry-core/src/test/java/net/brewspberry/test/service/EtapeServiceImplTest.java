@@ -11,33 +11,41 @@ import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.CounterTypeConstants;
-import net.brewspberry.business.beans.stock.RawMaterialCounter;
-import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
 import net.brewspberry.business.beans.stock.StockCounter;
 import net.brewspberry.business.exceptions.BusinessException;
-import net.brewspberry.business.parser.Parser;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.service.StockServiceImpl;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
+import net.brewspberry.util.ConfigLoader;
+import net.brewspberry.util.Constants;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.PowerMockRunnerDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(PowerMockRunner.class)
+@PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringCoreTestConfiguration.class)
+@PrepareForTest(ConfigLoader.class)
 public class EtapeServiceImplTest {
 
 	@Autowired
 	ISpecificEtapeService specEtapeService;
+	@Autowired
+	@Qualifier("etapeServiceImpl")
+	IGenericService<Etape> genEtapeService;
 
 	Etape etape;
 	Calendar calCrea, calBegin, calEnd;
@@ -67,7 +75,12 @@ public class EtapeServiceImplTest {
 		calEnd = Calendar.getInstance();
 		calEnd.add(Calendar.MINUTE, -10);
 
-		etape = new Etape();
+		try {
+			etape = genEtapeService.getElementById(1);
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		newEtape = new Etape();
 
@@ -81,13 +94,15 @@ public class EtapeServiceImplTest {
 	public void shouldStopStepForReal() {
 		List<CounterType> list = getList();
 
-		CounterType counterTypeFrom = CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list);
+		CounterType counterTypeFrom = CounterTypeConstants.STOCK_EN_FAB
+				.toDBCouter(list);
 		CounterType counterTypeTo = CounterTypeConstants.NONE.toDBCouter(list);
 		List<StockCounter> mockResult = new ArrayList<StockCounter>();
 
-		Mockito.doReturn(mockResult).when(specStockService)
-				.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(etape, null, counterTypeFrom,
-						counterTypeTo);
+		Mockito.doReturn(mockResult)
+				.when(specStockService)
+				.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(
+						etape, null, counterTypeFrom, counterTypeTo);
 
 		etape.setEtp_debut_reel(calBegin.getTime());
 		etape.setEtp_fin(calEnd.getTime());
@@ -100,11 +115,16 @@ public class EtapeServiceImplTest {
 		Etape result = specEtapeService.stopStepForReal(etape);
 		calActual.setTime(result.getEtp_fin_reel());
 
-		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
-		Assert.assertEquals(calExpected.get(Calendar.MONTH), calActual.get(Calendar.MONTH));
-		Assert.assertEquals(calExpected.get(Calendar.YEAR), calActual.get(Calendar.YEAR));
-		Assert.assertEquals(calExpected.get(Calendar.HOUR), calActual.get(Calendar.HOUR));
-		Assert.assertEquals(calExpected.get(Calendar.MINUTE), calActual.get(Calendar.MINUTE));
+		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK),
+				calActual.get(Calendar.DAY_OF_WEEK));
+		Assert.assertEquals(calExpected.get(Calendar.MONTH),
+				calActual.get(Calendar.MONTH));
+		Assert.assertEquals(calExpected.get(Calendar.YEAR),
+				calActual.get(Calendar.YEAR));
+		Assert.assertEquals(calExpected.get(Calendar.HOUR),
+				calActual.get(Calendar.HOUR));
+		Assert.assertEquals(calExpected.get(Calendar.MINUTE),
+				calActual.get(Calendar.MINUTE));
 
 	}
 
@@ -116,19 +136,30 @@ public class EtapeServiceImplTest {
 	@Test
 	public void shouldStartStepForReal() throws BusinessException {
 
+		PowerMockito.mockStatic(ConfigLoader.class);
 		Calendar calExpected = Calendar.getInstance();
 		Calendar calActual = Calendar.getInstance();
 
 		Date date = new Date();
-		Etape result = specEtapeService.startStepForReal(etape);
-		calActual.setTime(result.getEtp_fin_reel());
 
-		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
-		Assert.assertEquals(calExpected.get(Calendar.MONTH), calActual.get(Calendar.MONTH));
-		Assert.assertEquals(calExpected.get(Calendar.YEAR), calActual.get(Calendar.YEAR));
-		Assert.assertEquals(calExpected.get(Calendar.HOUR), calActual.get(Calendar.HOUR));
-		Assert.assertEquals(calExpected.get(Calendar.MINUTE), calActual.get(Calendar.MINUTE));
+		String param = "param.stock.delay.limitToStockInFab.minutes";
+		String path = Constants.CONFIG_PROPERTIES;
+		PowerMockito.when(ConfigLoader.getConfigByKey(path, param)).thenReturn(
+				"30");
+
+		Etape result = specEtapeService.startStepForReal(etape);
+		calActual.setTime(result.getEtp_debut_reel());
+
+		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK),
+				calActual.get(Calendar.DAY_OF_WEEK));
+		Assert.assertEquals(calExpected.get(Calendar.MONTH),
+				calActual.get(Calendar.MONTH));
+		Assert.assertEquals(calExpected.get(Calendar.YEAR),
+				calActual.get(Calendar.YEAR));
+		Assert.assertEquals(calExpected.get(Calendar.HOUR),
+				calActual.get(Calendar.HOUR));
+		Assert.assertEquals(calExpected.get(Calendar.MINUTE),
+				calActual.get(Calendar.MINUTE));
 
 	}
-
 }

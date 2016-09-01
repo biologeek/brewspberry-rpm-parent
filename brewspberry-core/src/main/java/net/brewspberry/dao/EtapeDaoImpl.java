@@ -51,8 +51,9 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 	@Override
 	public Etape update(Etape arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		sessionFactory.getCurrentSession().update(arg0);
+		
+		return this.getElementById(arg0.getEtp_id());
 	}
 
 	@Override

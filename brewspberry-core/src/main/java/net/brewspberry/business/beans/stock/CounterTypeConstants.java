@@ -16,7 +16,7 @@ public enum CounterTypeConstants implements Serializable {
 
 
 	
-	STOCK_DISPO_FAB(0, "Stock disponible a  la fabrication"),
+	STOCK_DISPO_FAB(0, "Stock disponible a la fabrication"),
 	STOCK_DLC_DEPASSEE(1, "Stock DLC depassee"),
 	STOCK_RESERVE_FAB(2, "Stock reserve fabrication"),
 	STOCK_DISPO_VENTE(3, "Stock dispo vente"),
