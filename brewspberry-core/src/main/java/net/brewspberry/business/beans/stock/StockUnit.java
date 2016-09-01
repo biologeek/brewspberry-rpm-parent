@@ -94,6 +94,19 @@ public enum StockUnit {
 		return false;
 		
 	}
+
+	public static StockUnit fromString(String unitaryPriceUnit) {
+		
+		
+		for (StockUnit value : StockUnit.values()){
+			
+			
+			if (value.getStu_value().equalsIgnoreCase(unitaryPriceUnit)){
+				return value;
+			}
+		}
+		return null;
+	}
 	
 
 }

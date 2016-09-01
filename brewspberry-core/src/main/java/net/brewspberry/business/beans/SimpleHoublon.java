@@ -20,9 +20,9 @@ public class SimpleHoublon extends AbstractIngredient implements Serializable {
 	 */
 	private static final long serialVersionUID = -9085140125050205061L;
 	private String shbl_variete;
-    private Double shbl_acide_alpha;
+    private double shbl_acide_alpha;
     private String shbl_aromes;
-    private Integer shbl_type;
+    private int shbl_type;
     
     
     
@@ -50,7 +50,7 @@ public class SimpleHoublon extends AbstractIngredient implements Serializable {
 
 
 
-	public void setShbl_acide_alpha(Double shbl_acide_alpha) {
+	public void setShbl_acide_alpha(double shbl_acide_alpha) {
 		this.shbl_acide_alpha = shbl_acide_alpha;
 	}
 
@@ -74,7 +74,7 @@ public class SimpleHoublon extends AbstractIngredient implements Serializable {
 
 
 
-	public void setShbl_type(Integer shbl_type) {
+	public void setShbl_type(int shbl_type) {
 		this.shbl_type = shbl_type;
 	}
 

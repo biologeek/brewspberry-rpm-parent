@@ -102,134 +102,15 @@
 
 <script type="text/javascript">
 			
-	function updatePageWithSpecificFields() {
 
-		console.log ("Entering updatePageWithSpecificFields");
-		var value = $("#ingredient_type").val();
-		
-		
-
-		console.log ("Got : "+value);
-		var codeToAppend;
-
-		cleanUpSpecificPart("specific-parameters");
-		
-		switch (value) {
-
-		case 'malt':
-			
-
-			codeToAppend = '<div class="control-group"> \
-		<label class="control-label" for="date01">Malt cereal :</label> \
-		<div class="controls"> \
-			<select name="smal_cereale" id="select01" class="hop-select">\
-			${maltSpecificCerealMenuOptions} \
-			</select> \
-		</div> \
-	</div> \
-		<div class="control-group"> \
-		<label class="control-label" for="date01">Type of malt :</label> \
-		<div class="controls"> \
-			<select name="smal_type" id="select01" class="hop-select"> \
-				${maltTypeSpecificMenuOptions} \
-			</select> \
-		</div> \
-	</div> \
-	<div class="control-group"> \
-		<label class="control-label" for="date01">Color of malt (EBC) :</label> \
-		<div class="controls"> \
-			<input type="text" name="smal_couleur" class="span6" \
-				id="typeahead" data-provide="typeahead" data-items="4" \
-				value="${smal_couleur_val}"> \
-		</div> \
-	</div>';
-
-			break;
-
-		case 'hop':
-
-			codeToAppend = '<div class="control-group"> \
-					<label class="control-label" for="date01">Hop variety :</label> \
-					<div class="controls"> \
-					<input type="text" name="shbl_variete" class="span6" \
-						id="typeahead" data-provide="typeahead" data-items="4" \
-						value="${shbl_variete_val}">\
-					</div> \
-				</div> \
-				<div class="control-group"> \
-					<label class="control-label" for="date01">Alpha acids :</label> \
-					<div class="controls"> \
-						<input type="text" name="shbl_acide_alpha" class="span6" \
-							id="typeahead" data-provide="typeahead" data-items="4" \
-							value="${shbl_acide_alpha_val}">\
-							</div> \
-					</div> \
-				<div class="control-group"> \
-				<label class="control-label" for="date01">Aromas :</label> \
-				<div class="controls"> \
-					<input type="text" name="shbl_aromes" class="span6" \
-						id="typeahead" data-provide="typeahead" data-items="4" \
-						value="${shbl_aromes_val}"> \
-						</div> \
-						</div> \
-				<div class="control-group"> \
-				<label class="control-label" for="date01">Use :</label> \
-				<div class="controls"> \
-					<select name="shbl_type" id="select01" class="hop-select"> \
-						<option value="default" selected="selected"></option> \
-						${hopTypeSpecificMenuOptions} \
-					</select> \
-							</div> \
-					</div> \
-	</div>';
-
-			break;
-
-		case 'yeast':
-
-			codeToAppend = '<div class="control-group"> \
-					<label class="control-label" for="date01">Yeast species :</label> \
-					<div class="controls"> \
-					<select name="smal_type" id="select01" class="hop-select"> \
-					<option value="default" selected="selected"></option> \
-					<option value="Saccharomyces cerevisiae">Saccharomyces cerevisiae</option> \
-					<option value="Saccharomyces uvarum">Saccharomyces uvarum</option> \
-				</select> \
-					</div> \
-				</div> \
-				<div class="control-group"> \
-					<label class="control-label" for="date01">Floculation :</label> \
-					<div class="controls"> \
-					<select name="slev_floculation" id="select01" class="hop-select"> \
-						<option value="default" selected="selected"></option> \
-						<option value="faible">Low</option> \
-						<option value="moyenne">Medium</option> \
-						<option value="forte">High</option> \
-					</select> \
-					</div> \
-					</div> \
-				<div class="control-group"> \
-					<label class="control-label" for="date01">Aromas :</label> \
-				<div class="controls"> \
-					<input type="text" name="slev_aromes" class="span6" \
-						id="typeahead" data-provide="typeahead" data-items="4" \
-						value="${slev_aromes_val}"> \
-			</div>';
-			break;
-
-		}
-		
-		
-		
-		$("#specific-parameters").append(codeToAppend);
-
-	}
 	
 	function cleanUpSpecificPart(spec){
 		
 		$("#"+spec).empty();
 		
 	}
+	
+	
 	</script>
 
 <script type="text/javascript">
@@ -265,10 +146,51 @@ jQuery(document).ready(function(){
 			<!--/span-->
 			<div class="span9 main-block" id="content">
 			
+			<div class="row-fluid">
+	            <div class="alert alert-success" ng-show="successfulAdding">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+	                <h4>Success</h4>
+	            	The operation completed successfully</div>
+	            	<div class="navbar">
+	                	<div class="navbar-inner">
+	                        <ul class="breadcrumb">
+	                            <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+	                            <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#' title="Show Sidebar" rel='tooltip'>&nbsp;</a></i>
+	                            <li>
+	                                <a href="#">Dashboard</a> <span class="divider">/</span>	
+	                            </li>
+	                            <li>
+	                                <a href="#">Settings</a> <span class="divider">/</span>	
+	                            </li>
+	                            <li class="active">Tools</li>
+	                        </ul>
+	                	</div>
+	            	</div>
+	            	<div class="alert alert-error" ng-show="unsuccessfulAdding">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+	                <h4>Failure</h4>
+	            	Something went wrong : {{ errorMessage }}</div>
+	            	<div class="navbar">
+	                	<div class="navbar-inner">
+	                        <ul class="breadcrumb">
+	                            <i class="icon-chevron-left hide-sidebar"><a href='#' title="Hide Sidebar" rel='tooltip'>&nbsp;</a></i>
+	                            <i class="icon-chevron-right show-sidebar" style="display:none;"><a href='#' title="Show Sidebar" rel='tooltip'>&nbsp;</a></i>
+	                            <li>
+	                                <a href="#">Dashboard</a> <span class="divider">/</span>	
+	                            </li>
+	                            <li>
+	                                <a href="#">Settings</a> <span class="divider">/</span>	
+	                            </li>
+	                            <li class="active">Tools</li>
+	                        </ul>
+	                	</div>
+	            	</div>
+	        	</div>
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
-						<div class="muted pull-left">Ajouter un brassin</div>
+						<div class="muted pull-left">Ajouter un ingrédient</div>
 					</div>
+					
 					<div class="block-content collapse in">
 						<div class="span12">
 							<form name="addIngredient" ng-submit="submitToIngredientService()" class="form-horizontal">
@@ -282,13 +204,12 @@ jQuery(document).ready(function(){
 
 											<select name="ingredient_type" id="ingredient_type"
 												class="hop-select"
-												onchange="updatePageWithSpecificFields();">
+												ng-change="updatePageWithSpecificFields();" ng-model="ingredientTypeSelection">
 												<option value="default" selected="selected"></option>
 												<c:forEach items="${ingredientTypes}" var="ing">
 													<option value="${ing.key}"
 														<c:if test="${ing.key == ingredientType}"> selected="selected" </c:if>>
 														${ing.value}</option>
-
 												</c:forEach>
 												<div ng-messages="addIngredient.ingredient_type.$error" ng-messages-include="tpl/error_mmessages.html"></div>
 											</select>
@@ -300,26 +221,113 @@ jQuery(document).ready(function(){
 										<label class="control-label" for="date01">Description
 											:</label>
 										<div class="controls">
-
-
-											<input type="text" name="ing_description" class="span6"
+											<input type="text" name="ing_description" class="span6" ng-model="ing_description"
 												id="typeahead" data-provide="typeahead" data-items="4"
 												value="${ing_fdescription_val}">
 											<div ng-messages="addIngredient.ing_description.$error" ng-messages-include="tpl/error_mmessages.html"></div>
 												
 										</div>
 									</div>
-									<div id="specific-parameters"></div>
-
-									<br /> <input type="hidden" name="ingredient_id"
-										value="${ingredient_id}" />
+									<div id="malt-specific-parameters" ng-show="malt_specific_parameters_show" style="display:none">
+										<div class="control-group">
+											<label class="control-label" for="date01">Malt cereal :</label>
+											<div class="controls">
+												<select name="smal_cereale" ng-model="smal_cereale" id="select01" class="hop-select">\
+													${maltSpecificCerealMenuOptions}
+												</select>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Type of malt :</label>
+											<div class="controls">
+												<select name="smal_type" ng-model="smal_type" id="select01" class="hop-select">
+													${maltTypeSpecificMenuOptions}
+												</select>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Color of malt (EBC) :</label>
+												<div class="controls">
+													<input type="text" name="smal_couleur" ng-model="smal_couleur" class="span6"
+														id="typeahead" data-provide="typeahead" data-items="4"
+															value="${smal_couleur_val}">
+												</div>
+										</div>
+									</div>
+									<div id="hop-specific-parameters" ng-show="hop_specific_parameters_show" style="display:none">
+										<div class="control-group">
+											<label class="control-label" for="date01">Hop variety :</label>
+											<div class="controls">
+												<input type="text" name="shbl_variete" ng-model="shbl_variete" class="span6"
+													id="typeahead" data-provide="typeahead" data-items="4"
+														value="${shbl_variete_val}">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Alpha acids :</label>
+											<div class="controls">
+												<input type="text" name="shbl_acide_alpha" ng-model="shbl_acide_alpha" class="span6"
+												id="typeahead" data-provide="typeahead" data-items="4"
+												value="${shbl_acide_alpha_val}">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Aromas :</label>
+											<div class="controls">
+												<input type="text" name="shbl_aromes" ng-model="shbl_aromes" class="span6"
+													id="typeahead" data-provide="typeahead" data-items="4"
+													value="${shbl_aromes_val}">
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Use :</label>
+											<div class="controls">
+												<select name="shbl_type" id="select01" ng-model="shbl_type" class="hop-select">
+													<option value="default" selected="selected"></option>
+													${hopTypeSpecificMenuOptions}
+												</select>
+											</div>
+										</div>
+									</div>		
+									<div id="yeast-specific-parameters" ng-show="yeast_specific_parameters_show" style="display:none">									
+										<div class="control-group">
+										<label class="control-label" for="date01">Yeast species :</label>
+											<div class="controls">
+												<select name="yeast_specie" id="select01" ng-model="yeast_specie" class="hop-select">
+													<option value="default" selected="selected"></option>
+													<option value="Saccharomyces cerevisiae">Saccharomyces cerevisiae</option>
+													<option value="Saccharomyces uvarum">Saccharomyces uvarum</option>
+												</select>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Floculation :</label>
+											<div class="controls">
+												<select name="slev_floculation" ng-model="slev_floculation" id="select01" class="hop-select">
+													<option value="default" selected="selected"></option>
+													<option value="faible">Low</option>
+													<option value="moyenne">Medium</option>
+													<option value="forte">High</option>
+												</select>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label" for="date01">Aromas :</label>
+											<div class="controls">
+												<input type="text" name="slev_aromes" ng-model="slev_aromes" class="span6"
+													id="typeahead" data-provide="typeahead" data-items="4"
+														value="${slev_aromes_val}">
+											</div>
+										</div>
+									</div>
+									<br /> 
+									
+									<input type="hidden" name="ingredient_id" value="${ingredient_id}" />
 
 									<div class="control-group">
 										<label class="control-label" for="date01">Provider :</label>
 										<div class="controls">
-
-
-											<input type="text" name="ing_fournisseur" class="span6"
+											<input type="text" name="ing_fournisseur" ng-model="ing_fournisseur" class="span6"
 												id="typeahead" data-provide="typeahead" data-items="4"
 												value="${ing_fournisseur_val}">
 											<div ng-messages="addIngredient.ing_fournisseur.$error" ng-messages-include="tpl/error_mmessages_add_ingredient.html"></div>

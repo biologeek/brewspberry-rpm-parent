@@ -31,7 +31,7 @@ public class SimpleMalt extends AbstractIngredient {
 	private static final long serialVersionUID = 4518248665359104487L;
 	private String smal_cereale;
     private String smal_type;
-    private Integer smal_couleur;
+    private int smal_couleur;
     
 	public SimpleMalt() {
 		super();
@@ -58,7 +58,7 @@ public class SimpleMalt extends AbstractIngredient {
 		return smal_couleur;
 	}
 
-	public void setSmal_couleur(Integer smal_couleur) {
+	public void setSmal_couleur(int smal_couleur) {
 		this.smal_couleur = smal_couleur;
 	}
 
