@@ -214,7 +214,7 @@ public class StockServiceImplTest extends AbstractTest {
 				if (((RawMaterialCounter) stick).getCpt_product()
 						.getIng_fournisseur().equals("Weyermann")) {
 
-					Assert.assertTrue(stick.getCpt_value() == 2);
+					Assert.assertEquals(-100000, stick.getCpt_value(), 0.1);
 
 				}
 			}
@@ -226,7 +226,7 @@ public class StockServiceImplTest extends AbstractTest {
 				if (((RawMaterialCounter) stick).getCpt_product()
 						.getIng_fournisseur().equals("Biere Boutique")) {
 
-					Assert.assertTrue(stick.getCpt_value() == 2);
+					Assert.assertEquals(2, stick.getCpt_value(), 0);
 
 				}
 			}
@@ -285,8 +285,8 @@ public class StockServiceImplTest extends AbstractTest {
 		StockCounter stk1 = (StockCounter) new IngredientStockCounterBuilder()
 				.ingredient(malt)
 				.type(CounterTypeConstants.STOCK_DISPO_FAB
-						.toDBCouter(counterTypeList)).unit(StockUnit.KILO)
-				.value(20).build();
+						.toDBCouter(counterTypeList)).unit(StockUnit.GRAMME)
+				.value(20000).build();
 		stk1.setCpt_id(1);
 
 		list.add(stk1);

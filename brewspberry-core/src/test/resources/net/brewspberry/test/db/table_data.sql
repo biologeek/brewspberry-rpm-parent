@@ -35,7 +35,7 @@ INSERT INTO Biere (stb_id, afp_unitary_value, afp_unitary_value_unit, afp_name, 
 
 
 
-INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 1, 0, 1, 20.0, 4, NOW(), NOW());
+INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 1, 0, 1, 200000, 5, NOW(), NOW());
 INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 2, 0, 2, 0.1, 4, NOW(), NOW());
 INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 3, 2, 1, 5.0, 4, NOW(), NOW());
 INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt_value, cpt_stu_id, cpt_date_cre, cpt_date_maj) VALUES ('raw', 4, 1, 2, 0.05, 4, NOW(), NOW());

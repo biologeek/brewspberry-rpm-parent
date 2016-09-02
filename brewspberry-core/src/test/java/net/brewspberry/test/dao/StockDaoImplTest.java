@@ -71,12 +71,12 @@ public class StockDaoImplTest extends AbstractTest{
 		
 		List<StockCounter> res = specDao.getStockCountersByTypes(list);
 		
-		Assert.assertEquals(0, res.size());
+		Assert.assertEquals(2, res.size());
 		
 		for (StockCounter s : res){
 			if (s.getCpt_id() == 1){
 
-				Assert.assertEquals(20, s.getCpt_value(), 0.1);
+				Assert.assertEquals(200000, s.getCpt_value(), 0.1);
 				
 			}
 		}
@@ -94,7 +94,7 @@ public class StockDaoImplTest extends AbstractTest{
 		for (StockCounter s : res){
 			if (s.getCpt_id() == 1){
 
-				Assert.assertEquals(20, s.getCpt_value(), 0.1);
+				Assert.assertEquals(200000, s.getCpt_value(), 0.1);
 			}
 		}
 	}

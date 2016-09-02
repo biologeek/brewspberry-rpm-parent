@@ -132,27 +132,15 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 			throw new BusinessException("Step is already started");
 		}
 
-		/*
-		 * If step was created at least X minutes before real beginning, stock
-		 * has been reserved
-		 * 
-		 * Else, stock was already put in fab
-		 */
-		try {
-			if (DateManipulator.getInstance().getDateFromDateAndDelay(step.getEtp_creation_date(), delay, "MINUTES")
-					.before(step.getEtp_debut_reel())) {
+		if (DateManipulator.getInstance().getDateFromDateAndDelay(step.getEtp_creation_date(), delay, "MINUTES")
+				.before(step.getEtp_debut_reel())) {
 
-				counterTypeFrom = counterTypeService
-						.getElementByName(CounterTypeConstants.STOCK_RESERVE_FAB.getCty_libelle());
+			counterTypeFrom = CounterTypeConstants.STOCK_RESERVE_FAB.toDBCouter(list);
 
-			} else {
+		} else {
 
-				counterTypeFrom = counterTypeService
-						.getElementByName(CounterTypeConstants.STOCK_DISPO_FAB.getCty_libelle());
+			counterTypeFrom = CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(list);
 
-			}
-		} catch (ServiceException e) {
-			e.printStackTrace();
 		}
 
 		/*
@@ -165,7 +153,10 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 		// Updating date and persisting
 		step.setEtp_update_date(new Date());
 
-		return etapeDao.update(step);
+		etapeDao.update(step);
+		
+		
+		return step;
 	}
 
 	private List<CounterType> getList() {
@@ -203,7 +194,8 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 		countersFromList = specStockService
 				.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(step, null, counterTypeFrom,
 						counterTypeTo);
+		etapeDao.update(step);
 
-		return etapeDao.update(step);
+		return step;
 	}
 }

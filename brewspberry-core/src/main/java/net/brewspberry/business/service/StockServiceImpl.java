@@ -484,6 +484,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 		double newStock = 0.0D;
 
 		stockMotion = this.standardizeMotionUnit(stockMotion);
+		
 
 		/*
 		 * 
@@ -511,7 +512,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 		stockMotion.setStm_value(
 				StockUnitUtils.convertToStandardUnit(stockMotion.getStm_value(), stockMotion.getStm_unit()));
-		stockMotion.setStm_unit(stockMotion.getStm_unit());
+		stockMotion.setStm_unit(StockUnitUtils.getStandardUnitFromNonStandardUnit(stockMotion.getStm_unit()));
 
 		return stockMotion;
 	}
