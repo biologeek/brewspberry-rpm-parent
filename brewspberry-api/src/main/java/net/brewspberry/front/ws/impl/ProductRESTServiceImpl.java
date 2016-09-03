@@ -14,14 +14,13 @@ import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IProductRESTService;
 import net.brewspberry.front.ws.beans.IngredientDTO;
 import net.brewspberry.front.ws.beans.IngredientJSONRequest;
 import net.brewspberry.util.LogManager;
 
 public class ProductRESTServiceImpl implements IProductRESTService {
-
-	
 
 	@Autowired
 	IGenericService<Malt> maltService;
@@ -31,15 +30,13 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 
 	@Autowired
 	IGenericService<Levure> levService;
-	
+
 	Logger logger;
-	
-	
+
 	public ProductRESTServiceImpl() {
 		logger = LogManager.getInstance(this.getClass().getName());
 	}
-	
-	
+
 	@Override
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
@@ -50,37 +47,41 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 		if (request != null) {
 
 			if (isThereOnlyOneIngredientInRequest(request)) {
+				try {
 
-				switch (request.getType().toLowerCase()) {
+					switch (request.getType().toLowerCase()) {
+					case "malt":
 
-				case "malt":
+						businessIngredient = new IngredientDTO().toMalt(request);
+						maltService.save((Malt) businessIngredient);
 
-					businessIngredient = new IngredientDTO().toMalt(request);
-					
-					break;
-				case "hop":
+						break;
+					case "hop":
 
-					businessIngredient = new IngredientDTO().toHop(request);
+						businessIngredient = new IngredientDTO().toHop(request);
+						hopService.save((Houblon) businessIngredient);
+						break;
+					case "yeast":
 
-					break;
-				case "yeast":
+						businessIngredient = new IngredientDTO().toYeast(request);
+						levService.save((Levure) businessIngredient);
+						break;
+					default:
+						logger.severe("This type of ingredient does not exist : " + request.getType());
+						break;
+					}
 
-					businessIngredient = new IngredientDTO().toYeast(request);
-
-					break;
-				default :
-					logger.severe("This type of ingredient does not exist : "+request.getType());
-					break;
+				} catch (Exception e) {
+					return Response.status(500).entity("Error during service call").build();
 				}
-				
-			
+
 			}
 
 		} else {
 			return Response.status(500).entity("request is null").build();
 		}
 
-		return null;
+		return Response.status(200).entity(new IngredientDTO().toServiceObject(businessIngredient)).build();
 	}
 
 	private boolean isThereOnlyOneIngredientInRequest(IngredientJSONRequest request) {
