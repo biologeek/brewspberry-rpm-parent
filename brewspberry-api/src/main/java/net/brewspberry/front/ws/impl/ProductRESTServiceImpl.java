@@ -1,5 +1,7 @@
 package net.brewspberry.front.ws.impl;
 
+import java.util.logging.Logger;
+
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -15,6 +17,7 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.front.ws.IProductRESTService;
 import net.brewspberry.front.ws.beans.IngredientDTO;
 import net.brewspberry.front.ws.beans.IngredientJSONRequest;
+import net.brewspberry.util.LogManager;
 
 public class ProductRESTServiceImpl implements IProductRESTService {
 
@@ -29,12 +32,20 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Autowired
 	IGenericService<Levure> levService;
 	
+	Logger logger;
+	
+	
+	public ProductRESTServiceImpl() {
+		logger = LogManager.getInstance(this.getClass().getName());
+	}
+	
+	
 	@Override
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addIngredient(IngredientJSONRequest request) {
 
-		AbstractIngredient businessIngredient;
+		AbstractIngredient businessIngredient = null;
 
 		if (request != null) {
 
@@ -56,6 +67,9 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 
 					businessIngredient = new IngredientDTO().toYeast(request);
 
+					break;
+				default :
+					logger.severe("This type of ingredient does not exist : "+request.getType());
 					break;
 				}
 				
