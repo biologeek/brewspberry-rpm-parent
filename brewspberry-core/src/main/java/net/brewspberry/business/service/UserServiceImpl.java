@@ -130,7 +130,7 @@ public class UserServiceImpl implements IGenericService<User>,
 			res.setUs_login(username);
 			res.setUs_password(encryptedPasswd);
 			res = userSpecDao.returnUserByCredentials(res);
-			logger.info("DB user" +res.toString());
+			logger.info("DB user " +res.toString());
 
 			if (this.checkIfUserIsActiveAndNotBlocked(res)) {
 				return res;

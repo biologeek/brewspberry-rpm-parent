@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import net.brewspberry.business.beans.User;
 import net.brewspberry.controller.session.UserServlet;
 import net.brewspberry.util.ConfigLoader;
@@ -23,6 +25,7 @@ import net.brewspberry.util.LogManager;
 //@WebFilter("/*")
 public class AuthentificationFilter implements Filter {
 
+	@Autowired
 	private HttpSession currentSession;
 	Logger logger = LogManager.getInstance(UserServlet.class.getName());
 
@@ -77,7 +80,7 @@ public class AuthentificationFilter implements Filter {
 					+ ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
 							"params.permissions.login.address");
 			String shortLoginPage = req.getContextPath() + "/";
-			currentSession = req.getSession();
+			
 			logger.info("FILTER PARAMS : " + req.getRequestURI() + " "
 					+ loginPage + " " + shortLoginPage);
 

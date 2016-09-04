@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -41,6 +43,7 @@ public class User implements Serializable {
 	us_session_token;
 
 	// User profile to manage authorizations
+	@Enumerated(EnumType.STRING)
 	private UserProfile us_profile;
 	
 	// If user activated his/her account > true
@@ -155,6 +158,21 @@ public class User implements Serializable {
 	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	@Override
+	public String toString() {
+		return "User [us_id=" + us_id + ", us_age=" + us_age + ", us_nom="
+				+ us_nom + ", us_prenom=" + us_prenom + ", us_password="
+				+ us_password + ", us_login=" + us_login
+				+ ", us_session_token=" + us_session_token + ", us_profile="
+				+ us_profile + ", us_active=" + us_active
+				+ ", us_date_activation=" + us_date_activation
+				+ ", us_force_inactivated=" + us_force_inactivated
+				+ ", us_date_inactivation=" + us_date_inactivation
+				+ ", us_last_connection=" + us_last_connection
+				+ ", us_registration=" + us_registration
+				+ ", us_first_connection=" + us_first_connection
+				+ ", us_birthday=" + us_birthday + "]";
 	}
 	
 }

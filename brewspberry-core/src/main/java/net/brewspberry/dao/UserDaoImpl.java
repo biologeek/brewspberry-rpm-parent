@@ -95,6 +95,8 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 		User result = (User) userCriteria.uniqueResult();
 
+		if (result == null)
+			result = new User();
 		return result;
 	}
 

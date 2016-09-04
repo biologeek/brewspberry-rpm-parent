@@ -29,7 +29,7 @@ public abstract class Constants {
 	
 	//	public static String PROJECT_ROOT_PATH = "/home/xavier/ownCloud/Projets/Brewhouse/Code";
 	public static String PROJECT_ROOT_PATH = "/opt/tomcat/webapps";
-	public static String BREW_VIEWER = "brewspberry-viewer";
+	public static String BREW_VIEWER = "brewspberry-webapp";
 	public static String BREW_API = "brewspberry-core";
 	public static String BREW_BATCHES = "brewspberry-batches";
 	public static String BREW_TEMP = "brewspberry-api";

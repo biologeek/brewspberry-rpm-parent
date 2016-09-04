@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-public class AbstractServletInitiator extends HttpServlet {
+public class AbstractAutowiredServlet extends HttpServlet {
 
 	
 	/**
@@ -17,6 +17,8 @@ public class AbstractServletInitiator extends HttpServlet {
 
 	@Override
 	public void init(ServletConfig arg0) throws ServletException {
+		
+		//Autowire beans in webapp
 		final AutowireCapableBeanFactory autowireCapableBeanFactory = WebApplicationContextUtils
 				.getWebApplicationContext(arg0.getServletContext())
 				.getAutowireCapableBeanFactory();

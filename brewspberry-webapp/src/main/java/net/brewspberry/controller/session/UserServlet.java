@@ -15,11 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.h2.schema.Constant;
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificUserService;
@@ -27,16 +30,17 @@ import net.brewspberry.business.beans.User;
 import net.brewspberry.business.beans.UserProfile;
 import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.business.service.UserServiceImpl;
+import net.brewspberry.util.Constants;
 import net.brewspberry.util.EncryptionUtils;
 import net.brewspberry.util.LogManager;
-import net.brewspberry.util.config.AbstractServletInitiator;
+import net.brewspberry.util.config.AbstractAutowiredServlet;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
 @WebServlet({ "/user.do", "/", "/register.do" })
 @Controller
 @RequestMapping("/user")
-public class UserServlet extends AbstractServletInitiator {
+public class UserServlet extends AbstractAutowiredServlet {
 
 
 	/**
@@ -125,7 +129,7 @@ public class UserServlet extends AbstractServletInitiator {
 						try {
 							connectUserAndBuildHisSession(user, request,
 									response);
-							response.sendRedirect("/Accueil.do");
+							response.sendRedirect("/"+Constants.BREW_VIEWER+"/Accueil.do");
 
 						} catch (Exception e) {
 
@@ -144,14 +148,14 @@ public class UserServlet extends AbstractServletInitiator {
 
 						request.setAttribute("errors",
 								userSpecService.getErrors());
-						response.sendRedirect("user.do");
+						response.sendRedirect("/"+Constants.BREW_VIEWER+"/user.do");
 
 					}
 
 				} else {
 
 					request.setAttribute("errors", userSpecService.getErrors());
-					response.sendRedirect("user.do");
+					response.sendRedirect("/"+Constants.BREW_VIEWER+"/user.do");
 
 				}
 			}
@@ -218,11 +222,11 @@ public class UserServlet extends AbstractServletInitiator {
 	private void connectUserAndBuildHisSession(User user,
 			HttpServletRequest req, HttpServletResponse rep) {
 
-		if (this.currentSession.isNew()) {
+		logger.info("Session attributes : "+currentSession.getAttribute("user")+" "+currentSession.getAttribute("password"));
+		if (this.currentSession.isNew() || currentSession.getAttribute("user") == null) {
 
 			rep.addCookie(new Cookie("user.login", user.getUs_login()));
-			rep.addCookie(new Cookie("user.status", user.getUs_profile()
-					.getClass().getSimpleName()));
+			rep.addCookie(new Cookie("user.status", user.getUs_profile().toString()));
 			rep.addCookie(new Cookie("user.token", this.currentSession.getId()));
 			rep.addCookie(new Cookie("user.connectionTime", String
 					.valueOf(this.currentSession.getCreationTime())));

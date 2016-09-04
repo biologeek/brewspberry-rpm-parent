@@ -35,19 +35,15 @@ import net.brewspberry.util.LogManager;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-//@Controller
+@Controller
 public class UserController {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5053309074376760642L;
-	//@Autowired
-	//@Qualifier("userServiceImpl")
+	@Autowired
+	@Qualifier("userServiceImpl")
 	private ISpecificUserService userSpecService = new UserServiceImpl();
 	@Autowired
+	@Qualifier("userServiceImpl")
 	private IGenericService<User> userService;
-	private HttpSession currentSession;
 	Logger logger = LogManager.getInstance(UserController.class.getName());
 	private List<UserValidatorErrors> errs;
 
@@ -67,25 +63,26 @@ public class UserController {
 			HttpServletResponse response,
 			@ModelAttribute("loginBean") LoginBean loginBean) {
 
-		ModelAndView mav = null;
 		errs = UserValidator.getInstance().isUsernameAndPasswordUserValid(
 				request.getParameter("username"),
 				request.getParameter("password"));
 		logger.info(request.getParameter("username") + "  trnzrjgelfg");
+		
+		
 		if (errs.isEmpty()) {
 
 			User user = userSpecService.returnUserByCredentials(loginBean
 					.getUsername(), EncryptionUtils.encryptPassword(
 					loginBean.getPassword(), "MD5"));
 
-			if (!user.equals(new User())) {
+			if (!user.equals(new User()) || user != null) {
 
-				return "accueil.do";
+				return "/brewspberry-webapp/accueil.do";
 
 			}
 		}
 
-		return "login.do";
+		return "/brewspberry-webapp/login.do";
 	}
 
 }

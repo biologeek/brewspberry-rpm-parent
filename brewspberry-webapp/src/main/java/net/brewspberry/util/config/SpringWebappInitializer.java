@@ -7,6 +7,7 @@ import javax.servlet.ServletRegistration;
 
 import net.brewspberry.filters.AuthentificationFilter;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -24,14 +25,14 @@ public class SpringWebappInitializer extends
 
 		servletContext.addListener(new ContextLoaderListener(rootContext));
 
-	/*	ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
+		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
 				"DispatcherServlet", new DispatcherServlet(getMVCContext()));
 
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("*.do");
-	*/
+	
 		}
-
+	@Bean
 	private AnnotationConfigWebApplicationContext getContext(
 			ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
@@ -57,7 +58,7 @@ public class SpringWebappInitializer extends
 
 	@Override
 	protected Filter[] getServletFilters() {
-		return new Filter[] { new AuthentificationFilter() };
+		return null; //new Filter[] { new AuthentificationFilter() };
 
 	}
 

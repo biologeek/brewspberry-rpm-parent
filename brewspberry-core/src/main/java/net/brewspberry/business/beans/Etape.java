@@ -40,14 +40,15 @@ public class Etape implements Serializable {
 	private Date etp_update_date;
 	private Date etp_debut_reel;
 	private Date etp_fin_reel;
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "etp_ety_id")
 	/**
 	 * etape type object contains tops to allow rules to apply or not for
 	 * various algorithms Fetching it eagerly, and cascading modfications to
 	 * linked EtapeType object
 	 */
-	private EtapeType etp_etape_type;
+	
+	//private EtapeType etp_etape_type;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "dur_step")
 	private DurationBO etp_duree;
@@ -226,14 +227,6 @@ public class Etape implements Serializable {
 		}
 		return false;
 
-	}
-
-	public EtapeType getEtp_etape_type() {
-		return etp_etape_type;
-	}
-
-	public void setEtp_etape_type(EtapeType etp_etape_type) {
-		this.etp_etape_type = etp_etape_type;
 	}
 
 	public List<AbstractIngredient> getEtp_ingredients() {

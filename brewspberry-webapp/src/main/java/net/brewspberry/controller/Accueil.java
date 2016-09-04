@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 
 import net.brewspberry.business.IGenericService;
@@ -22,16 +23,18 @@ import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.DeviceParser;
+import net.brewspberry.util.config.AbstractAutowiredServlet;
 
 /**
  * Servlet implementation class Accueil
  */
 @WebServlet({"/Accueil.do", "/Accueil", "/accueil"})
 @Controller
-public class Accueil extends HttpServlet {
+public class Accueil extends AbstractAutowiredServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
+	@Qualifier("brassinServiceImpl")
 	IGenericService<Brassin> brassinService;
 	
 	static Logger logger = Logger.getLogger(Accueil.class.toString());

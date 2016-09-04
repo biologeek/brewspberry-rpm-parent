@@ -18,7 +18,7 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@ComponentScan(basePackages = { "net.brewspberry" })
+@ComponentScan({ "net.brewspberry" })
 @EnableTransactionManagement
 @PropertySources(value={@PropertySource("classpath:config.properties")
 	, @PropertySource("classpath:c3po.properties")
@@ -27,7 +27,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class SpringCoreConfiguration {
 	
 	
-	
+	@Autowired
 	private Environment env;
 	
 	
@@ -74,21 +74,20 @@ public class SpringCoreConfiguration {
 	}
 	
 	
-	
+	@Bean
 	Properties hibernateProperties() {
 	      return new Properties() {
-	         /**
-			 * 
-			 */
+	         
 			private static final long serialVersionUID = 3546518510147677728L;
 
 			{
-	            setProperty("hibernate.hbm2ddl.auto", "update");
-	            setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-	            setProperty("hibernate.globally_quoted_identifiers", "true");
-	            setProperty("show_sql", "true");
-	         }
+				Properties properties = new Properties();
+				properties.put("hibernate.dialect", "MySQLDialect");
+				properties.put("hibernate.hbm2ddl.auto", "update");
+				properties.put("hibernate.show_sql", "true");
+		   }
 	      };
 	   }
+	   
 
 }
