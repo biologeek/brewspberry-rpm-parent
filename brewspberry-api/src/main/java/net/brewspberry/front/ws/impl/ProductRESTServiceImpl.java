@@ -18,6 +18,8 @@ import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
+import net.brewspberry.business.exceptions.DataTransferException;
+import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IProductRESTService;
 import net.brewspberry.front.ws.beans.IngredientDTO;
 import net.brewspberry.front.ws.beans.IngredientJSONRequest;
@@ -87,17 +89,21 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 			return Response.status(500).entity("request is null").build();
 		}
 
-		return Response.status(200).entity(new IngredientDTO().toServiceObject(businessIngredient)).build();
+		try {
+			return Response.status(200).entity(new IngredientDTO().toServiceObject(businessIngredient)).build();
+		} catch (DataTransferException e) {
+			// TODO Auto-generated catch block
+			return Response.status(500).entity(e).build();
+		}
 	}
-	
-	
+
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public Response updateIngredient(IngredientJSONRequest req){
-		
+	public Response updateIngredient(IngredientJSONRequest req) {
+
 		return null;
-		
+
 	}
 
 	@Override
@@ -105,7 +111,6 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	private boolean isThereOnlyOneIngredientInRequest(IngredientJSONRequest request) {
 
@@ -117,22 +122,39 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getIngredient(@PathParam("type") String type, @PathParam("id") long id) {
 
-		if (id > 0){
-			
-			switch (type.toLowerCase()){
-			case "malt":
+		IngredientJSONRequest result = null;
+
+		if (id > 0) {
+
+			try {
+				switch (type.toLowerCase()) {
+				case "malt":
+
+					Malt malt = maltService.getElementById(id);
+
+					result = new IngredientDTO().toServiceObject(malt);
+
+					break;
+				case "hop":
+
+					Houblon houblon = hopService.getElementById(id);
+					result = new IngredientDTO().toServiceObject(houblon);
+
+					break;
+
+				case "yeast":
+
+					Levure levure = levService.getElementById(id);
+					result = new IngredientDTO().toServiceObject(levure);
+
+					break;
+				}
+			} catch (ServiceException | DataTransferException e) {
+
+				return Response.status(500).entity(e).build();
 				
-			break;
-			case "hop" :
-			break;
-			
-			case "yeast":
-			break;
-			
-			
 			}
-			
 		}
-		return null;
+		return Response.status(200).entity(result).build();
 	}
 }

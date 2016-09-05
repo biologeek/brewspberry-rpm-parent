@@ -74,7 +74,7 @@ ingredientApp.controller('ingredientController', function($scope) {
 			} else {
 
 				$scope.unsuccessfulAdding = true;
-				$scope.errorMessage
+				$scope.errorMessage = errorMessage;
 
 			}
 
@@ -98,25 +98,12 @@ ingredientApp.controller('ingredientController', function($scope) {
 		$scope.hop_specific_parameters_show = false;
 		$scope.yeast_specific_parameters_show = false;
 
-		switch ($scope.ingredientTypeSelection) {
 
-		case 'malt':
+		$scope.ingredient_id = $scope.requestObject["id"];
+		$scope.ingredient_type = $scope.requestObject["type"];
+		$scope.ing_fournisseur = $scope.requestObject["provider"];
+		$scope.ing_description = $scope.requestObject["description"];
 
-			$scope.malt_specific_parameters_show = true;
-
-			break;
-
-		case 'hop':
-
-			$scope.hop_specific_parameters_show = true;
-			break;
-
-		case 'yeast':
-
-			$scope.yeast_specific_parameters_show = true;
-			break;
-
-		}
 
 	}
 
@@ -129,11 +116,84 @@ ingredientApp.controller('ingredientController', function($scope) {
 					callback(true, "");
 				},
 				function(response) {
-					/* If there's an error, returning status code and response error */
+					/*
+					 * If there's an error, returning status code and response
+					 * error
+					 */
 					console.log("Request failed ! Status code : " + statusText
 							+ ", response : " + response.error);
 					callback(false, statusText + " " + response.error);
 				});
+	};
+
+	
+	/**
+	 * Reveals ingredient specific fields depending on ingredient type sent by API
+	 * 
+	 * Feeds fields according to received object 
+	 *  
+	 */
+	var feedFieldsForUpdate = function() {
+
+		$scope.malt_specific_parameters_show = false;
+		$scope.hop_specific_parameters_show = false;
+		$scope.yeast_specific_parameters_show = false;
+
+
+		$scope.smal_cereale = $scope.requestObject["cereal"];
+		$scope.smal_type = $scope.requestObject["maltType"];
+		$scope.smal_couleur = $scope.requestObject["color"];
+		$scope.shbl_variete = $scope.requestObject["variety"];
+		$scope.shbl_acide_alpha = $scope.requestObject["alphaAcid"];
+		$scope.shbl_aromes = $scope.requestObject["aroma"];
+		$scope.shbl_type = $scope.requestObject["hopType"];
+		$scope.yeast_specie = $scope.requestObject["specie"];
+		$scope.slev_floculation = $scope.requestObject["foculation"];
+		$scope.slev_aromes = $scope.requestObject["aroma"];
+		
+		$http.get(serviceURL).then(
+				function(response) {
+
+					console.log('Success');
+					
+						switch (response.type){
+							
+						case 'malt' :
+							
+							$scope.malt_specific_parameters_show = true;
+							
+							
+							break;
+							
+						case 'hop' :
+							
+							$scope.hop_specific_parameters_show = true;
+							
+							break;
+						
+						case 'yeast' :
+							
+							$scope.yeast_specific_parameters_show = true;
+
+							break;
+						
+						}
+
+				},
+				function(response) {
+
+					/*
+					 * If there's an error, returning status code and response
+					 * error
+					 */
+					//console.log("Request failed ! Status code : " + statusText
+						//	+ ", response : " + response.error);
+					
+					$scope.errorMessage = 'Code : '+response.statusText + ' Error : '+response.error;
+				}
+
+		)
+
 	};
 
 });

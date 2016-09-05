@@ -208,7 +208,7 @@ jQuery(document).ready(function(){
 												<option value="default" selected="selected"></option>
 												<c:forEach items="${ingredientTypes}" var="ing">
 													<option value="${ing.key}"
-														<c:if test="${ing.key == ingredientType}"> selected="selected" </c:if>>
+														<c:if test="${ing.key == ingredientType}"> selected="selected" </c:if>
 														${ing.value}</option>
 												</c:forEach>
 												<div ng-messages="addIngredient.ingredient_type.$error" ng-messages-include="tpl/error_mmessages.html"></div>

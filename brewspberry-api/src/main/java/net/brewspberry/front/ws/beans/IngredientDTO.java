@@ -1,10 +1,12 @@
 package net.brewspberry.front.ws.beans;
 
 import net.brewspberry.business.beans.AbstractIngredient;
+import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.stock.StockUnit;
+import net.brewspberry.business.exceptions.DataTransferException;
 
 public class IngredientDTO {
 
@@ -26,8 +28,47 @@ public class IngredientDTO {
 		return malt;
 	}
 
-	public IngredientJSONRequest toServiceObject(AbstractIngredient ingredient) {
+	public IngredientJSONRequest toServiceObject(AbstractIngredient ingredient) throws DataTransferException {
 		IngredientJSONRequest result = new IngredientJSONRequest();
+		
+		result.setId(ingredient.getStb_id());
+		result.setDescription(ingredient.getIng_desc());
+		result.setProvider(ingredient.getIng_fournisseur());
+		result.setUnitaryPrice(ingredient.getIng_unitary_price());
+		result.setUnitaryPriceUnit(ingredient.getIng_unitary_price_unit().getStu_value());
+		
+		
+		if (ingredient instanceof SimpleMalt){
+			
+			SimpleMalt malt = (SimpleMalt) ingredient;
+			
+			result.setCereal(malt.getSmal_cereale());
+			result.setColor(malt.getSmal_couleur());
+			result.setMaltType(malt.getSmal_type());
+
+			
+		} else if (ingredient instanceof SimpleHoublon){
+			
+			SimpleHoublon hop = (SimpleHoublon) ingredient;
+			
+			result.setAlphaAcid(hop.getShbl_acide_alpha());
+			result.setAroma(hop.getShbl_aromes());
+			result.setHopType(hop.getShbl_type());
+			result.setVariety(hop.getShbl_variete());
+			
+		} else if (ingredient instanceof SimpleLevure){
+			
+			
+			SimpleLevure lev = (SimpleLevure) ingredient;
+			
+			result.setFoculation(lev.getSlev_floculation());
+			result.setSpecie(lev.getSlev_espece());
+			result.setAroma(lev.getSlev_aromes());
+			
+		} else {
+			
+			throw new DataTransferException("Could not convert object ");
+		}
 
 		return result;
 	}

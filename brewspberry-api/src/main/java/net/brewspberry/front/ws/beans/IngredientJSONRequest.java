@@ -7,21 +7,30 @@ import net.brewspberry.business.beans.stock.StockUnit;
 public class IngredientJSONRequest implements Serializable{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2011649263052366049L;
 	private long id;
 	private String type;
 	private String provider;
 	private String description;
+	private float unitaryPrice;
+	private String unitaryPriceUnit;
+	
 	private String cereal;
 	private String maltType;
 	private int color;
+	
+	
 	private String variety;
 	private double alphaAcid;
 	private String aroma;
 	private int hopType;
+	
 	private String specie;
 	private String foculation;
-	private float unitaryPrice;
-	private String unitaryPriceUnit;
+	
 	
 	
 	
