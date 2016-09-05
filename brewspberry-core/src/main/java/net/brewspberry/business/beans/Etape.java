@@ -280,10 +280,10 @@ public class Etape implements Serializable {
 	 * @return true if is a final step. False if not
 	 */
 	public boolean isFinalStep() {
-
+/*
 		if (this.getEtp_etape_type().equals(EtapeType.EMBOUTEILLAGE)
 				|| this.getEtp_etape_type().equals(EtapeType.REFERMENTATION))
-			return true;
+			return true;*/
 		return false;
 	}
 
