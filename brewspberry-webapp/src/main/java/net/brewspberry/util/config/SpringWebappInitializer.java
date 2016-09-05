@@ -37,7 +37,7 @@ public class SpringWebappInitializer extends
 			ServletContext servletContext) {
 		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
 
-		context.setServletContext(servletContext);
+		//context.setServletContext(servletContext);
 
 		// context.setConfigLocation("net.brewspberry.util");
 
@@ -51,7 +51,7 @@ public class SpringWebappInitializer extends
 		// now the config for the Dispatcher servlet
 		AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 		// mvcContext.setConfigLocation("net.brewspberry.util.config");
-		mvcContext.register(SpringCoreConfiguration.class);
+		mvcContext.register(SpringWebappConfiguration.class);
 		return mvcContext;
 
 	}
