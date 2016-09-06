@@ -21,44 +21,36 @@ public class SpringWebappInitializer extends
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
 
-		AnnotationConfigWebApplicationContext rootContext = getContext(servletContext);
+		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
+
+		rootContext.setServletContext(servletContext);
+
+		// rootContext.setConfigLocation("net.brewspberry.util");
+
+		rootContext.register(SpringCoreConfiguration.class);
 
 		servletContext.addListener(new ContextLoaderListener(rootContext));
 
-		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
-				"DispatcherServlet", new DispatcherServlet(getMVCContext()));
-
-		dispatcher.setLoadOnStartup(1);
-		dispatcher.addMapping("*.do");
-	
-		}
-	@Bean
-	private AnnotationConfigWebApplicationContext getContext(
-			ServletContext servletContext) {
-		AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
-
-		//context.setServletContext(servletContext);
-
-		// context.setConfigLocation("net.brewspberry.util");
-
-		context.register(SpringCoreConfiguration.class);
-
-		context.refresh();
-		return context;
-	}
-
-	private AnnotationConfigWebApplicationContext getMVCContext() {
 		// now the config for the Dispatcher servlet
 		AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 		// mvcContext.setConfigLocation("net.brewspberry.util.config");
-		mvcContext.register(SpringWebappConfiguration.class);
-		return mvcContext;
+			mvcContext.register(SpringWebappConfiguration.class);
+		
+
+		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
+				"DispatcherServlet", new DispatcherServlet(mvcContext));
+
+		dispatcher.setLoadOnStartup(1);
+		dispatcher.addMapping("*.do");
 
 	}
 
+	
+
+
 	@Override
 	protected Filter[] getServletFilters() {
-		return null; //new Filter[] { new AuthentificationFilter() };
+		return null; // new Filter[] { new AuthentificationFilter() };
 
 	}
 

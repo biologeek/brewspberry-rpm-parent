@@ -43,11 +43,15 @@
 <form action="user.do" method="post">
   <div class="group">
      <label>Username</label>
-    <input type="text" name="username" id="username"><span class="highlight"></span><span class="bar"></span>
+    <input type="text" name="username" id="username">
+    
+    <span class="bar"></span>
   </div>
   <div class="group">
       <label>Password</label>
-    <input type="password" name="password" id="password"><span class="highlight"></span><span class="bar"></span>
+    <input type="password" name="password" id="password">
+    
+    <span class="bar"></span>
 
   </div>
   <input type="hidden" name="formType" id="formType" value="connection">
