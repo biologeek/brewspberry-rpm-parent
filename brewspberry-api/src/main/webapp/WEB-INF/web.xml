@@ -9,17 +9,15 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>net.brewspberry.util.SpringWebappConfiguration</param-value>
+		<param-value>net.brewspberry.util.SpringApiConfiguration</param-value>
 	</context-param>
-
-	<!-- Bootstrap the root application context as usual using ContextLoaderListener -->
-	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-	</listener>
-
+	<!-- Bootstrap the root application context as usual using ContextLoaderListener 
+		<listener> <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class> 
+		</listener> -->
 	<servlet>
 		<servlet-name>TemperatureServlet</servlet-name>
-		<servlet-class>net.brewspberry.front.TemperatureServlet</servlet-class>
+		<servlet-class>net.brewspberry.front.TemperatureServlet
+		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
@@ -41,7 +39,8 @@
 
 	<servlet>
 		<servlet-name>Jersey Web Application</servlet-name>
-		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer
+		</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>

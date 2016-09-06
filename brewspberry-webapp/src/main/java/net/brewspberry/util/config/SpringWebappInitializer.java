@@ -29,7 +29,7 @@ public class SpringWebappInitializer extends
 
 		rootContext.register(SpringCoreConfiguration.class);
 
-		servletContext.addListener(new ContextLoaderListener(rootContext));
+		//servletContext.addListener(new ContextLoaderListener(rootContext));
 
 		// now the config for the Dispatcher servlet
 		AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
