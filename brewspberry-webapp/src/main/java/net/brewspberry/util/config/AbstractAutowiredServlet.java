@@ -14,7 +14,7 @@ public class AbstractAutowiredServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 2146973171478741701L;
-
+/*
 	@Override
 	public void init(ServletConfig arg0) throws ServletException {
 		
@@ -24,5 +24,5 @@ public class AbstractAutowiredServlet extends HttpServlet {
 				.getAutowireCapableBeanFactory();
 		autowireCapableBeanFactory.autowireBean(this);
 	}
-
+*/
 }

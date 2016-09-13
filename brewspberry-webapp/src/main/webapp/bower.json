@@ -1,0 +1,22 @@
+{
+  "name": "brewspberry",
+  "description": "webapp",
+  "main": "",
+  "authors": [
+    "bldksj <azerty@ytreza>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/biologeek/brewspberry-rpm-parent",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-messages": "^1.5.8",
+    "angular": "^1.5.8",
+    "modernizr": "2.6.2"
+  }
+}

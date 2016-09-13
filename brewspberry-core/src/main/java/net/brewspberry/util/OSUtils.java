@@ -19,4 +19,19 @@ public class OSUtils {
 		}
 		return false;
 	}
+
+	public static boolean isWindows(){
+		
+		if (getSystemOS().contains("indows")){
+			return true;
+		}
+		return false;
+	}
+	public static boolean isLinux(){
+		
+		if (getSystemOS().contains("inux")){
+			return true;
+		}
+		return false;
+	}
 }
