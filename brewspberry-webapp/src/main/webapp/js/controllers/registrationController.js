@@ -8,7 +8,7 @@
 *																		*
 *************************************************************************/
 
-
+'use strict';
 
 angular.module('brewspberry').controller('RegistrationController', RegistrationController);
 
@@ -25,8 +25,9 @@ function RegistrationController ($scope, UserService){
 	/**
 	 *
 	 */
-	function handleClickRegisterForm(form){
+	function handleClickRegisterForm(){
 
+		console.log("handling form")
 		if (form.$dirty && form.$valid){
 
 			return submitNewUser();
@@ -39,7 +40,7 @@ function RegistrationController ($scope, UserService){
 
 		UserService.createUser(vm.user,
 
-		function (){
+		function (response){
 
 
 			vm.showSuccess = true;
@@ -47,13 +48,13 @@ function RegistrationController ($scope, UserService){
 			console.log('request success')
 		},
 
-		function (err){
+		function (response){
 
-			vm.submissionFailureMessage = 'Failed to post new user. Error : '+ err;
+			vm.submissionFailureMessage = 'Failed to post new user. Error : '+ response.statusText + '. '+response.data;
 			vm.showErrors = true;
 			console.log('request failed')
 
-		})
+		});
 	}
 
 	//UserService.createUser().then();
