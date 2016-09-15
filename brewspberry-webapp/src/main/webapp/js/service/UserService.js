@@ -11,71 +11,71 @@ angular.module('brewspberry').factory('UserService', UserService);
 
 
 
-UserService.$inject = ['$http'];
+UserService.$inject = ['$http', 'CONSTANTS'];
 
 
-function UserService($http) {
+function UserService($http, CONSTANTS) {
 
     var UserService = {};
 
-       UserService.getAllUsers = function () {
+       UserService.getAllUsers = function (callBackSuccess, callbackError) {
         var promise = $http({
             method: 'GET',
             url: CONSTANTS.USER_SERVICE_URL,
 
         }).then(function (response) {
-            return response;
-        }, function () {
+            callBackSuccess(response);
+        }, function (response) {
             return response;
         });
         return promise;
     };
-    UserService.getUser = function (id) {
+    UserService.getUser = function (id, callBackSuccess, callbackError) {
             var promise = $http({
                 method: 'GET',
 
-                url: CONSTANTS.USER_SERVICE_URL + id,
+                url: CONSTANTS.USER_SERVICE_URL + '/'+id,
             }).then(function (response) {
-                return response;
-            }, function () {
-                return response;
+                callBackSuccess(response);
+            }, function (response) {
+                callbackError(response);
             });
             return promise;
         };
-    UserService.updateUser = function (id, obj) {
+    UserService.updateUser = function (id, obj, callBackSuccess, callbackError) {
             var promise = $http({
                 method: 'PUT',
 
-                url: CONSTANTS.USER_SERVICE_URL + 'update/'+ id,
+                url: CONSTANTS.USER_SERVICE_URL + '/update/'+ id,
                 data : obj
             }).then(function (response) {
-                return response;
-            }, function () {
-                return response;
+                callBackSuccess(response);
+            }, function (response) {
+                callbackError(response);
             });
             return promise;
         };
-    UserService.createUser = function (obj) {
+    UserService.createUser = function (obj, callBackSuccess, callbackError) {
             var promise = $http({
                 method: 'POST',
 
-                url: CONSTANTS.USER_SERVICE_URL+'create',
+                url: CONSTANTS.USER_SERVICE_URL+'/create',
                 data : obj
             }).then(function (response) {
-                return response;
-            }, function () {
-                return response;
+                callBackSuccess(response);
+            }, function (response) {
+                callbackError(response);
             });
             return promise;
         };
-    UserService.deleteUser = function (id) {
+    UserService.deleteUser = function (id, callBackSuccess, callbackError) {
             var promise = $http({
                 method: 'DELETE',
-                url: CONSTANTS.USER_SERVICE_URL + 'delete/' + id,
+                url: CONSTANTS.USER_SERVICE_URL + '/delete/' + id,
             }).then(function (response) {
-                return response;
-            }, function () {
-                return response;
+                callBackSuccess(response);
+            }, function (response) {
+                callbackError(response);
             });
             return promise;
         };

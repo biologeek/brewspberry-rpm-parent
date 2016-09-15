@@ -9,5 +9,6 @@ var app = angular.module('brewspberry', [
     'ngMessages'
 ]);
 
+    console.log("handling")
 
 })();

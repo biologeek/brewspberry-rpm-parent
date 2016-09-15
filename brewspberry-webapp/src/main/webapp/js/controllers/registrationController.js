@@ -7,16 +7,16 @@
 *																		*
 *																		*
 *************************************************************************/
-
+(function(){
 'use strict';
 
 angular.module('brewspberry').controller('RegistrationController', RegistrationController);
 
 
-RegistrationController.$inject = ['$scope', 'UserService'];
+RegistrationController.$inject = ['$scope', 'UserService', 'CONSTANTS'];
 
 
-function RegistrationController ($scope, UserService){
+function RegistrationController ($scope, UserService, CONSTANTS){
 
 	var vm = this;
 
@@ -25,7 +25,15 @@ function RegistrationController ($scope, UserService){
 	/**
 	 *
 	 */
-	function handleClickRegisterForm(){
+	console.log("handling form")
+
+
+	vm.test = function(form){
+
+		console.log (form.bla);
+
+	}
+	vm.handleClickRegisterForm = function (form){
 
 		console.log("handling form")
 		if (form.$dirty && form.$valid){
@@ -60,7 +68,7 @@ function RegistrationController ($scope, UserService){
 	//UserService.createUser().then();
 
 }
-
+})();
 
 /*
 function triggerFormValidation(){
