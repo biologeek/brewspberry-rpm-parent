@@ -17,7 +17,7 @@ import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IBrewProcessing;
 
-@Path("/brew")
+@Path("/brewService")
 public class BrewProcessingRestWs implements IBrewProcessing {
 
 	@Autowired

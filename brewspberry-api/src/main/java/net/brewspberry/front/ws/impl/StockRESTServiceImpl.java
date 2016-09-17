@@ -26,6 +26,7 @@ import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.exceptions.StockException;
 import net.brewspberry.front.ws.IStockRESTService;
+import net.brewspberry.front.ws.beans.StockCounterIngredientRequest;
 
 @Controller
 @Path("/stockService")
@@ -80,7 +81,7 @@ public class StockRESTServiceImpl implements IStockRESTService {
 
 	@Override
 	@GET
-	@Path("/stock/product")
+	@Path("/stock/products")
 	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Method used for getting finished products stock counters such as beer, ...
@@ -96,7 +97,7 @@ public class StockRESTServiceImpl implements IStockRESTService {
 
 	@Override
 	@GET
-	@Path("/stock/product")
+	@Path("/stock/ingredients")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<RawMaterialCounter> getStockForIngredients() {
 		List<RawMaterialCounter> result = (List<RawMaterialCounter>) specificStockService.getStockForPrimaryMaterials();
@@ -107,19 +108,20 @@ public class StockRESTServiceImpl implements IStockRESTService {
 	@POST
 	@Path("/stock/product/modifyStockForProduct")
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	/**
 	 * Will update stock currently stored in DB with stockMotion value for stock counter of type counterTypeID
 	 */
-	public Response modifyStockForCounter(long productID, double stockMotion, long counterTypeID) {
+	public Response modifyStockForCounter(StockCounterIngredientRequest request){//@PathParam("productID") long productID, double stockMotion, long counterTypeID) {
 		
 		Stockable stockable;
 		CounterType counterType;
 		StockCounter stockCounterAfterMotion = null;
-		if (productID > 0){
+		if (request.getProductID() > 0){
 			
 			StockCounter stockCounter;
 			try {
-				stockCounter = genericStockService.getElementById(productID);
+				stockCounter = genericStockService.getElementById(request.getProductID());
 			} catch (ServiceException e1) {
 				return Response.status(500).entity(e1).build();
 

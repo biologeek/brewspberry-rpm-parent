@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
+import net.brewspberry.front.ws.beans.StockCounterIngredientRequest;
 
 public interface IStockRESTService {
 
@@ -17,6 +18,5 @@ public interface IStockRESTService {
 
 	public List<RawMaterialCounter> getStockForIngredients();
 
-	public Response modifyStockForCounter(@PathParam("p") long productID, @PathParam("v") double stockMotion,
-			@PathParam("t") long counterTypeID);
+	public Response modifyStockForCounter(StockCounterIngredientRequest request);
 }

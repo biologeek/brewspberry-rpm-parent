@@ -9,9 +9,9 @@ public interface IProductRESTService {
 	
 	
 	public Response addIngredient(IngredientJSONRequest request);
-	public Response updateIngredient(IngredientJSONRequest request);
 	public Response getIngredient(String type, long id);
 	public Response deleteIngredient(IngredientJSONRequest request);
+	Response updateIngredient(long id, IngredientJSONRequest req);
 	
 	
 	

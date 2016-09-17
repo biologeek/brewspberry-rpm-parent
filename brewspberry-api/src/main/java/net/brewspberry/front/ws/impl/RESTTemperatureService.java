@@ -34,7 +34,7 @@ import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-@Path("/")
+@Path("/temperatureService")
 public class RESTTemperatureService {
 
 	@Autowired

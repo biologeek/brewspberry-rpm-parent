@@ -35,7 +35,7 @@ public abstract class Constants {
 
 		}
 	}
-	public static String BREW_PARENT = "brewspberry-rpm-parent";
+	public static String BREW_PARENT = PROJECT_ROOT_PATH+"/brewspberry-rpm-parent";
 	public static String BREW_VIEWER = BREW_PARENT+"/brewspberry-webapp";
 	public static String BREW_API = BREW_PARENT+"/brewspberry-core";
 	public static String BREW_BATCHES = BREW_PARENT+"/brewspberry-batches";
