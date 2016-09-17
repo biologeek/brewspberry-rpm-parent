@@ -33,6 +33,7 @@ function RegistrationController ($scope, UserService, CONSTANTS){
 		console.log (form.bla);
 
 	}
+
 	vm.handleClickRegisterForm = function (form){
 
 		console.log("handling form")
