@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="brewspberry">
+
+<head>
+    <title>BrewViewer</title>
+
+    <script src="vendors/angular.min.js"></script>
+    <script src="vendors/angular-messages.min.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/service/UserService.js"></script>
+    <script src="js/controllers/registrationController.js"></script>
+    <script src="js/directives/compareTo.js"></script>
+</head>
+
+
+<body ng-controller="RegistrationController as registration">
+
+<form name="formTest" ng-submit="registration.test(formTest)">
+
+    <input type="text" name="bla" ng-model="bla">
+    <br>
+    <input type="submit">
+
+
+</form>

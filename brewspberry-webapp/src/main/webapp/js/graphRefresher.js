@@ -126,40 +126,29 @@ function execute (htmlID, step, probe){
 		}
 
 		
-		if (!init){
-			if (delay > 0){
+		if (!init) {
+			if (delay > 0) {
 				XplotTimeRangeInMinutes = delay;
 			}
-			
-			address += '/delay/'+XplotTimeRangeInMinutes;
-			
+			address += '/delay/' + XplotTimeRangeInMinutes;
 		}
-		
 		if (!init && lastID > 0){
-			
 			address+= '/lastID/'+lastID;
-			
 		} else if (!init){
-			
 			console.log ('OK I\'m cool, setting ID to 1');
 			address+= '/lastID/1';
 		}
-
 			/* if null => all probes */
-		
 		// console.log('Calling '+address);
 		rawDataFromServlet = null;
 		// If query is OK setting rawDataFromServlet
 		jQuery.ajax (address,{
-			
 			success : function (result){
-				// console.log('Call success');
-		
-				rawDataFromServlet = result;
-			
-
-				callback();
-			},
+					// console.log('Call success');
+					rawDataFromServlet = result;
+					callback();
+				}
+			,
 			error : function (request, status, error) {
 				
 				/*
@@ -205,10 +194,8 @@ function execute (htmlID, step, probe){
 		// console.log (rawDataFromServlet);
 
 		if (typeof rawDataFromServlet == "string"){
-			
 			data = jQuery.parseJSON(rawDataFromServlet);
 		} else {
-			
 			data = rawDataFromServlet;
 		}
 		
@@ -218,18 +205,12 @@ function execute (htmlID, step, probe){
 		 */
 
 		jQuery.each (data.ConcreteTemperatureMeasurement, function (i, item){
-			
-			
 			if (xLabels.indexOf(formatDateFromJavaToJS(item.date)) == -1){
 				xLabels.push(formatDateFromJavaToJS(item.date));
 			}
-		
 			var itemName = item.name;
-
 			if (!yValues.hasOwnProperty(itemName)){
-							
 				yValues[itemName] = [];
-
 			}
 			yValues[itemName].push(item.temp);
 			currentLastID = item.id;			
@@ -242,52 +223,38 @@ function execute (htmlID, step, probe){
 		 * 
 		 */
 		jQuery.each (data.TheoreticalTemperatureMeasurement, function (i, item){
-			
-			
 			if (xLabels.indexOf(formatDateFromJavaToJS(item.date)) == -1){
 				xLabels.push(formatDateFromJavaToJS(item.date));
 			}
-		
 			var itemName = item.name;
-
 			if (!yValues.hasOwnProperty(itemName)){
-							
 				yValues[itemName] = [];
-
 			}
 			yValues[itemName].push(item.temp);
 			currentLastID = item.id;			
 		});
 
-
 		// Building final data for ChartJS
-
 		chartData.labels = xLabels;
 		chartData.datasets = [];
-		
-
 		if (yValues.PROBE0.length > 0){
-
 			jQuery.each (yValues, function(i, item){
 				// For each UUID, creating a dataset
 				// For Theoretical temperature sets, uuid = null, null1, ...
-				if (yValues.contains("null") != -1){
-					chartData.datasets.push (
+				if (yValues.contains("null") != -1) {
+					chartData.datasets.push(
 						{
-		
-						    label: i,
-						    fillColor: "rgba(255, 0, 0, 0.2)",
-						    strokeColor: "rgba(255, 0, 0, 1)",
-						    pointColor: "rgba(255, 0, 0, 1)",
-						    pointStrokeColor: "#fff",
-						    pointHighlightFill: "#fff",
-						    pointHighlightStroke: "rgba(255, 0, 0, 1)",
-						    data: item
-						}					
-				);
-
-			});
-
+							label: i,
+							fillColor: "rgba(255, 0, 0, 0.2)",
+							strokeColor: "rgba(255, 0, 0, 1)",
+							pointColor: "rgba(255, 0, 0, 1)",
+							pointStrokeColor: "#fff",
+							pointHighlightFill: "#fff",
+							pointHighlightStroke: "rgba(255, 0, 0, 1)",
+							data: item
+						}
+					);
+				}});
 		}
 		callback();
 		
@@ -297,15 +264,10 @@ function execute (htmlID, step, probe){
 	 * Updates chart using data from service
 	 */
 	function updateChartWithNewData (data){
-		
-
 		if (typeof data == "string"){
-			
 			data = jQuery.parseJSON(data);
 		}
-		
 		var array=[];
-
 		jQuery.each (data, function (i, item){
 			// console.log(formatDateFromJavaToJS(item.date)+ ' '+array[0]);
 			// console.log(array);
@@ -315,15 +277,11 @@ function execute (htmlID, step, probe){
 				array[formatDateFromJavaToJS(item.date)] = [item.temp];
 			}
 						// console.log(array);
-
 			currentLastID = item.id;
-			
 		});
 		isDataSetAtMaximumSize();
-
 		for (a in array){
 			liveChart.addData(array[a], a);
-
 		}
 	}
 	
@@ -337,25 +295,15 @@ function execute (htmlID, step, probe){
 	 * 
 	 */
 	function detemineColorForSet(){
-
-
 		colorTable = [Math.floor((Math.random() * 255) + 1), Math.floor((Math.random() * 255) + 1), Math.floor((Math.random() * 255) + 1)];
-
 		zeroIS = Math.floor((Math.random() * 2) + 1)
-		
 		colorTable [zeroIS] = 0;
-		
 		return colorTable.toString();
-		
-	} 
+	}
 	
 	function formatDateFromJavaToJS (javaDate){
-		
 		var date = new Date (javaDate);
-		
-		
 		var newDate = moment(date).format('LTS');
-		
 		return newDate;
 	}
 

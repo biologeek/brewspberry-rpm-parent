@@ -9,5 +9,8 @@ public interface IRESTUserService {
 	
 	
 	public Response doRegister(UserRegisterBean bean);
-
+	public Response doUpdateUser(UserRegisterBean bean);
+	public Response deleteUser(long userID);
+	public Response getUser(long userID);
+	public Response getUsers();
 }
