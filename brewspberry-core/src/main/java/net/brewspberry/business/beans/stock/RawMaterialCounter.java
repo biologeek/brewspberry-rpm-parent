@@ -27,7 +27,7 @@ public class RawMaterialCounter extends StockCounter {
 	
 	public RawMaterialCounter() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 

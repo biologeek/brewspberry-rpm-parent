@@ -15,7 +15,7 @@ public class AbstractStockMotion {
 	
 	public AbstractStockMotion() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public double getStm_value() {
 		return stm_value;

@@ -31,7 +31,7 @@ public class MainExec {
 					System.exit(0);
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					System.exit(1);
 				}

@@ -57,7 +57,7 @@ public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {
 
 	@Override
 	public CounterType getElementByName(String name) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -75,19 +75,19 @@ public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(CounterType arg0) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public List<CounterType> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

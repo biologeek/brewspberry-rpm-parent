@@ -147,21 +147,21 @@ public class TemperatureMeasurementDaoImpl implements
 	@Override
 	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurements(
 			List<String> uuidOrName, Boolean uuid) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurementsFromCSV(
 			List<String> uuidOrName, Boolean uuid) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementsByNameFromCSV(
 			String uuidOrName, Boolean uuid) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -74,7 +74,7 @@ public class InsertTestCase {
 			
 			System.out.println(yDao.save(levure));
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

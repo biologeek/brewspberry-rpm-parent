@@ -65,7 +65,7 @@ public class Brassin implements Serializable{
     
 	public Brassin() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 

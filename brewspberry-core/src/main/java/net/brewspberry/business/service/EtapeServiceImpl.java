@@ -105,7 +105,7 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 
 	@Override
 	public Etape getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

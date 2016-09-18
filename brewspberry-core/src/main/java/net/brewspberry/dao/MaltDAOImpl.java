@@ -133,7 +133,7 @@ public class MaltDAOImpl implements IGenericDao<Malt> {
 
 	@Override
 	public Malt getElementByName(String name) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

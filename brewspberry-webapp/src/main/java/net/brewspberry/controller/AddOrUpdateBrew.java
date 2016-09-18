@@ -96,7 +96,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 	 */
 	public AddOrUpdateBrew() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**
@@ -126,7 +126,7 @@ public class AddOrUpdateBrew extends HttpServlet {
 				try {
 					currentBrassin = brassinService.getElementById(brewid);
 				} catch (ServiceException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 

@@ -46,7 +46,7 @@ public class RecordTemperatureFromFileTaskTest {
 		try {
 			Assert.assertTrue(task.checkSpecificParameters(specs));
 		} catch (NotTheGoodNumberOfArgumentsException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

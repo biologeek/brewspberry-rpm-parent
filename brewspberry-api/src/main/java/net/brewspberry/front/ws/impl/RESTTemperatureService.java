@@ -123,7 +123,7 @@ public class RESTTemperatureService {
 			try {
 				currentStep = stepService.getElementById(stepID);
 			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -168,7 +168,7 @@ public class RESTTemperatureService {
 			try {
 				etape = stepService.getElementById(stepID);
 			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -224,7 +224,7 @@ public class RESTTemperatureService {
 			try {
 				step = stepService.getElementById(stepID);
 			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 

@@ -110,7 +110,7 @@ public class YeastServiceImpl implements IGenericService<Levure>,
 
 	@Override
 	public Levure getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

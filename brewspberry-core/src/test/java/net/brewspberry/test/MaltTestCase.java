@@ -52,7 +52,7 @@ public class MaltTestCase {
 		try {
 			System.out.println(service.save(malt));
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

@@ -42,7 +42,7 @@ public class TemperatureWSImpl implements ITemperatureWS {
 						result = specTMesService
 								.getLastTemperatureMeasurementByUUID(uuidOrname);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 
@@ -55,7 +55,7 @@ public class TemperatureWSImpl implements ITemperatureWS {
 					result = specTMesService
 							.getLastTemperatureMeasurementByName(uuidOrname);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}
@@ -73,7 +73,7 @@ public class TemperatureWSImpl implements ITemperatureWS {
 			result = specTMesService.getAllLastTemperatureMeasurements(
 					uuidOrname, uuid);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

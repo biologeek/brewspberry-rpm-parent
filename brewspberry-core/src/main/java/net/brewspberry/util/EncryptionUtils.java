@@ -32,7 +32,7 @@ public class EncryptionUtils {
 			messageMD5ed = bd.toString();
 			
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

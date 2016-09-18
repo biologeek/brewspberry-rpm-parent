@@ -33,7 +33,7 @@ public class ConfigLoader {
 		try {
 			props = openFile(path);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

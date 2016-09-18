@@ -122,7 +122,7 @@ public class DS18b20TemperatureMeasurementParser {
 							try {
 								Thread.sleep(threadSleepMillis);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
+								
 								e.printStackTrace();
 							}
 						}

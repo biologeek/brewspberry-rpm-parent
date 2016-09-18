@@ -51,7 +51,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 
 	@Override
 	public Houblon getElementById(long id) {
-		// TODO Auto-generated method stub
+		
 		return hopDao.getElementById(id);
 	}
 
@@ -78,7 +78,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 
 	@Override
 	public List<Houblon> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return hopDao.getAllDistinctElements();
 	}
 
@@ -140,7 +140,7 @@ public class HopServiceImpl implements IGenericService<Houblon>, ISpecificIngred
 
 	@Override
 	public Houblon getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

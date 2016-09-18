@@ -93,7 +93,7 @@ public class SimpleYeastProcessor implements Processor<SimpleLevure> {
 					return true;
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					return false;
 

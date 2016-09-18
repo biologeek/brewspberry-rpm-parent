@@ -22,13 +22,13 @@ public class BiereServiceImpl implements IGenericDao<Biere>, ISpecificBiereDAO{
 	
 	@Override
 	public Biere save(Biere arg0) throws DAOException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Biere update(Biere arg0) {
-		// TODO Auto-generated method stub
+		
 		return biereDAO.update(arg0);
 	}
 
@@ -39,7 +39,7 @@ public class BiereServiceImpl implements IGenericDao<Biere>, ISpecificBiereDAO{
 
 	@Override
 	public List<Biere> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return biereDAO.getAllElements();
 	}
 
@@ -51,13 +51,13 @@ public class BiereServiceImpl implements IGenericDao<Biere>, ISpecificBiereDAO{
 
 	@Override
 	public void deleteElement(Biere arg0) {
-		// TODO Auto-generated method stub
+		
 		biereDAO.deleteElement(arg0);
 	}
 
 	@Override
 	public List<Biere> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return biereDAO.getAllDistinctElements();
 	}
 

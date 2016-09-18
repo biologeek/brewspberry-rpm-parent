@@ -38,7 +38,7 @@ public class UserServiceImpl implements IGenericService<User>,
 
 	public UserServiceImpl() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class UserServiceImpl implements IGenericService<User>,
 
 	@Override
 	public User update(User arg0) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -86,25 +86,25 @@ public class UserServiceImpl implements IGenericService<User>,
 
 	@Override
 	public List<User> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(User arg0) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public List<User> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -209,7 +209,7 @@ public class UserServiceImpl implements IGenericService<User>,
 
 	@Override
 	public User getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

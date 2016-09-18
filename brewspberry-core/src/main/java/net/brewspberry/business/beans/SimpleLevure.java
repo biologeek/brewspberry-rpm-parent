@@ -24,7 +24,7 @@ public class SimpleLevure extends AbstractIngredient  {
     
 	public SimpleLevure() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public String getSlev_espece() {

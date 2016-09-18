@@ -99,7 +99,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 	@Override
 	public StockCounter getElementById(long id) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -113,19 +113,19 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(StockCounter arg0) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public List<StockCounter> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -267,7 +267,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 		try {
 			return this.saveOrUpdate(cptToDecrease);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;
@@ -293,7 +293,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 
 	@Override
 	public StockCounter getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -561,7 +561,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 		try {
 			result = this.processStockMotionsForUpdatingStockCounters(motions);
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

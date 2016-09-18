@@ -46,7 +46,7 @@ public class BiereDaoImpl implements IGenericDao<Biere>, ISpecificBiereDAO {
 
 	@Override
 	public Biere update(Biere arg0) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -136,7 +136,7 @@ public class StockServiceImplTest extends AbstractTest {
 			Mockito.when(genericDAO.update(cptToDecrease)).thenReturn(stl);
 
 		} catch (DAOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -150,7 +150,7 @@ public class StockServiceImplTest extends AbstractTest {
 			res = specStockService.toogleStockCounterForProduct(-3, malt,
 					type.toDBCouter(counterTypeList));
 		} catch (StockException | ServiceException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -176,7 +176,7 @@ public class StockServiceImplTest extends AbstractTest {
 					specDaoMock.getStockCounterByProductAndType(malt, typeDB))
 					.thenReturn(maltStockCounter);
 		} catch (DAOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 
@@ -272,7 +272,7 @@ public class StockServiceImplTest extends AbstractTest {
 		try {
 			stockServiceImpl.createOrUpdateStockCounterWithStockValue(motion, counter, MotionDirection.FROM);
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

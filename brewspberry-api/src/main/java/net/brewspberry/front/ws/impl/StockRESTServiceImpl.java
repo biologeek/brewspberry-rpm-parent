@@ -71,7 +71,7 @@ public class StockRESTServiceImpl implements IStockRESTService {
 			try {
 				throw new DataFormatException();
 			} catch (DataFormatException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -143,17 +143,17 @@ public class StockRESTServiceImpl implements IStockRESTService {
 				}
 			}
 
-			if (counterTypeID > 0){
+			if (request.getCounterTypeID() > 0){
 				
 				try {
 					
 					// Getting counter type
-					counterType = genericCompteurTypeService.getElementById(counterTypeID);
+					counterType = genericCompteurTypeService.getElementById(request.getCounterTypeID());
 					
 					/*
 					 * Processing stock motion
 					 */
-					stockCounterAfterMotion = specificStockService.toogleStockCounterForProduct(stockMotion, stockable, counterType);
+					stockCounterAfterMotion = specificStockService.toogleStockCounterForProduct(request.getStockMotion(), stockable, counterType);
 				} catch (StockException | ServiceException e) {
 					return Response.status(500).entity(e).build();
 				}

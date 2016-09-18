@@ -26,7 +26,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 	
 	public UserDaoImpl() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 	@Override
 	public User update(User arg0) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -56,31 +56,31 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 	@Override
 	public User getElementByName(String name) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public List<User> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(User arg0) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public List<User> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -102,7 +102,7 @@ public class UserDaoImpl implements IGenericDao<User>, ISpecificUserDao {
 
 	@Override
 	public boolean checkIfUserIsActiveAndNotBlocked(User user) {
-		// TODO Auto-generated method stub
+		
 		return true;
 	}
 

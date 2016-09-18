@@ -43,7 +43,7 @@ public class Malt extends SimpleMalt implements Serializable{
 
 	public Malt() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public Malt(SimpleMalt sm) {
 		

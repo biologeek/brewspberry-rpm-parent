@@ -32,7 +32,7 @@ public class TemperatureServlet extends HttpServlet {
      */
     public TemperatureServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        
     }
 
 	/**
@@ -81,7 +81,7 @@ public class TemperatureServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 	}
 	public String[] parseCSVFile (File file) throws IOException {
 		

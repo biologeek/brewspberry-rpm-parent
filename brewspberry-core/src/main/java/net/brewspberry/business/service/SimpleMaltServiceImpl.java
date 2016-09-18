@@ -28,43 +28,43 @@ public class SimpleMaltServiceImpl implements IGenericService<SimpleMalt>,
 
 	@Override
 	public SimpleMalt save(SimpleMalt arg0) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return maltDAO.save(arg0);
 	}
 
 	@Override
 	public SimpleMalt update(SimpleMalt arg0) {
-		// TODO Auto-generated method stub
+		
 		return maltDAO.update(arg0);
 	}
 
 	@Override
 	public SimpleMalt getElementById(long id) {
-		// TODO Auto-generated method stub
+		
 		return maltDAO.getElementById(id);
 	}
 
 	@Override
 	public List<SimpleMalt> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return maltDAO.getAllElements();
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(SimpleMalt arg0) {
-		// TODO Auto-generated method stub
+		
 		maltDAO.deleteElement(arg0);
 	}
 
 	@Override
 	public List<SimpleMalt> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return maltDAO.getAllDistinctElements();
 	}
 
@@ -105,7 +105,7 @@ public class SimpleMaltServiceImpl implements IGenericService<SimpleMalt>,
 
 	@Override
 	public SimpleMalt getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

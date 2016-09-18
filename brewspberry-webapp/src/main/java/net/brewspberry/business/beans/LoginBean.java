@@ -7,7 +7,7 @@ public class LoginBean {
 
 	public LoginBean() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public LoginBean(String username, String password) {

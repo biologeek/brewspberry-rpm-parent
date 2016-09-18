@@ -50,7 +50,7 @@ public abstract class Constants {
 
 	public Constants() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public static Map<String, String> INGREDIENT_TYPES = new HashMap<String, String>();

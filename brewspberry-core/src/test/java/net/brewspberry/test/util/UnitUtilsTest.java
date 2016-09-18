@@ -28,7 +28,7 @@ public class UnitUtilsTest {
 		try {
 			result = StockUnitUtils.convertToOtherUnit(value, unitFrom, unitTo);
 		} catch (UnitConversionFailedException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -41,7 +41,7 @@ public class UnitUtilsTest {
 		try {
 			result = StockUnitUtils.convertToOtherUnit(value, unitFrom, unitTo);
 		} catch (UnitConversionFailedException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

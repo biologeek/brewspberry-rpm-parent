@@ -28,10 +28,10 @@ public class LogManager {
 			try {
 				fh = new FileHandler();
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			logger = Logger.getLogger(name);

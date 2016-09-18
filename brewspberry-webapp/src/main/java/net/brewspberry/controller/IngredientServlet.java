@@ -60,7 +60,7 @@ public class IngredientServlet extends HttpServlet {
 	
 	public IngredientServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 

@@ -61,7 +61,7 @@ public class SimpleMaltServiceImplTest extends AbstractTest {
 			
 			result = sMalService.save(sm);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		

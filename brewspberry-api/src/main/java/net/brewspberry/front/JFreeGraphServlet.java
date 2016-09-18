@@ -96,7 +96,7 @@ public class JFreeGraphServlet extends HttpServlet {
 	public JFreeGraphServlet() {
 		super();
 
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	/**
@@ -162,7 +162,7 @@ public class JFreeGraphServlet extends HttpServlet {
 					try {
 						etape = etapeService.getElementById(etapeID);
 					} catch (ServiceException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
 
@@ -183,7 +183,7 @@ public class JFreeGraphServlet extends HttpServlet {
 												probesList), false, true),
 								"DS18B20", "Time", "Temperature", true);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 
@@ -205,7 +205,7 @@ public class JFreeGraphServlet extends HttpServlet {
 						tempList = brassinService.getElementById(brewID)
 								.getBra_temperature_measurement();
 					} catch (ServiceException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
 					logger.fine("Got " + tempList.size()
@@ -224,7 +224,7 @@ public class JFreeGraphServlet extends HttpServlet {
 												probesList), false, true),
 								"DS18B20", "Time", "Temperature", true);
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 				}
@@ -239,7 +239,7 @@ public class JFreeGraphServlet extends HttpServlet {
 						true);
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -254,7 +254,7 @@ public class JFreeGraphServlet extends HttpServlet {
 			ChartUtilities.writeChartAsPNG(outputStream, chart, width,
 					height);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

@@ -58,7 +58,7 @@ public class UserServlet extends AbstractAutowiredServlet {
 
 	public UserServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 
@@ -91,7 +91,7 @@ public class UserServlet extends AbstractAutowiredServlet {
 				try {
 					userService.save(userToValidate);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 

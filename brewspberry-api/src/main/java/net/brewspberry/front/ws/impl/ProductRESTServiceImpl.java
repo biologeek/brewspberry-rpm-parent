@@ -105,7 +105,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 					.entity(new IngredientDTO()
 							.toServiceObject(businessIngredient)).build();
 		} catch (DataTransferException e) {
-			// TODO Auto-generated catch block
+			
 			return Response.status(500).entity(e).build();
 		}
 	}
@@ -128,7 +128,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/delete")
 	public Response deleteIngredient(IngredientJSONRequest request) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

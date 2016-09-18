@@ -44,14 +44,14 @@ public class TemperatureRegulatorAlgorithmlmpl implements IRegulationAlgorithm<T
 	@Override
 	public boolean returnBinaryAnswerFromDataset(
 			List<TemperatureAlgorithmData> dataset) {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public int returnIntegerAnswerFromDataset(
 			List<TemperatureAlgorithmData> dataset) {
-		// TODO Auto-generated method stub
+		
 		return 0;
 	}
 

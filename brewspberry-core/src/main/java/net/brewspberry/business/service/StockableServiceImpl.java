@@ -22,13 +22,13 @@ public class StockableServiceImpl implements IGenericService<Stockable> {
 
 	@Override
 	public Stockable save(Stockable arg0) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Stockable update(Stockable arg0) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -40,31 +40,31 @@ public class StockableServiceImpl implements IGenericService<Stockable> {
 
 	@Override
 	public List<Stockable> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(Stockable arg0) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public List<Stockable> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Stockable getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

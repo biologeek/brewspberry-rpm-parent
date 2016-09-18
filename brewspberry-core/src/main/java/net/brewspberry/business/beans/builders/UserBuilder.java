@@ -12,7 +12,7 @@ public abstract class UserBuilder {
 	public UserBuilder() {
 		super();
 		this.user = new User();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public UserBuilder login (String login){

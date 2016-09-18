@@ -14,7 +14,7 @@ public class TableDisplayFinishedProductCounter extends TableDisplayStockCounter
 
 	public TableDisplayFinishedProductCounter() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public TableDisplayFinishedProductCounter(FinishedProductCounter arg0) {

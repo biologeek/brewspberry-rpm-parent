@@ -47,7 +47,7 @@ public class Biere extends AbstractFinishedProduct {
 	
 	public Biere() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	

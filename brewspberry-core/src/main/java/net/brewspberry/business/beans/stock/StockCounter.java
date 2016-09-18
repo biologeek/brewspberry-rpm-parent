@@ -56,7 +56,7 @@ public class StockCounter implements Serializable {
 
 	public StockCounter() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public long getCpt_id() {

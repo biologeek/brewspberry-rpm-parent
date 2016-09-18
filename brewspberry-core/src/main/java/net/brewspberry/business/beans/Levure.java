@@ -37,7 +37,7 @@ public class Levure extends SimpleLevure {
     
 	public Levure() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Brassin getLev_brassin() {

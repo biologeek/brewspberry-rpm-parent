@@ -38,7 +38,7 @@ public class IngredientStockCounterBuilder extends StockCounterBuilder<RawMateri
 	@Override
 	public StockCounterBuilder<RawMaterialCounter> product(
 			AbstractFinishedProduct e) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 }

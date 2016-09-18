@@ -31,7 +31,7 @@ public class AuthentificationFilter implements Filter {
 
 	public AuthentificationFilter() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Logger getLogger() {
@@ -44,7 +44,7 @@ public class AuthentificationFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -123,7 +123,7 @@ public class AuthentificationFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
+		
 
 	}
 

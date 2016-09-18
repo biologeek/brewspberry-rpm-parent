@@ -113,11 +113,11 @@ public class IngredientJSONRequest implements Serializable{
 		this.foculation = foculation;
 	}
 	public float getUnitaryPrice() {
-		// TODO Auto-generated method stub
+		
 		return this.unitaryPrice;
 	}
 	public void setUnitaryPrice(float unitaryPrice) {
-		// TODO Auto-generated method stub
+		
 		this.unitaryPrice = unitaryPrice;
 	}
 	public String getUnitaryPriceUnit() {

@@ -100,7 +100,7 @@ public class SimpleYeastServiceImpl implements IGenericService<SimpleLevure>,
 
 	@Override
 	public SimpleLevure getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

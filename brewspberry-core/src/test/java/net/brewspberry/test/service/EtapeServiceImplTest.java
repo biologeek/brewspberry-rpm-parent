@@ -92,7 +92,7 @@ public class EtapeServiceImplTest {
 		try {
 			etape = genEtapeService.getElementById(1);
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -125,7 +125,7 @@ public class EtapeServiceImplTest {
 		try {
 			PowerMockito.doReturn(list).when(stepServiceSpy, "getList");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -165,7 +165,7 @@ public class EtapeServiceImplTest {
 		try {
 			PowerMockito.doReturn(list).when(stepServiceSpy, "getList");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -204,7 +204,7 @@ public class EtapeServiceImplTest {
 	}
 
 	private List<CounterType> getList() {
-		// TODO Auto-generated method stub
+		
 		return genCounterTypeService.getAllElements();
 	}
 }

@@ -114,13 +114,11 @@ public class StepProcessor implements Processor<Object> {
 
 		}
 
-		CounterType counterTypeFrom = null;
 
 		// Building step
 		parseServletRequestForStepParameters(request, currentStep);
 
-		processStocks(parent, currentStep, isStockAlreadyReserved,
-				counterTypeFrom);
+		processStocks(parent, currentStep, isStockAlreadyReserved);
 
 		// Recording step
 		try {
@@ -145,10 +143,13 @@ public class StepProcessor implements Processor<Object> {
 	}
 
 	private void processStocks(Object parent, Etape currentStep,
-			boolean isStockAlreadyReserved, CounterType counterTypeFrom) {
+			boolean isStockAlreadyReserved) {
 		List<RawMaterialStockMotion> stockMotionsDuringStep;
 		// If step is being updated, stock has already been reserved
 		
+		CounterType counterTypeFrom = null;
+		
+		// TODO : be able to process stocks at the end of brewing (raw material -> products)
 		/*
 		 * Reminder :
 		 * 
@@ -171,7 +172,7 @@ public class StepProcessor implements Processor<Object> {
 								.getCty_libelle());
 			}
 		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -193,7 +194,7 @@ public class StepProcessor implements Processor<Object> {
 			specStockService
 					.processStockMotionsForUpdatingStockCounters((List<AbstractStockMotion>) (List<?>) stockMotionsDuringStep);
 		} catch (ServiceException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 	}

@@ -12,7 +12,7 @@ public class UserRegisterBean {
 	
 	public UserRegisterBean() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	public long getUserId() {
 		return userId;

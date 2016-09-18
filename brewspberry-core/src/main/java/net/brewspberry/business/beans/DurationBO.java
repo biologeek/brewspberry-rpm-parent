@@ -36,7 +36,7 @@ public class DurationBO implements Serializable{
 	
 	public DurationBO() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 	

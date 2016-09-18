@@ -23,13 +23,13 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 
 	@Override
 	public CounterType save(CounterType arg0) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return genericDao.save(arg0);
 	}
 
 	@Override
 	public CounterType update(CounterType arg0) {
-		// TODO Auto-generated method stub
+		
 		return genericDao.update(arg0);
 	}
 
@@ -46,7 +46,7 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 
 	@Override
 	public List<CounterType> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return genericDao.getAllElements();
 	}
 
@@ -70,7 +70,7 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 
 	@Override
 	public CounterType getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return genericDao.getElementByName(name);
 	}
 

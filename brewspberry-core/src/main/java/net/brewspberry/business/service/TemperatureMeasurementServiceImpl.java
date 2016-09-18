@@ -80,7 +80,7 @@ public class TemperatureMeasurementServiceImpl implements
 		try {
 			result = this.tempDao.getLastTemperatureMeasurementByUUID(uuid);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return result;
@@ -94,7 +94,7 @@ public class TemperatureMeasurementServiceImpl implements
 		try {
 			result = this.tempDao.getLastTemperatureMeasurementByName(name);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return result;
@@ -308,13 +308,13 @@ public class TemperatureMeasurementServiceImpl implements
 
 	@Override
 	public ConcreteTemperatureMeasurement update(ConcreteTemperatureMeasurement arg0) {
-		// TODO Auto-generated method stub
+		
 		return tmesDao.update(arg0);
 	}
 
 	@Override
 	public ConcreteTemperatureMeasurement getElementById(long id) {
-		// TODO Auto-generated method stub
+		
 		return tmesDao.getElementById(id);
 	}
 
@@ -332,13 +332,13 @@ public class TemperatureMeasurementServiceImpl implements
 
 	@Override
 	public void deleteElement(ConcreteTemperatureMeasurement arg0) {
-		// TODO Auto-generated method stub
+		
 		tmesDao.deleteElement(arg0);
 	}
 
 	@Override
 	public List<ConcreteTemperatureMeasurement> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return tmesDao.getAllDistinctElements();
 	}
 
@@ -447,7 +447,7 @@ public class TemperatureMeasurementServiceImpl implements
 
 	@Override
 	public ConcreteTemperatureMeasurement getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

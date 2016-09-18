@@ -41,7 +41,7 @@ public enum StockUnit {
 	
 	
 	StockUnit() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	StockUnit(int stu_id, StockUnit stu_parent, String stu_value, double stu_multi) {

@@ -40,7 +40,7 @@ public class Houblon extends SimpleHoublon implements Serializable {
         
 	public Houblon() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 

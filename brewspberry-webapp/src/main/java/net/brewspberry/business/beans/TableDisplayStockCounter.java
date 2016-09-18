@@ -21,7 +21,7 @@ public class TableDisplayStockCounter extends StockCounter {
 
 	public TableDisplayStockCounter() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 

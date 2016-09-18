@@ -84,7 +84,7 @@ public class RecordTemperatureFromFileTask implements Task {
 		try {
 			filesToRead = parser.findFilesToOpen();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 
@@ -214,7 +214,7 @@ public class RecordTemperatureFromFileTask implements Task {
 	}
 
 	public void buildSpecificParameters(String specs) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -275,7 +275,7 @@ public class RecordTemperatureFromFileTask implements Task {
 			try {
 				writer.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}

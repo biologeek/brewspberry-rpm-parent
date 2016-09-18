@@ -101,7 +101,7 @@ public class SimpleMaltProcessor implements Processor<SimpleMalt> {
 					return true;
 
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					return false;
 

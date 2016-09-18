@@ -36,7 +36,7 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 
 	@Override
 	public Brassin update(Brassin arg0) {
-		// TODO Auto-generated method stub
+		
 		return brassinDAO.update(arg0);
 	}
 
@@ -47,7 +47,7 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 
 	@Override
 	public List<Brassin> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return brassinDAO.getAllElements();
 	}
 
@@ -59,25 +59,25 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 
 	@Override
 	public void deleteElement(Brassin arg0) {
-		// TODO Auto-generated method stub
+		
 		brassinDAO.deleteElement(arg0);
 	}
 
 	@Override
 	public List<Brassin> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return brassinDAO.getAllDistinctElements();
 	}
 
 	@Override
 	public Brassin getBrassinByBeer(Biere beer) {
-		// TODO Auto-generated method stub
+		
 		return specBrassinDAO.getBrassinByBeer(beer);
 	}
 
 	@Override
 	public Brassin getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

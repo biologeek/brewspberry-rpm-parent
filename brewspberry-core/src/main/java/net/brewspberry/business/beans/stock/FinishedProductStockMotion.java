@@ -10,7 +10,7 @@ public class FinishedProductStockMotion extends AbstractStockMotion {
 
 	public FinishedProductStockMotion() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public AbstractFinishedProduct getStf_product() {

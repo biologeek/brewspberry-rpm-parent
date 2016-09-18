@@ -70,7 +70,7 @@ public class UserServiceImplTest extends AbstractTest{
 		try {
 			Assert.assertNotNull(userService.save(user));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

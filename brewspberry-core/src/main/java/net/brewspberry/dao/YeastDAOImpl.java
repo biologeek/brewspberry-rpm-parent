@@ -137,7 +137,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 	@Override
 	public Levure getElementByName(String name) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

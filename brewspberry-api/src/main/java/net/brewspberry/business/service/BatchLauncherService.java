@@ -127,7 +127,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 						logger.warning("TemperatureMeasurement not available without Step and Brew...");
 					}
 
-				} catch (Throwable e) {
+				} catch (Exception e) {
 
 					e.printStackTrace();
 					// TODO: handle exception

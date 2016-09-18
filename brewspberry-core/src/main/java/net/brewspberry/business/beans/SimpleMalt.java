@@ -35,7 +35,7 @@ public class SimpleMalt extends AbstractIngredient {
     
 	public SimpleMalt() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public String getSmal_cereale() {

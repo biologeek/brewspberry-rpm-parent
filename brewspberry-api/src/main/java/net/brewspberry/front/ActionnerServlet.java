@@ -198,7 +198,7 @@ public class ActionnerServlet extends HttpServlet {
 					 * (actioner.getAct_type().equals(Constants.ACT_DS18B20)) {
 					 * 
 					 * try { actioner = actionerService.startAction(actioner); }
-					 * catch (Exception e) { // TODO Auto-generated catch block
+					 * catch (Exception e) { 
 					 * e.printStackTrace(); } }
 					 */
 					actioners = DeviceParser.getInstance().getDevices(
@@ -239,7 +239,7 @@ public class ActionnerServlet extends HttpServlet {
 					try {
 						dactioner = genActionerService.getElementById(did);
 					} catch (ServiceException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 					}
 					
@@ -250,7 +250,7 @@ public class ActionnerServlet extends HttpServlet {
 									+ dactioner.getAct_id());
 							actionerLauncherService.stopAction(dactioner);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						}
 						try {
@@ -258,7 +258,7 @@ public class ActionnerServlet extends HttpServlet {
 							DeviceParser.getInstance().setIdToActioner(
 									dactioner);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						}
 
@@ -270,7 +270,7 @@ public class ActionnerServlet extends HttpServlet {
 								dactioner = actionerLauncherService
 										.startAction(dactioner);
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
+								
 								e.printStackTrace();
 							}
 						} else {
@@ -279,7 +279,7 @@ public class ActionnerServlet extends HttpServlet {
 										"Could not found ID for UUID"
 												+ dactioner.getAct_uuid());
 							} catch (Exception e) {
-								// TODO Auto-generated catch block
+								
 								e.printStackTrace();
 							}
 						}
@@ -306,7 +306,7 @@ public class ActionnerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
 	}
 
 }

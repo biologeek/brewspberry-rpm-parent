@@ -9,19 +9,19 @@ public class FinishedProductStockCounterBuilder extends StockCounterBuilder<Fini
 
 	@Override
 	public StockCounterBuilder ingredient(AbstractIngredient e) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public StockCounterBuilder product(AbstractFinishedProduct e) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public FinishedProductCounter build() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

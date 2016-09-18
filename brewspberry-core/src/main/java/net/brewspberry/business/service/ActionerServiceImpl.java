@@ -54,7 +54,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 	public ActionerServiceImpl() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	@Override
@@ -246,7 +246,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 				
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			throw new ServiceException("Couldn't update Actioner "
 					+ arg0.toString());
 		}
@@ -435,7 +435,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 	@Override
 	public Actioner getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

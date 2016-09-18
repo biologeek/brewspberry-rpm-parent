@@ -81,10 +81,10 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 				etape = etapeService.getElementById(Long.parseLong(specParams[1]));
 				actioner = actionerService.getElementById(Long.parseLong(specParams[2]));
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} catch (ServiceException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			result[0] = brassin;
@@ -149,7 +149,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 						new Thread((Runnable) new RecordTemperatureFromFileTask(taskParams)).start();
 						Thread.sleep(threadSleep);
 					} catch (Throwable e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 
@@ -174,7 +174,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 							t.start();
 							Thread.sleep(threadSleep);
 						} catch (Throwable e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						}
 					}
@@ -200,7 +200,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 							new Thread((Runnable) currentTask).start();
 							Thread.sleep(threadSleep);
 						} catch (Throwable e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						}
 					}

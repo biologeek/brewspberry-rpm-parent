@@ -21,13 +21,13 @@ public class StockableDaoImpl implements IGenericDao<Stockable> {
 	
 	@Override
 	public Stockable save(Stockable arg0) throws DAOException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Stockable update(Stockable arg0) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -49,25 +49,25 @@ public class StockableDaoImpl implements IGenericDao<Stockable> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Stockable> getAllElements() {
-		// TODO Auto-generated method stub
+		
 		return (List<Stockable>) sessionFactory.getCurrentSession().createQuery("from Stockable").list();
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void deleteElement(Stockable arg0) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public List<Stockable> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

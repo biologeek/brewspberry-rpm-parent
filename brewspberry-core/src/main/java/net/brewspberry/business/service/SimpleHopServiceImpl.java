@@ -45,7 +45,7 @@ public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISp
 
 	@Override
 	public SimpleHoublon getElementById(long id) {
-		// TODO Auto-generated method stub
+		
 		return sHopDao.getElementById(id);
 	}
 
@@ -70,7 +70,7 @@ public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISp
 
 	@Override
 	public List<SimpleHoublon> getAllDistinctElements() {
-		// TODO Auto-generated method stub
+		
 		return sHopDao.getAllDistinctElements();
 	}
 
@@ -120,7 +120,7 @@ public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISp
 
 	@Override
 	public SimpleHoublon getElementByName(String name) throws ServiceException {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

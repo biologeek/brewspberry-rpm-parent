@@ -83,7 +83,7 @@ public class Etape implements Serializable {
 
 	public Etape() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public Long getEtp_id() {

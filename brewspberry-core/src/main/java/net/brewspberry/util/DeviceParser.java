@@ -89,7 +89,7 @@ public class DeviceParser extends ConfigLoader {
 				}
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -162,7 +162,7 @@ public class DeviceParser extends ConfigLoader {
 		try {
 			props = super.openFile(Constants.DEVICES_PROPERTIES);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -201,7 +201,7 @@ public class DeviceParser extends ConfigLoader {
 			props.store(new FileOutputStream(new File(
 					Constants.DEVICES_PROPERTIES)), "");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
