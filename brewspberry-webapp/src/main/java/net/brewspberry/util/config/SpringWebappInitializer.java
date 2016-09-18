@@ -7,12 +7,16 @@ import javax.servlet.ServletRegistration;
 
 import net.brewspberry.filters.AuthentificationFilter;
 
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
 
 public class SpringWebappInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer implements
@@ -31,6 +35,14 @@ public class SpringWebappInitializer extends
 
 		//servletContext.addListener(new ContextLoaderListener(rootContext));
 
+		getWebAppContext(servletContext);
+	
+	}
+
+
+
+	
+	private void getWebAppContext(ServletContext servletContext) {
 		// now the config for the Dispatcher servlet
 		AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
 		// mvcContext.setConfigLocation("net.brewspberry.util.config");
@@ -42,7 +54,6 @@ public class SpringWebappInitializer extends
 
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("*.do");
-
 	}
 
 	
