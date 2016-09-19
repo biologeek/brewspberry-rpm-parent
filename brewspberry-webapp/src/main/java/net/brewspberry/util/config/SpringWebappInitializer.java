@@ -35,23 +35,6 @@ public class SpringWebappInitializer extends
 
 */
 	
-	private void getWebAppContext(ServletContext servletContext) {
-		// now the config for the Dispatcher servlet
-		AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
-		// mvcContext.setConfigLocation("net.brewspberry.util.config");
-			mvcContext.register(SpringWebappConfiguration.class);
-		
-
-		ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
-				"DispatcherServlet", new DispatcherServlet(mvcContext));
-
-		dispatcher.setLoadOnStartup(1);
-		dispatcher.addMapping("*.do");
-	}
-
-	
-
-
 	@Override
 	protected Filter[] getServletFilters() {
 		return null; // new Filter[] { new AuthentificationFilter() };

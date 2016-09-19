@@ -26,6 +26,7 @@ import net.brewspberry.dao.ActionerDaoImpl;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
+import net.brewspberry.util.OSUtils;
 
 @Service 
 @Transactional
@@ -48,7 +49,18 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 	
 	private RelayAdapter relayAdapter = RelayAdapter.getInstance();
 
-	private final GpioController gpioController = GpioFactory.getInstance();
+	private GpioController gpioController;
+	
+	
+
+	public BatchLauncherService() {
+		super();
+		if (OSUtils.isRaspbian()){
+			gpioController  = GpioFactory.getInstance();
+		} else {
+			gpioController = null;
+		}
+	}
 
 	@Override
 	public Actioner startAction(Actioner actioner) throws Exception {

@@ -10,11 +10,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.junit.Assert;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.test.util.config.WebappSpringTestConfiguration;
-import net.brewspberry.test.util.config.WebappTestConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={WebappSpringTestConfiguration.class})
+@ContextConfiguration(classes={WebappSpringTestConfiguration.class, SpringCoreTestConfiguration.class})
 @WebAppConfiguration
 public class AccueilControllerTest {
 
@@ -27,6 +27,6 @@ public class AccueilControllerTest {
 	@Test
 	public void testAutowiring(){
 		
-		Assert.assertNotNull(brassinGenService);;
+		Assert.assertNotNull(brassinGenService);
 	}
 }
