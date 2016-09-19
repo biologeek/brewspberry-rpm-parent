@@ -9,13 +9,22 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.front.ws.impl.RESTTemperatureService;
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
+import net.brewspberry.util.SpringApiConfiguration;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes={SpringApiConfiguration.class, SpringCoreTestConfiguration.class})
+@WebAppConfiguration
 public class RestTemperatureWSTest {
 	
 	
