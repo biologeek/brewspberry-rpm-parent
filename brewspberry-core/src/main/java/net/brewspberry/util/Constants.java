@@ -42,11 +42,11 @@ public abstract class Constants {
 	public static String BREW_TEMP = BREW_PARENT+"/brewspberry-api";
 	public static String BREW_CONF = BREW_PARENT+"/brewspberry-conf";
 
-	public static String DEVICES_PROPERTIES = PROJECT_ROOT_PATH + "/" + BREW_CONF + "/devices.properties";
+	public static String DEVICES_PROPERTIES = BREW_CONF + "/devices.properties";
 
-	public static String CONFIG_PROPERTIES = PROJECT_ROOT_PATH + "/" + BREW_CONF + "/config.properties";
+	public static String CONFIG_PROPERTIES = BREW_CONF + "/config.properties";
 
-	public static String BATCHES_PROPERTIES = PROJECT_ROOT_PATH + "/" + BREW_CONF + "/batches.properties";
+	public static String BATCHES_PROPERTIES = BREW_CONF + "/batches.properties";
 
 	public Constants() {
 		super();

@@ -29,6 +29,7 @@ public class ConfigLoader {
 
 		String result = new String();
 
+		System.out.println("Loading config file : "+path);
 		Properties props = null;
 		try {
 			props = openFile(path);
@@ -55,15 +56,10 @@ public class ConfigLoader {
 
 		InputStream in = null;
 
-		try {
+		in = new FileInputStream(file);
 
-			in = new FileInputStream(file);
+		props.load(in);
 
-			props.load(in);
-			
-		} catch (IOException e) {
-			throw new IOException();
-		}
 		return props;
 
 	}
