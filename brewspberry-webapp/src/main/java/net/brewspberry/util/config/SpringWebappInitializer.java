@@ -5,23 +5,16 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRegistration;
 
-import net.brewspberry.filters.AuthentificationFilter;
-
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
+import net.brewspberry.util.config.SpringWebappConfiguration;
 
 public class SpringWebappInitializer extends
 		AbstractAnnotationConfigDispatcherServletInitializer implements
 		WebApplicationInitializer {
-
+/*
 	public void onStartup(ServletContext servletContext)
 			throws ServletException {
 
@@ -40,7 +33,7 @@ public class SpringWebappInitializer extends
 	}
 
 
-
+*/
 	
 	private void getWebAppContext(ServletContext servletContext) {
 		// now the config for the Dispatcher servlet
@@ -68,11 +61,13 @@ public class SpringWebappInitializer extends
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
 		
-		return null;
+		return new Class<?>[]{SpringCoreConfiguration.class, SpringWebappConfiguration.class};
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
+		
+		
 		
 		return null;
 	}

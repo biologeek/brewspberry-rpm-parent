@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = { "net.brewspberry" })
+@ComponentScan(basePackages = { "net.brewspberry.test" })
 public class WebappTestConfiguration extends WebMvcConfigurerAdapter {
 
 	@Override
