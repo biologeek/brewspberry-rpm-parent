@@ -3,7 +3,7 @@ package net.brewspberry.front.ws;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 
-import net.brewspberry.front.ws.beans.IngredientJSONRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientJSONRequest;
 
 public interface IProductRESTService {
 	

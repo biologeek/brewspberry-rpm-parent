@@ -36,7 +36,7 @@ public class TemperatureMeasurementServiceImpl implements
 		ISpecificTemperatureMeasurementService,
 		IGenericService<ConcreteTemperatureMeasurement> {
 
-	private String measurementsCSV = "/home/xavier/ds18b20_raw_measurements.csv";
+	private String measurementsCSV = Constants.DS18B20_RAW_MEASUREMENTS;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-dd hh:MM:ss.SSSSSS");
 

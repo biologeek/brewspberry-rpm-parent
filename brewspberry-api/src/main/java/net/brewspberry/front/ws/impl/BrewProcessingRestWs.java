@@ -1,5 +1,9 @@
 package net.brewspberry.front.ws.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -12,10 +16,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
+import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IBrewProcessing;
+import net.brewspberry.front.ws.beans.SimpleBrewResponse;
+import net.brewspberry.front.ws.beans.dto.BrassinDTO;
 
 @Path("/brewService")
 public class BrewProcessingRestWs implements IBrewProcessing {
@@ -23,6 +30,9 @@ public class BrewProcessingRestWs implements IBrewProcessing {
 	@Autowired
 	@Qualifier("etapeServiceImpl")
 	private IGenericService<Etape> stepService;
+	@Autowired
+	@Qualifier("brassinServiceImpl")
+	private IGenericService<Brassin> brassinGenService;
 	@Autowired
 	private ISpecificEtapeService specStepService;
 
@@ -102,6 +112,35 @@ public class BrewProcessingRestWs implements IBrewProcessing {
 			return Response.status(500).entity(new Exception("ID null or negative")).build();
 		}
 		return Response.status(200).entity(stepAfterStateUpdate).build();
+	}
+
+	@Override
+	public Response getAllActiveBrews() {
+		
+		
+		
+		return null;
+	}
+
+	@Override
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllBrews() {
+		
+		List<Brassin> brewList = null;
+		try {
+			brewList = brassinGenService.getAllElements();
+		} catch(Exception e){			
+			return Response.status(500).entity(e).build();
+		}
+		 ArrayList<SimpleBrewResponse> convertedBrewList = new ArrayList<SimpleBrewResponse>();
+		 
+		 // Using a stream to convert each element of the list to DTO 
+		 brewList.stream().forEach(x -> {
+			 convertedBrewList.add(BrassinDTO.getInstance().toSimpleBrewResponse(x)); 
+		 });
+		
+		return Response.status(200).entity(convertedBrewList).build();
 	}
 
 }

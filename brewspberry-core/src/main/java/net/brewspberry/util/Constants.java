@@ -47,6 +47,8 @@ public abstract class Constants {
 	public static String CONFIG_PROPERTIES = BREW_CONF + "/config.properties";
 
 	public static String BATCHES_PROPERTIES = BREW_CONF + "/batches.properties";
+	
+	public static String DS18B20_RAW_MEASUREMENTS = "/home/xavier/ownCloud/Projets/Brewhouse/Code/fic/ds18b20_raw_measurements.csv";
 
 	public Constants() {
 		super();

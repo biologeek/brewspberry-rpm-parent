@@ -9,5 +9,8 @@ public interface IBrewProcessing {
 
 	public Response startStep (long etape) throws Exception;
 	public Response endStep (long etape);
+	public Response getAllActiveBrews();
+	public Response getAllBrews();
+	
 
 }

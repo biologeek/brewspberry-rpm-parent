@@ -26,7 +26,7 @@ import net.brewspberry.business.beans.stock.Stockable;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.exceptions.StockException;
 import net.brewspberry.front.ws.IStockRESTService;
-import net.brewspberry.front.ws.beans.StockCounterIngredientRequest;
+import net.brewspberry.front.ws.beans.requests.StockCounterIngredientRequest;
 
 @Controller
 @Path("/stockService")

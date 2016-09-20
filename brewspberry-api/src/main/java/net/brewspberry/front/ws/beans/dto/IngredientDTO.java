@@ -1,4 +1,4 @@
-package net.brewspberry.front.ws.beans;
+package net.brewspberry.front.ws.beans.dto;
 
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Malt;
@@ -7,6 +7,7 @@ import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.exceptions.DataTransferException;
+import net.brewspberry.front.ws.beans.requests.IngredientJSONRequest;
 
 public class IngredientDTO {
 

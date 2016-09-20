@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.test.context.ContextConfiguration;
+
+import net.brewspberry.util.Constants;
+
 /**
  * Servlet implementation class Index
  */
@@ -29,7 +33,7 @@ public class Index extends HttpServlet {
 
 	private String pythonScriptDirectory = "/home/xavier/ownCloud/Projets/Brewhouse/Code/batches/";
 	private String pythonScriptFile = "bchrectemp.py";
-	private String csvTemperatureFile = "/home/xavier/ownCloud/Projets/Brewhouse/Code/fic/ds18b20_raw_measurements.csv";
+	private String csvTemperatureFile = Constants.DS18B20_RAW_MEASUREMENTS;
 	
     /**
      * Default constructor. 

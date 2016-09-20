@@ -67,5 +67,17 @@ public enum EtapeType {
 		this.ety_isProductManipulated = ety_isProductManipulated;
 	}
 	
+	public static EtapeType getValueByID(int id){
+		
+		for (EtapeType value : EtapeType.values()){
+			
+			if (value.getEty_id() == id){
+				return value;
+			}
+		}
+		return null;
+		
+	}
+	
 
 }

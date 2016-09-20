@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil</title>
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"
+          media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <link href="vendors/jGrowl/jquery.jgrowl.css" rel="stylesheet"
+          media="screen">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="vendors/angular.min.js"></script>
+    <script src="vendors/angular-messages.min.js"></script>
+    <!-- <script src="js/connection/index.js"></script> -->
+    <script src="app.js"></script>
+    <script src="js/utils/constants.js"></script>
+    <script src="js/service/BrewService.js"></script>
+    <script src="js/controllers/accueilController.js"></script>
+
+</head>
+
+<body ng-controller="AccueilController as accueilController">
+<ng-include src="tpl/header.jsp"></ng-include>
+
+
+<div class="container-fluid">
+
+    <div class="row-fluid">
+<ng-include src="tpl/sidebar.jsp"></ng-include>
+
+        <!--/span-->
+        <div class="span9" id="content">
+            <div id="submissionFailed" class="alert alert-error" ng-show="accueilController.showErrors">
+                <button class="close" data-dismiss="alert">&times;</button>
+                <strong>Error!</strong> {{ accueilController.submissionFailureMessage }}
+            </div>
+            <div id="submissionSuccess" class="alert alert-success" ng-show="accueilController.showSuccess">
+                <button class="close" data-dismiss="alert">&times;</button>
+                <strong>Success!</strong> {{ accueilController.submissionSuccessMessage }}
+            </div>
+            <div class="row-fluid">
+                <!-- block -->
+                <div class="block">
+                    <div class="navbar navbar-inner block-header">
+                        <div class="muted pull-left">Résumé des bières</div>
+                    </div>
+                    <div class="block-content collapse in">
+                        <div class="span12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nom</th>
+                                    <th>Début</th>
+                                    <th>Fin</th>
+                                    <th>Type</th>
+                                    <th>Progression</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    <tr ng-repeat="brew in accueilController.brewList">
+                                        <td>{{brew.id}}</td>
+                                        <td><a href="brew.html?id={{brew.id}}">{{brew.description}}</a></td>
+                                        <td>{{brew.debut | "dd/MM/yyyy HH:mm:ss"}} /></td>
+                                        <td>{{brew.fin | "dd/MM/yyyy HH:mm:ss"}} </td>
+                                        <td>{{brew.type}}</td>
+                                        <td>
+                                            <div class="progress progress-striped active">
+                                                <div style="width: {{brew.status.ety_libelle}}%;" class="bar"></div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- /block -->
+            </div>
+        </div>
+
+<ng-include src="tpl/footer.jsp"></ng-include>
+</body>
+</html>

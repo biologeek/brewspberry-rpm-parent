@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 import net.brewspberry.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.business.beans.stock.StockCounter;
-import net.brewspberry.front.ws.beans.StockCounterIngredientRequest;
+import net.brewspberry.front.ws.beans.requests.StockCounterIngredientRequest;
 
 public interface IStockRESTService {
 

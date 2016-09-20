@@ -24,8 +24,8 @@ import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.exceptions.DataTransferException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IProductRESTService;
-import net.brewspberry.front.ws.beans.IngredientDTO;
-import net.brewspberry.front.ws.beans.IngredientJSONRequest;
+import net.brewspberry.front.ws.beans.dto.IngredientDTO;
+import net.brewspberry.front.ws.beans.requests.IngredientJSONRequest;
 import net.brewspberry.util.LogManager;
 
 @Path("/productService")

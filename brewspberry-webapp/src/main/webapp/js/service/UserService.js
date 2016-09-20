@@ -4,7 +4,7 @@
 
 
 
-
+(function () {
 'use strict';
 
 angular.module('brewspberry').factory('UserService', UserService);
@@ -26,7 +26,7 @@ function UserService($http, CONSTANTS) {
         }).then(function (response) {
             callBackSuccess(response);
         }, function (response) {
-            return response;
+            callbackError(response);
         });
         return promise;
     };
@@ -82,3 +82,6 @@ function UserService($http, CONSTANTS) {
 
         return UserService;
 }
+
+
+})();
