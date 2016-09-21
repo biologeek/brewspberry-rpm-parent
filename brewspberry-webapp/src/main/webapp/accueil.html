@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="brewspberry">
 <head>
     <meta charset="UTF-8">
     <title>Accueil</title>
@@ -15,9 +15,10 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="js/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="vendors/angular.min.js"></script>
     <script src="vendors/angular-messages.min.js"></script>
+    <script src="vendors/angular-route/angular-route.min.js"></script>
     <!-- <script src="js/connection/index.js"></script> -->
     <script src="app.js"></script>
     <script src="js/utils/constants.js"></script>
@@ -70,12 +71,12 @@
                                     <tr ng-repeat="brew in accueilController.brewList">
                                         <td>{{brew.id}}</td>
                                         <td><a href="brew.html?id={{brew.id}}">{{brew.description}}</a></td>
-                                        <td>{{brew.debut | "dd/MM/yyyy HH:mm:ss"}} /></td>
-                                        <td>{{brew.fin | "dd/MM/yyyy HH:mm:ss"}} </td>
+                                        <td>{{brew.debut | date : "dd/MM/yyyy HH:mm:ss"}} </td>
+                                        <td>{{brew.fin |  date : "dd/MM/yyyy HH:mm:ss"}} </td>
                                         <td>{{brew.type}}</td>
                                         <td>
                                             <div class="progress progress-striped active">
-                                                <div style="width: {{brew.status.ety_libelle}}%;" class="bar"></div>
+                                                <div style="width: {{brew.statut}}%;" class="bar"></div>
                                             </div>
                                         </td>
                                     </tr>

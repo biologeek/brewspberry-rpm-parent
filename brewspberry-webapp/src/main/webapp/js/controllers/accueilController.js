@@ -9,23 +9,31 @@
 
 
 
-AccueilController.$inject['$scope', 'BrewService'];
+AccueilController.$inject=['$scope', 'BrewService'];
 
 function AccueilController($scope, BrewService) {
 
-    function getCurrentBrews (){
 
-        BrewService.getAll(function(data){
+    var vm = this;
 
-            $scope.brewList = data;
+    vm.showSuccess = false;
+    vm.showErrors = false;
+
+    var init = function (){
+
+        console.log("ini");
+        BrewService.getAll(function(response){
+
+            vm.brewList = response.data;
         }, function (data) {
 
-            $scope.brewList = {};
-            $scope.showErrors = true;
-            $scope.submissionFailureMessage = 'Failed to get brews. Error : '+ data.statusText + '. '+data.data;
+            vm.brewList = {};
+            vm.showErrors = true;
+            vm.submissionFailureMessage = 'Failed to get brews. Error : '+ data.statusText + '. '+data.data;
         }
         );
+    };
 
-    }
+    angular.element(document).ready(init());
 }
 })();

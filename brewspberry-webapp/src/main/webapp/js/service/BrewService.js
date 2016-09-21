@@ -8,27 +8,30 @@
 
 angular.module('brewspberry').factory('BrewService', BrewService);
 
-
-
-    BrewService.$inject = ['$http', 'CONSTANTS'];
+BrewService.$inject = ['$http', 'CONSTANTS'];
 
 function BrewService($http, CONSTANTS) {
 
-    var BrewService = {};
+    var BrewServiceFactory = {};
 
-    BrewService.getAll = function (callBackSuccess, callbackError) {
+    BrewServiceFactory.getAll = function (callBackSuccess, callbackError) {
+
         var promise = $http({
             method: 'GET',
-            url: CONSTANTS.BREW_SERVICE_URL,
+            url : 'js/tests/mock.json'
+            //url: CONSTANTS.BREW_SERVICE_URL,
 
         }).then(function (response) {
+            console.log (response);
+
             callBackSuccess(response);
         }, function (response) {
             callbackError(response);
         });
+
         return promise;
     };
-    BrewService.getBrew = function (id, callBackSuccess, callbackError) {
+    BrewServiceFactory.getBrew = function (id, callBackSuccess, callbackError) {
         var promise = $http({
             method: 'GET',
 
@@ -40,7 +43,7 @@ function BrewService($http, CONSTANTS) {
         });
         return promise;
     };
-    BrewService.updateBrew = function (id, obj, callBackSuccess, callbackError) {
+    BrewServiceFactory.updateBrew = function (id, obj, callBackSuccess, callbackError) {
         var promise = $http({
             method: 'PUT',
 
@@ -53,7 +56,7 @@ function BrewService($http, CONSTANTS) {
         });
         return promise;
     };
-    BrewService.createBrew = function (obj, callBackSuccess, callbackError) {
+    BrewServiceFactory.createBrew = function (obj, callBackSuccess, callbackError) {
         var promise = $http({
             method: 'POST',
 
@@ -66,7 +69,7 @@ function BrewService($http, CONSTANTS) {
         });
         return promise;
     };
-    BrewService.deleteBrew = function (id, callBackSuccess, callbackError) {
+    BrewServiceFactory.deleteBrew = function (id, callBackSuccess, callbackError) {
         var promise = $http({
             method: 'DELETE',
             url: CONSTANTS.BREW_SERVICE_URL + '/delete/' + id,
@@ -78,6 +81,6 @@ function BrewService($http, CONSTANTS) {
         return promise;
     };
 
-    return UserService;
+    return BrewServiceFactory;
 }
 })();
