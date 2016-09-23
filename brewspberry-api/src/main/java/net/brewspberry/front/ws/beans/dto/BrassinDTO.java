@@ -1,9 +1,12 @@
 package net.brewspberry.front.ws.beans.dto;
 
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.EtapeType;
-import net.brewspberry.front.ws.beans.SimpleBrewResponse;
-import net.brewspberry.front.ws.beans.UserFullBean;
+import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
+import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
+import net.brewspberry.front.ws.beans.responses.SimpleStepResponse;
+import net.brewspberry.front.ws.beans.responses.UserFullBean;
 
 public class BrassinDTO {
 	
@@ -42,6 +45,21 @@ public class BrassinDTO {
 		
 		
 		return resp;
+	}
+	
+	public ComplexBrewResponse toComplexBrewResponse (Brassin brassin){
+		
+		
+		ComplexBrewResponse resp = (ComplexBrewResponse) this.toSimpleBrewResponse(brassin);
+		
+		for (Etape etp : brassin.getBra_etapes()){
+			
+			SimpleStepResponse stepResponse = new EtapeDTO().toSimpleStepResponse();
+		}
+		
+		return resp;
+		
+		
 	}
 
 }

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="brewspberry">
+
+<head>
+    <title>BrewViewer</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          media="screen">
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"
+          media="screen">
+    <link href="assets/styles.css" rel="stylesheet" media="screen">
+    <link href="vendors/jGrowl/jquery.jgrowl.css" rel="stylesheet"
+          media="screen">
+
+    <script   src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+
+    <script src="vendors/angular.min.js"></script>
+    <script src="vendors/angular-messages.min.js"></script>
+    <script src="vendors/angular-route/angular-route.min.js"></script>
+
+
+    <!-- <script src="js/connection/index.js"></script> -->
+    <script src="app.js"></script>
+    <script src="js/utils/constants.js"></script>
+
+    <script src="js/service/BrewService.js"></script>
+    <script src="js/service/UserService.js"></script>
+
+    <script src="js/controllers/BrewController.js"></script>
+    <script src="js/controllers/accueilController.js"></script>
+    <script src="js/controllers/registrationController.js"></script>
+</head>
+
+
+<body>
+
+<ng-view></ng-view>
+
+</body>
+</html>

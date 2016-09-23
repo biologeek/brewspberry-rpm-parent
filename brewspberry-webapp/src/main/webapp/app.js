@@ -14,11 +14,11 @@ var app = angular.module('brewspberry', [
 
 
         $routeProvider
-        .when('accueil', {
+        .when('/accueil', {
             templateUrl : 'accueil.html',
             controller : 'AccueilController'
         })
-        .when('brew/:brewID', {
+        .when('/brew/:brewID', {
             templateUrl : 'brew.html',
             controller : 'BrewController'
         })

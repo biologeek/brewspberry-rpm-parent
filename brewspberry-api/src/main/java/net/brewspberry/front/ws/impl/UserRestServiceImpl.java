@@ -24,9 +24,9 @@ import net.brewspberry.business.beans.User;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IRESTUserService;
-import net.brewspberry.front.ws.beans.UserFullBean;
-import net.brewspberry.front.ws.beans.UserRegisterBean;
 import net.brewspberry.front.ws.beans.dto.UserDTO;
+import net.brewspberry.front.ws.beans.responses.UserFullBean;
+import net.brewspberry.front.ws.beans.responses.UserRegisterBean;
 import net.brewspberry.util.LogManager;
 
 @Path("/userService")

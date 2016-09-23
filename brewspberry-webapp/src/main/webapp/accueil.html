@@ -1,33 +1,4 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="brewspberry">
-<head>
-    <meta charset="UTF-8">
-    <title>Accueil</title>
-    <!-- Bootstrap -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"
-          media="screen">
-    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet"
-          media="screen">
-    <link href="assets/styles.css" rel="stylesheet" media="screen">
-    <link href="vendors/jGrowl/jquery.jgrowl.css" rel="stylesheet"
-          media="screen">
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <script src="js/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    <script src="vendors/angular.min.js"></script>
-    <script src="vendors/angular-messages.min.js"></script>
-    <script src="vendors/angular-route/angular-route.min.js"></script>
-    <!-- <script src="js/connection/index.js"></script> -->
-    <script src="app.js"></script>
-    <script src="js/utils/constants.js"></script>
-    <script src="js/service/BrewService.js"></script>
-    <script src="js/controllers/accueilController.js"></script>
-
-</head>
-
-<body ng-controller="AccueilController as accueilController">
+<div ng-controller="AccueilController as accueilController">
 <ng-include src="tpl/header.jsp"></ng-include>
 
 
@@ -70,7 +41,7 @@
 
                                     <tr ng-repeat="brew in accueilController.brewList">
                                         <td>{{brew.id}}</td>
-                                        <td><a href="brew.html?id={{brew.id}}">{{brew.description}}</a></td>
+                                        <td><a href="#/brew/{{brew.id}}">{{brew.description}}</a></td>
                                         <td>{{brew.debut | date : "dd/MM/yyyy HH:mm:ss"}} </td>
                                         <td>{{brew.fin |  date : "dd/MM/yyyy HH:mm:ss"}} </td>
                                         <td>{{brew.type}}</td>
@@ -90,5 +61,4 @@
         </div>
 
 <ng-include src="tpl/footer.jsp"></ng-include>
-</body>
-</html>
+</div>

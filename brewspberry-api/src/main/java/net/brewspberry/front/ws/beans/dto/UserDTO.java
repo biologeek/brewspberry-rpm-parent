@@ -1,8 +1,8 @@
 package net.brewspberry.front.ws.beans.dto;
 
 import net.brewspberry.business.beans.User;
-import net.brewspberry.front.ws.beans.UserFullBean;
-import net.brewspberry.front.ws.beans.UserRegisterBean;
+import net.brewspberry.front.ws.beans.responses.UserFullBean;
+import net.brewspberry.front.ws.beans.responses.UserRegisterBean;
 
 public class UserDTO {
 

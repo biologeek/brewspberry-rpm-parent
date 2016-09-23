@@ -1,4 +1,4 @@
-package net.brewspberry.front.ws.beans;
+package net.brewspberry.front.ws.beans.responses;
 
 public class UserRegisterBean {
 	
