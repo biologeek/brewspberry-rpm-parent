@@ -7,7 +7,8 @@
 
 var app = angular.module('brewspberry', [
     'ngMessages',
-    'ngRoute'
+    'ngRoute',
+    'ngMaterial'
 ]);
 
     app.config(function($routeProvider){
