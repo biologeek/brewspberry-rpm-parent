@@ -37,7 +37,7 @@ import net.brewspberry.util.config.AbstractAutowiredServlet;
 import net.brewspberry.util.validators.UserValidator;
 import net.brewspberry.util.validators.UserValidatorErrors;
 
-@WebServlet({ "/user.do", "/", "/register.do" })
+@WebServlet({ "/user.do", "/register.do" })
 @Controller
 @RequestMapping("/user")
 public class UserServlet extends AbstractAutowiredServlet {

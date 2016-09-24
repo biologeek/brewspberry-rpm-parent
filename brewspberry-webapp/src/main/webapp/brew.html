@@ -51,12 +51,11 @@
 									<div class="muted pull-left">Etape</div>
 									<div class="pull-right">
 										<span class="badge badge-info">
-										<button	id="start{{step.id}}"
-												onClick="startStep({{ step.id });">
-												Demarrer</button></span> <span class="badge badge-info"><button
-												id="stop{{step.id}}"
-												onClick="stopStep({{step.id}});" disabled>
-												Arreter</button></span>
+											<button id="start{{step.id}}"
+												onClick="startStep({{ step.id });">Demarrer</button>
+										</span> <span class="badge badge-info"><button
+												id="stop{{step.id}}" onClick="stopStep({{step.id}});"
+												disabled>Arreter</button></span>
 
 									</div>
 								</div>
@@ -81,12 +80,12 @@
 											<tr>
 												<td colspan="4"><span
 													ng-repeat="actioner in step.actioners"> <a href="#"
-														onclick="brewController.changeActionerState(actioner.id, step.id, actioner.$index)"> 
+														onclick="brewController.changeActionerState(actioner.id, step.id, actioner.$index)">
 
-															<img class="actioner.class"
-																	id="IMGACT{{actioner.uuid}}"
-																	style="height: 50px; width: 50px;"
-																	src="{{actioner.picture}}" /></a> 
+															<img class="actioner.class" id="IMGACT{{actioner.uuid}}"
+															style="height: 50px; width: 50px;"
+															src="{{actioner.picture}}" />
+													</a>
 
 												</span></td>
 											</tr>
@@ -102,17 +101,16 @@
 								<div class="navbar navbar-inner block-header">
 									<div class="muted pull-left">Etape</div>
 									<div class="pull-right">
-										<span class="badge badge-info">${steps[loop].getEtp_numero()}</span>
+										<span class="badge badge-info">{{step.number}}</span>
 
 									</div>
 								</div>
 								<div class="block-content collapse in" id="CHART${loop}"'>
-									<canvas id="CANVAS${loop}" width="450px" height="300px"'>
-                                <script>
-                                    console.log ('Executing...')
-                                    execute('CANVAS${loop}', '${steps[loop].getEtp_id()}', 'all');
-
-                                </script>
+									<canvas id="CANVAS$index" class="chart chart-line"
+										chart-data="step.chart.data" chart-labels="step.chart.labels" chart-series="step.chart.series"
+										chart-options="step.chart.options"
+										chart-dataset-override="step.chart.datasetOverride" width="450px"
+										height="300px"'>
                                 </canvas>
 
 								</div>
@@ -131,7 +129,7 @@
 						<div class="navbar navbar-inner block-header">
 							<div class="muted pull-left">Ajouter une etape</div>
 							<div class="pull-right">
-								<span class="badge badge-info">${steps.size()}</span>
+								<span class="badge badge-info">{{brewController.currentFullBrew.steps.length}}</span>
 
 							</div>
 						</div>
@@ -156,21 +154,21 @@
 													ng-model="step.beginning"></md-datepicker></td>
 
 											<td>Fin</td>
-											<td id="stepEndAdd"><md-datepicker
-													ng-model="step.end"></md-datepicker></td>
+											<td id="stepEndAdd"><md-datepicker ng-model="step.end"></md-datepicker></td>
 										</tr>
 										<tr>
 											<td>Temperature theorique</td>
-											<td><input type="text" name="step_temperature" ng-model="step.temperature" /></td>
+											<td><input type="text" name="step_temperature"
+												ng-model="step.temperature" /></td>
 
 											<td>Commentaire</td>
-											<td><textarea name="step_comment" ng-model="step.comment" rows="3" cols="15"></textarea></td>
+											<td><textarea name="step_comment"
+													ng-model="step.comment" rows="3" cols="15"></textarea></td>
 										</tr>
 										<tr>
 											<td>Etape n°</td>
-											<td>
-												<input type="text" name="step_number" 
-												value="{{ brewController.currentFullBrew.steps.length }}"/>
+											<td><input type="text" name="step_number"
+												value="{{ brewController.currentFullBrew.steps.length }}" />
 											</td>
 											<td></td>
 											<td></td>
@@ -197,7 +195,7 @@
 							<div class="muted pull-left">Profil complet de temperature</div>
 
 						</div>
-						
+
 
 					</div>
 				</div>

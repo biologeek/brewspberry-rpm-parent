@@ -23,7 +23,7 @@ import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 //@WebFilter("/*")
-public class AuthentificationFilter implements Filter {
+public class AuthentificationFilter  {
 
 	@Autowired
 	private HttpSession currentSession;

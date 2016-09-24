@@ -198,6 +198,15 @@
 			
 			
 		}
+		
+		
+		
+		
+		vm.feedCharts = function(){
+			
+			// TODO : feed step.chart var to display temperatures
+			
+		}
 
 	}
 
