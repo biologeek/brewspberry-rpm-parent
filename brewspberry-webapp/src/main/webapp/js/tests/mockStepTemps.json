@@ -1,0 +1,120 @@
+[
+	{
+		id : 1,
+		value : 20.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 21.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 20.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 22.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 20.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 18.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 19.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 20.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 21.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 24.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 22.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 20.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	} ,{
+		id : 1,
+		value : 20.0,
+		date : 123456789123456, //date in milliseconds
+		uuid : '123456azerty456987',
+		name : 'PROBE1',
+		actionner : 3,
+		step : 1,
+		brew : 1
+	}
+]

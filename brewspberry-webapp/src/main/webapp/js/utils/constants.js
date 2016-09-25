@@ -13,5 +13,6 @@ app.constant('CONSTANTS', {
     'BACK_OFFICE_URL' : base_url,
     'USER_SERVICE_URL' : base_url+'brewspberry-api/userService',
     'PRODUCT_SERVICE_URL' : base_url+'brewspberry-api/productService',
-    'BREW_SERVICE_URL' : base_url+'brewspberry-api/brewService'
+    'BREW_SERVICE_URL' : base_url+'brewspberry-api/brewService',
+    'TEMP_SERVICE_URL' : base_url+'brewspberry-api/temperatureService'
 });

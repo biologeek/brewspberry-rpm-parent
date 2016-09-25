@@ -12,8 +12,8 @@
 
 	function BrewController($scope, BrewService, $routeParams) {
 
-		vm.currentFullBrew = {};
 		var vm = this;
+		vm.currentFullBrew = {};
 
 		vm.showErrors = false;
 		vm.showSuccess = false;
@@ -22,9 +22,9 @@
 		/**
 		 * On page loaded, retrieves steps list and feeds view
 		 */
-		vm.$on('$viewContentLoaded', function() {
+		$scope.$on('$viewContentLoaded', function() {
 
-			BrewService.getFullBrew(brewID, function(response) {
+			BrewService.getBrew(brewID, function(response) {
 				/**
 				 * In case of success
 				 */
@@ -202,10 +202,102 @@
 		
 		
 		
-		vm.feedCharts = function(){
+		vm.initCharts = function(){
 			
-			// TODO : feed step.chart var to display temperatures
+			/*
+			 * TODO : feed step.chart var to display temperatures
+			 * 1. Get temperatures from service for active step
+			 * 2. Add it to step object
+			 * 
+			 * 
+			 */
 			
+			if (typeof(vm.currentFullBrew) != 'undefined'){
+				
+				var steps = vm.currentFullBrew.steps;
+				
+				var counter = 0;
+				for(step in steps){
+					// For each step, if step is active, initiates
+					if (step.isActive){
+						TemperatureService.initTemperaturesForStep(step.id, function(response){
+							
+							/*
+							 * Receiving object : 
+							 * [
+							 * 		{
+							 * 			id : 1,
+							 * 			value : 20.0,
+							 * 			date : 123456789123456, //date in milliseconds
+							 * 			uuid : '123456azerty456987',
+							 * 			name : 'PROBE1',
+							 * 			actionner : 3,
+							 * 			step : 4,
+							 * 			brew : 1
+							 * 		} , ...
+							 * ]
+							 * 
+							 */
+							
+							vm.currentFullBrew.steps[counter].chart = getSeriesFromServiceList(response.data);
+							vm.currentFullBrew.steps[counter].chart.options = {
+									scales : {
+										yAxes : [
+										         {
+										        	 id : 'yAxis', 
+										        	 type: 'linear',
+										             display: true,
+										             position: 'left'
+										         }
+										         ]
+									},
+									legend : {
+										display : true,
+										labels : {
+											fontSize : 10
+										}
+									}
+							}
+							
+							}, function(response){
+								
+								
+								
+							});
+					}
+					
+					counter++;
+					
+				}
+				
+				
+			}
+			
+		}
+		
+		
+		
+		/**
+		 * Returns distinct list of probes to feed chart series
+		 */
+		vm.getSeriesFromServiceList = function(serviceObject){
+			
+			result={series : [], data : [], labels : []};
+			for (obj in serviceObject){
+				
+				var serie = result.series.indexOf(obj.uuid)
+				if (serie == -1){
+					
+					result.series.push(obj.name);
+					serie = result.series.indexOf(obj.uuid) 
+				}
+				
+				result.data[serie].push(obj.value);
+				result.data[serie].push(new Date(obj.date));
+				
+			}		
+			
+			return result;
 		}
 
 	}
