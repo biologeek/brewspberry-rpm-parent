@@ -8,28 +8,47 @@
 
 	angular.module('brewspberry').controller('BrewController', BrewController);
 
-	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams' ];
+	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService'];
 
-	function BrewController($scope, BrewService, $routeParams) {
+	function BrewController($scope, BrewService, $routeParams, TemperatureService) {
 
 		var vm = this;
 		vm.currentFullBrew = {};
 
 		vm.showErrors = false;
 		vm.showSuccess = false;
-		var brewID = $routeParams.brewID;
+		vm.brewID = $routeParams.brewID;
+
+		vm.chartOptions = {
+			scales : {
+				yAxes : [
+					{
+						id : 'yAxis',
+						type: 'linear',
+						display: true,
+						position: 'left'
+					}
+				]
+			},
+			legend : {
+				display : true,
+				labels : {
+					fontSize : 10
+				}
+			}
+		}
 
 		/**
 		 * On page loaded, retrieves steps list and feeds view
 		 */
-		$scope.$on('$viewContentLoaded', function() {
+		var init = function() {
 
-			BrewService.getBrew(brewID, function(response) {
+			BrewService.getBrew(vm.brewID, function(response) {
 				/**
 				 * In case of success
 				 */
 				vm.currentFullBrew = response.data;
-
+				vm.initCharts();
 			}, function(response) {
 				/**
 				 * In case of error
@@ -42,14 +61,15 @@
 
 			})
 
-		});
 
-		
+		}
+
+
 		/**
-		 * 
-		 * 
-		 * 
-		 * 
+		 *
+		 *
+		 *
+		 *
 		 */
 		vm.changeActionnerState = function(actionerID, stepID, index) {
 
@@ -65,29 +85,29 @@
 									vm.currentFullBrew.steps[stepID].class = 'buttonOff';
 
 									/*
-									 * 
+									 *
 									 * switch (actionnerType) {
-									 * 
+									 *
 									 * case '1':
-									 * 
+									 *
 									 * $document('#' + buttonID).attr('src',
 									 * 'images/thermo-off.jpg').attr('class',
 									 * 'buttonOff');
-									 * 
+									 *
 									 * break; case '2':
-									 * 
+									 *
 									 * $document('#' + buttonID).attr('src',
 									 * 'images/pump-off.jpg').attr('class',
 									 * 'buttonOff');
-									 * 
+									 *
 									 * break; case '3':
-									 * 
+									 *
 									 * $document('#' + buttonID).attr('src',
 									 * 'images/engine-off.jpg').attr('class',
 									 * 'buttonOff');
-									 * 
+									 *
 									 * break; }
-									 * 
+									 *
 									 */
 								},
 								function(response) {
@@ -118,25 +138,25 @@
 
 									/*
 									 * switch (actionnerType) {
-									 * 
+									 *
 									 * case '1':
-									 * 
+									 *
 									 * $document('#' + buttonID).attr('src',
 									 * 'images/thermo-on.jpg').attr('class',
 									 * 'buttonOn');
-									 * 
+									 *
 									 * break; case '2':
-									 * 
+									 *
 									 * $document('#' + buttonID).attr('src',
 									 * 'images/pump-on.jpg').attr('class',
 									 * 'buttonOn');
-									 * 
+									 *
 									 * break; case '3':
-									 * 
+									 *
 									 * $document('#' + buttonID).attr('src',
 									 * 'images/engine-on.jpg').attr('class',
 									 * 'buttonOn');
-									 * 
+									 *
 									 * break; }
 									 */
 								},
@@ -160,70 +180,71 @@
 				vm.submissionFailureMessage = "Operation not permitted";
 			}
 		}
-		
-		
-		
+
+
+
 		/**
-		 * 
-		 * 
+		 *
+		 *
 		 */
 		vm.addAStep = function(addAStepForm){
-			
-			
+
+
 			var addedStep = addAStepForm.step;
-			
+
 			// Service call
 			BrewService.addStepToBrew(vm.currentFullBrew, step, function(response){
-				
+
 				vm.showSuccess = true;
 				vm.showErrors = false;
-				
-				
+
+
 				vm.submissionSuccessMessage = "Step added to brew";
-				
-				
+
+
 				//Adding step to current steps list
 				vm.currentFullBrew.steps.push(response.data);
-				
+
 			}, function(response){
 
 				vm.showSuccess = false;
 				vm.showErrors = true;
-				
-				
+
+
 				vm.submissionSuccessMessage = "Step could not be added : "+response.statusText+", "+response.data;
-				
-				
+
+
 			});
-			
-			
+
+
 		}
-		
-		
-		
-		
+
+
+
+
 		vm.initCharts = function(){
-			
+
 			/*
 			 * TODO : feed step.chart var to display temperatures
 			 * 1. Get temperatures from service for active step
 			 * 2. Add it to step object
-			 * 
-			 * 
 			 */
-			
+
 			if (typeof(vm.currentFullBrew) != 'undefined'){
-				
+
 				var steps = vm.currentFullBrew.steps;
-				
 				var counter = 0;
-				for(step in steps){
+
+				console.log(steps);
+				for(var step in steps){
 					// For each step, if step is active, initiates
-					if (step.isActive){
-						TemperatureService.initTemperaturesForStep(step.id, function(response){
-							
+					console.log(steps[step])
+					if (steps[step].isActive){
+
+						TemperatureService.initTemperaturesForStep(steps[step].id, function(response){
+
 							/*
-							 * Receiving object : 
+							 * Receiving object :
 							 * [
 							 * 		{
 							 * 			id : 1,
@@ -236,32 +257,14 @@
 							 * 			brew : 1
 							 * 		} , ...
 							 * ]
-							 * 
+							 *
 							 */
-							
-							vm.currentFullBrew.steps[counter].chart = getSeriesFromServiceList(response.data);
-							vm.currentFullBrew.steps[counter].chart.options = {
-									scales : {
-										yAxes : [
-										         {
-										        	 id : 'yAxis', 
-										        	 type: 'linear',
-										             display: true,
-										             position: 'left'
-										         }
-										         ]
-									},
-									legend : {
-										display : true,
-										labels : {
-											fontSize : 10
-										}
-									}
-							}
-							
+							vm.currentFullBrew.steps[step].chart = vm.getSeriesFromServiceList(response.data,
+								vm.currentFullBrew.steps[step].beginning);
+
 							}, function(response){
-								
-								
+
+							vm.currentFullBrew.steps[step].chart = {data : [], series : [], labels : []};
 								
 							});
 					}
@@ -280,25 +283,40 @@
 		/**
 		 * Returns distinct list of probes to feed chart series
 		 */
-		vm.getSeriesFromServiceList = function(serviceObject){
-			
-			result={series : [], data : [], labels : []};
-			for (obj in serviceObject){
+		vm.getSeriesFromServiceList = function(serviceObject, beginningOfStepTimestamp){
+			/*
+			 * TODO : be able to display multiple series with different timestamps
+			 * 
+			 */
+			var result={series : [], data : [], labels : []};
+			for (var obj in serviceObject){
 				
-				var serie = result.series.indexOf(obj.uuid)
+				var serie = result.series.indexOf(serviceObject[obj].uuid);
+
+				/*
+				If serie does ot exist, create it and add values to
+				 */
 				if (serie == -1){
 					
-					result.series.push(obj.name);
-					serie = result.series.indexOf(obj.uuid) 
+					result.series.push(serviceObject[obj].uuid);
+					serie = result.series.indexOf(serviceObject[obj].uuid)
+					result.data[serie] = [];
+					result.labels[serie] = [];
 				}
-				
-				result.data[serie].push(obj.value);
-				result.data[serie].push(new Date(obj.date));
+				//console.log ('serie2 : '+serie);
+
+				result.data[serie].push(serviceObject[obj].value);
+				var time = new Date((new Date(serviceObject[obj].date)).getTime() - beginningOfStepTimestamp);
+
+
+				result.labels.push(time.getHours()+':'+time.getMinutes()+':'+time.getSeconds());
 				
 			}		
 			
 			return result;
 		}
+
+		angular.element(document).ready(init());
 
 	}
 

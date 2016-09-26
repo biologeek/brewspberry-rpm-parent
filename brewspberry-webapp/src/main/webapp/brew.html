@@ -14,8 +14,7 @@
 				<div id="submissionFailed" class="alert alert-error"
 					ng-show="brewController.showErrors">
 					<button class="close" data-dismiss="alert">&times;</button>
-					<strong>Error!</strong> {{ brewController.submissionFailureMessage
-					}}
+					<strong>Error!</strong> {{ brewController.submissionFailureMessage }}
 				</div>
 				<div id="submissionSuccess" class="alert alert-success"
 					ng-show="brewController.showSuccess">
@@ -41,87 +40,77 @@
 					</div>
 				</div>
 				<!-- Loop over each step -->
-				<div ng-if="currentFullBrew.steps.length > 0">
-					<div class="row-fluid"
-						ng-repeat="step in brewController.currentFullBrew.steps">
-						<div class="span6">
-							<!-- block -->
-							<div class="block">
-								<div class="navbar navbar-inner block-header">
-									<div class="muted pull-left">Etape</div>
-									<div class="pull-right">
-										<span class="badge badge-info">
-											<button id="start{{step.id}}"
-												onClick="startStep({{ step.id });">Demarrer</button>
-										</span> <span class="badge badge-info"><button
-												id="stop{{step.id}}" onClick="stopStep({{step.id}});"
-												disabled>Arreter</button></span>
-
-									</div>
-								</div>
-								<div class="block-content collapse in">
-									<table class="table table-striped" style="table-layout: fixed;">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>Label</th>
-												<th>Duree</th>
-												<th>Temperature</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>step.number</td>
-												<td>step.name</td>
-												<td>step.duration</td>
-												<td>step.theoreticalTemperature</td>
-											</tr>
-
-											<tr>
-												<td colspan="4"><span
-													ng-repeat="actioner in step.actioners"> <a href="#"
-														onclick="brewController.changeActionerState(actioner.id, step.id, actioner.$index)">
-
-															<img class="actioner.class" id="IMGACT{{actioner.uuid}}"
-															style="height: 50px; width: 50px;"
-															src="{{actioner.picture}}" />
-													</a>
-
-												</span></td>
-											</tr>
-										</tbody>
-									</table>
+				<div class="row-fluid"
+					ng-repeat="step in brewController.currentFullBrew.steps">
+					<div class="span6">
+						<!-- block -->
+						<div class="block">
+							<div class="navbar navbar-inner block-header">
+								<div class="muted pull-left">Etape</div>
+								<div class="pull-right">
+									<button class="btn"><i class="icon-play"></i></button>
+									<button class="btn"><i class="icon-stop"></i></button>
 								</div>
 							</div>
-							<!-- /block -->
+							<div class="block-content collapse in">
+								<table class="table table-striped" style="table-layout: fixed;">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Label</th>
+											<th>Duree</th>
+											<th>Temperature</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>{{step.number}}</td>
+											<td>{{step.name}}</td>
+											<td>{{step.duration}}</td>
+											<td>{{step.theoreticalTemperature}}</td>
+										</tr>
+
+										<tr>
+											<td colspan="4"><span
+												ng-repeat="actioner in step.actioners"> <a href="#"
+													onclick="brewController.changeActionerState(actioner.id, step.id, actioner.$index)">
+
+														<img class="actioner.class" id="IMGACT{{actioner.uuid}}"
+														style="height: 40px; width: 50px;"
+														src="{{actioner.picture}}" />
+												</a>
+
+											</span></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
 						</div>
-						<div class="span6">
-							<!-- block -->
-							<div class="block">
-								<div class="navbar navbar-inner block-header">
-									<div class="muted pull-left">Etape</div>
-									<div class="pull-right">
-										<span class="badge badge-info">{{step.number}}</span>
-
-									</div>
-								</div>
-								<div class="block-content collapse in" id="CHART${loop}"'>
-									<canvas id="CANVAS$index" class="chart chart-line"
-										chart-data="step.chart.data" chart-labels="step.chart.labels" chart-series="step.chart.series"
-										chart-options="step.chart.options"
-										chart-dataset-override="step.chart.datasetOverride" width="450px"
-										height="300px"'>
-                                </canvas>
+						<!-- /block -->
+					</div>
+					<div class="span6">
+						<!-- block -->
+						<div class="block">
+							<div class="navbar navbar-inner block-header">
+								<div class="muted pull-left">Etape</div>
+								<div class="pull-right">
+									<span class="badge badge-info">{{step.number}}</span>
 
 								</div>
+							</div>
+							<div class="block-content collapse in" id="CHART${loop}">
+								<canvas id="CANVAS$index" class="chart chart-line"
+									chart-data="step.chart.data" chart-labels="step.chart.labels" chart-series="step.chart.series"
+									chart-options="step.chart.options"
+									chart-dataset-override="step.chart.datasetOverride" width="450px"
+									height="300px">
+							</canvas>
+
 							</div>
 						</div>
 					</div>
 				</div>
-				</c:if>
 
-				</c:forEach>
-				</c:if>
 				<div class="row-fluid">
 
 					<!-- block -->
@@ -142,7 +131,7 @@
 										<tr>
 											<td>Label</td>
 											<td><input type="text" name="step_label"
-												ng-model="step.label" /><</td>
+												ng-model="step.label" /></td>
 
 											<td>Duree theorique</td>
 											<td><input type="text" name="step_duration"
@@ -211,79 +200,69 @@
 
 								<tr>
 									<td style="width: 20%;">Nom :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_name()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.name}}</td>
 									<td style="width: 20%;">Style :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_style()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.style}}</td>
 								</tr>
 								<tr>
 									<td style="width: 20%;">Taux d'alcool :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_alcohol()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.alcoholRate}}</td>
 									<td style="width: 20%;">Densite :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_density()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.density}}</td>
 								</tr>
 								<tr>
 									<td style="width: 20%;">Couleur (EBC) :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_color_ebc()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.colorEBC}}</td>
 									<td style="width: 20%;">Aromes :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_aroma()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.aroma}}</td>
 								</tr>
 								<tr>
 									<td style="width: 20%;">Note / 10 :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_notation()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.rating}}</td>
 									<td style="width: 20%;">Bulles :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_bubbles()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.bubbles}}</td>
 								</tr>
 								<tr>
 									<td style="width: 20%;">Commentaire :</td>
-									<td style="width: 80%;" colspan="3">${brassin.getBra_beer().getBeer_comment()}</td>
+									<td style="width: 80%;" colspan="3">{{ brewController.currentFullBrew.beer.comment}}</td>
 								</tr>
 
 								<tr>
 									<td style="width: 20%;">Embouteillees :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_init_bottles()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.bottledTotal}}</td>
 									<td style="width: 20%;">Restantes :</td>
-									<td style="width: 30%;">${brassin.getBra_beer().getBeer_remaining_bottles()}</td>
+									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.remainingBtl}}</td>
 								</tr>
 
 								<tr>
 									<td style="width: 20%;">Progression :</td>
 									<td style="width: 30%;"><c:choose>
-											<c:when
-												test="${brassin.getBra_beer().getBeer_conso_progress() < 33}">
 
-												<div
+
+												<div ng-if="brewController.currentFullBrew.beer.percentageDrunk < 33"
 													class="progress progress-striped progress-success active">
 													<div
-														style="width: ${brassin.getBra_beer() .getBeer_conso_progress()"
+														style="width: {{ brewController.currentFullBrew.beer.percentageDrunk}}"
 														class="bar"></div>
 												</div>
 
-											</c:when>
-											<c:when
-												test="${brassin.getBra_beer().getBeer_conso_progress() >= 33 && brassin.getBra_beer().getBeer_conso_progress() < 66}">
-												<div
-													class="progress progress-striped progress-warning active">
+										<div ng-if="brewController.currentFullBrew.beer.percentageDrunk >= 33 && brewController.currentFullBrew.beer.percentageDrunk < 66"
+											 class="progress progress-striped progress-warning active">
 													<div
-														style="width: ${brassin.getBra_beer() .getBeer_conso_progress()"
+														style="width: {{ brewController.currentFullBrew.beer.percentageDrunk}}"
 														class="bar"></div>
 												</div>
-											</c:when>
-											<c:when
-												test="${brassin.getBra_beer().getBeer_conso_progress() >= 66}">
-												<div
-													class="progress progress-striped progress-danger active">
+										<div ng-if="brewController.currentFullBrew.beer.percentageDrunk > 66"
+											 class="progress progress-striped progress-danger active">
 													<div
-														style="width: ${brassin.getBra_beer() .getBeer_conso_progress()"
+															style="width: {{ brewController.currentFullBrew.beer.percentageDrunk}}"
 														class="bar"></div>
 												</div>
-											</c:when>
-
-
-										</c:choose></td>
+									</td>
 									<td style="width: 20%;">Premiere goulee :</td>
-									<td style="width: 30%;"><fmt:formatDate
-											value="${brassin.getBra_beer().getBeer_first_drink_date()}"
-											pattern="dd/MM/yyyy a HH:mm:ss" /></td>
+									<td style="width: 30%;">
+										{{brewController.currentFullBrew.beer.firstDrinkDate | date: 'dd/mm/yyyy'}}
+									</td>
 								</tr>
 
 							</table>

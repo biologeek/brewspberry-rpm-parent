@@ -10,21 +10,29 @@
 	TemperatureService.$inject = ['$http', 'CONSTANTS'];
 	
 	function TemperatureService($http, CONSTANTS){
-		
-		
-		
+
 		
 		var vm = this;
-		
-		
-		
-		vm.initTemperatureForStep = function(stepID){
+
+		TemperatureService.initTemperaturesForStep = function(stepID, callBackSuccess, callbackError){
+
+			var promise = $http({
+				method: 'GET',
+				url : 'js/tests/mockStepTemps.json'
+				//url: CONSTANTS.TEMP_SERVICE_URL,
+
+			}).then(function (response) {
+				console.log (response);
+
+				callBackSuccess(response);
+			}, function (response) {
+				callbackError(response);
+			});
+
+			return promise;
+		};
 			
-			
-			
-		}
-		
+			return TemperatureService;
 	}
-	
-	
+
 })();
