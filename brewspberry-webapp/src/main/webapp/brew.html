@@ -74,10 +74,9 @@
 											<td colspan="4"><span
 												ng-repeat="actioner in step.actioners"> <a href="#"
 													onclick="brewController.changeActionerState(actioner.id, step.id, actioner.$index)">
-
 														<img class="actioner.class" id="IMGACT{{actioner.uuid}}"
 														style="height: 40px; width: 50px;"
-														src="actioner.picture" />
+														src="{{actioner.picture}}" />
 												</a>
 
 											</span></td>
@@ -97,25 +96,32 @@
 									<span class="badge badge-info">{{step.number}}</span>
 
 								</div>
-							</div><div ng-repeat="actioner in step.charts">
-								{{brewController.data}}
-								{{brewController.series}}
-								{{brewController.labels}}
-								a {{brewController.chartOptions}}
-								b{{brewController.datasetOverride}}
-								<canvas class="chart chart-line"
-										chart-data="brewController.data"
-										data-series="brewController.series"
-										data-labels="brewController.labels"
-										chart-dataset-override="brewController.datasetOverride"
-										chart-options="brewController.chartOptions"></canvas>
-</div>
+							</div>
+							<div ng-cloak>
+								<md-content>
+									<md-tabs md-dynamic-height md-border-bottom >
+										<md-tab label="one" ng-repeat="actioner in step.charts">
+											<md-content class="md-padding">
+												<p>{{actioner.uuid}}</p>
+												<canvas class="chart chart-line"
+														chart-data="actioner.data"
+														chart-series="actioner.series"
+														chart-labels="actioner.labels"
+														chart-options="brewController.chartOptions">
+
+												</canvas>
+
+											</md-content>
+										</md-tab>
+									</md-tabs>
+								</md-content></div></div>
 							<div class="block-content collapse in">
 
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 				<div class="row-fluid">
 
 					<!-- block -->

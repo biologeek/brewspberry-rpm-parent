@@ -8,17 +8,17 @@
 
 	angular.module('brewspberry').controller('BrewController', BrewController);
 
-	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval'];
+	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS'];
 
-	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval) {
+	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS) {
 
 		var vm = this;
 		vm.currentFullBrew = {};
 		vm.currentFullBrew.steps = [{}];
-		vm.currentFullBrew.steps[0].charts = [{data : [[20, 30]], series : ["1"], labels : [0,1]}];
-		vm.data = [[20, 32, 10]];
-		vm.labels=[1, 2, 3];
-		vm.series = ['serie 1'];
+
+
+		vm.updateDelay = CONSTANTS.DEFAULT_CHART_RELOAD;
+
 		vm.showErrors = false;
 		vm.showSuccess = false;
 		vm.brewID = $routeParams.brewID;
@@ -42,26 +42,20 @@
 			},
 			animation : false
 		}
-		vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
 
 		/**
 		 * On page loaded, retrieves steps list and feeds view
 		 */
 		var init = function() {
-			console.log("0")
 
 			BrewService.getBrew(vm.brewID, function(response) {
 				/**
 				 * In case of success
 				 */
-				console.log("1")
 
 				vm.currentFullBrew = response.data;
-				vm.currentFullBrew.steps[0].charts = [{data : [[]], series : [], labels : []}];
 
 				vm.initCharts(function(){
-
-					console.log("10")
 
 
 				});
@@ -152,60 +146,24 @@
 
 
 		/**
-		 *
-		 *
+		 * Initiates data for charts
+		 * @param callback
 		 */
-		vm.addAStep = function(addAStepForm){
-
-
-			var addedStep = addAStepForm.step;
-
-			// Service call
-			BrewService.addStepToBrew(vm.currentFullBrew, step, function(response){
-
-				vm.showSuccess = true;
-				vm.showErrors = false;
-
-
-				vm.submissionSuccessMessage = "Step added to brew";
-
-
-				//Adding step to current steps list
-				vm.currentFullBrew.steps.push(response.data);
-
-			}, function(response){
-
-				vm.showSuccess = false;
-				vm.showErrors = true;
-
-
-				vm.submissionSuccessMessage = "Step could not be added : "+response.statusText+", "+response.data;
-
-
-			});
-
-
-		}
-
-
-
-
 		vm.initCharts = function(callback){
-			console.log("2")
 
 
 			if (typeof(vm.currentFullBrew) != 'undefined'){
 
 				var steps = vm.currentFullBrew.steps;
 				var counter = 0;
-				vm.datasetOverride = [{ yAxisID: 'y-axis-1' }, { yAxisID: 'y-axis-2' }];
+
+
 				for(var step in steps){
 					// For each step, if step is active, initiates
 					if (steps[step].isActive){
 						//vm.currentFullBrew.steps[step].charts = [{data : [[]], series : [], labels : []}];
 
 						TemperatureService.initTemperaturesForStep(steps[step].id, function(response){
-							console.log("IIIIIIIIIIIIIIIIINIT")
 
 							/*
 							 * Receiving object :
@@ -219,22 +177,13 @@
 							 * 			actionner : 3,
 							 * 			step : 4,
 							 * 			brew : 1,
-							 * 			chart : [
-							 * 				{
-							 *					data : [data...],
-							  					labels : [labels...],
-							  					series : [series...]
-							  				},
-							  				...
-							  			]
 							 * 		} , ...
 							 * ]
 							 *
 							 */
-							console.log("loop")
-							vm.currentFullBrew.steps[step].charts = response.data;
 
-							console.log("blou")
+
+							processRawDataAndFeedActionners(response.data, step);
 							}, function(response){
 
 								vm.currentFullBrew.steps[step].charts = [{data : [[]], series : [], labels : []}];
@@ -246,7 +195,6 @@
 					
 				}
 
-				console.log("3")
 
 				callback();
 				
@@ -254,17 +202,178 @@
 			
 		}
 
+
+		/**
+		 * Updates charts data
+		 */
+		vm.updateCharts = function(){
+
+			for(var step in vm.currentFullBrew.steps){
+
+				if (vm.currentFullBrew.steps[step].isActive){
+
+					TemperatureService.updateTemperaturesForStep(vm.currentFullBrew.steps[step].id, function (response) {
+
+
+
+					},function (response) {
+
+
+
+					});
+
+				}
+
+			}
+
+		}
+
+
+		/**
+		 * From raw webservice data, appends temperture measurements to brew object
+		 * and cuts excedent data
+		 * @param rawData data from WS
+		 * @param stepCounter step number in array
+		 */
+		var processRawDataAndFeedActionners = function (rawData, stepCounter) {
+
+
+			if (rawData.length > 0){
+				/* for each temperature received */
+				for(var e in rawData){
+
+					/* find corresponding actionner */
+					var i = 0;
+					for (var act in vm.currentFullBrew.steps[stepCounter].actioners) {
+
+						if (act.id == rawData[e].actionner || act.uuid == rawData[e].uuid) {
+
+							/*add temperature to actionner chart*/
+							act.chart.data[0].push(rawData[e].value);
+							act.chart.labels.push(formatDateForChartDisplay(rawData[e].date, stepCounter));
+						}
+						limitDataSizeOnChart(stepCounter, i);
+						i++;
+					}
+				}
+
+
+
+			}
+
+
+		}
+
+		/**
+		 * If dataset is too large, removes first points to maximum dataset size
+		 * @param step step counter
+		 * @param actionner actionner counter
+		 */
+		var limitDataSizeOnChart = function (step, actionner) {
+
+
+			if (typeof vm.currentFullBrew.steps[step].actioners[actionner].chart != "undefined") {
+				while (vm.currentFullBrew.steps[step].actioners[actionner].chart.data.length > CONSTANTS.CHART_MAX_DATA_SIZE) {
+
+					vm.currentFullBrew.steps[step].actioners[actionner].chart.data.shift();
+					vm.currentFullBrew.steps[step].actioners[actionner].chart.labels.shift();
+
+				}
+			}
+
+		}
+
+
+
+		/**
+		 * Gets time difference between date and step beginning
+		 * @param date
+		 * @param stepCount
+		 * @returns {Date}
+		 */
+		var formatDateForChartDisplay = function(date, stepCount){
+
+
+			var beginning = vm.currentFullBrew.steps[stepCount].beginning;
+
+			var result = new Date(date - beginning);
+
+			var stringResult = '';
+
+			if (result.getHours() > 0){
+				stringResult = result.getHours()+':';
+			}
+
+			stringResult += result.getMinutes()+':'+result.getSeconds();
+
+			return stringResult;
+
+		}
+
 /*
 		$interval(function(){
-			vm.currentFullBrew.steps[1].charts[0].data.push(Math.random()*50);
 
-			var time = new Date((new Date()).getTime() - vm.currentFullBrew.steps[1].beginning);
 
-			vm.currentFullBrew.steps[1].charts[0].labels.push(time.getHours()+':'+time.getMinutes()+':'+time.getSeconds());
-		}, 5000);
+			vm.currentFullBrew.steps[0].charts[0].data[0].push(Math.random()*50);
+			vm.currentFullBrew.steps[0].charts[0].data[0].shift();
+			console.log(vm.currentFullBrew.steps[0].charts[0].data)
+			var time = new Date((new Date()).getTime() - vm.currentFullBrew.steps[0].beginning);
+
+			vm.currentFullBrew.steps[0].charts[0].labels.push(time.getHours()+':'+time.getMinutes()+':'+time.getSeconds());
+			vm.currentFullBrew.steps[0].charts[0].labels.shift();
+
+		}, 1000);
 */
-		//init();
+		init();
+
+		$interval(function () {
+
+			vm.updateCharts();
+
+		}, vm.updateDelay);
 
 	}
+
+
+/******************************************************************************************/
+/****************************   ADDING A STEP BLOCK   *************************************/
+/******************************************************************************************/
+
+	/**
+	 *
+	 *
+	 */
+	vm.addAStep = function(addAStepForm){
+
+
+		var addedStep = addAStepForm.step;
+
+		// Service call
+		BrewService.addStepToBrew(vm.currentFullBrew, addedStep, function(response){
+
+			vm.showSuccess = true;
+			vm.showErrors = false;
+
+
+			vm.submissionSuccessMessage = "Step added to brew";
+
+
+			//Adding step to current steps list
+			vm.currentFullBrew.steps.push(response.data);
+
+		}, function(response){
+
+			vm.showSuccess = false;
+			vm.showErrors = true;
+
+
+			vm.submissionSuccessMessage = "Step could not be added : "+response.statusText+", "+response.data;
+
+
+		});
+
+
+	}
+
 
 })();

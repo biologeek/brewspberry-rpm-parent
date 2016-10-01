@@ -18,6 +18,13 @@
 					"uuid" : "123456azerty456987",
 					"type" : 1,
 					"picture" : "images/engine-off.png"
+				},
+				{
+					"id" : 2,
+					"name" : "PROBE2",
+					"uuid" : "123456azerty456",
+					"type" : 1,
+					"picture" : "images/engine-off.png"
 				}
 			]
 

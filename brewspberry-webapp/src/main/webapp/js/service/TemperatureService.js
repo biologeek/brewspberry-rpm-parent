@@ -19,7 +19,24 @@
 			var promise = $http({
 				method: 'GET',
 				url : 'js/tests/mockStepTemps.json'
-				//url: CONSTANTS.TEMP_SERVICE_URL,
+				//url: CONSTANTS.TEMP_SERVICE_URL+'/init/step/'+stepID,
+
+			}).then(function (response) {
+
+				callBackSuccess(response);
+			}, function (response) {
+				callbackError(response);
+			});
+
+			return promise;
+		};
+
+		TemperatureService.updateTemperaturesForStep = function (stepID, callBackSuccess, callbackError){
+
+			var promise = $http({
+				method: 'GET',
+				url : 'js/tests/mockStepTemps.json'
+				//url: CONSTANTS.TEMP_SERVICE_URL+'/update/step/'+stepID,
 
 			}).then(function (response) {
 

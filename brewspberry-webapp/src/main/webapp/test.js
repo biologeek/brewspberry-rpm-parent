@@ -4,19 +4,17 @@
 
 
 
-angular.module('test', ['ngRoute']).config(
+angular.module('test', ['chart.js'])
+    .controller('ChartController', function ($scope) {
 
-    function($routeProvider){
 
 
-        $routeProvider
-            .when('/accueil', {
-                templateUrl : 'test/page1.html'
-            })
-            .when('/page2', {
-                templateUrl : 'test/page2.html'
-            })
-            .otherwise( {redirectTo : '/accueil'});
-    }
 
-);
+        $scope.data = [[1,2,3], [3, 2, 1]];
+        $scope.series = ['Serie', 'ires'];
+        $scope.labels = ['a', 'b', 'c'];
+
+        console.log(typeof $scope.labels)
+
+
+    });
