@@ -22,8 +22,6 @@ function BrewService($http, CONSTANTS) {
             //url: CONSTANTS.BREW_SERVICE_URL,
 
         }).then(function (response) {
-            console.log (response);
-
             callBackSuccess(response);
         }, function (response) {
             callbackError(response);

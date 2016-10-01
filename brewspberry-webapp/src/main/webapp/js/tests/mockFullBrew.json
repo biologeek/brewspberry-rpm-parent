@@ -21,26 +21,6 @@
 				}
 			]
 
-		},
-
-		{
-			"id" : 2,
-			"name" : "teststep2",
-			"number" : 2,
-			"duration" : 13,
-			"beginning" : 1234569890,
-			"theoreticalTemperature" : 72,
-			"isActive" : true,
-			"actioners" : [
-				{
-					"id" : 1,
-					"name" : "PROBE1",
-					"uuid" : "123456azerty456987",
-					"type" : 1,
-					"picture" : "images/engine-off.png"
-				}
-			]
-
 		}
 	]
 }

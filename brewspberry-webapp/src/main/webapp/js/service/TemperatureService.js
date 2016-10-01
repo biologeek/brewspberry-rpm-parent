@@ -22,7 +22,6 @@
 				//url: CONSTANTS.TEMP_SERVICE_URL,
 
 			}).then(function (response) {
-				console.log (response);
 
 				callBackSuccess(response);
 			}, function (response) {
