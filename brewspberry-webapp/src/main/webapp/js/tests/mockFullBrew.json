@@ -10,7 +10,7 @@
 			"duration" : 3600,
 			"beginning" : 1234567890,
 			"theoreticalTemperature" : 64,
-			"isActive" : true,
+			"isActive" : false,
 			"actioners" : [
 				{
 					"id" : 1,
@@ -23,6 +23,24 @@
 					"id" : 2,
 					"name" : "PROBE2",
 					"uuid" : "123456azerty456",
+					"type" : 1,
+					"picture" : "images/engine-off.png"
+				}
+			]
+
+		},{
+			"id" : 2,
+			"name" : "teststep2",
+			"number" : 2,
+			"duration" : 300,
+			"beginning" : 1234567890,
+			"theoreticalTemperature" : 74,
+			"isActive" : true,
+			"actioners" : [
+				{
+					"id" : 3,
+					"name" : "PROBE1",
+					"uuid" : "123456azerty45",
 					"type" : 1,
 					"picture" : "images/engine-off.png"
 				}

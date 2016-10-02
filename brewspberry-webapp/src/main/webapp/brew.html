@@ -32,10 +32,12 @@
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left" style="font-size: 10px;">
-							Display range (minutes) : <input type="text" id="delay"
-								name="delay" value="{{brewController.defaultDelayValue}}" />
+							Reload avery (ms) : <input type="text" id="delay"
+								name="delay" ng-model="brewController.updateDelay" />
 							Points displayed : <input type="text" id="maxPts" name="maxPts"
-								value="{{brewController.defaultmaxPtsValue}}" />
+													  ng-model="brewController.defaultmaxPtsValue" />
+							Range (minutes : <input type="text" id="range" name="range"
+													  ng-model="brewController.defaultRangeInMinutes" />
 						</div>
 					</div>
 				</div>
@@ -100,19 +102,22 @@
 							<div ng-cloak>
 								<md-content>
 									<md-tabs md-dynamic-height md-border-bottom >
-										<md-tab label="one" ng-repeat="actioner in step.charts">
+										<div ng-repeat="actioner in step.actioners">
+
+										<md-tab ng-if="actioner.type == 1" label="{{actioner.uuid}}">
 											<md-content class="md-padding">
-												<p>{{actioner.uuid}}</p>
+
 												<canvas class="chart chart-line"
-														chart-data="actioner.data"
-														chart-series="actioner.series"
-														chart-labels="actioner.labels"
+														chart-data="actioner.chart.data"
+														chart-series="actioner.chart.series"
+														chart-labels="actioner.chart.labels"
 														chart-options="brewController.chartOptions">
 
 												</canvas>
 
 											</md-content>
 										</md-tab>
+										</div>
 									</md-tabs>
 								</md-content></div></div>
 							<div class="block-content collapse in">
