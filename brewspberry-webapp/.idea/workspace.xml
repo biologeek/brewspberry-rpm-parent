@@ -38,8 +38,8 @@
       <file leaf-file-name="brew.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/brew.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="35" column="81" selection-start-line="35" selection-start-column="81" selection-end-line="35" selection-end-column="81" />
+            <state relative-caret-position="403">
+              <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
               <folding>
                 <element signature="e#432#439#0" expanded="true" />
                 <element signature="e#686#693#0" expanded="true" />
@@ -84,8 +84,8 @@
       <file leaf-file-name="BrewController.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/controllers/BrewController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+            <state relative-caret-position="301">
+              <caret line="158" column="23" selection-start-line="158" selection-start-column="23" selection-end-line="158" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -104,8 +104,8 @@
       <file leaf-file-name="TemperatureService.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/service/TemperatureService.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="33" column="52" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="52" />
+            <state relative-caret-position="196">
+              <caret line="33" column="8" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -114,8 +114,8 @@
       <file leaf-file-name="mockStepTemps.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/tests/mockStepTemps.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+            <state relative-caret-position="459">
+              <caret line="27" column="23" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -124,8 +124,8 @@
       <file leaf-file-name="mockFullBrew.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/js/tests/mockFullBrew.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+            <state relative-caret-position="51">
+              <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -173,10 +173,10 @@
         <option value="$PROJECT_DIR$/src/main/webapp/test.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/service/TemperatureService.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/utils/constants.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/brew.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/tests/mockStepTemps.json" />
-        <option value="$PROJECT_DIR$/src/main/webapp/js/controllers/BrewController.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/brew.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/js/tests/mockFullBrew.json" />
+        <option value="$PROJECT_DIR$/src/main/webapp/js/controllers/BrewController.js" />
       </list>
     </option>
   </component>
@@ -391,6 +391,10 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="nodejs_interpreter_path" value="$USER_HOME$/Apps/node/node" />
     <property name="js-jscs-nodeInterpreter" value="D:\Profiles\xcaron\Apps\node\node.exe" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="JavaScriptPreferStrict" value="false" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="settings.editor.splitter.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -412,7 +416,7 @@
     <configuration default="false" name="accueil.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/brewspberry-webapp/src/main/webapp/accueil.html">
       <method />
     </configuration>
-    <configuration default="false" name="brew.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/brewspberry-webapp/src/main/webapp/brew.html">
+    <configuration default="false" name="brew.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" engineId="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" uri="http://localhost:63342/brewspberry-webapp/src/main/webapp/brew.html">
       <method />
     </configuration>
     <configuration default="false" name="test_js_chart.html" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/brewspberry-webapp/src/main/webapp/test_js_chart.html">
@@ -505,12 +509,12 @@
       <workItem from="1473766255314" duration="62710000" />
       <workItem from="1475007331940" duration="20087000" />
       <workItem from="1475176672805" duration="193000" />
-      <workItem from="1475177044659" duration="26078000" />
+      <workItem from="1475177044659" duration="33083000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="129781000" />
+    <option name="totallyTimeSpent" value="136786000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -960,10 +964,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/service/TemperatureService.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/tests/mockStepTemps.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="33" column="52" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="52" />
+        <state relative-caret-position="459">
+          <caret line="27" column="23" selection-start-line="27" selection-start-column="23" selection-end-line="27" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -976,26 +980,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/tests/mockStepTemps.json">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/js/service/TemperatureService.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        <state relative-caret-position="196">
+          <caret line="33" column="8" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/tests/mockFullBrew.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="37" column="29" selection-start-line="37" selection-start-column="29" selection-end-line="37" selection-end-column="29" />
+        <state relative-caret-position="51">
+          <caret line="3" column="18" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/brew.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="35" column="81" selection-start-line="35" selection-start-column="81" selection-end-line="35" selection-end-column="81" />
+        <state relative-caret-position="403">
+          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
           <folding>
             <element signature="e#432#439#0" expanded="true" />
             <element signature="e#686#693#0" expanded="true" />
@@ -1038,8 +1042,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/js/controllers/BrewController.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+        <state relative-caret-position="301">
+          <caret line="158" column="23" selection-start-line="158" selection-start-column="23" selection-end-line="158" selection-end-column="23" />
           <folding />
         </state>
       </provider>

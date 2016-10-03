@@ -1,6 +1,7 @@
 {
 	"id" : 1,
 	"name" : "Test",
+	"status" : 40,
 	"steps" : [
 
 		{

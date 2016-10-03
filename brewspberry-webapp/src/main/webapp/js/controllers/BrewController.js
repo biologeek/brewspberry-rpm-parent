@@ -88,53 +88,56 @@
 				var counter = 0;
 
 
-				for (var step in steps) {
-					console.log('LOOP '+step);
+				for (let step in steps) {
+					console.log(step+' STEP '+steps.length);
 
 
 					// For each step, if step is active, initiates
-					if (steps[step].isActive) {
+					//if (steps[step].isActive) {
 						//vm.currentFullBrew.steps[step].charts = [{data : [[]], series : [], labels : []}];
-						console.log('STEeeeeP '+step);
+						console.log('STEeP '+step);
+						console.log('STEeeeeP '+steps[step].id);
 
-						TemperatureService.initTemperaturesForStep(steps[step].id, function (response) {
+								TemperatureService.initTemperaturesForStep(steps[step].id, function(response){
 
-							/*
-							 * Receiving object :
-							 * [
-							 * 		{
-							 * 			id : 1,
-							 * 			value : 20.0,
-							 * 			date : 123456789123456, //date in milliseconds
-							 * 			uuid : '123456azerty456987',
-							 * 			name : 'PROBE1',
-							 * 			actionner : 3,
-							 * 			step : 4,
-							 * 			brew : 1,
-							 * 		} , ...
-							 * ]
-							 *
-							 */
+									console.log("TemperatureService.initTemperaturesForStep("+step+", function (response) {")
 
-							console.log('STEP '+step);
-							console.log(response.data);
+									/*
+									 * Receiving object :
+									 * [
+									 * 		{
+									 * 			id : 1,
+									 * 			value : 20.0,
+									 * 			date : 123456789123456, //date in milliseconds
+									 * 			uuid : '123456azerty456987',
+									 * 			name : 'PROBE1',
+									 * 			actionner : 3,
+									 * 			step : 4,
+									 * 			brew : 1,
+									 * 		} , ...
+									 * ]
+									 *
+									 */
 
-							processRawDataAndFeedActionners(response.data, step);
-						}, function (response) {
+									console.log('STuuuP '+step);
 
-							vm.currentFullBrew.steps[step].chart = [{data: [[]], series: [], labels: []}];
+									processRawDataAndFeedActionners(response.data, step);
+								}, function (response) {
+									console.log('STaaaaP '+step);
 
-						});
-					}
+									vm.currentFullBrew.steps[step].chart = [{data: [[]], series: [], labels: []}];
 
-					counter++;
+								});
+							}
+//					}
+
 
 				}
 
 
 				callback();
 
-			}
+
 
 		}
 
@@ -144,17 +147,15 @@
 		 */
 		vm.updateCharts = function () {
 
-			for (var step in vm.currentFullBrew.steps) {
+			for (let step in vm.currentFullBrew.steps) {
 
 				if (vm.currentFullBrew.steps[step].isActive) {
-
-					TemperatureService.updateTemperaturesForStep(vm.currentFullBrew.steps[step].id, function (response) {
+						TemperatureService.updateTemperaturesForStep(vm.currentFullBrew.steps[step].id, function (response) {
 
 						processRawDataAndFeedActionners(response.data, step);
 
 					}, function (response) {
-
-
+							return ;
 					});
 
 				}
@@ -179,31 +180,29 @@
 
 					/* find corresponding actionner */
 					var i = 0;
-
 					for (var act in vm.currentFullBrew.steps[stepCounter].actioners) {
 						if (typeof vm.currentFullBrew.steps[stepCounter].actioners[act].chart == "undefined" && vm.currentFullBrew.steps[stepCounter].actioners[act].type == 1){
 
 							vm.currentFullBrew.steps[stepCounter].actioners[act].chart = {data : [[]], labels : [], series : []};
 
 						}
+
 						if (vm.currentFullBrew.steps[stepCounter].actioners[act].id == rawData[e].actionner || vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == rawData[e].uuid) {
 
 							/*add temperature to actionner chart*/
 							if (vm.currentFullBrew.steps[stepCounter].actioners[act].type == 1) {
 								if (typeof vm.currentFullBrew.steps[stepCounter].actioners[act].chart.data == "undefined") {
+
 									vm.currentFullBrew.steps[stepCounter].actioners[act].chart.data = [[]];
 									vm.currentFullBrew.steps[stepCounter].actioners[act].chart.label = [];
 									vm.currentFullBrew.steps[stepCounter].actioners[act].chart.series = [vm.currentFullBrew.steps[stepCounter].actioners[act].uuid];
 								}
-
 								vm.currentFullBrew.steps[stepCounter].actioners[act].chart.data[0].push(rawData[e].value);
 								vm.currentFullBrew.steps[stepCounter].actioners[act].chart.labels.push(formatDateForChartDisplay(rawData[e].date, stepCounter));
 								vm.currentFullBrew.steps[stepCounter].actioners[act].chart.series = [vm.currentFullBrew.steps[stepCounter].actioners[act].uuid];
 							}
 						}
 						limitDataSizeOnChart(stepCounter, i);
-						console.log(vm.currentFullBrew.steps[stepCounter]);
-						console.log(stepCounter)
 						i++;
 					}
 				}
