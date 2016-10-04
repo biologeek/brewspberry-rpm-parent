@@ -48,5 +48,20 @@
 			]
 
 		}
-	]
+	],
+	"beer" : {
+	
+		"name" : "TestBeer1",
+		"style : "Amber Ale",
+		"bottledTotal" : 50,
+		"remainingBtl" : 25,
+		"firstDrinkDate" : "2016-09-30",
+		"alcoholRate" : 7,
+		"density" : "middle",
+		"colorEBC" : 120,
+		"aroma" : "flower, ...",
+		"rating" : 3.5,
+		"comment" : "Bla blabla bla"
+		
+	} 
 }

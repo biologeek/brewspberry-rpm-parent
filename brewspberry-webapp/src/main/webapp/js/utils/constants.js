@@ -17,5 +17,11 @@ app.constant('CONSTANTS', {
     'TEMP_SERVICE_URL' : base_url+'brewspberry-api/temperatureService',
     'DEFAULT_CHART_RELOAD' : 1000,
     'CHART_MAX_DATA_SIZE' : 30,
-    'DEFAULT_RANGE_MINUTES' : 10
+    'DEFAULT_RANGE_MINUTES' : 10,
+    'ACTIONNER_PICTURES' : {
+    	"1" : {"on" : "images/thermo-on.png", "off" : "images/thermo-off.png"},
+    	"2" : {"on" : "images/engine-on.png", "off" : "images/engine-off.png"},
+    	"3" : {"on" : "images/pump-on.png", "off" : "images/pump-off.png"},
+    	
+    }
 });

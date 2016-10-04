@@ -28,6 +28,11 @@ public class Actioner {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public long act_id;
+	/**
+	 * 1 : thermometer measurement
+	 * 2 : Engine (relay)
+	 * 3 : Pump (relay)
+	 */
 	public String act_type;
 	public String act_nom;
 	public String act_uuid;

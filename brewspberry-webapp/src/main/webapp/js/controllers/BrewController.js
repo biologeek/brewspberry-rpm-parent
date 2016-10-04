@@ -280,7 +280,7 @@
 		 */
 		vm.changeActionnerState = function (actionerID, stepID, index) {
 
-			if (vm.currentFullBrew.steps[stepID].actioners[index].class == 'buttonOn') {
+			if (vm.currentFullBrew.steps[stepID].actioners[index].state == 'ON') {
 				TemperatureService
 					.deactivate(
 						actionerID,
@@ -289,8 +289,10 @@
 							 * In case of success, changing picture
 							 */
 
-							vm.currentFullBrew.steps[stepID].class = 'buttonOff';
-
+							var actionnerType = vm.currentFullBrew.steps[stepID].actioners[actionerID].type;
+							
+							vm.currentFullBrew.steps[stepID].actioners[actionerID].picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
+							vm.currentFullBrew.steps[stepID].actioners[index].state == 'OFF'
 
 						},
 						function (response) {
@@ -308,7 +310,7 @@
 
 						});
 
-			} else if (vm.currentFullBrew.steps[stepID].class == 'buttonOff') {
+			} else if (vm.currentFullBrew.steps[stepID].actioners[index].state == 'OFF') {
 
 				TemperatureService
 					.activate(
@@ -317,8 +319,11 @@
 							/*
 							 * In case of success, changing picture
 							 */
-							vm.currentFullBrew.steps[stepID].actioners[index].class = 'buttonOn';
-
+							var actionnerType = vm.currentFullBrew.steps[stepID].actioners[actionerID].type;
+							
+							vm.currentFullBrew.steps[stepID]
+							.actioners[actionerID].picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
+							vm.currentFullBrew.steps[stepID].actioners[index].state == 'ON'
 						},
 						function (response) {
 
