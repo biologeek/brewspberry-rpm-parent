@@ -78,6 +78,12 @@ function BrewService($http, CONSTANTS) {
         });
         return promise;
     };
+    
+    
+    BrewServiceFactory.addStepToBrew = function(brewID, step, callbackSuccess, callbackError){
+    	
+    	
+    }
 
     return BrewServiceFactory;
 }

@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response;
 import net.brewspberry.front.ws.beans.responses.UserLoginBean;
 import net.brewspberry.front.ws.beans.responses.UserRegisterBean;
 
-public interface IRESTUserService {
+public interface IUserRESTService {
 	
 	
 	public Response doRegister(UserRegisterBean bean);

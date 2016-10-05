@@ -4,7 +4,7 @@ import javax.ws.rs.core.Response;
 
 import net.brewspberry.business.beans.Etape;
 
-public interface IBrewProcessing {
+public interface IBrewProcessingRESTService {
 	
 
 	public Response startStep (long etape) throws Exception;

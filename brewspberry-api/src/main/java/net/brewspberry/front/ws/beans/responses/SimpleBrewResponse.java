@@ -10,12 +10,12 @@ public class SimpleBrewResponse {
 	
 	private long id;
 	private String description;
-	private Date debut;
-	private Date fin;
+	private Date beginning;
+	private Date end;
 	private Date maj;
-	private float quantite;
-	private EtapeType statut;
-	private String type;
+	private float quantity;
+	private EtapeType status;
+	private String type; // ?????
 	
 	
 	
@@ -31,41 +31,41 @@ public class SimpleBrewResponse {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Date getDebut() {
-		return debut;
-	}
-	public void setDebut(Date debut) {
-		this.debut = debut;
-	}
-	public Date getFin() {
-		return fin;
-	}
-	public void setFin(Date fin) {
-		this.fin = fin;
-	}
 	public Date getMaj() {
 		return maj;
 	}
 	public void setMaj(Date maj) {
 		this.maj = maj;
 	}
-	public float getQuantite() {
-		return quantite;
+	public float getQuantity() {
+		return quantity;
 	}
-	public void setQuantite(float quantite) {
-		this.quantite = quantite;
+	public void setQuantity(float quantite) {
+		this.quantity = quantite;
 	}
-	public EtapeType getStatut() {
-		return statut;
+	public EtapeType getStatus() {
+		return status;
 	}
-	public void setStatut(EtapeType statut) {
-		this.statut = statut;
+	public void setStatus(EtapeType status) {
+		this.status = status;
 	}
 	public String getType() {
 		return type;
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public Date getEnd() {
+		return end;
+	}
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+	public Date getBeginning() {
+		return beginning;
+	}
+	public void setBeginning(Date beginning) {
+		this.beginning = beginning;
 	}
 
 }

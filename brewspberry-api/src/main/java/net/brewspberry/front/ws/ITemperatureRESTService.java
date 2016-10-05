@@ -5,7 +5,7 @@ import javax.ws.rs.core.Response;
 
 import org.json.JSONException;
 
-public interface IRESTemperature {
+public interface ITemperatureRESTService {
 	
 	public Response initTemperatureForStep(@PathParam("u") String uuid,
 			@PathParam("e") long stepID, @PathParam("maxPts") int maxPointsNumber, @PathParam("delay") float delayToDisplayInSeconds)

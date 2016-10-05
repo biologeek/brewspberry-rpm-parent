@@ -8,9 +8,9 @@
 
 	angular.module('brewspberry').controller('BrewController', BrewController);
 
-	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS'];
+	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService'];
 
-	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS) {
+	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService) {
 
 		var vm = this;
 		vm.currentFullBrew = {};
@@ -317,7 +317,7 @@
 						actionerID,
 						function (response) {
 							/*
-							 * In case of success, changing picture
+							 * In case of success, changing picture to off picture
 							 */
 							var actionnerType = vm.currentFullBrew.steps[stepID].actioners[actionerID].type;
 							
@@ -361,7 +361,7 @@
 			var addedStep = addAStepForm.step;
 
 			// Service call
-			BrewService.addStepToBrew(vm.currentFullBrew, addedStep, function (response) {
+			StepService.add(vm.currentFullBrew.id, addedStep, function (response) {
 
 				vm.showSuccess = true;
 				vm.showErrors = false;

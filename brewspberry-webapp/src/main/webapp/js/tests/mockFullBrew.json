@@ -2,6 +2,8 @@
 	"id" : 1,
 	"name" : "Test",
 	"status" : 40,
+	"quantity" : 50,
+	"type" : 
 	"steps" : [
 
 		{

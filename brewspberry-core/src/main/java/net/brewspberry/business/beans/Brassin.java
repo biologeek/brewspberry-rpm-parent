@@ -54,12 +54,15 @@ public class Brassin implements Serializable{
 	@OneToOne(mappedBy="beer_brassin")
     private Biere bra_beer;
     
+	/**
+	 * What is it ????
+	 */
     private String bra_type;
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_brassin")
     private List<ConcreteTemperatureMeasurement> bra_temperature_measurement;
     
-    @OneToMany(fetch=FetchType.LAZY, mappedBy="act_brassin")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="act_brassin")
     private List<Actioner> bra_actioner;
     
     

@@ -14,6 +14,7 @@ app.constant('CONSTANTS', {
     'USER_SERVICE_URL' : base_url+'brewspberry-api/userService',
     'PRODUCT_SERVICE_URL' : base_url+'brewspberry-api/productService',
     'BREW_SERVICE_URL' : base_url+'brewspberry-api/brewService',
+    'STEP_SERVICE_URL' : base_url+'brewspberry-api/stepService',
     'TEMP_SERVICE_URL' : base_url+'brewspberry-api/temperatureService',
     'DEFAULT_CHART_RELOAD' : 1000,
     'CHART_MAX_DATA_SIZE' : 30,

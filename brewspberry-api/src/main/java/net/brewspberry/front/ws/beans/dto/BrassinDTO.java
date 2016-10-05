@@ -35,12 +35,12 @@ public class BrassinDTO {
 		SimpleBrewResponse resp = new SimpleBrewResponse();
 		
 		resp.setId(brassin.getBra_id());
-		resp.setDebut(brassin.getBra_debut());
-		resp.setFin(brassin.getBra_fin());
+		resp.setBeginning(brassin.getBra_debut());
+		resp.setEnd(brassin.getBra_fin());
 		resp.setDescription(brassin.getBra_nom());
 		resp.setMaj(brassin.getBra_date_maj());
-		resp.setQuantite(brassin.getBra_quantiteEnLitres().floatValue());
-		resp.setStatut(EtapeType.getValueByID(brassin.getBra_statut()));
+		resp.setQuantity(brassin.getBra_quantiteEnLitres().floatValue());
+		resp.setStatus(EtapeType.getValueByID(brassin.getBra_statut()));
 		resp.setType(brassin.getBra_type());
 		
 		

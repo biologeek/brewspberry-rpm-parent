@@ -22,7 +22,6 @@
 				//url: CONSTANTS.TEMP_SERVICE_URL+'/init/step/'+stepID,
 
 			}).then(function (response) {
-
 				callBackSuccess(response);
 			}, function (response) {
 				callbackError(response);
@@ -39,7 +38,6 @@
 				//url: CONSTANTS.TEMP_SERVICE_URL+'/update/step/'+stepID,
 
 			}).then(function (response) {
-
 				callBackSuccess(response);
 			}, function (response) {
 				callbackError(response);

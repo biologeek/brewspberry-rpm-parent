@@ -20,12 +20,12 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
-import net.brewspberry.front.ws.IBrewProcessing;
+import net.brewspberry.front.ws.IBrewProcessingRESTService;
 import net.brewspberry.front.ws.beans.dto.BrassinDTO;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
 
 @Path("/brewService")
-public class BrewProcessingRestWs implements IBrewProcessing {
+public class BrewProcessingRestService implements IBrewProcessingRESTService {
 
 	@Autowired
 	@Qualifier("etapeServiceImpl")
