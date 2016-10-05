@@ -1,7 +1,5 @@
 package net.brewspberry.front.ws.beans.responses;
 
-import java.util.List;
-
 public class ActionnerResponse {
 	
 	
@@ -11,6 +9,14 @@ public class ActionnerResponse {
 	private int type;
 	private String picture;
 	private ChartResponse chart;
+	private String pin;
+	private boolean isActive;
+	private int status;
+	private boolean used;
+	private long begin;
+	private long end;
+	
+	
 	public long getId() {
 		return id;
 	}
@@ -46,6 +52,42 @@ public class ActionnerResponse {
 	}
 	public void setChart(ChartResponse chart) {
 		this.chart = chart;
-	} 
+	}
+	public String getPin() {
+		return pin;
+	}
+	public void setPin(String pin) {
+		this.pin = pin;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	public boolean isUsed() {
+		return used;
+	}
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+	public long getBegin() {
+		return begin;
+	}
+	public void setBegin(long begin) {
+		this.begin = begin;
+	}
+	public long getEnd() {
+		return end;
+	}
+	public void setEnd(long end) {
+		this.end = end;
+	}
 
 }

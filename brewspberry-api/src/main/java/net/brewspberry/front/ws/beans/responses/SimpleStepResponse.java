@@ -12,6 +12,8 @@ public class SimpleStepResponse {
 	private long end;
 	private long theoreticalTemperature;
 	private boolean isActive;
+	
+	
 	public long getId() {
 		return id;
 	}

@@ -114,7 +114,7 @@ public class Etape implements Serializable {
 		return etp_actioner;
 	}
 
-	public void setEtp_actioner(List<Actioner> etp_actioner) {
+	public void setEtp_actioners(List<Actioner> etp_actioner) {
 		this.etp_actioner = etp_actioner;
 	}
 

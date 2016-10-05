@@ -27,29 +27,30 @@ public class Actioner {
 	 **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public long act_id;
+	private long act_id;
 	/**
 	 * 1 : thermometer measurement
 	 * 2 : Engine (relay)
 	 * 3 : Pump (relay)
 	 */
-	public String act_type;
-	public String act_nom;
-	public String act_uuid;
-	public int act_status;
-	public Date act_date_debut;
-	public Date act_date_fin;
-	public String act_raspi_pin;
-	public boolean act_activated;
-	public boolean act_used;
+	private String act_type;
+	private String act_nom;
+	private String act_uuid;
+	private int act_status;
+	private Date act_date_debut;
+	private Date act_date_fin;
+	private String act_raspi_pin;
+	private boolean act_activated;
+	private boolean act_used;
+	private String act_picture;
 
 	@ManyToOne
 	@JoinColumn(name = "act_bra_id")
-	public Brassin act_brassin;
+	private Brassin act_brassin;
 
 	@ManyToOne
 	@JoinColumn(name = "act_etp_id")
-	public Etape act_etape;
+	private Etape act_etape;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_actioner")
 	List<ConcreteTemperatureMeasurement> act_temperature_measurements;
@@ -268,6 +269,14 @@ public class Actioner {
 		} else if (!act_uuid.equals(other.act_uuid))
 			return false;
 		return true;
+	}
+
+	public String getAct_picture() {
+		return act_picture;
+	}
+
+	public void setAct_picture(String act_picture) {
+		this.act_picture = act_picture;
 	}
 
 	

@@ -2,7 +2,9 @@ package net.brewspberry.front.ws.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -13,19 +15,28 @@ import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.RestController;
 
+import net.brewspberry.business.BrewValidator;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
+import net.brewspberry.business.validation.BusinessErrors;
+import net.brewspberry.business.validation.Validator;
+import net.brewspberry.dao.BrassinDaoImpl;
 import net.brewspberry.front.ws.IBrewProcessingRESTService;
+import net.brewspberry.front.ws.IBrewRESTService;
 import net.brewspberry.front.ws.beans.dto.BrassinDTO;
+import net.brewspberry.front.ws.beans.requests.BrewRequest;
+import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
 
 @Path("/brewService")
-public class BrewProcessingRestService implements IBrewProcessingRESTService {
+@RestController
+public class BrewProcessingRestService implements IBrewProcessingRESTService, IBrewRESTService {
 
 	@Autowired
 	@Qualifier("etapeServiceImpl")
@@ -35,6 +46,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService {
 	private IGenericService<Brassin> brassinGenService;
 	@Autowired
 	private ISpecificEtapeService specStepService;
+	private IGenericService<Brassin> genBrewService;
 
 	// TODO : test of methods
 	@Override
@@ -81,7 +93,8 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService {
 	/**
 	 * Ends step when called
 	 * 
-	 * @param etape step ID to stop
+	 * @param etape
+	 *            step ID to stop
 	 * @return step after state update
 	 */
 	public Response endStep(@PathParam("etapeID") long etape) {
@@ -116,31 +129,104 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService {
 
 	@Override
 	public Response getAllActiveBrews() {
-		
-		
-		
+
 		return null;
 	}
 
 	@Override
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/")
 	public Response getAllBrews() {
-		
+
 		List<Brassin> brewList = null;
 		try {
 			brewList = brassinGenService.getAllElements();
-		} catch(Exception e){			
+		} catch (Exception e) {
 			return Response.status(500).entity(e).build();
 		}
-		 ArrayList<SimpleBrewResponse> convertedBrewList = new ArrayList<SimpleBrewResponse>();
-		 
-		 // Using a stream to convert each element of the list to DTO 
-		 brewList.stream().forEach(x -> {
-			 convertedBrewList.add(BrassinDTO.getInstance().toSimpleBrewResponse(x)); 
-		 });
-		
+		ArrayList<SimpleBrewResponse> convertedBrewList = new ArrayList<SimpleBrewResponse>();
+
+		// Using a stream to convert each element of the list to DTO
+		brewList.stream().forEach(x -> {
+			convertedBrewList.add(BrassinDTO.getInstance().toSimpleBrewResponse(x));
+		});
+
 		return Response.status(200).entity(convertedBrewList).build();
+	}
+
+	@Override
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/getFullBrew/{id}")
+	public Response getCompleteBrew(@PathParam("id") long brewID) {
+
+		if (brewID > 0) {
+
+			Brassin brew = new Brassin();
+
+			try {
+				brew = genBrewService.getElementById(brewID);
+			} catch (ServiceException e) {
+				return Response.status(500).entity(e).build();
+			}
+
+			ComplexBrewResponse response = BrassinDTO.getInstance().toComplexBrewResponse(brew);
+
+			return Response.status(200).entity(response).build();
+
+		}
+		return Response.status(500).entity(new DataFormatException("Wrong ID " + brewID)).build();
+	}
+
+	@Override
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/add")
+	public Response addBrew(BrewRequest req) {
+
+		if (req != null) {
+
+			try {
+				Brassin brew = BrassinDTO.getInstance().toBusinessObject(req);
+
+				Validator<Brassin> val = new BrewValidator();
+
+				List<BusinessErrors> errs = val.validate(brew);
+
+				if (errs != null && !errs.isEmpty()) {
+
+					try {
+						return Response.status(200)
+								.entity(BrassinDTO.getInstance().toComplexBrewResponse(genBrewService.save(brew)))
+								.build();
+					} catch (Exception e) {
+						Response.status(500).entity(e).build();
+					}
+
+				} else {
+					Response.status(500).entity(errs).build();
+				}
+
+			} catch (ServiceException e) {
+				return Response.status(500).entity(e).build();
+			}
+
+		}
+
+		return Response.status(500).entity(null).build();
+	}
+
+	@Override
+	public Response updateBrew(BrewRequest req) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Response getSimpleBrew(long brewID) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
