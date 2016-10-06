@@ -10,8 +10,8 @@ public interface IBrewRESTService {
 	
 	public Response getCompleteBrew(long brewID);
 	public Response getSimpleBrew(long brewID);
-	public Response getAllBrews();	
-	public Response getAllActiveBrews();
+	public Response getAllBrews(String lightOrFull);	
+	public Response getAllActiveBrews(String lightOrFull);
 	public Response addBrew(BrewRequest req);
 	public Response updateBrew(BrewRequest req);
 }

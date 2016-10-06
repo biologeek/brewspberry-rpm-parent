@@ -49,7 +49,7 @@
 		 */
 		var init = function () {
 
-			BrewService.getBrew(vm.brewID, function (response) {
+			BrewService.getBrew(vm.brewID, true, function (response) {
 				/**
 				 * In case of success
 				 */

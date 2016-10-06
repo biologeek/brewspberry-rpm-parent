@@ -19,7 +19,7 @@ function BrewService($http, CONSTANTS) {
         var promise = $http({
             method: 'GET',
             url : 'js/tests/mock.json'
-            //url: CONSTANTS.BREW_SERVICE_URL,
+            //url: CONSTANTS.BREW_SERVICE_URL+'/light',
 
         }).then(function (response) {
             callBackSuccess(response);
@@ -29,11 +29,18 @@ function BrewService($http, CONSTANTS) {
 
         return promise;
     };
-    BrewServiceFactory.getBrew = function (id, callBackSuccess, callbackError) {
-        var promise = $http({
+    BrewServiceFactory.getBrew = function (id, isFull, callBackSuccess, callbackError) {
+        var url;
+    	if (isFull){
+    		urlService = CONSTANTS.BREW_SERVICE_URL + '/'+id+'/full';
+        } else {
+        	urlService = CONSTANTS.BREW_SERVICE_URL + '/'+id+'/light';
+        }
+    	
+    	var promise = $http({
             method: 'GET',
             url : 'js/tests/mockFullBrew.json'
-          //  url: CONSTANTS.BREW_SERVICE_URL + '/'+id,
+          //  url: urlService',
         }).then(function (response) {
             callBackSuccess(response);
         }, function (response) {
@@ -54,11 +61,13 @@ function BrewService($http, CONSTANTS) {
         });
         return promise;
     };
+    
+    
     BrewServiceFactory.createBrew = function (obj, callBackSuccess, callbackError) {
         var promise = $http({
             method: 'POST',
 
-            url: CONSTANTS.BREW_SERVICE_URL+'/create',
+            url: CONSTANTS.BREW_SERVICE_URL+'/add',
             data : obj
         }).then(function (response) {
             callBackSuccess(response);
@@ -67,6 +76,8 @@ function BrewService($http, CONSTANTS) {
         });
         return promise;
     };
+    
+    
     BrewServiceFactory.deleteBrew = function (id, callBackSuccess, callbackError) {
         var promise = $http({
             method: 'DELETE',
@@ -79,11 +90,6 @@ function BrewService($http, CONSTANTS) {
         return promise;
     };
     
-    
-    BrewServiceFactory.addStepToBrew = function(brewID, step, callbackSuccess, callbackError){
-    	
-    	
-    }
 
     return BrewServiceFactory;
 }

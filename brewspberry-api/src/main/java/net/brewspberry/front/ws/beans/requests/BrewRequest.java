@@ -8,6 +8,7 @@ import net.brewspberry.business.beans.Malt;
 
 public class BrewRequest {
 	
+	private Long id;
 	private String name;
 	private Long begin;
 	private Long update;
@@ -16,10 +17,10 @@ public class BrewRequest {
 	private Double quantity;
 	private String type;
 	private Integer status;
-	private List<HopRequest> hops;
-	private List<MaltRequest> malts;
-	private List<YeastRequest> yeasts;
-	private List<CompleteStepRequest> steps;
+	private List<ConcreteIngredientRequest> hops;
+	private List<ConcreteIngredientRequest> malts;
+	private List<ConcreteIngredientRequest> yeasts;
+	private List<CompleteStep> steps;
 	
 	
 	public String getName() {
@@ -58,28 +59,29 @@ public class BrewRequest {
 	public void setQuantity(Double quantity) {
 		this.quantity = quantity;
 	}
-	public List<CompleteStepRequest> getSteps() {
+	public List<CompleteStep> getSteps() {
 		return steps;
 	}
-	public void setSteps(List<CompleteStepRequest> steps) {
+	public void setSteps(List<CompleteStep> steps) {
 		this.steps = steps;
 	}
-	public List<HopRequest> getHops() {
+
+	public List<ConcreteIngredientRequest> getHops() {
 		return hops;
 	}
-	public void setHops(List<HopRequest> hops) {
+	public void setHops(List<ConcreteIngredientRequest> hops) {
 		this.hops = hops;
 	}
-	public List<MaltRequest> getMalts() {
+	public List<ConcreteIngredientRequest> getMalts() {
 		return malts;
 	}
-	public void setMalts(List<MaltRequest> malts) {
+	public void setMalts(List<ConcreteIngredientRequest> malts) {
 		this.malts = malts;
 	}
-	public List<YeastRequest> getYeasts() {
+	public List<ConcreteIngredientRequest> getYeasts() {
 		return yeasts;
 	}
-	public void setYeasts(List<YeastRequest> yeasts) {
+	public void setYeasts(List<ConcreteIngredientRequest> yeasts) {
 		this.yeasts = yeasts;
 	}
 	public Integer getStatus() {
@@ -93,6 +95,12 @@ public class BrewRequest {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 

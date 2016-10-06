@@ -17,7 +17,7 @@ import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IStepRESTService;
 import net.brewspberry.front.ws.beans.dto.StepDTO;
-import net.brewspberry.front.ws.beans.requests.CompleteStepRequest;
+import net.brewspberry.front.ws.beans.requests.CompleteStep;
 
 @Path("/stepService")
 public class StepRESTServiceImpl implements IStepRESTService {
@@ -30,7 +30,7 @@ public class StepRESTServiceImpl implements IStepRESTService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/add")
-	public Response add(CompleteStepRequest step) {
+	public Response add(CompleteStep step) {
 
 		Brassin attachedBrew;
 

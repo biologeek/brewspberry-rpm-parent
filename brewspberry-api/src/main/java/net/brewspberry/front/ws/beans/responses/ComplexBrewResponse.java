@@ -3,12 +3,12 @@ package net.brewspberry.front.ws.beans.responses;
 import java.util.List;
 
 import net.brewspberry.business.beans.Biere;
-import net.brewspberry.business.beans.Etape;
+import net.brewspberry.front.ws.beans.requests.CompleteStep;
 
 public class ComplexBrewResponse extends SimpleBrewResponse {
 
 		
-	private List<Etape> steps;
+	private List<CompleteStep> steps;
 	private Biere beer;
 	
 
@@ -17,11 +17,11 @@ public class ComplexBrewResponse extends SimpleBrewResponse {
 		// TODO Auto-generated constructor stub
 	}
 
-	public List<Etape> getSteps() {
+	public List<CompleteStep> getSteps() {
 		return steps;
 	}
 
-	public void setSteps(List<Etape> steps) {
+	public void setSteps(List<CompleteStep> steps) {
 		this.steps = steps;
 	}
 

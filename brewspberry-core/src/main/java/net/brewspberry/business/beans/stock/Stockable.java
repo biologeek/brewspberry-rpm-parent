@@ -24,7 +24,7 @@ public abstract class Stockable implements Serializable {
 	
 	@Id@GeneratedValue(strategy=GenerationType.TABLE)
 	@Column(nullable=false)
-	public long stb_id;
+	protected long stb_id;
 	
 
 

@@ -4,21 +4,35 @@ public class SimpleStepResponse {
 	
 	
 	
-	private long id;
+
+	private Long id;
+	private Long brewID;
 	private String name;
 	private int number;
 	private long duration;
 	private long beginning;
+	private long realBeginning;
 	private long end;
-	private long theoreticalTemperature;
+	private long realEnd;
+	private Double theoreticalTemperature;
 	private boolean isActive;
+	private long creation;
+	private long update;
+	private String stageType;
+	private String comment;
 	
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+	public Long getBrewID() {
+		return brewID;
+	}
+	public void setBrewID(Long brewID) {
+		this.brewID = brewID;
 	}
 	public String getName() {
 		return name;
@@ -44,16 +58,28 @@ public class SimpleStepResponse {
 	public void setBeginning(long beginning) {
 		this.beginning = beginning;
 	}
+	public long getRealBeginning() {
+		return realBeginning;
+	}
+	public void setRealBeginning(long realBeginning) {
+		this.realBeginning = realBeginning;
+	}
 	public long getEnd() {
 		return end;
 	}
 	public void setEnd(long end) {
 		this.end = end;
 	}
-	public long getTheoreticalTemperature() {
+	public long getRealEnd() {
+		return realEnd;
+	}
+	public void setRealEnd(long realEnd) {
+		this.realEnd = realEnd;
+	}
+	public Double getTheoreticalTemperature() {
 		return theoreticalTemperature;
 	}
-	public void setTheoreticalTemperature(long theoreticalTemperature) {
+	public void setTheoreticalTemperature(Double theoreticalTemperature) {
 		this.theoreticalTemperature = theoreticalTemperature;
 	}
 	public boolean isActive() {
@@ -62,5 +88,31 @@ public class SimpleStepResponse {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+	public long getCreation() {
+		return creation;
+	}
+	public void setCreation(long creation) {
+		this.creation = creation;
+	}
+	public long getUpdate() {
+		return update;
+	}
+	public void setUpdate(long update) {
+		this.update = update;
+	}
+	public String getStageType() {
+		return stageType;
+	}
+	public void setStageType(String stageType) {
+		this.stageType = stageType;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	
 	
 }

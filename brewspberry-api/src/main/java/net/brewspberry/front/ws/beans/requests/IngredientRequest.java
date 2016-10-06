@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import net.brewspberry.business.beans.stock.StockUnit;
 
-public class IngredientJSONRequest implements Serializable{
+public class IngredientRequest implements Serializable{
 	
 	
 	/**
@@ -12,11 +12,16 @@ public class IngredientJSONRequest implements Serializable{
 	 */
 	private static final long serialVersionUID = -2011649263052366049L;
 	private long id;
+	/**
+	 * Type of ingredient
+	 */
 	private String type;
 	private String provider;
 	private String description;
 	private float unitaryPrice;
 	private String unitaryPriceUnit;
+	private float unitaryWeight;
+	private String unitaryWeightUnit;
 	
 	private String cereal;
 	private String maltType;
@@ -115,6 +120,21 @@ public class IngredientJSONRequest implements Serializable{
 	public float getUnitaryPrice() {
 		
 		return this.unitaryPrice;
+	}
+	public float getUnitaryWeight() {
+		return unitaryWeight;
+	}
+	public void setUnitaryWeight(float unitaryWeight) {
+		this.unitaryWeight = unitaryWeight;
+	}
+	public String getUnitaryWeightUnit() {
+		return unitaryWeightUnit;
+	}
+	public void setUnitaryWeightUnit(String unitaryWeightUnit) {
+		this.unitaryWeightUnit = unitaryWeightUnit;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	public void setUnitaryPrice(float unitaryPrice) {
 		

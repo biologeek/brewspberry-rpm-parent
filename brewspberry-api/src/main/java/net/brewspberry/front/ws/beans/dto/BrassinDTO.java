@@ -5,9 +5,12 @@ import java.util.Date;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.EtapeType;
+import net.brewspberry.business.exceptions.ConvertionException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.beans.requests.BrewRequest;
+import net.brewspberry.front.ws.beans.requests.CompleteStep;
 import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
+import net.brewspberry.front.ws.beans.responses.ComplexStepResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleStepResponse;
 import net.brewspberry.front.ws.beans.responses.UserFullBean;
@@ -51,6 +54,15 @@ public class BrassinDTO {
 		return resp;
 	}
 	
+	
+	
+	/**
+	 * Converts main attributes using toSimpleBrewResponse method.
+	 * 
+	 * Converts all steps to complex steps
+	 * @param brassin
+	 * @return
+	 */
 	public ComplexBrewResponse toComplexBrewResponse (Brassin brassin){
 		
 		
@@ -58,8 +70,14 @@ public class BrassinDTO {
 		
 		for (Etape etp : brassin.getBra_etapes()){
 			
-			SimpleStepResponse stepResponse = new StepDTO().toSimpleStepResponse();
+			CompleteStep stepResponse = new StepDTO().toCompleteStep(etp);
+			resp.getSteps().add(stepResponse);
+			
 		}
+		
+		
+		
+		
 		
 		return resp;
 		
@@ -72,12 +90,15 @@ public class BrassinDTO {
 		
 		Brassin brew = new Brassin();
 		
-		
+		/*
+		 * Only used when updating brew 
+		 */
+		brew.setBra_id(req.getId());
 		brew.setBra_nom(req.getName());
 		brew.setBra_debut(new Date(req.getBegin()));
 		try {
 			brew.setBra_etapes(new StepDTO().toBusinessObjectList(req.getSteps()));
-		} catch (ServiceException e) {
+		} catch (ConvertionException e) {
 			throw new ServiceException(e.getMessage());
 		}
 		

@@ -25,7 +25,7 @@ import net.brewspberry.business.exceptions.DataTransferException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IProductRESTService;
 import net.brewspberry.front.ws.beans.dto.IngredientDTO;
-import net.brewspberry.front.ws.beans.requests.IngredientJSONRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientRequest;
 import net.brewspberry.util.LogManager;
 
 @Path("/productService")
@@ -54,7 +54,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/create")
-	public Response addIngredient(IngredientJSONRequest request) {
+	public Response addIngredient(IngredientRequest request) {
 
 		AbstractIngredient businessIngredient = null;
 
@@ -116,7 +116,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Override
 	@Path("/update/{id}")
 	public Response updateIngredient(@PathParam("id") long id,
-			IngredientJSONRequest req) {
+			IngredientRequest req) {
 
 		return null;
 
@@ -127,7 +127,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/delete")
-	public Response deleteIngredient(IngredientJSONRequest request) {
+	public Response deleteIngredient(IngredientRequest request) {
 		
 		return null;
 	}
@@ -141,7 +141,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	 * @return true if only one ingredient is filled. False if not.
 	 */
 	private boolean isThereOnlyOneIngredientInRequest(
-			IngredientJSONRequest request) {
+			IngredientRequest request) {
 
 		if (((request.getCereal() != null || request.getMaltType() != null || request
 				.getColor() != 0) && ((request.getAlphaAcid() != 0
@@ -168,7 +168,7 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	public Response getIngredient(@PathParam("type") String type,
 			@PathParam("id") long id) {
 
-		IngredientJSONRequest result = null;
+		IngredientRequest result = null;
 
 		if (id > 0) {
 

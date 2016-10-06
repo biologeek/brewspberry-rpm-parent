@@ -7,11 +7,11 @@ import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.exceptions.DataTransferException;
-import net.brewspberry.front.ws.beans.requests.IngredientJSONRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientRequest;
 
 public class IngredientDTO {
 
-	public AbstractIngredient toMalt(IngredientJSONRequest obj) {
+	public AbstractIngredient toMalt(IngredientRequest obj) {
 		SimpleMalt malt = new SimpleMalt();
 
 		malt.setStb_id(obj.getId());
@@ -29,14 +29,14 @@ public class IngredientDTO {
 		return malt;
 	}
 
-	public IngredientJSONRequest toServiceObject(AbstractIngredient ingredient) throws DataTransferException {
-		IngredientJSONRequest result = new IngredientJSONRequest();
+	public IngredientRequest toServiceObject(AbstractIngredient ingredient) throws DataTransferException {
+		IngredientRequest result = new IngredientRequest();
 		
 		result.setId(ingredient.getStb_id());
 		result.setDescription(ingredient.getIng_desc());
 		result.setProvider(ingredient.getIng_fournisseur());
 		result.setUnitaryPrice(ingredient.getIng_unitary_price());
-		result.setUnitaryPriceUnit(ingredient.getIng_unitary_price_unit().getStu_value());
+		result.setUnitaryPriceUnit(ingredient.getIng_unitary_price_unit().name());
 		
 		
 		if (ingredient instanceof SimpleMalt){
@@ -75,7 +75,7 @@ public class IngredientDTO {
 	}
 
 	
-	public AbstractIngredient toHop(IngredientJSONRequest request) {
+	public AbstractIngredient toHop(IngredientRequest request) {
 		SimpleHoublon hop = new SimpleHoublon();
 
 		hop.setStb_id(request.getId());
@@ -91,7 +91,7 @@ public class IngredientDTO {
 		return hop;
 	}
 
-	public AbstractIngredient toYeast(IngredientJSONRequest request) {
+	public AbstractIngredient toYeast(IngredientRequest request) {
 		SimpleLevure lev = new SimpleLevure();
 		
 		lev.setSlev_aromes(request.getAroma());

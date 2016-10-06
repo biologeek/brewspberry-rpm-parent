@@ -1,6 +1,6 @@
 package net.brewspberry.front.ws.beans.requests;
 
-public class MaltRequest {
+public class MaltRequest  {
 
 	private long id;
 	private String label;

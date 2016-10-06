@@ -7,6 +7,7 @@ import java.util.zip.DataFormatException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -128,7 +129,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 	}
 
 	@Override
-	public Response getAllActiveBrews() {
+	public Response getAllActiveBrews(@PathParam("type") String lightOrFull) {
 
 		return null;
 	}
@@ -136,8 +137,8 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 	@Override
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/")
-	public Response getAllBrews() {
+	@Path("/{type}")
+	public Response getAllBrews(@PathParam("type") String lightOrFull) {
 
 		List<Brassin> brewList = null;
 		try {
@@ -145,20 +146,38 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 		} catch (Exception e) {
 			return Response.status(500).entity(e).build();
 		}
-		ArrayList<SimpleBrewResponse> convertedBrewList = new ArrayList<SimpleBrewResponse>();
 
-		// Using a stream to convert each element of the list to DTO
-		brewList.stream().forEach(x -> {
-			convertedBrewList.add(BrassinDTO.getInstance().toSimpleBrewResponse(x));
-		});
+		if (lightOrFull.equals("light")) {
+			ArrayList<SimpleBrewResponse> convertedBrewList = new ArrayList<SimpleBrewResponse>();
+			// Using a stream to convert each element of the list to DTO
+			brewList.stream().forEach(x -> {
+				convertedBrewList.add(BrassinDTO.getInstance().toSimpleBrewResponse(x));
+			});
 
-		return Response.status(200).entity(convertedBrewList).build();
+			return Response.status(200).entity(convertedBrewList).build();
+
+		} else {
+			ArrayList<ComplexBrewResponse> convertedBrewList = new ArrayList<ComplexBrewResponse>();
+			// Using a stream to convert each element of the list to DTO
+			brewList.stream().forEach(x -> {
+				convertedBrewList.add(BrassinDTO.getInstance().toComplexBrewResponse(x));
+			});
+
+			return Response.status(200).entity(convertedBrewList).build();
+
+		}
 	}
 
 	@Override
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("/getFullBrew/{id}")
+	@Path("/{id}/full")
+	/**
+	 * Returns Full Brew object with steps and actionners
+	 * 
+	 * @param brewID
+	 * @return
+	 */
 	public Response getCompleteBrew(@PathParam("id") long brewID) {
 
 		if (brewID > 0) {
@@ -183,6 +202,13 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/add")
+	/**
+	 * Adds a newly created brew in DB
+	 * 
+	 * @param req
+	 *            Brew form object
+	 * @return newly created ComplexBrewResponse
+	 */
 	public Response addBrew(BrewRequest req) {
 
 		if (req != null) {
@@ -218,15 +244,74 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 	}
 
 	@Override
+	@PUT
+	@Path("/update")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateBrew(BrewRequest req) {
-		// TODO Auto-generated method stub
-		return null;
+		
+
+		if (req != null) {
+
+			try {
+				Brassin brew = BrassinDTO.getInstance().toBusinessObject(req);
+
+				Validator<Brassin> val = new BrewValidator();
+
+				List<BusinessErrors> errs = val.validate(brew);
+
+				if (errs != null && !errs.isEmpty()) {
+
+					try {
+						return Response.status(200)
+								.entity(BrassinDTO.getInstance().toComplexBrewResponse(genBrewService.update(brew)))
+								.build();
+					} catch (Exception e) {
+						Response.status(500).entity(e).build();
+					}
+
+				} else {
+					Response.status(500).entity(errs).build();
+				}
+
+			} catch (ServiceException e) {
+				return Response.status(500).entity(e).build();
+			}
+
+		}
+
+		return Response.status(500).entity(null).build();
 	}
 
 	@Override
-	public Response getSimpleBrew(long brewID) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Retrieves simple brew by its ID
+	 * 
+	 * @param brewID
+	 * @return
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{id}/light")
+	public Response getSimpleBrew(@PathParam("id") long brewID) {
+
+		if (brewID > 0) {
+
+			Brassin brew = new Brassin();
+
+			try {
+				brew = genBrewService.getElementById(brewID);
+			} catch (ServiceException e) {
+				return Response.status(500).entity(e).build();
+			}
+
+			ComplexBrewResponse response = BrassinDTO.getInstance().toComplexBrewResponse(brew);
+
+			return Response.status(200).entity(response).build();
+
+		}
+		return Response.status(500).entity(new DataFormatException("Wrong ID " + brewID)).build();
+	
 	}
 
 }

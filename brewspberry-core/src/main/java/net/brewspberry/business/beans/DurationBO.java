@@ -108,6 +108,12 @@ public class DurationBO implements Serializable{
 		return  week + "w " + day + "d " + hour
 				+ "h " + minute + "m " + second + "s "+ milisecond + "ms";
 	}
+
+
+	public long toTimestamp() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 }
