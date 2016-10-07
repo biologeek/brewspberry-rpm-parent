@@ -13,125 +13,114 @@ import net.brewspberry.business.beans.PalierType;
 
 public class StepBuilder {
 
-	private static StepBuilder instance;
 	private Etape obj;
 
-	public static StepBuilder getInstance() {
+	public StepBuilder() {
 
-		if (instance != null){
-			instance = new StepBuilder();
-		}
-		return instance;
+		obj = new Etape();
 	}
 
+	public Etape build() {
 
-	public Etape build(){
-		
 		return obj;
-		
+
 	}
 
-	public StepBuilder id(Long id){
-		
+	public StepBuilder id(Long id) {
+
 		this.obj.setEtp_id(id);
 		return this;
-		
+
 	}
-	public StepBuilder name(String name){
-		
+
+	public StepBuilder name(String name) {
+
 		this.obj.setEtp_nom(name);
 		return this;
-		
+
 	}
-	public StepBuilder maj(Date date){
-		
+
+	public StepBuilder maj(Date date) {
+
 		this.obj.setEtp_update_date(date);
 		return this;
-		
+
 	}
-	public StepBuilder stageTye(PalierType id){
-		
+
+	public StepBuilder stageType(PalierType id) {
+
 		this.obj.setEtp_palier_type(id);
 		return this;
-		
+
 	}
-	public StepBuilder realBegin(Date id){
-		
+
+	public StepBuilder realBegin(Date id) {
+
 		this.obj.setEtp_debut_reel(id);
 		return this;
-		
+
 	}
-	public StepBuilder begin(Date id){
-		
+
+	public StepBuilder begin(Date id) {
+
 		this.obj.setEtp_debut(id);
 		return this;
-		
+
 	}
 
+	public StepBuilder end(Date id) {
 
-	public StepBuilder end(Date id){
-		
 		this.obj.setEtp_fin(id);
 		return this;
-		
+
 	}
 
-	public StepBuilder realEnd(Date id){
-		
+	public StepBuilder realEnd(Date id) {
+
 		this.obj.setEtp_fin_reel(id);
 		return this;
-		
-	}
-	
 
-	public StepBuilder remark(String id){
-		
+	}
+
+	public StepBuilder remark(String id) {
+
 		this.obj.setEtp_remarque(id);
 		return this;
-		
+
 	}
 
+	public StepBuilder hops(List<Houblon> id) {
 
-	public StepBuilder hops(List<Houblon> id){
-		
 		this.obj.setEtp_houblons(id);
 		return this;
-		
+
 	}
-	
 
+	public StepBuilder steps(DurationBO id) {
 
-	public StepBuilder steps(DurationBO id){
-		
 		this.obj.setEtp_duree(id);
 		return this;
-		
+
 	}
-	
 
+	public StepBuilder actioners(List<Actioner> id) {
 
-	public StepBuilder actioners(List<Actioner> id){
-		
 		this.obj.setEtp_actioners(id);
 		return this;
-		
+
 	}
-	
 
+	public StepBuilder yeasts(List<Levure> id) {
 
-	public StepBuilder yeasts(List<Levure> id){
-		
 		this.obj.setEtp_levures(id);
 		return this;
-		
+
 	}
-	
 
+	public StepBuilder malts(List<Malt> id) {
 
-	public StepBuilder malts(List<Malt> id){
-		
 		this.obj.setEtp_malts(id);
 		return this;
-		
+
 	}
 }

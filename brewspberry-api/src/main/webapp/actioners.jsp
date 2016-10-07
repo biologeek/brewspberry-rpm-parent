@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%@page import="net.brewspberry.business.beans.Actioner"%>
 <%@page import="java.util.List"%>
 
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -131,10 +130,6 @@ function deactivate_actioner(uuid) {
 
 <body class="wysihtml5-supported">
 
-	<%
-		List<Actioner> brewList = (List<Actioner>) request
-				.getAttribute("actioners");
-	%>
 
 	<jsp:include page="tpl/header.jsp"></jsp:include>
 

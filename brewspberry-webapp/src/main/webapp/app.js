@@ -23,6 +23,9 @@ var app = angular.module('brewspberry', [
         .when('/brew/:brewID', {
             templateUrl : 'brew.html',
             controller : 'BrewController'
+        }).when('/chart/:brewID/:stepID/:actID', {
+            templateUrl : 'chart.html',
+            controller : 'BrewController'
         })
         .otherwise( {redirectTo : '/accueil'});
     });

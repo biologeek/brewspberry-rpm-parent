@@ -35,12 +35,18 @@ public class SpringCoreConfiguration {
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 	    BasicDataSource dataSource = new BasicDataSource();
-		
+		/*
 	    dataSource.setDriverClassName("org.h2.Driver");
 	    dataSource.setUrl("jdbc:h2:~/test");
 	    dataSource.setUsername("sa");
 	    dataSource.setPassword("");
-	   
+	   */
+	    
+	    dataSource.setDriverClassName("org.postgresql.jdbc.Driver");
+	    dataSource.setUrl("jdbc:mysql://localhost:5432/brewspberry");
+	    dataSource.setUsername("postgres");
+	    dataSource.setPassword("postgres");
+	    
 	    /*
 	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
 	    dataSource.setUrl("jdbc:mysql://localhost:3306/brewspberry");

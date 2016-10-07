@@ -42,13 +42,11 @@ public class AuthentificationFilter  {
 		this.logger = logger;
 	}
 
-	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		
 
 	}
 
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 
@@ -121,7 +119,7 @@ public class AuthentificationFilter  {
 		this.currentSession = currentSession;
 	}
 
-	@Override
+	
 	public void destroy() {
 		
 
