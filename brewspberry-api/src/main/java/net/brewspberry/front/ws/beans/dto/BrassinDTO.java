@@ -46,7 +46,7 @@ public class BrassinDTO {
 		resp.setEnd(brassin.getBra_fin());
 		resp.setDescription(brassin.getBra_nom());
 		resp.setMaj(brassin.getBra_date_maj());
-		resp.setQuantity(brassin.getBra_quantiteEnLitres().floatValue());
+		resp.setQuantity(new Float(brassin.getBra_quantiteEnLitres()));
 		resp.setStatus(EtapeType.getValueByID(brassin.getBra_statut()));
 		resp.setType(brassin.getBra_type());
 		
@@ -66,7 +66,7 @@ public class BrassinDTO {
 	public ComplexBrewResponse toComplexBrewResponse (Brassin brassin){
 		
 		
-		ComplexBrewResponse resp = (ComplexBrewResponse) this.toSimpleBrewResponse(brassin);
+		ComplexBrewResponse resp = new ComplexBrewResponse(this.toSimpleBrewResponse(brassin));
 		
 		for (Etape etp : brassin.getBra_etapes()){
 			

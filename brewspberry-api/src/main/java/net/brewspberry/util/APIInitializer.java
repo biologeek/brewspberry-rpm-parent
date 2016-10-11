@@ -1,27 +1,32 @@
 package net.brewspberry.util;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import net.brewspberry.util.config.SpringCoreConfiguration;
 
-public class SpringApiInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer{
+public class APIInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[]{SpringCoreConfiguration.class, SpringApiConfiguration.class};
+		// TODO Auto-generated method stub
+		return new Class<?>[]{SpringCoreConfiguration.class};
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
 		// TODO Auto-generated method stub
-		return null;
+		return new Class<?>[]{APIConfig.class};
 	}
 
 	@Override
 	protected String[] getServletMappings() {
 		// TODO Auto-generated method stub
-		return null;
+		return new String[]{"/*", "/"};
 	}
 
 	

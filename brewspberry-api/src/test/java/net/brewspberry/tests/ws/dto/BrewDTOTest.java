@@ -22,7 +22,6 @@ import net.brewspberry.front.ws.beans.requests.BrewRequest;
 import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
 import net.brewspberry.tests.utils.TestUtils;
-import net.brewspberry.util.SpringApiConfiguration;
 
 
 

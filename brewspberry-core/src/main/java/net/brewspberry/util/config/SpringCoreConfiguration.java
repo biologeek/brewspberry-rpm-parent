@@ -42,8 +42,8 @@ public class SpringCoreConfiguration {
 	    dataSource.setPassword("");
 	   */
 	    
-	    dataSource.setDriverClassName("org.postgresql.jdbc.Driver");
-	    dataSource.setUrl("jdbc:mysql://localhost:5432/brewspberry");
+	    dataSource.setDriverClassName("org.postgresql.Driver");
+	    dataSource.setUrl("jdbc:postgresql://localhost:5432/brewspberry");
 	    dataSource.setUsername("postgres");
 	    dataSource.setPassword("postgres");
 	    
@@ -88,7 +88,7 @@ public class SpringCoreConfiguration {
 
 			{
 				Properties properties = new Properties();
-				properties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5InnoDBDialect");
+				properties.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 				properties.put("hibernate.hbm2ddl.auto", "update");
 				properties.put("hibernate.show_sql", "true");
 		   }
