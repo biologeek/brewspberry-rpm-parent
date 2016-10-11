@@ -3,6 +3,7 @@ package net.brewspberry.front.ws.beans.dto;
 import java.util.Date;
 
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.EtapeType;
 import net.brewspberry.business.exceptions.ConvertionException;
@@ -47,7 +48,7 @@ public class BrassinDTO {
 		resp.setDescription(brassin.getBra_nom());
 		resp.setMaj(brassin.getBra_date_maj());
 		resp.setQuantity(new Float(brassin.getBra_quantiteEnLitres()));
-		resp.setStatus(EtapeType.getValueByID(brassin.getBra_statut()));
+		resp.setStatus(brassin.getBra_statut());
 		resp.setType(brassin.getBra_type());
 		
 		
@@ -86,7 +87,7 @@ public class BrassinDTO {
 
 
 
-	public Brassin toBusinessObject(BrewRequest req) throws ServiceException {
+	public Brassin toBusinessObject(ComplexBrewResponse req) throws ServiceException {
 		
 		Brassin brew = new Brassin();
 		
@@ -94,20 +95,20 @@ public class BrassinDTO {
 		 * Only used when updating brew 
 		 */
 		brew.setBra_id(req.getId());
-		brew.setBra_nom(req.getName());
-		brew.setBra_debut(new Date(req.getBegin()));
+		brew.setBra_nom(req.getDescription());
+		brew.setBra_debut(req.getBeginning());
 		try {
 			brew.setBra_etapes(new StepDTO().toBusinessObjectList(req.getSteps()));
 		} catch (ConvertionException e) {
 			throw new ServiceException(e.getMessage());
 		}
 		
-		brew.setBra_fin(new Date(req.getEnd()));
+		brew.setBra_fin(req.getEnd());
 		
 		brew.setBra_malts(new MaltDTO().toBusinessObjectList(req.getMalts()));
 		brew.setBra_houblons(new HopDTO().toBusinessObjectList(req.getHops()));
 		brew.setBra_levures(new YeastDTO().toBusinessObjectList(req.getYeasts()));
-		brew.setBra_quantiteEnLitres(req.getQuantity());
+		brew.setBra_quantiteEnLitres((double) req.getQuantity());
 		brew.setBra_type(req.getType());
 		brew.setBra_statut(req.getStatus());
 		

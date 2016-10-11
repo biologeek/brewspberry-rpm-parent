@@ -18,4 +18,16 @@ public class BrewValidator implements Validator<Brassin> {
 		return new ArrayList<BusinessErrors>();
 	}
 
+	@Override
+	public String computeErrors(List<BusinessErrors> errs, String delimiter) {
+
+		StringBuilder builder = new StringBuilder();
+		for (BusinessErrors err : errs){
+			
+			
+					
+		}
+		return null;
+	}
+
 }

@@ -2,11 +2,15 @@ package net.brewspberry.front.ws.beans.responses;
 
 import java.util.Date;
 
+import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.EtapeType;
 
 public class SimpleBrewResponse {
 	
-	
+	public static enum BrewResponseType{
+		
+		full,light;
+	}
 	
 	private long id;
 	private String description;
@@ -14,7 +18,7 @@ public class SimpleBrewResponse {
 	private Date end;
 	private Date maj;
 	private float quantity;
-	private EtapeType status;
+	private BrewStatus status;
 	private String type; // ?????
 	
 	
@@ -43,10 +47,10 @@ public class SimpleBrewResponse {
 	public void setQuantity(float quantite) {
 		this.quantity = quantite;
 	}
-	public EtapeType getStatus() {
+	public BrewStatus getStatus() {
 		return status;
 	}
-	public void setStatus(EtapeType status) {
+	public void setStatus(BrewStatus status) {
 		this.status = status;
 	}
 	public String getType() {

@@ -37,7 +37,7 @@ public class Brassin implements Serializable{
     private Date bra_fin;
     private Date bra_date_maj;
     private Double bra_quantiteEnLitres;
-    private Integer bra_statut;
+    private BrewStatus bra_statut;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy="malt_brassin")
     private List<Malt> bra_malts;
@@ -132,12 +132,12 @@ public class Brassin implements Serializable{
 	}
 
 
-	public Integer getBra_statut() {
+	public BrewStatus getBra_statut() {
 		return bra_statut;
 	}
 
 
-	public void setBra_statut(Integer bra_statut) {
+	public void setBra_statut(BrewStatus bra_statut) {
 		this.bra_statut = bra_statut;
 	}
 

@@ -13,10 +13,12 @@ public class HopDTO implements DTO<Houblon, ConcreteIngredientRequest> {
 
 		List<Houblon> res = new ArrayList<Houblon>();
 
-		for (ConcreteIngredientRequest rq : list) {
+		if (list != null && list.size() > 0) {
+			for (ConcreteIngredientRequest rq : list) {
 
-			res.add(this.toBusinessObject(rq));
+				res.add(this.toBusinessObject(rq));
 
+			}
 		}
 
 		return res;

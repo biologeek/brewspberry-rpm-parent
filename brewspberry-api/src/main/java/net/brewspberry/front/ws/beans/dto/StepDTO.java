@@ -20,8 +20,7 @@ public class StepDTO {
 	public SimpleStepResponse toSimpleStepResponse(Etape step) {
 		// TODO
 		SimpleStepResponse res = new SimpleStepResponse();
-		
-		
+
 		res.setId(step.getEtp_id());
 		res.setBeginning(step.getEtp_debut().getTime());
 		res.setRealBeginning(step.getEtp_debut_reel().getTime());
@@ -36,37 +35,35 @@ public class StepDTO {
 		res.setTheoreticalTemperature(res.getTheoreticalTemperature());
 		res.setNumber(step.getEtp_numero());
 		res.setStageType(step.getEtp_palier_type().getPlt_libelle());
-		
+
 		return res;
 	}
-	
-	
+
 	/**
-	 * Converts Etape business object to full step request/response used in REST API
-	 * @param step step to convert
+	 * Converts Etape business object to full step request/response used in REST
+	 * API
+	 * 
+	 * @param step
+	 *            step to convert
 	 * @return
 	 */
-	public CompleteStep toCompleteStep(Etape step){
-		
+	public CompleteStep toCompleteStep(Etape step) {
+
 		CompleteStep res = new CompleteStep();
 		res = (CompleteStep) this.toSimpleStepResponse(step);
-		
-		
+
 		res.setMalts(new MaltDTO().toFrontObjectList(step.getEtp_malts()));
 		res.setHops(new HopDTO().toFrontObjectList(step.getEtp_houblons()));
 		res.setYeasts(new YeastDTO().toFrontObjectList(step.getEtp_levures()));
-		
+
 		res.setActioners(new ActionnerDTO().toActionnerResponse(step.getEtp_actioner()));
-		
-		
-		
+
 		return res;
-		
+
 	}
 
-	public Etape toBusinessObject(CompleteStep step) throws ConvertionException{
-		
-		
+	public Etape toBusinessObject(CompleteStep step) throws ConvertionException {
+
 		Etape res = new Etape();
 		res.setEtp_id(step.getId());
 		res.setEtp_creation_date(new Date(step.getCreation()));
@@ -85,32 +82,29 @@ public class StepDTO {
 		} catch (BusinessException e) {
 			throw new ConvertionException(e.getMessage());
 		}
-		
+
 		res.setEtp_actioners(new ActionnerDTO().toBusinessObjectList(step.getActioners()));
-		
-		
-		
+
 		return res;
 	}
 
+	public Etape toBusinessObject(CompleteStep step, Brassin attachedBrew) throws ConvertionException {
 
-	public Etape toBusinessObject(CompleteStep step, Brassin attachedBrew) throws ConvertionException{
-		
-		
 		Etape res = this.toBusinessObject(step);
 		res.setEtp_brassin(attachedBrew);
-		
-		
+
 		return res;
 	}
 
 	public List<Etape> toBusinessObjectList(List<CompleteStep> steps) throws ConvertionException {
 		List<Etape> res = new ArrayList<Etape>();
-		
-		for(CompleteStep step : steps){
-			
-			res.add(this.toBusinessObject(step));
-			
+
+		if (steps != null) {
+			for (CompleteStep step : steps) {
+
+				res.add(this.toBusinessObject(step));
+
+			}
 		}
 		return res;
 	}

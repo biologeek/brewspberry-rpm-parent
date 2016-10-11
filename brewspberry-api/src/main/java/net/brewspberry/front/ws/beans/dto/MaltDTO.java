@@ -12,13 +12,13 @@ public class MaltDTO implements DTO<Malt, ConcreteIngredientRequest> {
 	public List<Malt> toBusinessObjectList(List<ConcreteIngredientRequest> list) {
 
 		List<Malt> res = new ArrayList<Malt>();
+		if (list != null && list.size() > 0) {
+			for (ConcreteIngredientRequest rq : list) {
 
-		for (ConcreteIngredientRequest rq : list) {
+				res.add(this.toBusinessObject(rq));
 
-			res.add(this.toBusinessObject(rq));
-
+			}
 		}
-
 		return res;
 	}
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,6 +18,7 @@ import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificBrassinDAO;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
@@ -144,6 +146,23 @@ public class BrassinDaoImpl implements IGenericDao<Brassin>,
 	public Brassin getElementByName(String name) {
 		Brassin result = (Brassin) sessionFactory.getCurrentSession().createCriteria(Brassin.class).add(Restrictions.eq("bra_nom", name)).uniqueResult();
 		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	/**
+	 * Returns brews depending on statuses given
+	 * 
+	 * @param statuses
+	 * @return
+	 */
+	public List<Brassin> getBrewByStates(List<BrewStatus> statuses) {
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Brassin.class);
+		
+		
+		crit.add(Restrictions.in("bra_statut", statuses));
+		
+		return crit.list();
 	}
 
 }

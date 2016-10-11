@@ -1,5 +1,6 @@
 package net.brewspberry.business.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -14,6 +15,7 @@ import net.brewspberry.business.ISpecificBrassinDAO;
 import net.brewspberry.business.ISpecificBrassinService;
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.BrassinDaoImpl;
 import net.brewspberry.util.HibernateUtil;
@@ -79,6 +81,30 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 	public Brassin getElementByName(String name) throws ServiceException {
 		
 		return null;
+	}
+
+	@Override
+	public List<Brassin> getActiveBrews() {
+		
+		List<BrewStatus> brewstatuses = new ArrayList<BrewStatus>();
+
+		brewstatuses.add(BrewStatus.BREWING);
+		brewstatuses.add(BrewStatus.FERMENTING);
+		brewstatuses.add(BrewStatus.MATURING);
+		brewstatuses.add(BrewStatus.BOTTLED);
+		
+		return getBrewsByStates(brewstatuses);
+	}
+
+	/**
+	 * Returns brews filtered by states
+	 * 
+	 * @param statuses
+	 * @return
+	 */
+	private List<Brassin> getBrewsByStates(List<BrewStatus> statuses) {
+		
+		return specBrassinDAO.getBrewByStates(statuses);
 	}
 
 	
