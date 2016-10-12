@@ -104,7 +104,7 @@ public class BrassinDTO {
 		}
 		
 		brew.setBra_fin(req.getEnd());
-		
+		brew.setBra_date_maj(req.getMaj());
 		brew.setBra_malts(new MaltDTO().toBusinessObjectList(req.getMalts()));
 		brew.setBra_houblons(new HopDTO().toBusinessObjectList(req.getHops()));
 		brew.setBra_levures(new YeastDTO().toBusinessObjectList(req.getYeasts()));

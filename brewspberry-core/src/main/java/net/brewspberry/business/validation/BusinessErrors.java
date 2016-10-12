@@ -11,6 +11,11 @@ public class BusinessErrors {
 	public void setErrLabel(String errLabel) {
 		this.errLabel = errLabel;
 	}
+
+	public BusinessErrors error(String string) {
+		setErrLabel(string);
+		return this;
+	}
 	
 
 }

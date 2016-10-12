@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -37,6 +39,7 @@ public class Brassin implements Serializable{
     private Date bra_fin;
     private Date bra_date_maj;
     private Double bra_quantiteEnLitres;
+    @Enumerated(EnumType.STRING)
     private BrewStatus bra_statut;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy="malt_brassin")

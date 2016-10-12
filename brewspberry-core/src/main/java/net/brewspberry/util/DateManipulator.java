@@ -257,4 +257,31 @@ public class DateManipulator {
 		return cal.getTime();		
 		
 	}
+
+	/**
+	 * Checks if date is between - timeAmount and + timeAmount 
+	 * @param date
+	 * @param calendarType
+	 * @param timeAmount
+	 * @return
+	 */
+	public static boolean isDateInRange(Date date, int timeAmount, int calendarType) {
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+
+		Calendar calAfter = Calendar.getInstance();
+		calAfter.setTime(date);
+		calAfter.add(timeAmount, calendarType);
+		
+		Calendar calBefore = Calendar.getInstance();
+		calBefore.setTime(date);
+		calBefore.add(timeAmount, -calendarType);
+		
+		
+		if (cal.after(calBefore) && cal.before(calAfter)){
+			return true;
+		}
+		return false;
+	}
 }

@@ -254,7 +254,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 
 				List<BusinessErrors> errs = val.validate(brew);
 
-				if (errs != null && !errs.isEmpty()) {
+				if (errs == null || errs.isEmpty()) {
 
 					try {
 						return BrassinDTO.getInstance().toComplexBrewResponse(brassinGenService.save(brew));
@@ -263,9 +263,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 					}
 
 				} else {
-					
-					
-					logger.severe(String.join(", ", errs));
+					logger.severe(val.computeErrors(errs, ", "));
 					throw new ValidationException(errs);
 				}
 
@@ -292,7 +290,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 
 				List<BusinessErrors> errs = val.validate(brew);
 
-				if (errs != null && !errs.isEmpty()) {
+				if (errs == null || errs.isEmpty()) {
 
 					try {
 						return BrassinDTO.getInstance().toComplexBrewResponse(brassinGenService.update(brew));
@@ -301,6 +299,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 					}
 
 				} else {
+					logger.severe(val.computeErrors(errs, ", "));
 					throw new ValidationException(errs);
 				}
 
