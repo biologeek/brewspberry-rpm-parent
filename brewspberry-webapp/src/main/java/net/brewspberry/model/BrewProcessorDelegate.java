@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificIngredientService;
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
@@ -145,9 +146,9 @@ public class BrewProcessorDelegate implements Processor<Brassin> {
 				currentBrassinStatut = request.getParameter("statutBrassin");
 
 				if (currentBrassinStatut.equals(""))
-					currentBrassin.setBra_statut(10);
+					currentBrassin.setBra_statut(BrewStatus.NOT_STARTED);
 				else
-					currentBrassin.setBra_statut(Integer.parseInt(currentBrassinStatut));
+					currentBrassin.setBra_statut(BrewStatus.valueOf(currentBrassinStatut));
 
 			} catch (Exception e) {
 

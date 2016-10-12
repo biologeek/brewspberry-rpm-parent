@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder.In;
 
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
@@ -78,7 +79,7 @@ public class BrewBuilder {
 
 	}
 
-	public BrewBuilder status(Integer id) {
+	public BrewBuilder status(BrewStatus id) {
 
 		BrewBuilder.obj.setBra_statut(id);
 		return this;

@@ -2,7 +2,7 @@ package net.brewspberry.front.ws.beans.responses;
 
 import java.util.Date;
 
-public class UserFullBean {
+public class UserFullBean extends UserBean {
 	
 	
 	private long userID;

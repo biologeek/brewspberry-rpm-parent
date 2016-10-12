@@ -1,6 +1,6 @@
 package net.brewspberry.front.ws.beans.responses;
 
-public class UserLoginBean {
+public class UserLoginBean extends UserBean {
 	
 	
 	private String username;
