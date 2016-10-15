@@ -96,12 +96,6 @@ public class StepBuilder {
 
 	}
 
-	public StepBuilder steps(DurationBO id) {
-
-		this.obj.setEtp_duree(id);
-		return this;
-
-	}
 
 	public StepBuilder actioners(List<Actioner> id) {
 

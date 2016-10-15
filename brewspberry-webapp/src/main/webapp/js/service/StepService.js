@@ -10,7 +10,7 @@
 
 angular.module('brewspberry').factory('StepService', StepService);
 
-BrewService.$inject = ['$http', 'CONSTANTS'];
+StepService.$inject = ['$http', 'CONSTANTS'];
 
 function StepService($http, CONSTANTS) {
 
@@ -36,9 +36,8 @@ function StepService($http, CONSTANTS) {
     		
     	}
     }
-    	
-    }
-    
     return StepServiceFactory;
 
-}
+    }
+
+})();

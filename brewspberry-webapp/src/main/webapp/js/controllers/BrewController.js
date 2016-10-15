@@ -205,6 +205,7 @@
 						limitDataSizeOnChart(stepCounter, i);
 						i++;
 					}
+					console.log (vm.currentFullBrew.steps)
 				}
 
 
@@ -259,7 +260,7 @@
 
 		init();
 
-
+/*
 
 		$interval(function () {
 
@@ -267,7 +268,7 @@
 
 		}, vm.updateDelay);
 
-
+*/
 		/******************************************************************************************/
 		/****************************   ACTIONNER ACTIVATION  *************************************/
 		/******************************************************************************************/
@@ -359,6 +360,8 @@
 
 
 			var addedStep = addAStepForm.step;
+			
+			console.log(addedStep);
 
 			// Service call
 			StepService.add(vm.currentFullBrew.id, addedStep, function (response) {

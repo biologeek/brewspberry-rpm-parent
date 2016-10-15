@@ -6,9 +6,6 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 
-import javax.naming.spi.DirStateFactory.Result;
-import javax.xml.ws.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,11 +31,9 @@ import net.brewspberry.business.validation.Validator;
 import net.brewspberry.front.ws.IBrewProcessingRESTService;
 import net.brewspberry.front.ws.IBrewRESTService;
 import net.brewspberry.front.ws.beans.dto.BrassinDTO;
-import net.brewspberry.front.ws.beans.requests.BrewRequest;
 import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse.BrewResponseType;
-import net.brewspberry.tests.ws.dto.BrewDTOTest;
 import net.brewspberry.util.LogManager;
 
 

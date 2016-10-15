@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
@@ -16,9 +17,9 @@ import net.brewspberry.front.ws.IStepRESTService;
 import net.brewspberry.front.ws.beans.dto.StepDTO;
 import net.brewspberry.front.ws.beans.requests.CompleteStep;
 
-@RequestMapping("/stepService")
 @RestController
-public abstract class StepRESTServiceImpl implements IStepRESTService {
+@RequestMapping("/stepService")
+public class StepRESTServiceImpl implements IStepRESTService {
 
 	@Autowired
 	@Qualifier("brassinServiceImpl")
@@ -29,7 +30,7 @@ public abstract class StepRESTServiceImpl implements IStepRESTService {
 
 	@Override
 	@PostMapping("/add")
-	public CompleteStep add(CompleteStep step) throws Exception {
+	public CompleteStep add(@RequestBody CompleteStep step) throws Exception {
 
 		Brassin attachedBrew;
 
@@ -37,6 +38,7 @@ public abstract class StepRESTServiceImpl implements IStepRESTService {
 
 			if (step.getId() == null) {
 
+				
 				attachedBrew = genBrewService.getElementById(step.getBrewID());
 
 				if (attachedBrew != null) {

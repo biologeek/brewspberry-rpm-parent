@@ -31,7 +31,7 @@ public class StepDTO {
 		res.setUpdate(step.getEtp_update_date().getTime());
 		res.setName(step.getEtp_nom());
 		res.setComment(step.getEtp_remarque());
-		res.setDuration(step.getEtp_duree().toTimestamp());
+		res.setDuration(step.getEtp_duree());
 		res.setTheoreticalTemperature(res.getTheoreticalTemperature());
 		res.setNumber(step.getEtp_numero());
 		res.setStageType(step.getEtp_palier_type().getPlt_libelle());
@@ -49,8 +49,7 @@ public class StepDTO {
 	 */
 	public CompleteStep toCompleteStep(Etape step) {
 
-		CompleteStep res = new CompleteStep();
-		res = (CompleteStep) this.toSimpleStepResponse(step);
+		CompleteStep res = new CompleteStep(this.toSimpleStepResponse(step));
 
 		res.setMalts(new MaltDTO().toFrontObjectList(step.getEtp_malts()));
 		res.setHops(new HopDTO().toFrontObjectList(step.getEtp_houblons()));

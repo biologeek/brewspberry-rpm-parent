@@ -203,7 +203,6 @@ public class StepProcessor implements Processor<Object> {
 			HttpServletRequest request, Etape currentStep) {
 
 		String currentStepLabel;
-		String currentStepDuration;
 		String currentStepTemperature;
 		String currentStepComment;
 		Date currentStepEndDate;
@@ -242,19 +241,6 @@ public class StepProcessor implements Processor<Object> {
 
 		}
 
-		// Step duration
-
-		if (request.getParameter("step_duration") != null) {
-
-			currentStepDuration = request.getParameter("step_duration");
-
-			DurationBO duration = new DurationBO();
-
-			duration.setMinute(Long.parseLong(currentStepDuration));
-
-			currentStep.setEtp_duree(duration);
-
-		}
 
 		// Step theoretical temperature
 

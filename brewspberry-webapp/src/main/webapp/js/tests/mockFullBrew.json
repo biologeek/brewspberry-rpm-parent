@@ -3,7 +3,7 @@
 	"name" : "Test",
 	"status" : 40,
 	"quantity" : 50,
-	"type" : 
+	"type" : "blond",
 	"steps" : [
 
 		{
@@ -54,7 +54,7 @@
 	"beer" : {
 	
 		"name" : "TestBeer1",
-		"style : "Amber Ale",
+		"style" : "Amber Ale",
 		"bottledTotal" : 50,
 		"remainingBtl" : 25,
 		"firstDrinkDate" : "2016-09-30",

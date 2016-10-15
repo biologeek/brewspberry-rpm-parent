@@ -114,8 +114,8 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 						actioner = actionerService.startActionInDatabase(actioner);
 
-						duration = String.valueOf((double) currentStep
-								.getEtp_duree().getMinute()
+						duration = String.valueOf(((double) currentStep
+								.getEtp_duree()/60)
 								* (Double.parseDouble(durationCoef)));
 
 						args[0] = "MINUTE";

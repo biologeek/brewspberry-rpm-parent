@@ -56,7 +56,19 @@ public class MaltDTO implements DTO<Malt, ConcreteIngredientRequest> {
 
 		if (cplObj != null) {
 
-			res = (ConcreteIngredientRequest) new SimpleMaltDTO().toFrontObject(cplObj);
+
+			
+			res.setId(cplObj.getStb_id());
+			res.setCereal(cplObj.getSmal_cereale());
+			res.setColor(cplObj.getSmal_couleur());
+			res.setProvider(cplObj.getIng_fournisseur());
+			res.setType("malt");
+			res.setDescription(cplObj.getIng_desc());
+			res.setMaltType(cplObj.getSmal_type());
+			res.setUnitaryPrice(cplObj.getIng_unitary_price());
+			res.setUnitaryPriceUnit(cplObj.getIng_unitary_price_unit().name());
+			res.setUnitaryWeight(cplObj.getIng_unitary_weight());
+			res.setUnitaryWeightUnit(cplObj.getIng_unitary_weight_unit().name());
 			res.setQuantity(cplObj.getIng_quantite());
 			res.setPrice(cplObj.getIng_prix());
 

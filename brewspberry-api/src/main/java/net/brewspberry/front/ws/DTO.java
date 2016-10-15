@@ -2,12 +2,15 @@ package net.brewspberry.front.ws;
 
 import java.util.List;
 
-public interface DTO<T, U> {
+
 /**
  * 
  * Determines Data Transfer Objects behaviour
+ * T : API type
+ * U : Model type
  * 
  */
+public interface DTO<T, U> {
 	
 	
 	public T toBusinessObject(U cplObj);

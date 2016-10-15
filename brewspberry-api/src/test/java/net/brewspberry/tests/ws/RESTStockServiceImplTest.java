@@ -17,31 +17,31 @@ import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 @ContextConfiguration(classes={SpringCoreTestConfiguration.class})
 @WebAppConfiguration
 public class RESTStockServiceImplTest {
-//
-//	@Autowired
-//	ISpecificStockService stockSpecService;
-//	
-//	
-//	@Before
-//	public void beforeTest(){
-//		
-//		MockitoAnnotations.initMocks(this);
-//	}
-//	
-//	
-//	
-//	
-//	@Test
-//	public void testAutowiring (){
-//		
-//		Assert.assertNotNull(stockSpecService);
-//		
-//	}
-//	
-//	
-//	public void shouldModifyStockCounter(){
-//		
-//		
-//		
-//	}
+
+	@Autowired
+	ISpecificStockService stockSpecService;
+	
+	
+	@Before
+	public void beforeTest(){
+		
+		MockitoAnnotations.initMocks(this);
+	}
+	
+	
+	
+	
+	@Test
+	public void testAutowiring (){
+		
+		Assert.assertNotNull(stockSpecService);
+		
+	}
+	
+	
+	public void shouldModifyStockCounter(){
+		
+		
+		
+	}
 }

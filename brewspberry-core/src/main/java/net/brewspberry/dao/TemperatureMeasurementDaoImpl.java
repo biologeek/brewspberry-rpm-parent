@@ -7,16 +7,14 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityNotFoundException;
+import javax.print.attribute.standard.PrinterLocation;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -30,82 +28,68 @@ import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.DateManipulator;
-import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 
 @Repository
-public class TemperatureMeasurementDaoImpl implements
-		ISpecificTemperatureMeasurementService,
-		IGenericDao<ConcreteTemperatureMeasurement> {
+public class TemperatureMeasurementDaoImpl
+		implements ISpecificTemperatureMeasurementService, IGenericDao<ConcreteTemperatureMeasurement> {
 
-	Logger logger = LogManager.getInstance(TemperatureMeasurementDaoImpl.class
-			.getName());
+	Logger logger = LogManager.getInstance(TemperatureMeasurementDaoImpl.class.getName());
 
 	@Autowired
 	SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(
-			Brassin brassin) {
+	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(Brassin brassin) {
 
-		List<ConcreteTemperatureMeasurement> result = sessionFactory
-				.getCurrentSession()
-				.createCriteria(ConcreteTemperatureMeasurement.class)
-				.add(Restrictions.eq("tmes_brassin", brassin)).list();
+		List<ConcreteTemperatureMeasurement> result = sessionFactory.getCurrentSession()
+				.createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("tmes_brassin", brassin))
+				.list();
 
 		return result;
 	}
 
 	@Override
-	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByEtape(
-			Etape etape) {
+	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByEtape(Etape etape) {
 		@SuppressWarnings("unchecked")
 		List<ConcreteTemperatureMeasurement> result = (List<ConcreteTemperatureMeasurement>) sessionFactory
-				.getCurrentSession()
-				.createCriteria(ConcreteTemperatureMeasurement.class)
+				.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class)
 				.add(Restrictions.eq("tmes_etape", etape)).list();
 
 		return result;
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementByUUID(
-			String uuid) throws Exception {
+	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementByUUID(String uuid) throws Exception {
 
 		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 
 		if (uuid != null) {
 
 			if (uuid != "") {
-				Criteria cr = sessionFactory.getCurrentSession()
-						.createCriteria(ConcreteTemperatureMeasurement.class);
+				Criteria cr = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
 
 				cr.add(Restrictions.eq("tmes_probeUI", uuid));
 				cr.addOrder(Order.desc("tmes_date"));
 
-				result = ((List<ConcreteTemperatureMeasurement>) cr.list())
-						.get(0);
+				result = ((List<ConcreteTemperatureMeasurement>) cr.list()).get(0);
 
 			}
 		} else {
 			throw new Exception("Empty string is not permitted !!");
 		}
-		if (result == null
-				|| result.equals(new ConcreteTemperatureMeasurement())) {
-			throw new EntityNotFoundException(
-					"Temperature measurement not found for uuid " + uuid);
+		if (result == null || result.equals(new ConcreteTemperatureMeasurement())) {
+			throw new EntityNotFoundException("Temperature measurement not found for uuid " + uuid);
 		}
 
 		return result;
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementByName(
-			String name) throws Exception {
+	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementByName(String name) throws Exception {
 
-		String sqlQuery = "FROM TemperatureMeasurement WHERE tmes_probe_name = '"
-				+ name + "' ORDER BY tmes_date DESC";
+		String sqlQuery = "FROM TemperatureMeasurement WHERE tmes_probe_name = '" + name + "' ORDER BY tmes_date DESC";
 
 		ConcreteTemperatureMeasurement result = new ConcreteTemperatureMeasurement();
 
@@ -123,11 +107,9 @@ public class TemperatureMeasurementDaoImpl implements
 				 * but it's ok if you do only 1 brew or step at a time
 				 */
 
-				Query request = sessionFactory.getCurrentSession()
-						.createQuery(sqlQuery).setMaxResults(1);
+				Query request = sessionFactory.getCurrentSession().createQuery(sqlQuery).setMaxResults(1);
 
-				result = (ConcreteTemperatureMeasurement) request
-						.uniqueResult();
+				result = (ConcreteTemperatureMeasurement) request.uniqueResult();
 
 			} else {
 				throw new Exception("Empty string is not permitted !!");
@@ -135,41 +117,37 @@ public class TemperatureMeasurementDaoImpl implements
 
 		}
 
-		if (result == null
-				|| result.equals(new ConcreteTemperatureMeasurement())) {
-			throw new EntityNotFoundException(
-					"Temperature measurement not found for name " + name);
+		if (result == null || result.equals(new ConcreteTemperatureMeasurement())) {
+			throw new EntityNotFoundException("Temperature measurement not found for name " + name);
 		}
 
 		return result;
 	}
 
 	@Override
-	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurements(
-			List<String> uuidOrName, Boolean uuid) throws Exception {
-		
+	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurements(List<String> uuidOrName, Boolean uuid)
+			throws Exception {
+
 		return null;
 	}
 
 	@Override
-	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurementsFromCSV(
-			List<String> uuidOrName, Boolean uuid) throws Exception {
-		
+	public List<ConcreteTemperatureMeasurement> getAllLastTemperatureMeasurementsFromCSV(List<String> uuidOrName,
+			Boolean uuid) throws Exception {
+
 		return null;
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementsByNameFromCSV(
-			String uuidOrName, Boolean uuid) throws Exception {
-		
+	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementsByNameFromCSV(String uuidOrName, Boolean uuid)
+			throws Exception {
+
 		return null;
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement save(
-			ConcreteTemperatureMeasurement arg0) throws DAOException {
-		Transaction tx = (Transaction) sessionFactory.getCurrentSession()
-				.beginTransaction();
+	public ConcreteTemperatureMeasurement save(ConcreteTemperatureMeasurement arg0) throws DAOException {
+		Transaction tx = (Transaction) sessionFactory.getCurrentSession().beginTransaction();
 		ConcreteTemperatureMeasurement result = null;
 		try {
 
@@ -189,8 +167,7 @@ public class TemperatureMeasurementDaoImpl implements
 	}
 
 	@Override
-	public ConcreteTemperatureMeasurement update(
-			ConcreteTemperatureMeasurement arg0) {
+	public ConcreteTemperatureMeasurement update(ConcreteTemperatureMeasurement arg0) {
 
 		ConcreteTemperatureMeasurement result = null;
 
@@ -209,9 +186,8 @@ public class TemperatureMeasurementDaoImpl implements
 	@Override
 	public ConcreteTemperatureMeasurement getElementById(long id) {
 
-		return (ConcreteTemperatureMeasurement) sessionFactory
-				.getCurrentSession().get(ConcreteTemperatureMeasurement.class,
-						id);
+		return (ConcreteTemperatureMeasurement) sessionFactory.getCurrentSession()
+				.get(ConcreteTemperatureMeasurement.class, id);
 	}
 
 	@Override
@@ -225,8 +201,7 @@ public class TemperatureMeasurementDaoImpl implements
 
 		List<ConcreteTemperatureMeasurement> result = null;
 
-		result = sessionFactory.getCurrentSession()
-				.createQuery("from TemperatureMeasurement").list();
+		result = sessionFactory.getCurrentSession().createQuery("from TemperatureMeasurement").list();
 		return result;
 	}
 
@@ -278,10 +253,7 @@ public class TemperatureMeasurementDaoImpl implements
 	public List<ConcreteTemperatureMeasurement> getAllDistinctElements() {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
-		result = sessionFactory
-				.getCurrentSession()
-				.createQuery(
-						"from TemperatureMeasurement group by tmes_probe_name")
+		result = sessionFactory.getCurrentSession().createQuery("from TemperatureMeasurement group by tmes_probe_name")
 				.list();
 
 		return result;
@@ -289,28 +261,22 @@ public class TemperatureMeasurementDaoImpl implements
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(
-			Etape etape, String uuid, int numberOfPoints, long tmesID,
-			float modulo) {
+	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementsAfterIDForStepUUIDAndDelay(Etape etape,
+			String uuid, int numberOfPoints, long tmesID, float modulo) {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
-		logger.fine("Restrictions : " + etape.getEtp_id() + " uuid : " + uuid
-				+ " ID : " + tmesID);
+		logger.fine("Restrictions : " + etape.getEtp_id() + " uuid : " + uuid + " ID : " + tmesID);
 		Criteria query;
 
 		Calendar cal = Calendar.getInstance();
 
-		cal.add(Calendar.MINUTE,
-				Integer.parseInt(ConfigLoader.getConfigByKey(
-						Constants.CONFIG_PROPERTIES,
-						"param.chart.timeLengthInMinutes")));
+		cal.add(Calendar.MINUTE, Integer
+				.parseInt(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.chart.timeLengthInMinutes")));
 		if (etape != null) {
 			if (tmesID > 0) {
 
-				query = sessionFactory.getCurrentSession()
-						.createCriteria(ConcreteTemperatureMeasurement.class)
-						.add(Restrictions.gt("tmes_id", tmesID))
-						.add(Restrictions.eq("tmes_etape", etape))
+				query = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class)
+						.add(Restrictions.gt("tmes_id", tmesID)).add(Restrictions.eq("tmes_etape", etape))
 						.add(Restrictions.gt("tmes_date", cal.getTime()));
 				// .add(Restrictions.sqlRestriction("tmes_id mod "
 				// + modulo + " = 0"));
@@ -326,22 +292,17 @@ public class TemperatureMeasurementDaoImpl implements
 			}
 		}
 
-		logger.info("Fetched " + result.size() + " new results after ID "
-				+ tmesID);
+		logger.info("Fetched " + result.size() + " new results after ID " + tmesID);
 
 		return result;
 	}
 
 	@Override
-	public List<ConcreteTemperatureMeasurement> getLastTemperatureByStepAndUUID(
-			Etape stepID, String uuid) {
+	public List<ConcreteTemperatureMeasurement> getLastTemperatureByStepAndUUID(Etape stepID, String uuid) {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 
-		Session session = HibernateUtil.getSession();
-
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(
-				ConcreteTemperatureMeasurement.class);
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
 		crit.add(Restrictions.eq("tmes_etape", stepID));
 		crit.add(Restrictions.eq("tmes_probeUI", uuid));
 		crit.addOrder(Order.desc("tmes_date"));
@@ -358,13 +319,9 @@ public class TemperatureMeasurementDaoImpl implements
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConcreteTemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
-			Etape etapeID, String uuid, int numberOfPoints, float delay)
-			throws Exception {
+			Etape etapeID, String uuid, int numberOfPoints, float delay) throws Exception {
 
-		Session session = HibernateUtil.getSession();
-
-		Criteria tmesCriteria = session
-				.createCriteria(ConcreteTemperatureMeasurement.class);
+		Criteria tmesCriteria = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
 
 		tmesCriteria.add(Restrictions.eq("tmes_etape", etapeID));
 
@@ -378,12 +335,31 @@ public class TemperatureMeasurementDaoImpl implements
 
 		tmesCriteria.setMaxResults(numberOfPoints);
 
-		tmesCriteria.add(Restrictions.le(
-				"tmes_date",
-				DateManipulator.getInstance().getDateFromDateAndDelay(
-						new Date(), (float) -delay, "SECONDS")));
+		tmesCriteria.add(Restrictions.le("tmes_date",
+				DateManipulator.getInstance().getDateFromDateAndDelay(new Date(), (float) -delay, "SECONDS")));
 
 		return (List<ConcreteTemperatureMeasurement>) tmesCriteria.list();
+	}
+
+	@Override
+	public List<ConcreteTemperatureMeasurement> getTemperaturesByStepAndUUID(Etape stepID, String uuid, Long lastID) {
+		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
+
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+		crit.add(Restrictions.eq("tmes_etape", stepID));
+		crit.add(Restrictions.eq("tmes_probeUI", uuid));
+		if (lastID != null && lastID.longValue() > 0) {
+	
+			crit.add(Restrictions.gt("tmes_id", lastID));
+			
+		}
+
+		crit.addOrder(Order.desc("tmes_date"));
+
+		result = crit.list();
+		System.out.println("AAA " + result.size());
+
+		return result;
 	}
 
 }

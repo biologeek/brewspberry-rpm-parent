@@ -24,6 +24,28 @@ public class CompleteStep extends SimpleStepResponse {
 	 * TODO 
 	 */
 	private List<ActionnerResponse> actioners;
+	public CompleteStep(SimpleStepResponse res) {
+
+
+		this.setId(res.getId());
+		this.setActive(res.isActive());
+		this.setBeginning(res.getBeginning());
+		this.setBrewID(res.getBrewID());
+		this.setComment(res.getComment());
+		this.setCreation(res.getCreation());
+		this.setDuration(res.getDuration());
+		this.setEnd(res.getEnd());
+		this.setName(res.getName());
+		this.setNumber(res.getNumber());
+		this.setRealBeginning(res.getRealBeginning());
+		this.setRealEnd(res.getRealEnd());
+		this.setStageType(res.getStageType());
+		this.setTheoreticalTemperature(res.getTheoreticalTemperature());
+		this.setUpdate(res.getUpdate());
+	}
+	public CompleteStep() {
+		super();
+	}
 	public List<ConcreteIngredientRequest> getMalts() {
 		return malts;
 	}
@@ -55,7 +77,7 @@ public class CompleteStep extends SimpleStepResponse {
 		
 		for (PalierType pl : PalierType.values()){
 			
-			if (pl.getPlt_libelle().equals(st)){
+			if (pl.name().equals(st)){
 				return pl;
 			}
 		}

@@ -8,8 +8,6 @@ import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.dialect.function.StandardAnsiSqlAggregationFunctions;
-import org.hibernate.engine.jdbc.dialect.internal.StandardDialectResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -21,12 +19,8 @@ import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
-import net.brewspberry.business.beans.SimpleLevure;
-import net.brewspberry.business.service.BrassinServiceImpl;
-import net.brewspberry.business.service.HopServiceImpl;
-import net.brewspberry.business.service.MaltServiceImpl;
-import net.brewspberry.business.service.YeastServiceImpl;
 import net.brewspberry.util.LogManager;
+import net.brewspberry.model.Processor;
 
 @Component
 public class BrewProcessorDelegate implements Processor<Brassin> {

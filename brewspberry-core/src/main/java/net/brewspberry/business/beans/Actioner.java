@@ -44,11 +44,11 @@ public class Actioner {
 	private boolean act_used;
 	private String act_picture;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "act_bra_id")
 	private Brassin act_brassin;
 
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "act_etp_id")
 	private Etape act_etape;
 	

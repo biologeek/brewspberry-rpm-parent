@@ -12,12 +12,12 @@ public class ValidationException extends Exception {
 	
 	
 	public ValidationException(List<BusinessErrors> errs) {
-		
-		this.errors = errs;	
+		super(getMessage(errs));
+
+		this.setErrors(errs);	
 	}
 
-	@Override
-	public String getMessage() {
+	public static String getMessage(List<BusinessErrors> errors) {
 		
 		StringBuilder message= new StringBuilder();
 
@@ -37,6 +37,14 @@ public class ValidationException extends Exception {
 	public boolean equals(Object obj) {
 		
 		return super.equals(obj);
+	}
+
+	public List<BusinessErrors> getErrors() {
+		return errors;
+	}
+
+	public void setErrors(List<BusinessErrors> errors) {
+		this.errors = errors;
 	}
 
 }

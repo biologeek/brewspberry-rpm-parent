@@ -22,5 +22,8 @@ public interface ISpecificTemperatureMeasurementService {
 	public ConcreteTemperatureMeasurement getLastTemperatureMeasurementsByNameFromCSV (String uuidOrName, Boolean uuid) throws Exception;
 	public List<ConcreteTemperatureMeasurement> getLastTemperatureByStepAndUUID(
 			Etape stepID, String uuid);
+	
+	public List<ConcreteTemperatureMeasurement> getTemperaturesByStepAndUUID(
+			Etape stepID, String uuid, Long lastID);
 
 }

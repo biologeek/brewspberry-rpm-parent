@@ -3,6 +3,7 @@
 	<ng-include src="tpl/header.jsp"></ng-include>
 
 
+
 	<div class="container-fluid">
 
 		<div class="row-fluid">
@@ -14,7 +15,8 @@
 				<div id="submissionFailed" class="alert alert-error"
 					ng-show="brewController.showErrors">
 					<button class="close" data-dismiss="alert">&times;</button>
-					<strong>Error!</strong> {{ brewController.submissionFailureMessage }}
+					<strong>Error!</strong> {{ brewController.submissionFailureMessage
+					}}
 				</div>
 				<div id="submissionSuccess" class="alert alert-success"
 					ng-show="brewController.showSuccess">
@@ -32,12 +34,12 @@
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left" style="font-size: 10px;">
-							Reload avery (ms) : <input type="text" id="delay"
-								name="delay" ng-model="brewController.updateDelay" />
-							Points displayed : <input type="text" id="maxPts" name="maxPts"
-													  ng-model="brewController.defaultmaxPtsValue" />
-							Range (minutes : <input type="text" id="range" name="range"
-													  ng-model="brewController.defaultRangeInMinutes" />
+							Reload avery (ms) : <input type="text" id="delay" name="delay"
+								ng-model="brewController.updateDelay" /> Points displayed : <input
+								type="text" id="maxPts" name="maxPts"
+								ng-model="brewController.defaultmaxPtsValue" /> Range (minutes
+							: <input type="text" id="range" name="range"
+								ng-model="brewController.defaultRangeInMinutes" />
 						</div>
 					</div>
 				</div>
@@ -50,8 +52,12 @@
 							<div class="navbar navbar-inner block-header">
 								<div class="muted pull-left">Etape</div>
 								<div class="pull-right">
-									<button class="btn"><i class="icon-play"></i></button>
-									<button class="btn"><i class="icon-stop"></i></button>
+									<button class="btn">
+										<i class="icon-play"></i>
+									</button>
+									<button class="btn">
+										<i class="icon-stop"></i>
+									</button>
 								</div>
 							</div>
 							<div class="block-content collapse in">
@@ -121,176 +127,191 @@
 										</div>
 									</md-tabs>
 								</md-content></div></div> -->
-							<div class="block-content collapse in">
-
-							</div>
+							<div class="block-content collapse in"></div>
 						</div>
 					</div>
 				</div>
 			</div>
-				<div class="row-fluid">
+			<div class="row-fluid">
 
-					<!-- block -->
-					<div class="block">
-						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Ajouter une etape</div>
-							<div class="pull-right">
-								<span class="badge badge-info">{{brewController.currentFullBrew.steps.length}}</span>
+				<!-- block -->
+				<div class="block">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left">Ajouter une etape</div>
+						<div class="pull-right">
+							<span class="badge badge-info">{{brewController.currentFullBrew.steps.length}}</span>
 
-							</div>
 						</div>
-						<div class="block-content collapse in">
-							<form name="addAStepForm"
-								ng-submit="brewController.addAStep(addAStepForm)"
-								class="form-horizontal">
-								<table class="table table-striped">
-									<tbody>
-										<tr>
-											<td>Label</td>
-											<td><input type="text" name="step_label"
-												ng-model="step.label" /></td>
-
-											<td>Duree theorique</td>
-											<td><input type="text" name="step_duration"
-												ng-model="step.duration" /></td>
-										</tr>
-										<tr>
-											<td>Debut</td>
-											<td id="stepBeginningAdd"><md-datepicker
-													ng-model="step.beginning"></md-datepicker></td>
-
-											<td>Fin</td>
-											<td id="stepEndAdd"><md-datepicker ng-model="step.end"></md-datepicker></td>
-										</tr>
-										<tr>
-											<td>Temperature theorique</td>
-											<td><input type="text" name="step_temperature"
-												ng-model="step.temperature" /></td>
-
-											<td>Commentaire</td>
-											<td><textarea name="step_comment"
-													ng-model="step.comment" rows="3" cols="15"></textarea></td>
-										</tr>
-										<tr>
-											<td>Etape n°</td>
-											<td><input type="text" name="step_number"
-												value="{{ brewController.currentFullBrew.steps.length }}" />
-											</td>
-											<td></td>
-											<td></td>
-											<td>
-										</tr>
-										<tr>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td><button type="submit" class="btn btn-primary">+</button></td>
-										</tr>
-									</tbody>
-								</table>
-							</form>
-						</div>
-						<!-- /block -->
 					</div>
-				</div>
-				<div class="row-fluid">
-					<!-- block -->
-					<div class="block">
-
-						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Profil complet de temperature</div>
-
-						</div>
-
-
-					</div>
-				</div>
-				<div class="row-fluid">
-					<!-- block -->
-					<div class="block">
-
-						<div class="navbar navbar-inner block-header">
-							<div class="muted pull-left">Biere</div>
-						</div>
-						<div class="block-content collapse in">
+					<div class="block-content collapse in">
+						<form name="addAStepForm"
+							ng-submit="brewController.addAStep(addAStepForm)"
+							class="form-horizontal">
 							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<td>Label</td>
+										<td><input type="text" name="step_label"
+											ng-model="step.label" /></td>
 
-								<tr>
-									<td style="width: 20%;">Nom :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.name}}</td>
-									<td style="width: 20%;">Style :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.style}}</td>
-								</tr>
-								<tr>
-									<td style="width: 20%;">Taux d'alcool :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.alcoholRate}}</td>
-									<td style="width: 20%;">Densite :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.density}}</td>
-								</tr>
-								<tr>
-									<td style="width: 20%;">Couleur (EBC) :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.colorEBC}}</td>
-									<td style="width: 20%;">Aromes :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.aroma}}</td>
-								</tr>
-								<tr>
-									<td style="width: 20%;">Note / 10 :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.rating}}</td>
-									<td style="width: 20%;">Bulles :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.bubbles}}</td>
-								</tr>
-								<tr>
-									<td style="width: 20%;">Commentaire :</td>
-									<td style="width: 80%;" colspan="3">{{ brewController.currentFullBrew.beer.comment}}</td>
-								</tr>
+										<td>Duree theorique</td>
+										<td><input type="text" name="step_duration"
+											ng-model="step.duration" /></td>
+									</tr>
+									<tr>
+										<td>Debut</td>
+										<td id="stepBeginningAdd">
+											<div class='input-group date' id='datetimepicker1'>
+												<input type='text' class="form-control"
+													ng-model="step.beginning" id="stepBeginningPicker" /> 
+											</div>
+										</td>
 
-								<tr>
-									<td style="width: 20%;">Embouteillees :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.bottledTotal}}</td>
-									<td style="width: 20%;">Restantes :</td>
-									<td style="width: 30%;">{{ brewController.currentFullBrew.beer.remainingBtl}}</td>
-								</tr>
+										<td>Fin</td>
+										<td id="stepEndAdd">
+											<div class='input-group date' id='datetimepicker2'>
+												<input type='text' class="form-control"
+													ng-model="step.end" id="stepEndPicker" />
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td>Temperature theorique</td>
+										<td><input type="text" name="step_temperature"
+											ng-model="step.temperature" /></td>
 
-								<tr>
-									<td style="width: 20%;">Progression :</td>
-									<td style="width: 30%;">
-
-
-												<div ng-if="brewController.currentFullBrew.beer.percentageDrunk < 33"
-													class="progress progress-striped progress-success active">
-													<div
-														style="width: {{ brewController.currentFullBrew.beer.percentageDrunk}}"
-														class="bar"></div>
-												</div>
-
-										<div ng-if="brewController.currentFullBrew.beer.percentageDrunk >= 33 && brewController.currentFullBrew.beer.percentageDrunk < 66"
-											 class="progress progress-striped progress-warning active">
-													<div
-														style="width: {{ brewController.currentFullBrew.beer.percentageDrunk}}"
-														class="bar"></div>
-												</div>
-										<div ng-if="brewController.currentFullBrew.beer.percentageDrunk > 66"
-											 class="progress progress-striped progress-danger active">
-													<div
-															style="width: {{ brewController.currentFullBrew.beer.percentageDrunk}}"
-														class="bar"></div>
-												</div>
-									</td>
-									<td style="width: 20%;">Premiere goulee :</td>
-									<td style="width: 30%;">
-										{{brewController.currentFullBrew.beer.firstDrinkDate | date: 'dd/mm/yyyy'}}
-									</td>
-								</tr>
-
+										<td>Commentaire</td>
+										<td><textarea name="step_comment" ng-model="step.comment"
+												rows="3" cols="15"></textarea></td>
+									</tr>
+									<tr>
+										<td>Etape n°</td>
+										<td><input type="text" name="step_number"
+											value="{{ brewController.currentFullBrew.steps.length }}" />
+										</td>
+										<td></td>
+										<td></td>
+										<td>
+									</tr>
+									<tr>
+										<td></td>
+										<td></td>
+										<td></td>
+										<td><button type="submit" class="btn btn-primary">+</button></td>
+									</tr>
+								</tbody>
 							</table>
+						</form>
+					</div>
+					<!-- /block -->
+				</div>
+			</div>
+			<div class="row-fluid">
+				<!-- block -->
+				<div class="block">
 
-						</div>
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left">Profil complet de temperature</div>
 
 					</div>
-				</div>
 
+
+				</div>
 			</div>
+			<div class="row-fluid">
+				<!-- block -->
+				<div class="block">
+
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left">Biere</div>
+					</div>
+					<div class="block-content collapse in">
+						<table class="table table-striped">
+
+							<tr>
+								<td style="width: 20%;">Nom :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.name}}</td>
+								<td style="width: 20%;">Style :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.style}}</td>
+							</tr>
+							<tr>
+								<td style="width: 20%;">Taux d'alcool :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.alcoholRate}}</td>
+								<td style="width: 20%;">Densite :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.density}}</td>
+							</tr>
+							<tr>
+								<td style="width: 20%;">Couleur (EBC) :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.colorEBC}}</td>
+								<td style="width: 20%;">Aromes :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.aroma}}</td>
+							</tr>
+							<tr>
+								<td style="width: 20%;">Note / 10 :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.rating}}</td>
+								<td style="width: 20%;">Bulles :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.bubbles}}</td>
+							</tr>
+							<tr>
+								<td style="width: 20%;">Commentaire :</td>
+								<td style="width: 80%;" colspan="3">{{
+									brewController.currentFullBrew.beer.comment}}</td>
+							</tr>
+
+							<tr>
+								<td style="width: 20%;">Embouteillees :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.bottledTotal}}</td>
+								<td style="width: 20%;">Restantes :</td>
+								<td style="width: 30%;">{{
+									brewController.currentFullBrew.beer.remainingBtl}}</td>
+							</tr>
+
+							<tr>
+								<td style="width: 20%;">Progression :</td>
+								<td style="width: 30%;">
+
+
+									<div
+										ng-if="brewController.currentFullBrew.beer.percentageDrunk < 33"
+										class="progress progress-striped progress-success active">
+										<div style="width: {{" class="bar"></div>
+									</div>
+
+									<div
+										ng-if="brewController.currentFullBrew.beer.percentageDrunk >= 33 && brewController.currentFullBrew.beer.percentageDrunk < 66"
+										class="progress progress-striped progress-warning active">
+										<div style="width: {{" class="bar"></div>
+									</div>
+									<div
+										ng-if="brewController.currentFullBrew.beer.percentageDrunk > 66"
+										class="progress progress-striped progress-danger active">
+										<div style="width: {{" class="bar"></div>
+									</div>
+								</td>
+								<td style="width: 20%;">Premiere goulee :</td>
+								<td style="width: 30%;">
+									{{brewController.currentFullBrew.beer.firstDrinkDate | date:
+									'dd/mm/yyyy'}}</td>
+							</tr>
+
+						</table>
+
+					</div>
+
+				</div>
+			</div>
+
 		</div>
 	</div>
-	<ng-include src="tpl/footer.jsp"></ng-include>
+</div>
+<ng-include src="tpl/footer.jsp"></ng-include>
 </div>

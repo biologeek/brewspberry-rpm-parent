@@ -2,6 +2,7 @@ package net.brewspberry.business.beans;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
+
+import net.brewspberry.util.DateManipulator;
 
 @Entity
 @Component
@@ -50,9 +53,6 @@ public class Etape implements Serializable {
 	
 	//private EtapeType etp_etape_type;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "dur_step")
-	private DurationBO etp_duree;
-
 	private Double etp_temperature_theorique;
 	private String etp_remarque;
 
@@ -63,21 +63,21 @@ public class Etape implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tmes_etape")
 	private List<ConcreteTemperatureMeasurement> etp_temperature_measurement;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "act_etape")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "act_etape")
 	private List<Actioner> etp_actioner;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "malt_etape", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "malt_etape", cascade = CascadeType.ALL)
 	private List<Malt> etp_malts;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "hbl_etape", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hbl_etape", cascade = CascadeType.ALL)
 	private List<Houblon> etp_houblons;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "lev_etape", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lev_etape", cascade = CascadeType.ALL)
 	private List<Levure> etp_levures;
 
 	@Enumerated(EnumType.ORDINAL)
 	PalierType etp_palier_type;
-
+ 
 	@Transient
 	private List<AbstractIngredient> etp_ingredients;
 
@@ -142,13 +142,33 @@ public class Etape implements Serializable {
 		this.etp_fin = etp_fin;
 	}
 
-	public DurationBO getEtp_duree() {
-		return etp_duree;
+	/**
+	 * Returns duration in seconds
+	 * @return
+	 */
+	public long getEtp_duree() {
+		return (getEtp_fin_reel().getTime() - getEtp_debut_reel().getTime()) / 1000;
+	}
+	
+	/**
+	 * Returns duration in seconds
+	 * @return
+	 */
+	public void setEtp_duree() {
+		
+		if (this.getEtp_debut_reel() != null && DateManipulator.isDateInRange(etp_debut_reel, 5, Calendar.YEAR)){
+			
+			if (this.getEtp_fin_reel() == null){
+				
+				this.setEtp_fin_reel(new Date(this.getEtp_debut_reel().getTime() - this.getEtp_duree()));
+				
+			}
+		}
 	}
 
-	public void setEtp_duree(DurationBO etp_duree) {
-		this.etp_duree = etp_duree;
-	}
+		
+	
+
 
 	public Double getEtp_temperature_theorique() {
 		return etp_temperature_theorique;
@@ -213,7 +233,7 @@ public class Etape implements Serializable {
 	@Override
 	public String toString() {
 		return "Etape [etp_id=" + etp_id + ", etp_numero=" + etp_numero + ", etp_nom=" + etp_nom + ", etp_debut="
-				+ etp_debut + ", etp_fin=" + etp_fin + ", etp_duree=" + etp_duree + ", etp_temperature_theorique="
+				+ etp_debut + ", etp_fin=" + etp_fin + ", etp_duree=" + getEtp_duree() + ", etp_temperature_theorique="
 				+ etp_temperature_theorique + ", etp_remarque=" + etp_remarque + "]";
 	}
 

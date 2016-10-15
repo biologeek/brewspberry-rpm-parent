@@ -11,8 +11,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 
 import org.springframework.stereotype.Component;
 
-@Entity
-@Component
+
+@Deprecated
 public class DurationBO implements Serializable{
 	
 	

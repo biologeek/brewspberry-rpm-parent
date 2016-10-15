@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificTemperatureMeasurementService;
@@ -27,13 +28,15 @@ import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.business.beans.TemperatureMeasurement;
 import net.brewspberry.business.beans.TheoreticalTemperatureMeasurement;
 import net.brewspberry.business.exceptions.ServiceException;
+import net.brewspberry.front.ws.beans.dto.TemperatureMeasurementDTO;
 import net.brewspberry.front.ws.beans.responses.MergedTemperatureMeasurement;
+import net.brewspberry.front.ws.beans.responses.MergedTemperatureMeasurementsForChart;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 @RequestMapping("/temperatureService")
-@Controller
+@RestController
 public class RESTTemperatureService {
 
 	@Autowired
@@ -49,6 +52,36 @@ public class RESTTemperatureService {
 
 	Logger logger = LogManager.getInstance(RESTTemperatureService.class.getName());
 
+
+	
+	
+	
+	@GetMapping("/step/{stepId}/act/{actUUID}")
+	public MergedTemperatureMeasurementsForChart initTemperatures( @PathVariable("stepId") Long stepId, @PathVariable("actUUID") String actionerUUID) throws ServiceException{
+		Etape step = stepService.getElementById(stepId);
+
+		System.out.println(step);
+		List<ConcreteTemperatureMeasurement> tmes = tmesSpecService.getTemperaturesByStepAndUUID(step, actionerUUID, 0L);
+		
+		System.out.println(tmes.size());
+		return new TemperatureMeasurementDTO().convertToMergedAPIObject(tmes);
+	}
+	
+	
+	@GetMapping("/step/{stepId}/act/{actUUID}/last/{lastID}")
+	public MergedTemperatureMeasurementsForChart updateTemperatures( @PathVariable("stepId") Long stepId, @PathVariable("actUUID") String actionerUUID, @PathVariable("lastID") Long lastID) throws ServiceException{
+		Etape step = stepService.getElementById(stepId);
+
+		System.out.println(step);
+		List<ConcreteTemperatureMeasurement> tmes = tmesSpecService.getTemperaturesByStepAndUUID(step, actionerUUID, lastID);
+		
+		System.out.println(tmes.size());
+		return new TemperatureMeasurementDTO().convertToMergedAPIObject(tmes);
+	}
+	
+	
+	
+	
 	@GetMapping("/initTemperatures/uuid/{uuid}/sid/{sid}/maxPts/{maxPts}/delay/{delay}")
 	/**
 	 * Initiates temperature list with all available results
@@ -206,6 +239,16 @@ public class RESTTemperatureService {
 		
 		return response;
 	}
+	
+	
+	
+	
+	
+	
+	
+	/* ****************************************************************
+	 *							USELESS
+	 * ***************************************************************/
 
 	@GetMapping("/test")
 	public String testWS() {

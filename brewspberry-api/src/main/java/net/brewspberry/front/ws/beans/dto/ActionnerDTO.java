@@ -10,35 +10,32 @@ import net.brewspberry.front.ws.beans.responses.ChartResponse;
 
 public class ActionnerDTO {
 
-	
-	
-	
-	public List<ActionnerResponse> toActionnerResponse(List<Actioner> actionners){
-		
+	public List<ActionnerResponse> toActionnerResponse(List<Actioner> actionners) {
+
 		List<ActionnerResponse> result = new ArrayList<ActionnerResponse>();
-		for (Actioner act : actionners){
-			
-			if (act != null){
-				
+		for (Actioner act : actionners) {
+
+			if (act != null) {
+
 				result.add(this.toActionnerResponse(act));
-				
+
 			}
-			
+
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Transforms business objet to Transfer object
+	 * 
 	 * @param actionners
 	 * @return
 	 */
-	public ActionnerResponse toActionnerResponse(Actioner actionners){
-		
+	public ActionnerResponse toActionnerResponse(Actioner actionners) {
+
 		ActionnerResponse resp = new ActionnerResponse();
-		
-		
+
 		resp.setChart(new ChartResponse());
 		resp.setId(actionners.getAct_id());
 		resp.setName(actionners.getAct_nom());
@@ -51,20 +48,19 @@ public class ActionnerDTO {
 		resp.setUsed(actionners.getAct_used());
 		resp.setBegin(actionners.getAct_date_debut().getTime());
 		resp.setEnd(actionners.getAct_date_fin().getTime());
-		
-		
-		
+
 		return resp;
-		
+
 	}
 
 	public List<Actioner> toBusinessObjectList(List<ActionnerResponse> actioners) {
 		List<Actioner> res = new ArrayList<Actioner>();
-		
-		for(ActionnerResponse resp : actioners){
-			
-			res.add(this.toBusinessObject(resp));
-			
+		if (actioners != null && !actioners.isEmpty()) {
+			for (ActionnerResponse resp : actioners) {
+
+				res.add(this.toBusinessObject(resp));
+
+			}
 		}
 
 		return res;
@@ -72,7 +68,7 @@ public class ActionnerDTO {
 
 	public Actioner toBusinessObject(ActionnerResponse actioner) {
 		Actioner res = new Actioner();
-		
+
 		res.setAct_activated(actioner.isActive());
 		res.setAct_date_debut(new Date(actioner.getBegin()));
 		res.setAct_status(actioner.getStatus());
@@ -84,9 +80,7 @@ public class ActionnerDTO {
 		res.setAct_type(String.valueOf(actioner.getType()));
 		res.setAct_used(actioner.isUsed());
 		res.setAct_uuid(actioner.getUuid());
-		
-		
-		
+
 		return res;
 	}
 

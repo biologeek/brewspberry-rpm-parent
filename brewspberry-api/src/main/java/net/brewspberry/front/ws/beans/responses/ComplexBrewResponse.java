@@ -1,10 +1,13 @@
 package net.brewspberry.front.ws.beans.responses;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.brewspberry.business.beans.Biere;
 import net.brewspberry.front.ws.beans.requests.CompleteStep;
 import net.brewspberry.front.ws.beans.requests.ConcreteIngredientRequest;
+import net.brewspberry.front.ws.beans.requests.HopRequest;
+import net.brewspberry.front.ws.beans.requests.MaltRequest;
 
 public class ComplexBrewResponse extends SimpleBrewResponse {
 
@@ -33,6 +36,10 @@ public class ComplexBrewResponse extends SimpleBrewResponse {
 		this.setQuantity(simpleBrewResponse.getQuantity());
 		this.setStatus(simpleBrewResponse.getStatus());
 		this.setType(simpleBrewResponse.getType());
+		this.steps = new ArrayList<CompleteStep>();
+		this.hops = new ArrayList<ConcreteIngredientRequest>();
+		this.malts = new ArrayList<ConcreteIngredientRequest>();
+		this.yeasts = new ArrayList<ConcreteIngredientRequest>();
 	}
 
 	public List<CompleteStep> getSteps() {
