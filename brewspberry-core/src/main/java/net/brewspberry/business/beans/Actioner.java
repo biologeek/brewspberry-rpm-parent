@@ -29,9 +29,7 @@ public class Actioner {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long act_id;
 	/**
-	 * 1 : thermometer measurement
-	 * 2 : Engine (relay)
-	 * 3 : Pump (relay)
+	 * 1 : thermometer measurement 2 : Engine (relay) 3 : Pump (relay)
 	 */
 	private String act_type;
 	private String act_nom;
@@ -44,15 +42,15 @@ public class Actioner {
 	private boolean act_used;
 	private String act_picture;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "act_bra_id")
 	private Brassin act_brassin;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "act_etp_id")
 	private Etape act_etape;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_actioner")
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tmes_actioner")
 	List<ConcreteTemperatureMeasurement> act_temperature_measurements;
 
 	public Actioner() {
@@ -159,20 +157,16 @@ public class Actioner {
 		return act_temperature_measurements;
 	}
 
-	public void setAct_temperature_measurements(
-			List<ConcreteTemperatureMeasurement> act_temperature_measurements) {
+	public void setAct_temperature_measurements(List<ConcreteTemperatureMeasurement> act_temperature_measurements) {
 		this.act_temperature_measurements = act_temperature_measurements;
 	}
 
 	@Override
 	public String toString() {
-		return "Actioner [act_id=" + act_id + ", act_type=" + act_type
-				+ ", act_nom=" + act_nom + ", act_uuid=" + act_uuid
-				+ ", act_status=" + act_status + ", act_date_debut="
-				+ act_date_debut + ", act_date_fin=" + act_date_fin
-				+ ", act_raspi_pin=" + act_raspi_pin + ", act_activated="
-				+ act_activated + ", act_used=" + act_used + ", act_brassin="
-				+ act_brassin + ", act_etape=" + act_etape+"]";
+		return "Actioner [act_id=" + act_id + ", act_type=" + act_type + ", act_nom=" + act_nom + ", act_uuid="
+				+ act_uuid + ", act_status=" + act_status + ", act_date_debut=" + act_date_debut + ", act_date_fin="
+				+ act_date_fin + ", act_raspi_pin=" + act_raspi_pin + ", act_activated=" + act_activated + ", act_used="
+				+ act_used + ", act_brassin=" + act_brassin + ", act_etape=" + act_etape + "]";
 	}
 
 	@Override
@@ -180,28 +174,17 @@ public class Actioner {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (act_activated ? 1231 : 1237);
-		result = prime * result
-				+ ((act_brassin == null) ? 0 : act_brassin.hashCode());
-		result = prime * result
-				+ ((act_date_debut == null) ? 0 : act_date_debut.hashCode());
-		result = prime * result
-				+ ((act_date_fin == null) ? 0 : act_date_fin.hashCode());
-		result = prime * result
-				+ ((act_etape == null) ? 0 : act_etape.hashCode());
+		result = prime * result + ((act_date_debut == null) ? 0 : act_date_debut.hashCode());
+		result = prime * result + ((act_date_fin == null) ? 0 : act_date_fin.hashCode());
 		result = prime * result + (int) (act_id ^ (act_id >>> 32));
 		result = prime * result + ((act_nom == null) ? 0 : act_nom.hashCode());
-		result = prime * result
-				+ ((act_raspi_pin == null) ? 0 : act_raspi_pin.hashCode());
+		result = prime * result + ((act_raspi_pin == null) ? 0 : act_raspi_pin.hashCode());
 		result = prime * result + act_status;
-		result = prime
-				* result
-				+ ((act_temperature_measurements == null) ? 0
-						: act_temperature_measurements.hashCode());
 		result = prime * result
-				+ ((act_type == null) ? 0 : act_type.hashCode());
+				+ ((act_temperature_measurements == null) ? 0 : act_temperature_measurements.hashCode());
+		result = prime * result + ((act_type == null) ? 0 : act_type.hashCode());
 		result = prime * result + (act_used ? 1231 : 1237);
-		result = prime * result
-				+ ((act_uuid == null) ? 0 : act_uuid.hashCode());
+		result = prime * result + ((act_uuid == null) ? 0 : act_uuid.hashCode());
 		return result;
 	}
 
@@ -253,8 +236,7 @@ public class Actioner {
 		if (act_temperature_measurements == null) {
 			if (other.act_temperature_measurements != null)
 				return false;
-		} else if (!act_temperature_measurements
-				.equals(other.act_temperature_measurements))
+		} else if (!act_temperature_measurements.equals(other.act_temperature_measurements))
 			return false;
 		if (act_type == null) {
 			if (other.act_type != null)
@@ -279,6 +261,4 @@ public class Actioner {
 		this.act_picture = act_picture;
 	}
 
-	
-	
 }

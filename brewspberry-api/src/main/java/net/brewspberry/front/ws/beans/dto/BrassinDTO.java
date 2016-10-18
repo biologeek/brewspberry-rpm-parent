@@ -1,6 +1,7 @@
 package net.brewspberry.front.ws.beans.dto;
 
 import java.util.Date;
+import java.util.HashSet;
 
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.BrewStatus;
@@ -66,7 +67,7 @@ public class BrassinDTO {
 	 */
 	public ComplexBrewResponse toComplexBrewResponse (Brassin brassin){
 		
-		
+
 		ComplexBrewResponse resp = new ComplexBrewResponse(this.toSimpleBrewResponse(brassin));
 		
 		for (Etape etp : brassin.getBra_etapes()){
@@ -98,7 +99,7 @@ public class BrassinDTO {
 		brew.setBra_nom(req.getDescription());
 		brew.setBra_debut(req.getBeginning());
 		try {
-			brew.setBra_etapes(new StepDTO().toBusinessObjectList(req.getSteps()));
+			brew.setBra_etapes(new HashSet<Etape>(new StepDTO().toBusinessObjectList(req.getSteps())));
 		} catch (ConvertionException e) {
 			throw new ServiceException(e.getMessage());
 		}

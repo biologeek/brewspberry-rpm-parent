@@ -216,6 +216,89 @@ public class Biere extends AbstractFinishedProduct {
 				+ ", beer_first_drink_date=" + beer_first_drink_date
 				+ "]";
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(beer_alcohol);
+		result = prime * result + ((beer_aroma == null) ? 0 : beer_aroma.hashCode());
+		result = prime * result + ((beer_brassin == null) ? 0 : beer_brassin.hashCode());
+		result = prime * result + beer_bubbles;
+		result = prime * result + beer_color_ebc;
+		result = prime * result + ((beer_comment == null) ? 0 : beer_comment.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(beer_conso_progress);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + beer_density;
+		result = prime * result + ((beer_first_drink_date == null) ? 0 : beer_first_drink_date.hashCode());
+		result = prime * result + beer_init_bottles;
+		result = prime * result + beer_notation;
+		temp = Double.doubleToLongBits(beer_quantity);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + beer_remaining_bottles;
+		result = prime * result + ((beer_style == null) ? 0 : beer_style.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Biere other = (Biere) obj;
+		if (Float.floatToIntBits(beer_alcohol) != Float.floatToIntBits(other.beer_alcohol))
+			return false;
+		if (beer_aroma == null) {
+			if (other.beer_aroma != null)
+				return false;
+		} else if (!beer_aroma.equals(other.beer_aroma))
+			return false;
+		if (beer_brassin == null) {
+			if (other.beer_brassin != null)
+				return false;
+		} else if (!beer_brassin.equals(other.beer_brassin))
+			return false;
+		if (beer_bubbles != other.beer_bubbles)
+			return false;
+		if (beer_color_ebc != other.beer_color_ebc)
+			return false;
+		if (beer_comment == null) {
+			if (other.beer_comment != null)
+				return false;
+		} else if (!beer_comment.equals(other.beer_comment))
+			return false;
+		if (Double.doubleToLongBits(beer_conso_progress) != Double.doubleToLongBits(other.beer_conso_progress))
+			return false;
+		if (beer_density != other.beer_density)
+			return false;
+		if (beer_first_drink_date == null) {
+			if (other.beer_first_drink_date != null)
+				return false;
+		} else if (!beer_first_drink_date.equals(other.beer_first_drink_date))
+			return false;
+		if (beer_init_bottles != other.beer_init_bottles)
+			return false;
+		if (beer_notation != other.beer_notation)
+			return false;
+		if (Double.doubleToLongBits(beer_quantity) != Double.doubleToLongBits(other.beer_quantity))
+			return false;
+		if (beer_remaining_bottles != other.beer_remaining_bottles)
+			return false;
+		if (beer_style == null) {
+			if (other.beer_style != null)
+				return false;
+		} else if (!beer_style.equals(other.beer_style))
+			return false;
+		return true;
+	}
 	
 	
 	

@@ -1,7 +1,9 @@
 package net.brewspberry.front.ws.beans.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.front.ws.DTO;
@@ -9,9 +11,9 @@ import net.brewspberry.front.ws.beans.requests.ConcreteIngredientRequest;
 
 public class MaltDTO implements DTO<Malt, ConcreteIngredientRequest> {
 
-	public List<Malt> toBusinessObjectList(List<ConcreteIngredientRequest> list) {
+	public Set<Malt> toBusinessObjectList(List<ConcreteIngredientRequest> list) {
 
-		List<Malt> res = new ArrayList<Malt>();
+		Set<Malt> res = new HashSet<Malt>();
 		if (list != null && list.size() > 0) {
 			for (ConcreteIngredientRequest rq : list) {
 

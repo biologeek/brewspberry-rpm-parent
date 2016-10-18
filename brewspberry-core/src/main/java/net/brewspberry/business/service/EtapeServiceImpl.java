@@ -94,8 +94,7 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 
 			etape.setEtp_fin(new Date());
 
-			etape.setEtp_duree(
-					DateManipulator.getInstance().getDurationBetween(etape.getEtp_debut(), etape.getEtp_fin()));
+			etape.setEtp_duree();
 
 		}
 

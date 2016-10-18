@@ -9,6 +9,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.Assert;
 
@@ -39,7 +40,7 @@ public class BrewDTOTest {
 	public void shouldBeValidBrewWithOneStep(){
 		
 		
-		brew.setBra_etapes(new ArrayList<Etape>());
+		brew.setBra_etapes(new HashSet<Etape>());
 		brew.getBra_etapes().add(TestUtils.SIMPLE_STEP1);
 		
 		Assert.assertEquals(brew.getBra_etapes().size(), 1);
@@ -55,7 +56,7 @@ public class BrewDTOTest {
 		
 		Brassin brew = TestUtils.SIMPLE_BREW;
 
-		brew.setBra_etapes(new ArrayList<Etape>());
+		brew.setBra_etapes(new HashSet<Etape>());
 		brew.getBra_etapes().add(TestUtils.SIMPLE_STEP1);
 		
 		
@@ -75,7 +76,7 @@ public class BrewDTOTest {
 		
 		Brassin brew = TestUtils.SIMPLE_BREW;
 
-		brew.setBra_etapes(new ArrayList<Etape>());
+		brew.setBra_etapes(new HashSet<Etape>());
 		brew.getBra_etapes().add(TestUtils.SIMPLE_STEP1);
 		
 		

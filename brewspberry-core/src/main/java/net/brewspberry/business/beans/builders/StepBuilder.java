@@ -2,6 +2,7 @@ package net.brewspberry.business.beans.builders;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.DurationBO;
@@ -89,7 +90,7 @@ public class StepBuilder {
 
 	}
 
-	public StepBuilder hops(List<Houblon> id) {
+	public StepBuilder hops(Set<Houblon> id) {
 
 		this.obj.setEtp_houblons(id);
 		return this;
@@ -97,21 +98,21 @@ public class StepBuilder {
 	}
 
 
-	public StepBuilder actioners(List<Actioner> id) {
+	public StepBuilder actioners(Set<Actioner> id) {
 
 		this.obj.setEtp_actioners(id);
 		return this;
 
 	}
 
-	public StepBuilder yeasts(List<Levure> id) {
+	public StepBuilder yeasts(Set<Levure> id) {
 
 		this.obj.setEtp_levures(id);
 		return this;
 
 	}
 
-	public StepBuilder malts(List<Malt> id) {
+	public StepBuilder malts(Set<Malt> id) {
 
 		this.obj.setEtp_malts(id);
 		return this;

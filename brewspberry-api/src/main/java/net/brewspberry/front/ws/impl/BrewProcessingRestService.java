@@ -57,7 +57,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 	public BrewProcessingRestService() {
 		this.logger = LogManager.getInstance(BrewProcessingRestService.class.getName());
 	}
-	@GetMapping("/start/{etapeID}")
+	@PostMapping("/start/{etapeID}")
 	@ResponseBody
 	/**
 	 * 

@@ -17,8 +17,8 @@
 		BrewServiceFactory.getAll = function(callBackSuccess, callbackError) {
 			var promise = $http({
 				method : 'GET',
-				url : 'js/tests/mock.json'
-			// url: CONSTANTS.BREW_SERVICE_URL+'/light',
+				//url : 'js/tests/mock.json'
+				url: CONSTANTS.BREW_SERVICE_URL+'/light',
 
 			}).then(function(response) {
 				callBackSuccess(response);
@@ -39,8 +39,8 @@
 
 			var promise = $http({
 				method : 'GET',
-				url : 'js/tests/mockFullBrew.json'
-			// url: urlService',
+				//url : 'js/tests/mockFullBrew.json'
+				url: urlService,
 			}).then(function(response) {
 				callBackSuccess(response);
 			}, function(response) {

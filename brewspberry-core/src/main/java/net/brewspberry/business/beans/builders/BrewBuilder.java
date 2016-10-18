@@ -2,6 +2,7 @@ package net.brewspberry.business.beans.builders;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder.In;
 
@@ -86,14 +87,14 @@ public class BrewBuilder {
 
 	}
 
-	public BrewBuilder hops(List<Houblon> id) {
+	public BrewBuilder hops(Set<Houblon> id) {
 
 		BrewBuilder.obj.setBra_houblons(id);
 		return this;
 
 	}
 
-	public BrewBuilder steps(List<Etape> id) {
+	public BrewBuilder steps(Set<Etape> id) {
 
 		BrewBuilder.obj.setBra_etapes(id);
 		return this;
@@ -107,14 +108,14 @@ public class BrewBuilder {
 
 	}
 
-	public BrewBuilder yeasts(List<Levure> id) {
+	public BrewBuilder yeasts(Set<Levure> id) {
 
 		BrewBuilder.obj.setBra_levures(id);
 		return this;
 
 	}
 
-	public BrewBuilder malts(List<Malt> id) {
+	public BrewBuilder malts(Set<Malt> id) {
 
 		BrewBuilder.obj.setBra_malts(id);
 		return this;

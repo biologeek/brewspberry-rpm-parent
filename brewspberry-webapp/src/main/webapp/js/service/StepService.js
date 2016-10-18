@@ -2,42 +2,67 @@
  * 
  */
 
+(function() {
 
+	'use strict';
 
-(function () {
+	angular.module('brewspberry').factory('StepService', StepService);
 
-'use strict';
+	StepService.$inject = [ '$http', 'CONSTANTS' ];
 
-angular.module('brewspberry').factory('StepService', StepService);
+	function StepService($http, CONSTANTS) {
 
-StepService.$inject = ['$http', 'CONSTANTS'];
+		var StepServiceFactory = {};
 
-function StepService($http, CONSTANTS) {
+		StepServiceFactory.add = function(brewID, step, callbackSuccess,
+				callbackError) {
+			var promise;
 
-    var StepServiceFactory = {};
+			if (brewID > 0 && step != {}) {
 
+				promise = $http({
+					method : 'POST',
+					url : CONSTANTS.STEP_SERVICE_URL + '/add',
+					data : step
 
-    StepServiceFactory.add = function(brewID, step, callbackSuccess, callbackError){
-    	var promise;
-    	
-    	if (brewID > 0 && step != {}){
-    		    		
-    		promise = $http({
-                method: 'POST',
-                url: CONSTANTS.STEP_SERVICE_URL+'/add',
-                data : step
+				}).then(function(response) {
+					callBackSuccess(response);
+				}, function(response) {
+					callbackError(response);
+				});
 
-            }).then(function (response) {
-                callBackSuccess(response);
-            }, function (response) {
-                callbackError(response);
-            });
+			}
+		}
 
-    		
-    	}
-    }
-    return StepServiceFactory;
+		StepServiceFactory.startStepForReal = function(stepID, callBackSuccess,
+				callBackError) {
 
-    }
+			var promise = $http({
+				method : 'POST',
+				url : CONSTANTS.BREW_SERVICE_URL + '/start/' + stepID
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callbackError(response);
+			});
+
+		}
+
+		StepServiceFactory.stopStepForReal = function(stepID, callBackSuccess,
+				callBackError) {
+
+			var promise = $http({
+				method : 'POST',
+				url : CONSTANTS.BREW_SERVICE_URL + '/stop/' + stepID
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callbackError(response);
+			});
+
+		}
+		return StepServiceFactory;
+
+	}
 
 })();

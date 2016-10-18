@@ -9,6 +9,7 @@
 	<artifactId>brewspberry-api</artifactId>
 	<packaging>war</packaging>
 	<name>brewspberry-api</name>
+
 	<description>API and Webservices</description>
 
 
@@ -202,6 +203,12 @@
 						<source>1.8</source>
 						<target>1.8</target>
 						<compilerArgument></compilerArgument>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
 					</configuration>
 				</plugin>
 				<plugin>

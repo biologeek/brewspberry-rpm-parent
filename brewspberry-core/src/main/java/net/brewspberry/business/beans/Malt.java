@@ -98,5 +98,37 @@ public class Malt extends SimpleMalt implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Float.floatToIntBits(ing_prix);
+		result = prime * result + Float.floatToIntBits(ing_quantite);
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Malt other = (Malt) obj;
+		if (Float.floatToIntBits(ing_prix) != Float.floatToIntBits(other.ing_prix))
+			return false;
+		if (Float.floatToIntBits(ing_quantite) != Float.floatToIntBits(other.ing_quantite))
+			return false;
+		if (malt_brassin == null) {
+			if (other.malt_brassin != null)
+				return false;
+		} else if (!malt_brassin.equals(other.malt_brassin))
+			return false;
+		if (malt_etape == null) {
+			if (other.malt_etape != null)
+				return false;
+		} else if (!malt_etape.equals(other.malt_etape))
+			return false;
+		return true;
+	}	
 }

@@ -1,7 +1,9 @@
 package net.brewspberry.front.ws.beans.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.front.ws.DTO;
@@ -9,9 +11,9 @@ import net.brewspberry.front.ws.beans.requests.ConcreteIngredientRequest;
 
 public class HopDTO implements DTO<Houblon, ConcreteIngredientRequest> {
 
-	public List<Houblon> toBusinessObjectList(List<ConcreteIngredientRequest> list) {
+	public Set<Houblon> toBusinessObjectList(List<ConcreteIngredientRequest> list) {
 
-		List<Houblon> res = new ArrayList<Houblon>();
+		Set<Houblon> res = new HashSet<Houblon>();
 
 		if (list != null && list.size() > 0) {
 			for (ConcreteIngredientRequest rq : list) {

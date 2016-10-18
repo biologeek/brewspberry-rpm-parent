@@ -3,6 +3,7 @@ package net.brewspberry.model;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -287,7 +288,7 @@ public class BrewProcessorDelegate implements Processor<Brassin> {
 
 		List<Levure> levs = levureIngSpecService.getIngredientFromArrayId(currentBrassinLevures,
 				currentBrassinLevuresQte, currentBrassinLevuresPrix);
-		currentBrassin.setBra_levures(levs);
+		currentBrassin.setBra_levures(new HashSet<Levure>(levs));
 
 		int i = 0;
 		if (currentBrassinLevures.length == currentBrassinLevuresQte.length) {
@@ -323,8 +324,8 @@ public class BrewProcessorDelegate implements Processor<Brassin> {
 		currentBrassinHoublonsQte = request.getParameterValues("houblonQte");
 		currentBrassinHoublonsType = request.getParameterValues("houblonType");
 
-		currentBrassin.setBra_houblons(hopIngSpecService.getIngredientFromArrayId(currentBrassinHoublons,
-				currentBrassinHoublonsQte, currentBrassinHoublonsPrix));
+		currentBrassin.setBra_houblons(new HashSet<Houblon>(hopIngSpecService.getIngredientFromArrayId(currentBrassinHoublons,
+				currentBrassinHoublonsQte, currentBrassinHoublonsPrix)));
 
 		int i = 0;
 		if ((currentBrassinHoublons.length == currentBrassinHoublonsQte.length)
@@ -360,8 +361,8 @@ public class BrewProcessorDelegate implements Processor<Brassin> {
 		currentBrassinMaltsQte = request.getParameterValues("maltQte");
 		currentBrassinMaltsPrix = request.getParameterValues("maltsPrix");
 
-		currentBrassin.setBra_malts(maltIngSpecService.getIngredientFromArrayId(currentBrassinMalts,
-				currentBrassinMaltsQte, currentBrassinMaltsPrix));
+		currentBrassin.setBra_malts(new HashSet<Malt>(maltIngSpecService.getIngredientFromArrayId(currentBrassinMalts,
+				currentBrassinMaltsQte, currentBrassinMaltsPrix)));
 
 		int i = 0;
 		if (currentBrassinMalts.length == currentBrassinMaltsQte.length) {

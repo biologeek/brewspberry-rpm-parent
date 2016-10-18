@@ -76,6 +76,41 @@ public class Levure extends SimpleLevure {
 		return serialVersionUID;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Float.floatToIntBits(ing_prix);
+		result = prime * result + Float.floatToIntBits(ing_quantite);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Levure other = (Levure) obj;
+		if (Float.floatToIntBits(ing_prix) != Float.floatToIntBits(other.ing_prix))
+			return false;
+		if (Float.floatToIntBits(ing_quantite) != Float.floatToIntBits(other.ing_quantite))
+			return false;
+		if (lev_brassin == null) {
+			if (other.lev_brassin != null)
+				return false;
+		} else if (!lev_brassin.equals(other.lev_brassin))
+			return false;
+		if (lev_etape == null) {
+			if (other.lev_etape != null)
+				return false;
+		} else if (!lev_etape.equals(other.lev_etape))
+			return false;
+		return true;
+	}
+
 	
 	
 

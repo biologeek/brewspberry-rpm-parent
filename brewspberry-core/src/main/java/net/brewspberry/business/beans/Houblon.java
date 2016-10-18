@@ -87,6 +87,43 @@ public class Houblon extends SimpleHoublon implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Float.floatToIntBits(ing_prix);
+		result = prime * result + Float.floatToIntBits(ing_quantite);
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Houblon other = (Houblon) obj;
+		if (hbl_brassin == null) {
+			if (other.hbl_brassin != null)
+				return false;
+		} else if (!hbl_brassin.equals(other.hbl_brassin))
+			return false;
+		if (hbl_etape == null) {
+			if (other.hbl_etape != null)
+				return false;
+		} else if (!hbl_etape.equals(other.hbl_etape))
+			return false;
+		if (Float.floatToIntBits(ing_prix) != Float.floatToIntBits(other.ing_prix))
+			return false;
+		if (Float.floatToIntBits(ing_quantite) != Float.floatToIntBits(other.ing_quantite))
+			return false;
+		return true;
+	}
 	
 	
     

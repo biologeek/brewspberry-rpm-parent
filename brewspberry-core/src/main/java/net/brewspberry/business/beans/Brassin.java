@@ -3,6 +3,7 @@ package net.brewspberry.business.beans;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -43,16 +44,16 @@ public class Brassin implements Serializable{
     private BrewStatus bra_statut;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy="malt_brassin")
-    private List<Malt> bra_malts;
+    private Set<Malt> bra_malts;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy="hbl_brassin")
-    private List<Houblon> bra_houblons;
+    private Set<Houblon> bra_houblons;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy="lev_brassin")
-    private List<Levure> bra_levures;
+    private Set<Levure> bra_levures;
     
     @OneToMany(fetch=FetchType.EAGER, mappedBy="etp_brassin")
-    List<Etape> bra_etapes;
+    Set<Etape> bra_etapes;
     
 	@OneToOne(mappedBy="beer_brassin")
     private Biere bra_beer;
@@ -145,32 +146,32 @@ public class Brassin implements Serializable{
 	}
 
 
-	public List<Malt> getBra_malts() {
+	public Set<Malt> getBra_malts() {
 		return bra_malts;
 	}
 
 
-	public void setBra_malts(List<Malt> bra_malts) {
+	public void setBra_malts(Set<Malt> bra_malts) {
 		this.bra_malts = bra_malts;
 	}
 
 
-	public List<Houblon> getBra_houblons() {
+	public Set<Houblon> getBra_houblons() {
 		return bra_houblons;
 	}
 
 
-	public void setBra_houblons(List<Houblon> bra_houblons) {
+	public void setBra_houblons(Set<Houblon> bra_houblons) {
 		this.bra_houblons = bra_houblons;
 	}
 
 
-	public List<Levure> getBra_levures() {
+	public Set<Levure> getBra_levures() {
 		return bra_levures;
 	}
 
 
-	public void setBra_levures(List<Levure> bra_levures) {
+	public void setBra_levures(Set<Levure> bra_levures) {
 		this.bra_levures = bra_levures;
 	}
 
@@ -215,12 +216,12 @@ public class Brassin implements Serializable{
 	}
 
 
-	public List<Etape> getBra_etapes() {
+	public Set<Etape> getBra_etapes() {
 		return bra_etapes;
 	}
 
 
-	public void setBra_etapes(List<Etape> bra_etapes) {
+	public void setBra_etapes(Set<Etape> bra_etapes) {
 		this.bra_etapes = bra_etapes;
 	}
 
@@ -248,6 +249,111 @@ public class Brassin implements Serializable{
 				+ ", bra_temperature_measurement="
 				+ bra_temperature_measurement + ", bra_actioner="
 				+ bra_actioner + "]";
+	}
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bra_actioner == null) ? 0 : bra_actioner.hashCode());
+		result = prime * result + ((bra_beer == null) ? 0 : bra_beer.hashCode());
+		result = prime * result + ((bra_date_maj == null) ? 0 : bra_date_maj.hashCode());
+		result = prime * result + ((bra_debut == null) ? 0 : bra_debut.hashCode());
+		result = prime * result + ((bra_etapes == null) ? 0 : bra_etapes.hashCode());
+		result = prime * result + ((bra_fin == null) ? 0 : bra_fin.hashCode());
+		result = prime * result + ((bra_houblons == null) ? 0 : bra_houblons.hashCode());
+		result = prime * result + (int) (bra_id ^ (bra_id >>> 32));
+		result = prime * result + ((bra_levures == null) ? 0 : bra_levures.hashCode());
+		result = prime * result + ((bra_malts == null) ? 0 : bra_malts.hashCode());
+		result = prime * result + ((bra_nom == null) ? 0 : bra_nom.hashCode());
+		result = prime * result + ((bra_quantiteEnLitres == null) ? 0 : bra_quantiteEnLitres.hashCode());
+		result = prime * result + ((bra_statut == null) ? 0 : bra_statut.hashCode());
+		result = prime * result + ((bra_temperature_measurement == null) ? 0 : bra_temperature_measurement.hashCode());
+		result = prime * result + ((bra_type == null) ? 0 : bra_type.hashCode());
+		return result;
+	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Brassin other = (Brassin) obj;
+		if (bra_actioner == null) {
+			if (other.bra_actioner != null)
+				return false;
+		} else if (!bra_actioner.equals(other.bra_actioner))
+			return false;
+		if (bra_beer == null) {
+			if (other.bra_beer != null)
+				return false;
+		} else if (!bra_beer.equals(other.bra_beer))
+			return false;
+		if (bra_date_maj == null) {
+			if (other.bra_date_maj != null)
+				return false;
+		} else if (!bra_date_maj.equals(other.bra_date_maj))
+			return false;
+		if (bra_debut == null) {
+			if (other.bra_debut != null)
+				return false;
+		} else if (!bra_debut.equals(other.bra_debut))
+			return false;
+		if (bra_etapes == null) {
+			if (other.bra_etapes != null)
+				return false;
+		} else if (!bra_etapes.equals(other.bra_etapes))
+			return false;
+		if (bra_fin == null) {
+			if (other.bra_fin != null)
+				return false;
+		} else if (!bra_fin.equals(other.bra_fin))
+			return false;
+		if (bra_houblons == null) {
+			if (other.bra_houblons != null)
+				return false;
+		} else if (!bra_houblons.equals(other.bra_houblons))
+			return false;
+		if (bra_id != other.bra_id)
+			return false;
+		if (bra_levures == null) {
+			if (other.bra_levures != null)
+				return false;
+		} else if (!bra_levures.equals(other.bra_levures))
+			return false;
+		if (bra_malts == null) {
+			if (other.bra_malts != null)
+				return false;
+		} else if (!bra_malts.equals(other.bra_malts))
+			return false;
+		if (bra_nom == null) {
+			if (other.bra_nom != null)
+				return false;
+		} else if (!bra_nom.equals(other.bra_nom))
+			return false;
+		if (bra_quantiteEnLitres == null) {
+			if (other.bra_quantiteEnLitres != null)
+				return false;
+		} else if (!bra_quantiteEnLitres.equals(other.bra_quantiteEnLitres))
+			return false;
+		if (bra_statut != other.bra_statut)
+			return false;
+		if (bra_temperature_measurement == null) {
+			if (other.bra_temperature_measurement != null)
+				return false;
+		} else if (!bra_temperature_measurement.equals(other.bra_temperature_measurement))
+			return false;
+		if (bra_type == null) {
+			if (other.bra_type != null)
+				return false;
+		} else if (!bra_type.equals(other.bra_type))
+			return false;
+		return true;
 	}
 
 

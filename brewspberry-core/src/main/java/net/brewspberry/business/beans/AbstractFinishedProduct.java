@@ -58,5 +58,40 @@ public class AbstractFinishedProduct extends Stockable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((afp_name == null) ? 0 : afp_name.hashCode());
+		result = prime * result + Float.floatToIntBits(afp_unitary_value);
+		result = prime * result + ((afp_unitary_value_unit == null) ? 0 : afp_unitary_value_unit.hashCode());
+		result = prime * result + ((stb_counters == null) ? 0 : stb_counters.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractFinishedProduct other = (AbstractFinishedProduct) obj;
+		if (afp_name == null) {
+			if (other.afp_name != null)
+				return false;
+		} else if (!afp_name.equals(other.afp_name))
+			return false;
+		if (Float.floatToIntBits(afp_unitary_value) != Float.floatToIntBits(other.afp_unitary_value))
+			return false;
+		if (afp_unitary_value_unit != other.afp_unitary_value_unit)
+			return false;
+		if (stb_counters == null) {
+			if (other.stb_counters != null)
+				return false;
+		} else if (!stb_counters.equals(other.stb_counters))
+			return false;
+		return true;
+	}
 	
 }

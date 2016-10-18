@@ -2,12 +2,17 @@ package net.brewspberry.front.ws.beans.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialException;
 
+import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.Houblon;
+import net.brewspberry.business.beans.Levure;
+import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ConvertionException;
@@ -35,7 +40,7 @@ public class StepDTO {
 		res.setTheoreticalTemperature(res.getTheoreticalTemperature());
 		res.setNumber(step.getEtp_numero());
 		res.setStageType(step.getEtp_palier_type().getPlt_libelle());
-
+		res.setActive(step.isEtp_active());
 		return res;
 	}
 
@@ -51,11 +56,11 @@ public class StepDTO {
 
 		CompleteStep res = new CompleteStep(this.toSimpleStepResponse(step));
 
-		res.setMalts(new MaltDTO().toFrontObjectList(step.getEtp_malts()));
-		res.setHops(new HopDTO().toFrontObjectList(step.getEtp_houblons()));
-		res.setYeasts(new YeastDTO().toFrontObjectList(step.getEtp_levures()));
+		res.setMalts(new MaltDTO().toFrontObjectList(new ArrayList<Malt>(step.getEtp_malts())));
+		res.setHops(new HopDTO().toFrontObjectList(new ArrayList<Houblon>(step.getEtp_houblons())));
+		res.setYeasts(new YeastDTO().toFrontObjectList(new ArrayList<Levure>(step.getEtp_levures())));
 
-		res.setActioners(new ActionnerDTO().toActionnerResponse(step.getEtp_actioner()));
+		res.setActioners(new ActionnerDTO().toActionnerResponse(new ArrayList<Actioner>(step.getEtp_actioner())));
 
 		return res;
 
@@ -82,7 +87,7 @@ public class StepDTO {
 			throw new ConvertionException(e.getMessage());
 		}
 
-		res.setEtp_actioners(new ActionnerDTO().toBusinessObjectList(step.getActioners()));
+		res.setEtp_actioners(new HashSet<Actioner>(new ActionnerDTO().toBusinessObjectList(step.getActioners())));
 
 		return res;
 	}

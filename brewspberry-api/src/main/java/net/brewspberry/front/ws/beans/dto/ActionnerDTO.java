@@ -36,7 +36,7 @@ public class ActionnerDTO {
 
 		ActionnerResponse resp = new ActionnerResponse();
 
-		resp.setChart(new ChartResponse());
+		resp.setChart(new ArrayList<ChartResponse>());
 		resp.setId(actionners.getAct_id());
 		resp.setName(actionners.getAct_nom());
 		resp.setPicture(actionners.getAct_picture());

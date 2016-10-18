@@ -1,5 +1,6 @@
 package net.brewspberry.front.ws;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -14,9 +15,9 @@ public interface DTO<T, U> {
 	
 	
 	public T toBusinessObject(U cplObj);
-	public List<T> toBusinessObjectList(List<U> cplLst);
+	public Collection<T> toBusinessObjectList(List<U> cplLst);
 	public U toFrontObject(T cplObj);
-	public List<U> toFrontObjectList(List<T> cplLst);
+	public Collection<U> toFrontObjectList(List<T> cplLst);
 	
 	
 	

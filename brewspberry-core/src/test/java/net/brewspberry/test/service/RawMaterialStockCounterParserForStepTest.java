@@ -2,6 +2,7 @@ package net.brewspberry.test.service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.junit.Before;
@@ -82,8 +83,8 @@ public class RawMaterialStockCounterParserForStepTest {
 		etp_malts1.add(malt);
 		etp_malts2.add(malt2);
 
-		etp1.setEtp_malts(etp_malts1);
-		etp2.setEtp_malts(etp_malts2);
+		etp1.setEtp_malts(new HashSet<Malt>(etp_malts1));
+		etp2.setEtp_malts(new HashSet<Malt>(etp_malts2));
 
 		etp1.setEtp_debut(new Date());
 		etp2.setEtp_debut(new Date());

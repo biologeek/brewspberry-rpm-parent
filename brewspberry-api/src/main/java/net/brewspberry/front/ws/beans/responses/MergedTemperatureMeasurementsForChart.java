@@ -1,25 +1,24 @@
 package net.brewspberry.front.ws.beans.responses;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MergedTemperatureMeasurementsForChart {
 
 	private long lastID;
-	ArrayList<TemperatureChartData> concretes;
-	ArrayList<TemperatureChartData> theoreticals;
+	List<TemperatureChartData> concretes;
+	List<TemperatureChartData> theoreticals;
 	
 	
-	public ArrayList<TemperatureChartData> getConcretes() {
+	public List<TemperatureChartData> getConcretes() {
 		return concretes;
 	}
-	public void setConcretes(ArrayList<TemperatureChartData> arrayList) {
+	public void setConcretes(List<TemperatureChartData> arrayList) {
 		this.concretes = arrayList;
 	}
-	public ArrayList<TemperatureChartData> getTheoreticals() {
+	public List<TemperatureChartData> getTheoreticals() {
 		return theoreticals;
 	}
-	public void setTheoreticals(ArrayList<TemperatureChartData> arrayList) {
+	public void setTheoreticals(List<TemperatureChartData> arrayList) {
 		this.theoreticals = arrayList;
 	}
 	public long getLastID() {

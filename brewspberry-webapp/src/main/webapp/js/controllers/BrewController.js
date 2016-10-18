@@ -15,6 +15,8 @@
 		var vm = this;
 		vm.currentFullBrew = {};
 		vm.currentFullBrew.steps = [{}];
+		
+		vm.lastIDs = {};
 
 
 		vm.updateDelay = vm.updateDelay || CONSTANTS.DEFAULT_CHART_RELOAD;
@@ -77,6 +79,7 @@
 
 		/**
 		 * Initiates data for charts
+		 * 
 		 * @param callback
 		 */
 		vm.initCharts = function (callback) {
@@ -89,47 +92,40 @@
 
 
 				for (let step in steps) {
-					console.log(step+' STEP '+steps.length);
 
 
 					// For each step, if step is active, initiates
-					//if (steps[step].isActive) {
-						//vm.currentFullBrew.steps[step].charts = [{data : [[]], series : [], labels : []}];
-						console.log('STEeP '+step);
-						console.log('STEeeeeP '+steps[step].id);
+					// if (steps[step].isActive) {
+						// vm.currentFullBrew.steps[step].charts = [{data :
+						// [[]], series : [], labels : []}];
+						
+						for (let act in steps[step].actioners){
+							
+							if(steps[step].actioners[act].type == 1){
+								TemperatureService.initTemperaturesForStep(steps[step].id, steps[step].actioners[act].uuid, function(response){
 
-								TemperatureService.initTemperaturesForStep(steps[step].id, function(response){
-
-									console.log("TemperatureService.initTemperaturesForStep("+step+", function (response) {")
 
 									/*
-									 * Receiving object :
-									 * [
-									 * 		{
-									 * 			id : 1,
-									 * 			value : 20.0,
-									 * 			date : 123456789123456, //date in milliseconds
-									 * 			uuid : '123456azerty456987',
-									 * 			name : 'PROBE1',
-									 * 			actionner : 3,
-									 * 			step : 4,
-									 * 			brew : 1,
-									 * 		} , ...
-									 * ]
-									 *
+									 * Receiving object : [ { id : 1, value :
+									 * 20.0, date : 123456789123456, //date in
+									 * milliseconds uuid : '123456azerty456987',
+									 * name : 'PROBE1', actionner : 3, step : 4,
+									 * brew : 1, } , ... ]
+									 * 
 									 */
 
-									console.log('STuuuP '+step);
-
-									processRawDataAndFeedActionners(response.data, step);
+									
+									vm.lastIDs[steps[step].actioners[act].uuid] = response.data.lastID;
+									processRawDataAndFeedActionners(response.data, step, steps[step].actioners[act].uuid, false);
 								}, function (response) {
-									console.log('STaaaaP '+step);
 
 									vm.currentFullBrew.steps[step].chart = [{data: [[]], series: [], labels: []}];
 
 								});
 							}
-//					}
+						}
+					}
+// }
 
 
 				}
@@ -146,17 +142,24 @@
 		 * Updates charts data
 		 */
 		vm.updateCharts = function () {
-
 			for (let step in vm.currentFullBrew.steps) {
 
-				if (vm.currentFullBrew.steps[step].isActive) {
-						TemperatureService.updateTemperaturesForStep(vm.currentFullBrew.steps[step].id, function (response) {
+				if (vm.currentFullBrew.steps[step].active) {
 
-						processRawDataAndFeedActionners(response.data, step);
+					for (let act in vm.currentFullBrew.steps[step].actioners) {
+						
+					
+						TemperatureService.updateTemperaturesForStep(vm.currentFullBrew.steps[step].id, 
+								vm.currentFullBrew.steps[step].actioners[act], 
+								vm.lastIDs[vm.currentFullBrew.steps[step].actioners[act].uuid], 
+								function (response) {
+
+						processRawDataAndFeedActionners(response.data, step, vm.currentFullBrew.steps[step].actioners[act].uuid, true);
 
 					}, function (response) {
 							return ;
 					});
+					}
 
 				}
 
@@ -166,66 +169,58 @@
 
 
 		/**
-		 * From raw webservice data, appends temperture measurements to brew object
-		 * and cuts excedent data
-		 * @param rawData data from WS
-		 * @param stepCounter step number in array
+		 * From raw webservice data, appends temperture measurements to brew
+		 * object and cuts excedent data
+		 * 
+		 * @param rawData
+		 *            data from WS
+		 * @param stepCounter
+		 *            step number in array
 		 */
-		var processRawDataAndFeedActionners = function (rawData, stepCounter) {
+		var processRawDataAndFeedActionners = function (rawData, stepCounter, uuid, isUpdate) {
+// TODO
 
-
-			if (rawData.length > 0) {
-				/* for each temperature received */
-				for (var e in rawData) {
-
-					/* find corresponding actionner */
-					var i = 0;
-					for (var act in vm.currentFullBrew.steps[stepCounter].actioners) {
-						if (typeof vm.currentFullBrew.steps[stepCounter].actioners[act].chart == "undefined" && vm.currentFullBrew.steps[stepCounter].actioners[act].type == 1){
-
-							vm.currentFullBrew.steps[stepCounter].actioners[act].chart = {data : [[]], labels : [], series : []};
-
-						}
-
-						if (vm.currentFullBrew.steps[stepCounter].actioners[act].id == rawData[e].actionner || vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == rawData[e].uuid) {
-
-							/*add temperature to actionner chart*/
-							if (vm.currentFullBrew.steps[stepCounter].actioners[act].type == 1) {
-								if (typeof vm.currentFullBrew.steps[stepCounter].actioners[act].chart.data == "undefined") {
-
-									vm.currentFullBrew.steps[stepCounter].actioners[act].chart.data = [[]];
-									vm.currentFullBrew.steps[stepCounter].actioners[act].chart.label = [];
-									vm.currentFullBrew.steps[stepCounter].actioners[act].chart.series = [vm.currentFullBrew.steps[stepCounter].actioners[act].uuid];
-								}
-								vm.currentFullBrew.steps[stepCounter].actioners[act].chart.data[0].push(rawData[e].value);
-								vm.currentFullBrew.steps[stepCounter].actioners[act].chart.labels.push(formatDateForChartDisplay(rawData[e].date, stepCounter));
-								vm.currentFullBrew.steps[stepCounter].actioners[act].chart.series = [vm.currentFullBrew.steps[stepCounter].actioners[act].uuid];
-							}
-						}
-						limitDataSizeOnChart(stepCounter, i);
-						i++;
+			if(!isUpdate){
+				for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
+					if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
+						vm.currentFullBrew.steps[stepCounter].actioners[act].chart = rawData.concretes;				
 					}
-					console.log (vm.currentFullBrew.steps)
 				}
-
-
+				
+			} else {
+				for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
+					if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
+						
+						vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].data.push(...rawData.concretes[0].data);
+						vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].labels.push(...rawData.concretes[0].labels);
+					}
+				}
 			}
+			
+			for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
 
-
+				limitDataSizeOnChart(stepCounter, act);
+			}
 		}
 
 		/**
 		 * If dataset is too large, removes first points to maximum dataset size
-		 * @param step step counter
-		 * @param actionner actionner counter
+		 * 
+		 * @param step
+		 *            step counter
+		 * @param actionner
+		 *            actionner counter
 		 */
 		var limitDataSizeOnChart = function (step, actionner) {
 
 			if (typeof vm.currentFullBrew.steps[step].actioners[actionner].chart != "undefined") {
-				while (vm.currentFullBrew.steps[step].actioners[actionner].chart.data[0].length > CONSTANTS.CHART_MAX_DATA_SIZE) {
-					vm.currentFullBrew.steps[step].actioners[actionner].chart.data[0].shift();
-					vm.currentFullBrew.steps[step].actioners[actionner].chart.labels.shift();
-
+				if (vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE) {
+					do  {
+					
+						vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.shift();
+						vm.currentFullBrew.steps[step].actioners[actionner].chart[0].labels.shift();
+	
+					} while(vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE)
 				}
 			}
 
@@ -234,6 +229,7 @@
 
 		/**
 		 * Gets time difference between date and step beginning
+		 * 
 		 * @param date
 		 * @param stepCount
 		 * @returns {Date}
@@ -260,24 +256,57 @@
 
 		init();
 
-/*
 
-		$interval(function () {
+ 
+ $interval(function () {
+ 
+ vm.updateCharts(); 
+ 
+ }, vm.updateDelay);
+ 
 
-			vm.updateCharts();
-
-		}, vm.updateDelay);
-
-*/
-		/******************************************************************************************/
-		/****************************   ACTIONNER ACTIVATION  *************************************/
-		/******************************************************************************************/
+ 		/** *************************************************************************************** */
+		/**
+		 * ******************************* STEP START/STOP
+		 * ***************************************
+		 */
+		/** *************************************************************************************** */
+		
+		/**
+		 * Calls service that will start or stop step and feed real beginning
+		 * and end dates
+		 */
+		var toggleStepForReal = function(isStart, stepID){
+			
+			if (stepID >= 0){
+				if (isStart){
+					
+					StepService.startStepForReal(stepID);
+					
+				} else {
+					
+					StepService.stopStepForReal(stepID);
+					
+				}
+			}
+			
+		}
+		
+		
+		
+		
+		/** *************************************************************************************** */
+		/**
+		 * ************************** ACTIONNER ACTIVATION
+		 * ***************************************
+		 */
+		/** *************************************************************************************** */
 
 
 
 		/**
-		 *
-		 *
+		 * 
+		 * 
 		 */
 		vm.changeActionnerState = function (actionerID, stepID, index) {
 
@@ -318,7 +347,8 @@
 						actionerID,
 						function (response) {
 							/*
-							 * In case of success, changing picture to off picture
+							 * In case of success, changing picture to off
+							 * picture
 							 */
 							var actionnerType = vm.currentFullBrew.steps[stepID].actioners[actionerID].type;
 							
@@ -348,20 +378,22 @@
 		}
 
 
-		/******************************************************************************************/
-		/****************************   ADDING A STEP BLOCK   *************************************/
-		/******************************************************************************************/
+		/** *************************************************************************************** */
+		/**
+		 * ************************** ADDING A STEP BLOCK
+		 * ************************************
+		 */
+		/** *************************************************************************************** */
 
 		/**
-		 *
-		 *
+		 * 
+		 * 
 		 */
 		vm.addAStep = function (addAStepForm) {
 
 
 			var addedStep = addAStepForm.step;
 			
-			console.log(addedStep);
 
 			// Service call
 			StepService.add(vm.currentFullBrew.id, addedStep, function (response) {
@@ -373,7 +405,7 @@
 				vm.submissionSuccessMessage = "Step added to brew";
 
 
-				//Adding step to current steps list
+				// Adding step to current steps list
 				vm.currentFullBrew.steps.push(response.data);
 
 			}, function (response) {

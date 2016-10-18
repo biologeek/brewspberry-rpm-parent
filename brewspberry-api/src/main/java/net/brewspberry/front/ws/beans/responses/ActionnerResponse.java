@@ -1,5 +1,7 @@
 package net.brewspberry.front.ws.beans.responses;
 
+import java.util.List;
+
 public class ActionnerResponse {
 	
 	
@@ -8,7 +10,7 @@ public class ActionnerResponse {
 	private String uuid;
 	private int type;
 	private String picture;
-	private ChartResponse chart;
+	private List<ChartResponse> chart;
 	private String pin;
 	private boolean isActive;
 	private int status;
@@ -47,10 +49,10 @@ public class ActionnerResponse {
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	public ChartResponse getChart() {
+	public List<ChartResponse> getChart() {
 		return chart;
 	}
-	public void setChart(ChartResponse chart) {
+	public void setChart(List<ChartResponse> chart) {
 		this.chart = chart;
 	}
 	public String getPin() {

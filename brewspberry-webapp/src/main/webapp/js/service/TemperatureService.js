@@ -14,12 +14,12 @@
 		
 		var vm = this;
 
-		TemperatureService.initTemperaturesForStep = function(stepID, callBackSuccess, callbackError){
+		TemperatureService.initTemperaturesForStep = function(stepID, uuid, callBackSuccess, callbackError){
 
 			var promise = $http({
 				method: 'GET',
-				url : 'js/tests/mockStepTemps.json'
-				//url: CONSTANTS.TEMP_SERVICE_URL+'/init/step/'+stepID,
+				//url : 'js/tests/mockStepTemps.json'
+				url: CONSTANTS.TEMP_SERVICE_URL+'/step/'+stepID+'/act/'+uuid
 
 			}).then(function (response) {
 				callBackSuccess(response);
@@ -30,12 +30,12 @@
 			return promise;
 		};
 
-		TemperatureService.updateTemperaturesForStep = function (stepID, callBackSuccess, callbackError){
+		TemperatureService.updateTemperaturesForStep = function (stepID, uuid, last, callBackSuccess, callbackError){
 
 			var promise = $http({
 				method: 'GET',
 				url : 'js/tests/mockStepTemps.json'
-				//url: CONSTANTS.TEMP_SERVICE_URL+'/update/step/'+stepID,
+				//url: CONSTANTS.TEMP_SERVICE_URL+'/step/'+stepID+'/act/'+uuid+'/last/'+last,
 
 			}).then(function (response) {
 				callBackSuccess(response);

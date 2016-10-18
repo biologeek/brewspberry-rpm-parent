@@ -1,6 +1,7 @@
 package net.brewspberry.front.ws.beans.dto;
 
 import java.util.List;
+import java.util.Set;
 
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.front.ws.DTO;
@@ -15,7 +16,7 @@ public class YeastDTO implements DTO<Levure, ConcreteIngredientRequest> {
 	}
 
 	@Override
-	public List<Levure> toBusinessObjectList(List<ConcreteIngredientRequest> cplLst) {
+	public Set<Levure> toBusinessObjectList(List<ConcreteIngredientRequest> cplLst) {
 		// TODO Auto-generated method stub
 		return null;
 	}
