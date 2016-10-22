@@ -1,8 +1,8 @@
 package net.brewspberry.business.exceptions;
 
-public class ConvertionException extends Exception {
+public class ConversionException extends Exception {
 
-	public ConvertionException(String message) {
+	public ConversionException(String message) {
 		super(message);
 	}
 

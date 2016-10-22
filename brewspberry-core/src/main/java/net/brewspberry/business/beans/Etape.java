@@ -18,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
@@ -44,15 +43,15 @@ public class Etape implements Serializable {
 	private Date etp_update_date;
 	private Date etp_debut_reel;
 	private Date etp_fin_reel;
-	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "etp_ety_id")
+
+	
 	/**
 	 * etape type object contains tops to allow rules to apply or not for
 	 * various algorithms Fetching it eagerly, and cascading modfications to
 	 * linked EtapeType object
 	 */
-	
-	//private EtapeType etp_etape_type;
+	@Enumerated(EnumType.STRING)
+	private EtapeType etp_etape_type;
 
 	private Double etp_temperature_theorique;
 	private String etp_remarque;
@@ -303,11 +302,27 @@ public class Etape implements Serializable {
 	 * @return true if is a final step. False if not
 	 */
 	public boolean isFinalStep() {
-/*
+
 		if (this.getEtp_etape_type().equals(EtapeType.EMBOUTEILLAGE)
 				|| this.getEtp_etape_type().equals(EtapeType.REFERMENTATION))
-			return true;*/
+			return true;
 		return false;
+	}
+
+	public EtapeType getEtp_etape_type() {
+		return etp_etape_type;
+	}
+
+	public void setEtp_etape_type(EtapeType etp_etape_type) {
+		this.etp_etape_type = etp_etape_type;
+	}
+
+	public void setEtp_actioner(Set<Actioner> etp_actioner) {
+		this.etp_actioner = etp_actioner;
+	}
+
+	public void setEtp_ingredients(List<AbstractIngredient> etp_ingredients) {
+		this.etp_ingredients = etp_ingredients;
 	}
 
 	@Override

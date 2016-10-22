@@ -1,9 +1,10 @@
 package net.brewspberry.front.ws;
 
 import net.brewspberry.front.ws.beans.requests.CompleteStep;
+import net.brewspberry.front.ws.beans.responses.SimpleStepResponse;
 
 public interface IStepRESTService {
 	
-	public CompleteStep add(CompleteStep step) throws Exception; 
+	public CompleteStep add(SimpleStepResponse step) throws Exception; 
 
 }

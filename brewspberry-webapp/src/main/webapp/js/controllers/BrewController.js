@@ -25,7 +25,11 @@
 		vm.showErrors = false;
 		vm.showSuccess = false;
 		vm.brewID = $routeParams.brewID;
-
+		vm.stageTypes=CONSTANTS.STAGE_TYPES;
+		vm.stepTypes=CONSTANTS.STEP_TYPES;
+		
+		
+		
 		vm.chartOptions = {
 			scales: {
 				yAxes: [
@@ -142,6 +146,7 @@
 		 * Updates charts data
 		 */
 		vm.updateCharts = function () {
+			
 			for (let step in vm.currentFullBrew.steps) {
 
 				if (vm.currentFullBrew.steps[step].active) {
@@ -179,27 +184,28 @@
 		 */
 		var processRawDataAndFeedActionners = function (rawData, stepCounter, uuid, isUpdate) {
 // TODO
-
-			if(!isUpdate){
-				for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
-					if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
-						vm.currentFullBrew.steps[stepCounter].actioners[act].chart = rawData.concretes;				
+			if (rawData.concretes[0] != undefined){
+				if(!isUpdate){
+					for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
+						if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
+							vm.currentFullBrew.steps[stepCounter].actioners[act].chart = rawData.concretes;				
+						}
+					}
+					
+				} else {
+					for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
+						if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
+							
+							vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].data.push(...rawData.concretes[0].data);
+							vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].labels.push(...rawData.concretes[0].labels);
+						}
 					}
 				}
 				
-			} else {
 				for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
-					if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
-						
-						vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].data.push(...rawData.concretes[0].data);
-						vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].labels.push(...rawData.concretes[0].labels);
-					}
+	
+					limitDataSizeOnChart(stepCounter, act);
 				}
-			}
-			
-			for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
-
-				limitDataSizeOnChart(stepCounter, act);
 			}
 		}
 
@@ -213,7 +219,7 @@
 		 */
 		var limitDataSizeOnChart = function (step, actionner) {
 
-			if (typeof vm.currentFullBrew.steps[step].actioners[actionner].chart != "undefined") {
+			if (typeof vm.currentFullBrew.steps[step].actioners[actionner].chart[0] != "undefined") {
 				if (vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE) {
 					do  {
 					
@@ -257,13 +263,13 @@
 		init();
 
 
- 
- $interval(function () {
- 
- vm.updateCharts(); 
- 
- }, vm.updateDelay);
- 
+		 $interval(function () {
+			var delay = vm.updateDelay
+		 
+			 vm.updateCharts(); 
+		 
+		 }, vm.updateDelay);
+		 
 
  		/** *************************************************************************************** */
 		/**
@@ -309,7 +315,7 @@
 		 * 
 		 */
 		vm.changeActionnerState = function (actionerID, stepID, index) {
-
+			console.log('changing')
 			if (vm.currentFullBrew.steps[stepID].actioners[index].state == 'ON') {
 				TemperatureService
 					.deactivate(
@@ -377,6 +383,17 @@
 			}
 		}
 
+		
+		
+		/**
+		 * Clicking 'Now' feeds date and time field 
+		 */
+		vm.beginNow = function(){
+			
+			vm.addedStep.beginningDate = new Date();
+			vm.addedStep.beginningTime = new Date();
+			
+		}
 
 		/** *************************************************************************************** */
 		/**
@@ -386,17 +403,37 @@
 		/** *************************************************************************************** */
 
 		/**
-		 * 
+		 * Adds a new step in database and in the interface
 		 * 
 		 */
 		vm.addAStep = function (addAStepForm) {
 
-
-			var addedStep = addAStepForm.step;
+			if (addAStepForm.$dirty){
+				
+				vm.createStep();
+				
+			}
+		}
+		
+		vm.createStep = function(){
 			
+			vm.addedStep.beginningDate.setHours(vm.addedStep.beginningTime.getHours());
+			vm.addedStep.beginningDate.setMinutes(vm.addedStep.beginningTime.getMinutes());
+			vm.addedStep.beginningDate.setSeconds(vm.addedStep.beginningTime.getSeconds());
+
+			vm.addedStep.endDate.setHours(vm.addedStep.endTime.getHours());
+			vm.addedStep.endDate.setMinutes(vm.addedStep.endTime.getMinutes());
+			vm.addedStep.endDate.setSeconds(vm.addedStep.endTime.getSeconds());
+			
+			vm.addedStep.brewID = vm.currentFullBrew.id;
+			
+			delete vm.addedStep.endTime;
+			delete vm.addedStep.beginningTime;
+
+			console.log(vm.addedStep);
 
 			// Service call
-			StepService.add(vm.currentFullBrew.id, addedStep, function (response) {
+			StepService.add(vm.currentFullBrew.id, vm.addedStep, function (response) {
 
 				vm.showSuccess = true;
 				vm.showErrors = false;
@@ -418,7 +455,6 @@
 
 
 			});
-
 
 		}
 	}

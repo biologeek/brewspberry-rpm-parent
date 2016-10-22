@@ -7,7 +7,7 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.EtapeType;
-import net.brewspberry.business.exceptions.ConvertionException;
+import net.brewspberry.business.exceptions.ConversionException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.beans.requests.BrewRequest;
 import net.brewspberry.front.ws.beans.requests.CompleteStep;
@@ -100,7 +100,7 @@ public class BrassinDTO {
 		brew.setBra_debut(req.getBeginning());
 		try {
 			brew.setBra_etapes(new HashSet<Etape>(new StepDTO().toBusinessObjectList(req.getSteps())));
-		} catch (ConvertionException e) {
+		} catch (ConversionException e) {
 			throw new ServiceException(e.getMessage());
 		}
 		

@@ -70,19 +70,4 @@ public class CompleteStep extends SimpleStepResponse {
 	public void setActioners(List<ActionnerResponse> actioners) {
 		this.actioners = actioners;
 	}
-
-	
-	
-	public PalierType toBusinessStageType(String st) throws BusinessException{
-		
-		for (PalierType pl : PalierType.values()){
-			
-			if (pl.name().equals(st)){
-				return pl;
-			}
-		}
-
-		throw new BusinessException("Wrong type of stage !!");
-	}
-
 }

@@ -9,7 +9,8 @@ var app = angular.module('brewspberry', [
     'ngMessages',
     'ngRoute',
     'ngMaterial',
-    'chart.js'
+    'chart.js',
+    'mdPickers'
 ]);
 
     app.config(function($routeProvider){

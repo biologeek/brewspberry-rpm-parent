@@ -52,36 +52,38 @@ public class RESTTemperatureService {
 
 	Logger logger = LogManager.getInstance(RESTTemperatureService.class.getName());
 
-
-	
-	
-	
 	@GetMapping("/step/{stepId}/act/{actUUID}")
-	public MergedTemperatureMeasurementsForChart initTemperatures( @PathVariable("stepId") Long stepId, @PathVariable("actUUID") String actionerUUID) throws ServiceException{
+	public MergedTemperatureMeasurementsForChart initTemperatures(@PathVariable("stepId") Long stepId,
+			@PathVariable("actUUID") String actionerUUID) throws ServiceException {
 		Etape step = stepService.getElementById(stepId);
 
 		System.out.println(step);
-		List<ConcreteTemperatureMeasurement> tmes = tmesSpecService.getTemperaturesByStepAndUUID(step, actionerUUID, 0L);
-		
+		List<ConcreteTemperatureMeasurement> tmes = tmesSpecService.getTemperaturesByStepAndUUID(step, actionerUUID,
+				0L);
+
 		System.out.println(tmes.size());
 		return new TemperatureMeasurementDTO().convertToMergedAPIObject(tmes);
 	}
-	
-	
+
 	@GetMapping("/step/{stepId}/act/{actUUID}/last/{lastID}")
-	public MergedTemperatureMeasurementsForChart updateTemperatures( @PathVariable("stepId") Long stepId, @PathVariable("actUUID") String actionerUUID, @PathVariable("lastID") Long lastID) throws ServiceException{
+	public MergedTemperatureMeasurementsForChart updateTemperatures(@PathVariable("stepId") Long stepId,
+			@PathVariable("actUUID") String actionerUUID, @PathVariable("lastID") Long lastID) throws ServiceException {
 		Etape step = stepService.getElementById(stepId);
 
 		System.out.println(step);
-		List<ConcreteTemperatureMeasurement> tmes = tmesSpecService.getTemperaturesByStepAndUUID(step, actionerUUID, lastID);
-		
-		System.out.println(tmes.size());
+		List<ConcreteTemperatureMeasurement> tmes = tmesSpecService.getTemperaturesByStepAndUUID(step, actionerUUID,
+				lastID);
+
+		for(ConcreteTemperatureMeasurement tm : tmes){
+			
+			if (tm.getTmes_id() < lastID){
+				
+				tmes.remove(tm);
+			}
+		}
 		return new TemperatureMeasurementDTO().convertToMergedAPIObject(tmes);
 	}
-	
-	
-	
-	
+
 	@GetMapping("/initTemperatures/uuid/{uuid}/sid/{sid}/maxPts/{maxPts}/delay/{delay}")
 	/**
 	 * Initiates temperature list with all available results
@@ -105,7 +107,7 @@ public class RESTTemperatureService {
 			List<ConcreteTemperatureMeasurement> tmesList = tmesSpecService
 					.getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(currentStep, uuid, maxPointsNumber,
 							delayToDisplayInSeconds);
-			
+
 			List<TheoreticalTemperatureMeasurement> thList = null;
 
 			String theoreticalParam = ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
@@ -115,13 +117,13 @@ public class RESTTemperatureService {
 				// Display theoretical temperatures
 
 				thList = this.generateTheoreticalTmesListFromConstant(filteredList, currentStep.getEtp_palier_type());
-				
+
 			}
 
 			return new MergedTemperatureMeasurement().concrete(tmesList).theoretical(thList);
 
 		}
-		
+
 		throw new Exception("Id must be > 0");
 	}
 
@@ -133,7 +135,6 @@ public class RESTTemperatureService {
 	 * @throws JSONException
 	 */
 	public List<ConcreteTemperatureMeasurement> initTemperature(@PathVariable("e") long stepID) throws Exception {
-
 
 		if (stepID > 0) {
 
@@ -150,7 +151,7 @@ public class RESTTemperatureService {
 			return tmesList;
 		}
 
-		throw new Exception ("Id must be > 0");
+		throw new Exception("Id must be > 0");
 	}
 
 	@GetMapping("/updateTemperatures/uuid/{uuid}/sid/{sid}/maxPts/{maxPts}/delay/{delay}/lastID/{lastID}")
@@ -164,9 +165,10 @@ public class RESTTemperatureService {
 	 * @param delayInMinutes
 	 * @return
 	 */
-	public MergedTemperatureMeasurement updateTemperatureForStep(@PathVariable("uuid") String uuid, @PathVariable("sid") long stepID,
-			@PathVariable("maxPts") int maxPointsNumber, @PathVariable("delay") float delayToDisplayInSeconds,
-			@PathVariable("lastID") long lastID) throws JSONException {
+	public MergedTemperatureMeasurement updateTemperatureForStep(@PathVariable("uuid") String uuid,
+			@PathVariable("sid") long stepID, @PathVariable("maxPts") int maxPointsNumber,
+			@PathVariable("delay") float delayToDisplayInSeconds, @PathVariable("lastID") long lastID)
+			throws JSONException {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 		JSONObject jsonResult = null;
@@ -213,11 +215,11 @@ public class RESTTemperatureService {
 	 * @throws JSONException
 	 */
 	@GetMapping("/lastTemperatureValue")
-	public List<ConcreteTemperatureMeasurement> getLastTemperatureValue(@PathVariable("e") long stepID, @PathVariable("u") String uuid)
-			throws JSONException {
+	public List<ConcreteTemperatureMeasurement> getLastTemperatureValue(@PathVariable("e") long stepID,
+			@PathVariable("u") String uuid) throws JSONException {
 
 		List<ConcreteTemperatureMeasurement> response = new ArrayList<ConcreteTemperatureMeasurement>();
-		
+
 		if (stepID > 0 && uuid != null) {
 
 			Etape step = null;
@@ -236,19 +238,12 @@ public class RESTTemperatureService {
 
 		}
 
-		
 		return response;
 	}
-	
-	
-	
-	
-	
-	
-	
-	/* ****************************************************************
-	 *							USELESS
-	 * ***************************************************************/
+
+	/*
+	 * **************************************************************** USELESS
+	 ***************************************************************/
 
 	@GetMapping("/test")
 	public String testWS() {

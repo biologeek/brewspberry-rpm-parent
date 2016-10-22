@@ -16,7 +16,7 @@ app.constant('CONSTANTS', {
     'BREW_SERVICE_URL' : base_url+'brewspberry-api/brewService',
     'STEP_SERVICE_URL' : base_url+'brewspberry-api/stepService',
     'TEMP_SERVICE_URL' : base_url+'brewspberry-api/temperatureService',
-    'DEFAULT_CHART_RELOAD' : 1000,
+    'DEFAULT_CHART_RELOAD' : 5000,
     'CHART_MAX_DATA_SIZE' : 30,
     'DEFAULT_RANGE_MINUTES' : 10,
     'ACTIONNER_PICTURES' : {
@@ -24,5 +24,25 @@ app.constant('CONSTANTS', {
     	"2" : {"on" : "images/engine-on.png", "off" : "images/engine-off.png"},
     	"3" : {"on" : "images/pump-on.png", "off" : "images/pump-off.png"},
     	
-    }
+    },
+    'STEP_TYPES' : [
+                    'CONCASSAGE', 
+    				'PALIER',
+    				'FILTRATION',
+    				'EBULLITION',
+    				'WHIRLPOOL',
+    				'REFROIDISSEMENT',
+    				'FERMENTATION',
+    				'GARDE',
+    				'EMBOUTEILLAGE',
+    				'REFERMENTATION'
+                         ],
+
+    'STAGE_TYPES' : [
+                'PROTEINIQUE', 
+				'SACCHARIFICATION',
+				'ALE',
+				'DEXTRINES',
+				'MASH_OUT'
+                     ]
 });

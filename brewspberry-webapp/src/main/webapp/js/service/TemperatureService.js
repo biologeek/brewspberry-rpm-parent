@@ -34,8 +34,8 @@
 
 			var promise = $http({
 				method: 'GET',
-				url : 'js/tests/mockStepTemps.json'
-				//url: CONSTANTS.TEMP_SERVICE_URL+'/step/'+stepID+'/act/'+uuid+'/last/'+last,
+				//url : 'js/tests/mockStepTemps.json'
+				url: CONSTANTS.TEMP_SERVICE_URL+'/step/'+stepID+'/act/'+uuid+'/last/'+last
 
 			}).then(function (response) {
 				callBackSuccess(response);

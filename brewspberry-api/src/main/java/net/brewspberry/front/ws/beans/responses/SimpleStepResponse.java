@@ -1,5 +1,10 @@
 package net.brewspberry.front.ws.beans.responses;
 
+import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.EtapeType;
+import net.brewspberry.business.beans.PalierType;
+import net.brewspberry.business.exceptions.BusinessException;
+
 public class SimpleStepResponse {
 	
 	
@@ -19,6 +24,7 @@ public class SimpleStepResponse {
 	private long creation;
 	private long update;
 	private String stageType;
+	private String stepType;
 	private String comment;
 	
 	
@@ -112,6 +118,39 @@ public class SimpleStepResponse {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+
+
+	public PalierType toBusinessStageType(String st) throws BusinessException{
+		
+		for (PalierType pl : PalierType.values()){
+			
+			if (pl.name().equals(st)){
+				return pl;
+			}
+		}
+
+		throw new BusinessException("Wrong type of stage !!");
+	}
+	
+
+	public EtapeType toBusinessStepType(String st) throws BusinessException{
+		
+		for (EtapeType pl : EtapeType.values()){
+			
+			if (pl.name().equals(st)){
+				return pl;
+			}
+		}
+
+		throw new BusinessException("Wrong type of step !!");
+	}
+	public String getStepType() {
+		return stepType;
+	}
+	public void setStepType(String stepType) {
+		this.stepType = stepType;
+	}
+
 	
 	
 	

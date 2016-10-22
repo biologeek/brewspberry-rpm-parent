@@ -53,10 +53,12 @@
 								<div class="muted pull-left">Etape</div>
 								<div class="pull-right">
 									<button class="btn">
-										<i class="icon-play" ng-click="toggleStepForReal(true, step.id)"></i>
+										<i class="icon-play"
+											ng-click="toggleStepForReal(true, step.id)"></i>
 									</button>
 									<button class="btn">
-										<i class="icon-stop" ng-click="toggleStepForReal(false, step.id)"></i>
+										<i class="icon-stop"
+											ng-click="toggleStepForReal(false, step.id)"></i>
 									</button>
 								</div>
 							</div>
@@ -80,13 +82,11 @@
 
 										<tr>
 											<td colspan="4"><span
-												ng-repeat="actioner in step.actioners"> <a href="#"
-													onclick="brewController.changeActionerState(actioner.id, step.id, actioner.$index)">
-														<img class="actioner.class" id="IMGACT{{actioner.uuid}}"
-														style="height: 40px; width: 50px;"
-														src="{{actioner.picture}}" />
-												</a>
-
+												ng-repeat="actioner in step.actioners"> <img
+													ng-click="changeActionerState(actioner.id, step.id, actioner.$index)"
+													class="actioner.class" id="IMGACT{{actioner.uuid}}"
+													style="height: 40px; width: 50px;"
+													src="{{actioner.picture}}" />
 											</span></td>
 										</tr>
 									</tbody>
@@ -105,19 +105,18 @@
 
 								</div>
 							</div>
-							
-							<md-content>
-							    <md-tabs md-dynamic-height md-border-bottom>
-							      <md-tab ng-repeat="actioner in step.actioners" ng-if="actioner.type == 1" label="{{actioner.uuid}}">
-							        <md-content class="md-padding">
-										<canvas class="chart chart-line" chart-data="actioner.chart[0].data"
-															chart-series="actioner.chart[0].series"
-															chart-labels="actioner.chart[0].labels"
-															chart-options="brewController.chartOptions" />
-							        </md-content>
-							      </md-tab>
-							    </md-tabs>
-						   	</md-content>
+
+							<md-content> <md-tabs md-dynamic-height
+								md-border-bottom> <md-tab
+								ng-repeat="actioner in step.actioners"
+								ng-if="actioner.type == 1" label="{{actioner.uuid}}"> <md-content
+								class="md-padding">
+							<canvas class="chart chart-line"
+								chart-data="actioner.chart[0].data"
+								chart-series="actioner.chart[0].series"
+								chart-labels="actioner.chart[0].labels"
+								chart-options="brewController.chartOptions" />
+							</md-content> </md-tab> </md-tabs> </md-content>
 						</div>
 						<div class="block-content collapse in"></div>
 					</div>
@@ -136,49 +135,63 @@
 					</div>
 				</div>
 				<div class="block-content collapse in">
-					<form name="addAStepForm"
-						ng-submit="brewController.addAStep(addAStepForm)"
-						class="form-horizontal">
+					<form name="addAStepForm" class="form-horizontal" ng-submit="brewController.addAStep(addAStepForm)">
 						<table class="table table-striped">
 							<tbody>
 								<tr>
 									<td>Label</td>
 									<td><input type="text" name="step_label"
-										ng-model="step.label" /></td>
+										ng-model="brewController.addedStep.label" /></td>
 
-									<td>Duree theorique</td>
-									<td><input type="text" name="step_duration"
-										ng-model="step.duration" /></td>
+									<td>Type d'étape</td>
+									<td><select name="step_stepType"
+										ng-model="brewController.addedStep.stepType">
+										<option ng-repeat="stage in brewController.stepTypes" value="{{stage}}">{{stage}}</option>
+										
+										</select>
+										
+										<select ng-if="brewController.addedStep.stepType == 'PALIER'" name="step_stageType"
+										ng-model="brewController.addedStep.stageType">
+										<option ng-repeat="stage in brewController.stageTypes" value="{{stage}}">{{stage}}</option>
+										
+										</select>
+										</td>
 								</tr>
 								<tr>
-									<td>Debut</td>
+									<td>Debut (<span ng-click="brewController.beginNow()">Maintenant</span>)</td>
 									<td id="stepBeginningAdd">
-										<div class='input-group date' id='datetimepicker1'>
-											<input type='text' class="form-control"
-												ng-model="step.beginning" id="stepBeginningPicker" />
-										</div>
+											<md-datepicker ng-model="brewController.addedStep.beginningDate"
+												md-placeholder="Enter date"></md-datepicker>
 									</td>
 
 									<td>Fin</td>
 									<td id="stepEndAdd">
-										<div class='input-group date' id='datetimepicker2'>
-											<input type='text' class="form-control" ng-model="step.end"
-												id="stepEndPicker" />
-										</div>
+											<md-datepicker md-placeholder="Date"
+												ng-model="brewController.addedStep.endDate"></mdp-date-picker>
 									</td>
+								</tr>
+								<tr>
+								<td></td>
+									<td><mdp-time-picker ng-model="brewController.addedStep.beginningTime"></mdp-time-picker>
+									</td>
+									<td></td>
+									<td><mdp-time-picker ng-model="brewController.addedStep.endTime"></mdp-time-picker>
+									</td>
+
 								</tr>
 								<tr>
 									<td>Temperature theorique</td>
 									<td><input type="text" name="step_temperature"
-										ng-model="step.temperature" /></td>
+										ng-model="brewController.addedStep.temperature" /></td>
 
 									<td>Commentaire</td>
-									<td><textarea name="step_comment" ng-model="step.comment"
+									<td><textarea name="step_comment" ng-model="brewController.addedStep.comment"
 											rows="3" cols="15"></textarea></td>
 								</tr>
 								<tr>
 									<td>Etape nÂ°</td>
 									<td><input type="text" name="step_number"
+										ng-model="brewController.addedStep.number"
 										value="{{ brewController.currentFullBrew.steps.length }}" /></td>
 									<td></td>
 									<td></td>

@@ -18,6 +18,7 @@
 				callbackError) {
 			var promise;
 
+			console.log(step)
 			if (brewID > 0 && step != {}) {
 
 				promise = $http({

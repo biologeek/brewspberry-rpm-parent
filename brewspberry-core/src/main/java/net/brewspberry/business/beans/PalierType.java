@@ -17,8 +17,7 @@ public enum PalierType implements Serializable {
 
 	PROTEINIQUE(1, 45, 55, 50, "Palier proteinique"), SACCHARIFICATION(2, 55,
 			65, 64, "Saccharification"), ALE(3, 68, 70, 69, "Monopalier Ale"), DEXTRINES(
-			4, 68, 72, 72, "Dextrines"), EBULLITION(5, 96, 100, 98,
-			"Ebullition"), MASH_OUT(6, 78, 80, 78, "Mash out");
+			4, 68, 72, 72, "Dextrines"), MASH_OUT(6, 78, 80, 78, "Mash out");
 
 	private int plt_temperature_min;
 	private int plt_temperature_max;
