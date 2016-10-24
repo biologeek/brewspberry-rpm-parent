@@ -11,6 +11,7 @@ public class SimpleBrewResponse {
 		
 		full,light;
 	}
+
 	
 	private long id;
 	private String description;

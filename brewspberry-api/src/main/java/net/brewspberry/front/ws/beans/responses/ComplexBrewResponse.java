@@ -11,14 +11,12 @@ import net.brewspberry.front.ws.beans.requests.MaltRequest;
 
 public class ComplexBrewResponse extends SimpleBrewResponse {
 
-		
 	private List<CompleteStep> steps;
 	private Biere beer;
 
 	private List<ConcreteIngredientRequest> malts;
 	private List<ConcreteIngredientRequest> hops;
 	private List<ConcreteIngredientRequest> yeasts;
-	
 
 	public ComplexBrewResponse() {
 		super();
@@ -26,20 +24,21 @@ public class ComplexBrewResponse extends SimpleBrewResponse {
 	}
 
 	public ComplexBrewResponse(SimpleBrewResponse simpleBrewResponse) {
-		
-		
-		this.setId(simpleBrewResponse.getId());
-		this.setDescription(simpleBrewResponse.getDescription());
-		this.setBeginning(simpleBrewResponse.getBeginning());
-		this.setEnd(simpleBrewResponse.getEnd());
-		this.setMaj(simpleBrewResponse.getMaj());
-		this.setQuantity(simpleBrewResponse.getQuantity());
-		this.setStatus(simpleBrewResponse.getStatus());
-		this.setType(simpleBrewResponse.getType());
-		this.steps = new ArrayList<CompleteStep>();
-		this.hops = new ArrayList<ConcreteIngredientRequest>();
-		this.malts = new ArrayList<ConcreteIngredientRequest>();
-		this.yeasts = new ArrayList<ConcreteIngredientRequest>();
+
+		if (simpleBrewResponse != null) {
+			this.setId(simpleBrewResponse.getId());
+			this.setDescription(simpleBrewResponse.getDescription());
+			this.setBeginning(simpleBrewResponse.getBeginning());
+			this.setEnd(simpleBrewResponse.getEnd());
+			this.setMaj(simpleBrewResponse.getMaj());
+			this.setQuantity(simpleBrewResponse.getQuantity());
+			this.setStatus(simpleBrewResponse.getStatus());
+			this.setType(simpleBrewResponse.getType());
+			this.steps = new ArrayList<CompleteStep>();
+			this.hops = new ArrayList<ConcreteIngredientRequest>();
+			this.malts = new ArrayList<ConcreteIngredientRequest>();
+			this.yeasts = new ArrayList<ConcreteIngredientRequest>();
+		}
 	}
 
 	public List<CompleteStep> getSteps() {
@@ -81,6 +80,5 @@ public class ComplexBrewResponse extends SimpleBrewResponse {
 	public void setYeasts(List<ConcreteIngredientRequest> yeasts) {
 		this.yeasts = yeasts;
 	}
-	
-	
+
 }

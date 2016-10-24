@@ -45,8 +45,11 @@
 
 			return promise;
 		};
-			
-			return TemperatureService;
+		
+		
+		
+		return TemperatureService;
 	}
+		
 
 })();

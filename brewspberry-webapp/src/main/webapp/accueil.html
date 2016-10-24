@@ -1,64 +1,77 @@
 <div ng-controller="AccueilController as accueilController">
-<ng-include src="tpl/header.jsp"></ng-include>
+	<ng-include src="tpl/header.jsp"></ng-include>
 
 
-<div class="container-fluid">
+	<div class="container-fluid">
 
-    <div class="row-fluid">
-<ng-include src="tpl/sidebar.jsp"></ng-include>
+		<div class="row-fluid">
+			<ng-include src="tpl/sidebar.jsp"></ng-include>
 
-        <!--/span-->
-        <div class="span9" id="content">
-            <div id="submissionFailed" class="alert alert-error" ng-show="accueilController.showErrors">
-                <button class="close" data-dismiss="alert">&times;</button>
-                <strong>Error!</strong> {{ accueilController.submissionFailureMessage }}
-            </div>
-            <div id="submissionSuccess" class="alert alert-success" ng-show="accueilController.showSuccess">
-                <button class="close" data-dismiss="alert">&times;</button>
-                <strong>Success!</strong> {{ accueilController.submissionSuccessMessage }}
-            </div>
-            <div class="row-fluid">
-                <!-- block -->
-                <div class="block">
-                    <div class="navbar navbar-inner block-header">
-                        <div class="muted pull-left">Résumé des bières</div>
-                    </div>
-                    <div class="block-content collapse in">
-                        <div class="span12">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nom</th>
-                                    <th>Début</th>
-                                    <th>Fin</th>
-                                    <th>Type</th>
-                                    <th>Progression</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+			<!--/span-->
+			<div class="span9" id="content">
+				<div id="submissionFailed" class="alert alert-error"
+					ng-show="accueilController.showErrors">
+					<button class="close" data-dismiss="alert">&times;</button>
+					<strong>Error!</strong> {{
+					accueilController.submissionFailureMessage }}
+				</div>
+				<div id="submissionSuccess" class="alert alert-success"
+					ng-show="accueilController.showSuccess">
+					<button class="close" data-dismiss="alert">&times;</button>
+					<strong>Success!</strong> {{
+					accueilController.submissionSuccessMessage }}
+				</div>
+				<div class="row-fluid">
+
+					<div class="block">
+						<div class="navbar navbar-inner block-header">
+							<div class="muted pull-right"></div>
+						</div>
+						<div class="block-content collapse in">
+							<button class="btn btn-primary">Button</button>
+						</div>
+					</div>
+					<!-- block -->
+					<div class="block">
+						<div class="navbar navbar-inner block-header">
+							<div class="muted pull-left">Résumé des bières</div>
+						</div>
+						<div class="block-content collapse in">
+							<div class="span12">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Nom</th>
+											<th>DÃ©but</th>
+											<th>Fin</th>
+											<th>Type</th>
+											<th>Progression</th>
+										</tr>
+									</thead>
+									<tbody>
 
 
-                                    <tr ng-repeat="brew in accueilController.brewList">
-                                        <td>{{brew.id}}</td>
-                                        <td><a href="#/brew/{{brew.id}}">{{brew.description}}</a></td>
-                                        <td>{{brew.debut | date : "dd/MM/yyyy HH:mm:ss"}} </td>
-                                        <td>{{brew.fin |  date : "dd/MM/yyyy HH:mm:ss"}} </td>
-                                        <td>{{brew.type}}</td>
-                                        <td>
-                                            <div class="progress progress-striped active">
-                                                <div style="width: {{brew.statut}}%;" class="bar"></div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!-- /block -->
-            </div>
-        </div>
+										<tr ng-repeat="brew in accueilController.brewList">
+											<td>{{brew.id}}</td>
+											<td><a href="#/brew/{{brew.id}}">{{brew.description}}</a></td>
+											<td>{{brew.debut | date : "dd/MM/yyyy HH:mm:ss"}}</td>
+											<td>{{brew.fin | date : "dd/MM/yyyy HH:mm:ss"}}</td>
+											<td>{{brew.type}}</td>
+											<td>
+												<div class="progress progress-striped active">
+													<div style="width: {{brew.statut" class="bar"></div>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- /block -->
+				</div>
+			</div>
 
-<ng-include src="tpl/footer.jsp"></ng-include>
-</div>
+			<ng-include src="tpl/footer.jsp"></ng-include>
+		</div>

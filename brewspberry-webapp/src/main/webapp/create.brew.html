@@ -1,0 +1,35 @@
+<div ng-controller="B as accueilController">
+	<ng-include src="tpl/header.jsp"></ng-include>
+
+
+	<div class="container-fluid">
+
+		<div class="row-fluid">
+			<ng-include src="tpl/sidebar.jsp"></ng-include>
+			<!--/span-->
+			<div class="span9" id="content">
+				<div id="submissionFailed" class="alert alert-error"
+					ng-show="accueilController.showErrors">
+					<button class="close" data-dismiss="alert">&times;</button>
+					<strong>Error!</strong> {{
+					accueilController.submissionFailureMessage }}
+				</div>
+				<div id="submissionSuccess" class="alert alert-success"
+					ng-show="accueilController.showSuccess">
+					<button class="close" data-dismiss="alert">&times;</button>
+					<strong>Success!</strong> {{
+					accueilController.submissionSuccessMessage }}
+				</div>
+				<!-- block -->
+				<div class="block">
+					<div class="navbar navbar-inner block-header">
+						<div class="muted pull-left">Résumé des bières</div>
+					</div>
+					<div class="block-content collapse in">
+						<div class="span12"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

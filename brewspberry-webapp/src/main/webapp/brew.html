@@ -135,7 +135,8 @@
 					</div>
 				</div>
 				<div class="block-content collapse in">
-					<form name="addAStepForm" class="form-horizontal" ng-submit="brewController.addAStep(addAStepForm)">
+					<form name="addAStepForm" class="form-horizontal"
+						ng-submit="brewController.addAStep(addAStepForm)">
 						<table class="table table-striped">
 							<tbody>
 								<tr>
@@ -146,36 +147,38 @@
 									<td>Type d'étape</td>
 									<td><select name="step_stepType"
 										ng-model="brewController.addedStep.stepType">
-										<option ng-repeat="stage in brewController.stepTypes" value="{{stage}}">{{stage}}</option>
-										
-										</select>
-										
-										<select ng-if="brewController.addedStep.stepType == 'PALIER'" name="step_stageType"
-										ng-model="brewController.addedStep.stageType">
-										<option ng-repeat="stage in brewController.stageTypes" value="{{stage}}">{{stage}}</option>
-										
-										</select>
-										</td>
-								</tr>
-								<tr>
-									<td>Debut (<span ng-click="brewController.beginNow()">Maintenant</span>)</td>
-									<td id="stepBeginningAdd">
-											<md-datepicker ng-model="brewController.addedStep.beginningDate"
-												md-placeholder="Enter date"></md-datepicker>
-									</td>
+											<option ng-repeat="stage in brewController.stepTypes"
+												value="{{stage}}">{{stage}}</option>
 
-									<td>Fin (<span ng-click="brewController.beginNow()">Maintenant</span>)</td>
-									<td id="stepEndAdd">
-											<md-datepicker md-placeholder="Date"
-												ng-model="brewController.addedStep.endDate"></mdp-date-picker>
-									</td>
+									</select> <select ng-if="brewController.addedStep.stepType == 'PALIER'"
+										name="step_stageType"
+										ng-model="brewController.addedStep.stageType">
+											<option ng-repeat="stage in brewController.stageTypes"
+												value="{{stage}}">{{stage}}</option>
+
+									</select></td>
 								</tr>
 								<tr>
-								<td></td>
-									<td><mdp-time-picker ng-model="brewController.addedStep.beginningDateJs"></mdp-time-picker>
+									<td>Debut (<span ng-click="brewController.beginNow('beginningDateJs')">Maintenant</span>)
+									</td>
+									<td id="stepBeginningAdd"><md-datepicker
+											ng-model="brewController.addedStep.beginningDateJs"
+											md-placeholder="Enter date"></md-datepicker></td>
+
+									<td>Fin (<span ng-click="brewController.beginNow('endDateJs')">Maintenant</span>)
+									</td>
+									<td id="stepEndAdd"><md-datepicker md-placeholder="Date"
+											ng-model="brewController.addedStep.endDateJs">
+										</mdp-date-picker></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><mdp-time-picker
+											ng-model="brewController.addedStep.beginningDateJs"></mdp-time-picker>
 									</td>
 									<td></td>
-									<td><mdp-time-picker ng-model="brewController.addedStep.endDateJs"></mdp-time-picker>
+									<td><mdp-time-picker
+											ng-model="brewController.addedStep.endDateJs"></mdp-time-picker>
 									</td>
 
 								</tr>
@@ -185,8 +188,9 @@
 										ng-model="brewController.addedStep.temperature" /></td>
 
 									<td>Commentaire</td>
-									<td><textarea name="step_comment" ng-model="brewController.addedStep.comment"
-											rows="3" cols="15"></textarea></td>
+									<td><textarea name="step_comment"
+											ng-model="brewController.addedStep.comment" rows="3"
+											cols="15"></textarea></td>
 								</tr>
 								<tr>
 									<td>Etape nÂ°</td>
@@ -208,18 +212,6 @@
 					</form>
 				</div>
 				<!-- /block -->
-			</div>
-		</div>
-		<div class="row-fluid">
-			<!-- block -->
-			<div class="block">
-
-				<div class="navbar navbar-inner block-header">
-					<div class="muted pull-left">Profil complet de temperature</div>
-
-				</div>
-
-
 			</div>
 		</div>
 		<div class="row-fluid">

@@ -386,12 +386,11 @@
 		
 		
 		/**
-		 * Clicking 'Now' feeds date and time field 
+		 * Clicking 'Now' feeds date and time field
 		 */
-		vm.beginNow = function(){
+		vm.beginNow = function(field){
 			
-			vm.addedStep.beginningDate = new Date();
-			vm.addedStep.beginningTime = new Date();
+			vm.addedStep[field] = new Date();
 			
 		}
 

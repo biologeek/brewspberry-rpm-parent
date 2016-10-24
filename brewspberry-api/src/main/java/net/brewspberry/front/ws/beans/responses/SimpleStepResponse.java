@@ -4,7 +4,7 @@ import net.brewspberry.business.beans.EtapeType;
 import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.business.exceptions.BusinessException;
 
-public class SimpleStepResponse {
+public class SimpleStepResponse implements Comparable<SimpleStepResponse> {
 	
 
 	private Long id;
@@ -146,6 +146,15 @@ public class SimpleStepResponse {
 	}
 	public void setStepType(String stepType) {
 		this.stepType = stepType;
+	}
+	@Override
+	public int compareTo(SimpleStepResponse o) {
+		if (this.getNumber() > o.getNumber())
+			return 1;
+		else if (this.getNumber() == o.getNumber())
+			return 0;
+		else // (this.getNumber() < o.getNumber())
+			return -1;
 	}	
 	
 }
