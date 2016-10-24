@@ -1,13 +1,10 @@
 package net.brewspberry.front.ws.beans.responses;
 
-import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.EtapeType;
 import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.business.exceptions.BusinessException;
 
 public class SimpleStepResponse {
-	
-	
 	
 
 	private Long id;
@@ -149,9 +146,6 @@ public class SimpleStepResponse {
 	}
 	public void setStepType(String stepType) {
 		this.stepType = stepType;
-	}
-
-	
-	
+	}	
 	
 }

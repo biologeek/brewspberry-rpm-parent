@@ -27,7 +27,7 @@
 					data : step
 
 				}).then(function(response) {
-					callBackSuccess(response);
+					callbackSuccess(response);
 				}, function(response) {
 					callbackError(response);
 				});

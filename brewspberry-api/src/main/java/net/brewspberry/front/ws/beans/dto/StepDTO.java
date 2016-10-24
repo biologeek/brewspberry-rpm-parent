@@ -49,7 +49,8 @@ public class StepDTO {
 		
 		res.setTheoreticalTemperature(res.getTheoreticalTemperature());
 		res.setNumber(step.getEtp_numero());
-		res.setStageType(step.getEtp_palier_type().getPlt_libelle());
+		if(step.getEtp_palier_type() != null)
+			res.setStageType(step.getEtp_palier_type().getPlt_libelle());
 		res.setActive(step.isEtp_active());
 		return res;
 	}

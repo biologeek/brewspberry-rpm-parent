@@ -75,7 +75,7 @@ public class Etape implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lev_etape", cascade = CascadeType.ALL)
 	private Set<Levure> etp_levures;
 
-	@Enumerated(EnumType.ORDINAL)
+	@Enumerated(EnumType.STRING)
 	PalierType etp_palier_type;
  
 	@Transient

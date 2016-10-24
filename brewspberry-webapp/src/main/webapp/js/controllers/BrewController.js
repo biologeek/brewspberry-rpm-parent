@@ -417,18 +417,11 @@
 		
 		vm.createStep = function(){
 			
-			vm.addedStep.beginningDate.setHours(vm.addedStep.beginningTime.getHours());
-			vm.addedStep.beginningDate.setMinutes(vm.addedStep.beginningTime.getMinutes());
-			vm.addedStep.beginningDate.setSeconds(vm.addedStep.beginningTime.getSeconds());
-
-			vm.addedStep.endDate.setHours(vm.addedStep.endTime.getHours());
-			vm.addedStep.endDate.setMinutes(vm.addedStep.endTime.getMinutes());
-			vm.addedStep.endDate.setSeconds(vm.addedStep.endTime.getSeconds());
+			vm.addedStep.endDate = vm.addedStep.endDateJs.getTime();
+			vm.addedStep.beginningDate = vm.addedStep.beginningDateJs.getTime();
 			
 			vm.addedStep.brewID = vm.currentFullBrew.id;
 			
-			delete vm.addedStep.endTime;
-			delete vm.addedStep.beginningTime;
 
 			console.log(vm.addedStep);
 

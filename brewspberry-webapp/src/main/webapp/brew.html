@@ -164,7 +164,7 @@
 												md-placeholder="Enter date"></md-datepicker>
 									</td>
 
-									<td>Fin</td>
+									<td>Fin (<span ng-click="brewController.beginNow()">Maintenant</span>)</td>
 									<td id="stepEndAdd">
 											<md-datepicker md-placeholder="Date"
 												ng-model="brewController.addedStep.endDate"></mdp-date-picker>
@@ -172,10 +172,10 @@
 								</tr>
 								<tr>
 								<td></td>
-									<td><mdp-time-picker ng-model="brewController.addedStep.beginningTime"></mdp-time-picker>
+									<td><mdp-time-picker ng-model="brewController.addedStep.beginningDateJs"></mdp-time-picker>
 									</td>
 									<td></td>
-									<td><mdp-time-picker ng-model="brewController.addedStep.endTime"></mdp-time-picker>
+									<td><mdp-time-picker ng-model="brewController.addedStep.endDateJs"></mdp-time-picker>
 									</td>
 
 								</tr>
