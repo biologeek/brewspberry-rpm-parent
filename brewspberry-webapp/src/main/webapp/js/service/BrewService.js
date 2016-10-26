@@ -65,10 +65,11 @@
 
 		BrewServiceFactory.createBrew = function(obj, callBackSuccess,
 				callbackError) {
+			
 			var promise = $http({
 				method : 'POST',
 
-				url : CONSTANTS.BREW_SERVICE_URL + '/add',
+				url : CONSTANTS.BREW_SERVICE_URL + '/add/simple',
 				data : obj
 			}).then(function(response) {
 				callBackSuccess(response);

@@ -9,9 +9,9 @@
 
 
 
-AccueilController.$inject=['$scope', 'BrewService'];
+AccueilController.$inject=['$scope', 'BrewService', '$location'];
 
-function AccueilController($scope, BrewService) {
+function AccueilController($scope, BrewService, $location) {
 
 
     var vm = this;
@@ -19,6 +19,11 @@ function AccueilController($scope, BrewService) {
     vm.showSuccess = false;
     vm.showErrors = false;
 
+    
+    
+    vm.goToCreation = function(){
+    	$location.url('/creation/brew');    	
+    }
     var init = function (){
 
         console.log("ini");

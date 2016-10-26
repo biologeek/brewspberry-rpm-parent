@@ -44,5 +44,6 @@ app.constant('CONSTANTS', {
 				'ALE',
 				'DEXTRINES',
 				'MASH_OUT'
-                     ]
+                     ],
+    'BREW_STATUSES' : ['NOT_STARTED', 'COMPLETE', 'BREWING', 'FERMENTING', 'MATURING', 'BOTTLED', 'DRINKABLE', 'FINISHED']
 });

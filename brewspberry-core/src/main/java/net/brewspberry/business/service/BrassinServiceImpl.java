@@ -1,6 +1,7 @@
 package net.brewspberry.business.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -20,10 +21,9 @@ import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.BrassinDaoImpl;
 import net.brewspberry.util.HibernateUtil;
 
-@Service 
+@Service
 @Transactional
-public class BrassinServiceImpl implements IGenericService<Brassin>,
-		ISpecificBrassinService {
+public class BrassinServiceImpl implements IGenericService<Brassin>, ISpecificBrassinService {
 
 	@Autowired
 	IGenericDao<Brassin> brassinDAO;
@@ -32,13 +32,16 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 
 	@Override
 	public Brassin save(Brassin arg0) throws Exception {
-		
+
+		arg0.setBra_date_maj(new Date());
+
 		return brassinDAO.save(arg0);
 	}
 
 	@Override
 	public Brassin update(Brassin arg0) {
-		
+		arg0.setBra_date_maj(new Date());
+
 		return brassinDAO.update(arg0);
 	}
 
@@ -49,7 +52,7 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 
 	@Override
 	public List<Brassin> getAllElements() {
-		
+
 		return brassinDAO.getAllElements();
 	}
 
@@ -61,38 +64,38 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 
 	@Override
 	public void deleteElement(Brassin arg0) {
-		
+
 		brassinDAO.deleteElement(arg0);
 	}
 
 	@Override
 	public List<Brassin> getAllDistinctElements() {
-		
+
 		return brassinDAO.getAllDistinctElements();
 	}
 
 	@Override
 	public Brassin getBrassinByBeer(Biere beer) {
-		
+
 		return specBrassinDAO.getBrassinByBeer(beer);
 	}
 
 	@Override
 	public Brassin getElementByName(String name) throws ServiceException {
-		
+
 		return null;
 	}
 
 	@Override
 	public List<Brassin> getActiveBrews() {
-		
+
 		List<BrewStatus> brewstatuses = new ArrayList<BrewStatus>();
 
 		brewstatuses.add(BrewStatus.BREWING);
 		brewstatuses.add(BrewStatus.FERMENTING);
 		brewstatuses.add(BrewStatus.MATURING);
 		brewstatuses.add(BrewStatus.BOTTLED);
-		
+
 		return getBrewsByStates(brewstatuses);
 	}
 
@@ -103,10 +106,8 @@ public class BrassinServiceImpl implements IGenericService<Brassin>,
 	 * @return
 	 */
 	private List<Brassin> getBrewsByStates(List<BrewStatus> statuses) {
-		
+
 		return specBrassinDAO.getBrewByStates(statuses);
 	}
-
-	
 
 }

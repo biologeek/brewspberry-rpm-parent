@@ -46,13 +46,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = SpringCoreTestConfiguration.class)
-@PrepareForTest({ConfigLoader.class, EtapeServiceImpl.class})
+@PrepareForTest({ ConfigLoader.class, EtapeServiceImpl.class })
 public class EtapeServiceImplTest {
 
-	
 	@InjectMocks
 	ISpecificEtapeService specEtapeService = new EtapeServiceImpl();
-	
+
 	@Autowired
 	@Qualifier("etapeServiceImpl")
 	IGenericService<Etape> genEtapeService;
@@ -62,8 +61,9 @@ public class EtapeServiceImplTest {
 
 	@Mock
 	private ISpecificStockService specStockService;
-	
-	@Mock IGenericDao<Etape> etapeDaoMock;
+
+	@Mock
+	IGenericDao<Etape> etapeDaoMock;
 
 	private Etape newEtape;
 
@@ -76,7 +76,7 @@ public class EtapeServiceImplTest {
 	private List<CounterType> list;
 
 	@Before
-	public void init() {
+	public void init() throws ServiceException {
 
 		MockitoAnnotations.initMocks(this);
 
@@ -89,12 +89,7 @@ public class EtapeServiceImplTest {
 		calEnd = Calendar.getInstance();
 		calEnd.add(Calendar.MINUTE, -10);
 
-		try {
-			etape = genEtapeService.getElementById(1);
-		} catch (ServiceException e) {
-			
-			e.printStackTrace();
-		}
+		etape = genEtapeService.getElementById(1);
 
 		newEtape = new Etape();
 
@@ -118,31 +113,23 @@ public class EtapeServiceImplTest {
 
 		String param = "param.stock.delay.limitToStockInFab.minutes";
 		String path = Constants.CONFIG_PROPERTIES;
-		PowerMockito.when(ConfigLoader.getConfigByKey(path, param)).thenReturn(
-				"30");
-		
+		PowerMockito.when(ConfigLoader.getConfigByKey(path, param)).thenReturn("30");
 
 		try {
 			PowerMockito.doReturn(list).when(stepServiceSpy, "getList");
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}
-		
 
 		Etape result = stepServiceSpy.startStepForReal(etape);
 		calActual.setTime(result.getEtp_debut_reel());
 
-		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK),
-				calActual.get(Calendar.DAY_OF_WEEK));
-		Assert.assertEquals(calExpected.get(Calendar.MONTH),
-				calActual.get(Calendar.MONTH));
-		Assert.assertEquals(calExpected.get(Calendar.YEAR),
-				calActual.get(Calendar.YEAR));
-		Assert.assertEquals(calExpected.get(Calendar.HOUR),
-				calActual.get(Calendar.HOUR));
-		Assert.assertEquals(calExpected.get(Calendar.MINUTE),
-				calActual.get(Calendar.MINUTE));
+		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
+		Assert.assertEquals(calExpected.get(Calendar.MONTH), calActual.get(Calendar.MONTH));
+		Assert.assertEquals(calExpected.get(Calendar.YEAR), calActual.get(Calendar.YEAR));
+		Assert.assertEquals(calExpected.get(Calendar.HOUR), calActual.get(Calendar.HOUR));
+		Assert.assertEquals(calExpected.get(Calendar.MINUTE), calActual.get(Calendar.MINUTE));
 
 	}
 
@@ -157,15 +144,14 @@ public class EtapeServiceImplTest {
 		List<StockCounter> mockResult = new ArrayList<StockCounter>();
 
 		mockResult.add(add10KOfMalt());
-		
-		Mockito.when(specStockService
-				.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(etape, null, counterTypeFrom,
-						counterTypeTo)).thenReturn(mockResult);
-		
+
+		Mockito.when(specStockService.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(etape, null,
+				counterTypeFrom, counterTypeTo)).thenReturn(mockResult);
+
 		try {
 			PowerMockito.doReturn(list).when(stepServiceSpy, "getList");
 		} catch (Exception e) {
-			
+
 			e.printStackTrace();
 		}
 
@@ -177,12 +163,10 @@ public class EtapeServiceImplTest {
 
 		Mockito.doReturn(new Etape()).when(etapeDaoMock).update(etape);
 
-		
 		Date date = new Date();
 		// TODO : mock service calls so that only step service is tested
 		Etape result = stepServiceSpy.stopStepForReal(etape);
-		
-		
+
 		calActual.setTime(result.getEtp_fin_reel());
 
 		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
@@ -199,12 +183,13 @@ public class EtapeServiceImplTest {
 		malt.setStb_id(1);
 
 		return new IngredientStockCounterBuilder().ingredient(malt)
-				.type(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(getList())).unit(StockUnit.GRAMME).value(10000).build();
+				.type(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(getList())).unit(StockUnit.GRAMME).value(10000)
+				.build();
 
 	}
 
 	private List<CounterType> getList() {
-		
+
 		return genCounterTypeService.getAllElements();
 	}
 }

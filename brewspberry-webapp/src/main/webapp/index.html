@@ -15,10 +15,10 @@
 
 <link rel="stylesheet"
 	href="vendors/angular-material/angular-material.css">
-	
-	
-	
-	
+
+
+
+
 <script src="vendors/jquery/dist/jquery.min.js"></script>
 <script src="vendors/jquery-ui/jquery-ui.min.js"></script>
 
@@ -32,7 +32,8 @@
 <script src="vendors/chart.js/dist/Chart.min.js"></script>
 <script src="vendors/angular-chart.js/angular-chart.js"></script>
 <script src="vendors/moment/moment.js"></script>
-<script src="https://cdn.rawgit.com/alenaksu/mdPickers/0.7.4/dist/mdPickers.min.js"></script>
+<script
+	src="https://cdn.rawgit.com/alenaksu/mdPickers/0.7.4/dist/mdPickers.min.js"></script>
 
 <!-- <script src="js/connection/index.js"></script> -->
 <script src="app.js"></script>
@@ -44,14 +45,23 @@
 <script src="js/service/StepService.js"></script>
 
 <script src="js/controllers/BrewController.js"></script>
+<script src="js/controllers/BrewCreationController.js"></script>
 <script src="js/controllers/accueilController.js"></script>
 <script src="js/controllers/registrationController.js"></script>
 </head>
 
 
 <body>
+	<!-- <ng-include src="'tpl/header.jsp'"></ng-include> -->
 
-	<ng-view></ng-view>
 
+	<div class="container-fluid">
+
+		<div class="row-fluid">
+			<ng-include src="'tpl/sidebar.jsp'"></ng-include>
+			<ng-view></ng-view>
+		</div>
+		<ng-include src="tpl/footer.jsp"></ng-include>
+	</div>
 </body>
 </html>

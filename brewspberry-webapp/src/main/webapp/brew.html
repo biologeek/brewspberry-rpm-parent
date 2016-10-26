@@ -1,126 +1,111 @@
 <div ng-controller="BrewController as brewController">
 
-	<ng-include src="tpl/header.jsp"></ng-include>
+	<div class="span9" id="content">
 
+		<!--/span-->
+		<div id="submissionFailed" class="alert alert-error"
+			ng-show="brewController.showErrors">
+			<button class="close" data-dismiss="alert">&times;</button>
+			<strong>Error!</strong> {{ brewController.submissionFailureMessage }}
+		</div>
+		<div id="submissionSuccess" class="alert alert-success"
+			ng-show="brewController.showSuccess">
+			<button class="close" data-dismiss="alert">&times;</button>
+			<strong>Success!</strong> {{ brewController.submissionSuccessMessage
+			}}
+		</div>
+		<div class="block">
+			<div class="navbar navbar-inner block-header">
+				<div class="muted pull-left"
+					style="font-weight: bold; text-align: center;">{{brewController.currentFullBrew.description}}</div>
+			</div>
+		</div>
 
-
-	<div class="container-fluid">
-
-		<div class="row-fluid">
-			<ng-include src="tpl/sidebar.jsp"></ng-include>
-			<!--/span-->
-			<div class="span9" id="content">
-
-				<!--/span-->
-				<div id="submissionFailed" class="alert alert-error"
-					ng-show="brewController.showErrors">
-					<button class="close" data-dismiss="alert">&times;</button>
-					<strong>Error!</strong> {{ brewController.submissionFailureMessage
-					}}
+		<div class="block">
+			<div class="navbar navbar-inner block-header">
+				<div class="muted pull-left" style="font-size: 10px;">
+					Reload avery (ms) : <input type="text" id="delay" name="delay"
+						ng-model="brewController.updateDelay" /> Points displayed : <input
+						type="text" id="maxPts" name="maxPts"
+						ng-model="brewController.defaultmaxPtsValue" /> Range (minutes :
+					<input type="text" id="range" name="range"
+						ng-model="brewController.defaultRangeInMinutes" />
 				</div>
-				<div id="submissionSuccess" class="alert alert-success"
-					ng-show="brewController.showSuccess">
-					<button class="close" data-dismiss="alert">&times;</button>
-					<strong>Success!</strong> {{
-					brewController.submissionSuccessMessage }}
-				</div>
+			</div>
+		</div>
+		<!-- Loop over each step -->
+		<div class="row-fluid"
+			ng-repeat="step in brewController.currentFullBrew.steps">
+			<div class="span6">
+				<!-- block -->
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
-						<div class="muted pull-left"
-							style="font-weight: bold; text-align: center;">{{brewController.brew.name}}</div>
+						<div class="muted pull-left">Etape</div>
+						<div class="pull-right">
+							<button class="btn">
+								<i class="icon-play" ng-click="toggleStepForReal(true, step.id)"></i>
+							</button>
+							<button class="btn">
+								<i class="icon-stop"
+									ng-click="toggleStepForReal(false, step.id)"></i>
+							</button>
+						</div>
+					</div>
+					<div class="block-content collapse in">
+						<table class="table table-striped" style="table-layout: fixed;">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Label</th>
+									<th>Duree</th>
+									<th>Temperature</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>{{step.number}}</td>
+									<td>{{step.name}}</td>
+									<td>{{step.duration}}</td>
+									<td>{{step.theoreticalTemperature}}</td>
+								</tr>
+
+								<tr>
+									<td colspan="4"><span
+										ng-repeat="actioner in step.actioners"> <img
+											ng-click="changeActionerState(actioner.id, step.id, actioner.$index)"
+											class="actioner.class" id="IMGACT{{actioner.uuid}}"
+											style="height: 40px; width: 50px;" src="{{actioner.picture}}" />
+									</span></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
-
+				<!-- /block -->
+			</div>
+			<div class="span6">
+				<!-- block -->
 				<div class="block">
 					<div class="navbar navbar-inner block-header">
-						<div class="muted pull-left" style="font-size: 10px;">
-							Reload avery (ms) : <input type="text" id="delay" name="delay"
-								ng-model="brewController.updateDelay" /> Points displayed : <input
-								type="text" id="maxPts" name="maxPts"
-								ng-model="brewController.defaultmaxPtsValue" /> Range (minutes
-							: <input type="text" id="range" name="range"
-								ng-model="brewController.defaultRangeInMinutes" />
+						<div class="muted pull-left">Etape</div>
+						<div class="pull-right">
+							<span class="badge badge-info">{{step.number}}</span>
+
 						</div>
 					</div>
+
+					<md-content> <md-tabs md-dynamic-height
+						md-border-bottom> <md-tab
+						ng-repeat="actioner in step.actioners" ng-if="actioner.type == 1"
+						label="{{actioner.uuid}}"> <md-content class="md-padding">
+					<canvas class="chart chart-line"
+						chart-data="actioner.chart[0].data"
+						chart-series="actioner.chart[0].series"
+						chart-labels="actioner.chart[0].labels"
+						chart-options="brewController.chartOptions"></canvas>
+					</md-content> </md-tab> </md-tabs> </md-content>
 				</div>
-				<!-- Loop over each step -->
-				<div class="row-fluid"
-					ng-repeat="step in brewController.currentFullBrew.steps">
-					<div class="span6">
-						<!-- block -->
-						<div class="block">
-							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">Etape</div>
-								<div class="pull-right">
-									<button class="btn">
-										<i class="icon-play"
-											ng-click="toggleStepForReal(true, step.id)"></i>
-									</button>
-									<button class="btn">
-										<i class="icon-stop"
-											ng-click="toggleStepForReal(false, step.id)"></i>
-									</button>
-								</div>
-							</div>
-							<div class="block-content collapse in">
-								<table class="table table-striped" style="table-layout: fixed;">
-									<thead>
-										<tr>
-											<th>#</th>
-											<th>Label</th>
-											<th>Duree</th>
-											<th>Temperature</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>{{step.number}}</td>
-											<td>{{step.name}}</td>
-											<td>{{step.duration}}</td>
-											<td>{{step.theoreticalTemperature}}</td>
-										</tr>
-
-										<tr>
-											<td colspan="4"><span
-												ng-repeat="actioner in step.actioners"> <img
-													ng-click="changeActionerState(actioner.id, step.id, actioner.$index)"
-													class="actioner.class" id="IMGACT{{actioner.uuid}}"
-													style="height: 40px; width: 50px;"
-													src="{{actioner.picture}}" />
-											</span></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<!-- /block -->
-					</div>
-					<div class="span6">
-						<!-- block -->
-						<div class="block">
-							<div class="navbar navbar-inner block-header">
-								<div class="muted pull-left">Etape</div>
-								<div class="pull-right">
-									<span class="badge badge-info">{{step.number}}</span>
-
-								</div>
-							</div>
-
-							<md-content> <md-tabs md-dynamic-height
-								md-border-bottom> <md-tab
-								ng-repeat="actioner in step.actioners"
-								ng-if="actioner.type == 1" label="{{actioner.uuid}}"> <md-content
-								class="md-padding">
-							<canvas class="chart chart-line"
-								chart-data="actioner.chart[0].data"
-								chart-series="actioner.chart[0].series"
-								chart-labels="actioner.chart[0].labels"
-								chart-options="brewController.chartOptions" />
-							</md-content> </md-tab> </md-tabs> </md-content>
-						</div>
-						<div class="block-content collapse in"></div>
-					</div>
-				</div>
+				<div class="block-content collapse in"></div>
 			</div>
 		</div>
 		<div class="row-fluid">
@@ -144,7 +129,7 @@
 									<td><input type="text" name="step_label"
 										ng-model="brewController.addedStep.label" /></td>
 
-									<td>Type d'�tape</td>
+									<td>Type d'étape</td>
 									<td><select name="step_stepType"
 										ng-model="brewController.addedStep.stepType">
 											<option ng-repeat="stage in brewController.stepTypes"
@@ -159,17 +144,19 @@
 									</select></td>
 								</tr>
 								<tr>
-									<td>Debut (<span ng-click="brewController.beginNow('beginningDateJs')">Maintenant</span>)
+									<td>Debut (<span
+										ng-click="brewController.beginNow('beginningDateJs')">Maintenant</span>)
 									</td>
 									<td id="stepBeginningAdd"><md-datepicker
 											ng-model="brewController.addedStep.beginningDateJs"
 											md-placeholder="Enter date"></md-datepicker></td>
 
-									<td>Fin (<span ng-click="brewController.beginNow('endDateJs')">Maintenant</span>)
+									<td>Fin (<span
+										ng-click="brewController.beginNow('endDateJs')">Maintenant</span>)
 									</td>
 									<td id="stepEndAdd"><md-datepicker md-placeholder="Date"
 											ng-model="brewController.addedStep.endDateJs">
-										</mdp-date-picker></td>
+										</md-datepicker></td>
 								</tr>
 								<tr>
 									<td></td>
@@ -193,13 +180,22 @@
 											cols="15"></textarea></td>
 								</tr>
 								<tr>
-									<td>Etape n°</td>
+									<td>Etape nÂ°</td>
 									<td><input type="text" name="step_number"
 										ng-model="brewController.addedStep.number"
 										value="{{ brewController.currentFullBrew.steps.length }}" /></td>
 									<td></td>
 									<td></td>
 									<td>
+								</tr>
+								<tr>
+									<td>Available actionners</td>
+									<td colspan="3"><span 
+										ng-repeat="actioner for actioner in brewController.availableActioners">
+											<img ng-click="brewConytoller.addActionerAndPop(actioner)" class="btn tooltip-top"
+											data-original-title="UUID : {{actioner.uuid}}"
+											src="{{actioner.picture}}" style="height: 40px; width: 50px;">
+									</span></td>
 								</tr>
 								<tr>
 									<td></td>
@@ -305,9 +301,5 @@
 
 			</div>
 		</div>
-
 	</div>
-</div>
-</div>
-<ng-include src="tpl/footer.jsp"></ng-include>
 </div>

@@ -62,9 +62,6 @@ public class BrewValidator implements Validator<Brassin> {
 			errs.add(new BusinessErrors().error("Beginning date should be within " + dateDelay + " " + dateDelayUnit));
 		}
 
-		if (!DateManipulator.isDateInRange(toVal.getBra_date_maj(), dateDelay, dateDelayUnit)) {
-			errs.add(new BusinessErrors().error("Update date should be within " + dateDelay + " " + dateDelayUnit));
-		}
 
 		if (!DateManipulator.isDateInRange(toVal.getBra_fin(), dateDelay, dateDelayUnit)) {
 			errs.add(new BusinessErrors().error("End date should be within " + dateDelay + " " + dateDelayUnit));

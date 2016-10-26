@@ -7,7 +7,7 @@
 				</a> <a class="brand" href="#">BrewViewer</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav pull-right">
-						<li class="dropdown"><a href="#" role="button"
+						<li class="dropdown"><a role="button"
 							class="dropdown-toggle" data-toggle="dropdown"> <i
 								class="icon-user"></i> Admin <i class="caret"></i>
 

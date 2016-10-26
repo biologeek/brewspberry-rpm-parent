@@ -84,7 +84,7 @@ public class BrassinDTO {
 		return null;
 	}
 
-	public Brassin toBusinessObject(ComplexBrewResponse req) throws ServiceException {
+	public Brassin toBusinessObject(SimpleBrewResponse req) throws ServiceException {
 
 		Brassin brew = new Brassin();
 
@@ -94,20 +94,28 @@ public class BrassinDTO {
 		brew.setBra_id(req.getId());
 		brew.setBra_nom(req.getDescription());
 		brew.setBra_debut(req.getBeginning());
+		brew.setBra_fin(req.getEnd());
+		brew.setBra_date_maj(req.getMaj());
+		brew.setBra_quantiteEnLitres((double) req.getQuantity());
+		brew.setBra_type(req.getType());
+		brew.setBra_statut(req.getStatus());
+
+		return brew;
+	}
+	
+
+	public Brassin toBusinessObject(ComplexBrewResponse req) throws ServiceException {
+
+		Brassin brew = this.toBusinessObject((SimpleBrewResponse) req);
 		try {
 			brew.setBra_etapes(new HashSet<Etape>(new StepDTO().toBusinessObjectList(req.getSteps())));
 		} catch (ConversionException e) {
 			throw new ServiceException(e.getMessage());
 		}
 
-		brew.setBra_fin(req.getEnd());
-		brew.setBra_date_maj(req.getMaj());
 		brew.setBra_malts(new MaltDTO().toBusinessObjectList(req.getMalts()));
 		brew.setBra_houblons(new HopDTO().toBusinessObjectList(req.getHops()));
 		brew.setBra_levures(new YeastDTO().toBusinessObjectList(req.getYeasts()));
-		brew.setBra_quantiteEnLitres((double) req.getQuantity());
-		brew.setBra_type(req.getType());
-		brew.setBra_statut(req.getStatus());
 
 		return brew;
 	}

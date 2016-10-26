@@ -14,5 +14,6 @@
 			.constant('STEP_SERVICE_URL', URL_SERVICE_BASE + 'stepService/')
 			.constant('TEMPERATURE_SERVICE_URL',
 					URL_SERVICE_BASE + 'temperatureService/');
+			.constant('BREW_STATUSES', ['NOT_STARTED', 'COMPLETE', 'BREWING', 'FERMENTING', 'MATURING', 'BOTTLED', 'DRINKABLE', 'FINISHED'])
 
 })();

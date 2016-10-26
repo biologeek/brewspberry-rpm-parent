@@ -77,6 +77,15 @@
 					+ ". Message : " + response.data;
 
 			})
+			
+			
+			ActionnerService.getAvailableActionners(function(response){
+				
+				
+			}, function(response){
+				
+				
+			}
 
 
 		}
@@ -448,6 +457,12 @@
 
 			});
 
+		}
+		
+		vm.addActionerAndPop = function(actioner){
+			
+			vm.addedStep.push(actioner);
+			$.jGrowl("Added "+actioner.uuid);
 		}
 	}
 

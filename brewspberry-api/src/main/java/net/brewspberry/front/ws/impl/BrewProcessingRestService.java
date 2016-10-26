@@ -226,9 +226,52 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 	}
 
 
+
 	
+	@PostMapping("/add/simple")
+	/**
+	 * Adds a newly created brew in DB
+	 * 
+	 * @param req
+	 *            Brew form object
+	 * @return newly created ComplexBrewResponse
+	 */
+	public SimpleBrewResponse addBrew(@RequestBody SimpleBrewResponse req) throws BusinessException, ValidationException {
+
+		if (req != null) {
+
+			try {
+				Brassin brew = BrassinDTO.getInstance().toBusinessObject(req);
+
+				Validator<Brassin> val = new BrewValidator();
+
+				List<BusinessErrors> errs = val.validate(brew);
+
+				if (errs == null || errs.isEmpty()) {
+
+					try {
+						return BrassinDTO.getInstance().toSimpleBrewResponse(brassinGenService.save(brew));
+					} catch (Exception e) {
+						throw new BusinessException(e.getMessage());
+					}
+
+				} else {
+					logger.severe(val.computeErrors(errs, ", "));
+					throw new ValidationException(errs);
+				}
+
+			} catch (ServiceException e) {
+				throw new BusinessException(e.getMessage());
+			}
+
+		}
+
+		return null;
+	}
 	
-	@PostMapping("/add")
+
+	
+	@PostMapping("/add/complex")
 	/**
 	 * Adds a newly created brew in DB
 	 * 
