@@ -6,15 +6,15 @@
 
 	'use strict';
 
-	angular.module('brewspberry').factory('BrewService', BrewService);
+	angular.module('brewspberry').factory('ActionnerService', ActionnerService);
 
-	BrewService.$inject = [ '$http', 'CONSTANTS' ];
+	ActionnerService.$inject = [ '$http', 'CONSTANTS' ];
 
-	function BrewService($http, CONSTANTS) {
+	function ActionnerService($http, CONSTANTS) {
 
-		var BrewServiceFactory = {};
+		var ActionnerServiceFactory = {};
 		
-		BrewServiceFactory.getAvailableActionners = function(callBackSucces, callBackError){
+		ActionnerServiceFactory.getAvailableActionners = function(callBackSuccess, callBackError){
 			
 			var promise = $http({
 				method : 'GET',
@@ -24,14 +24,14 @@
 			}).then(function(response) {
 				callBackSuccess(response);
 			}, function(response) {
-				callbackError(response);
+				callBackError(response);
 			});
 
 			return promise;
 			
 		}
 		
-		return BrewServiceFactory;
+		return ActionnerServiceFactory;
 		
 	}
 })();

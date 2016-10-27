@@ -77,7 +77,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 					+ actioner.getAct_brassin());
 			switch (actioner.getAct_type()) {
 
-			case "1":
+			case DS18B20:
 				// DS18B20
 
 				/*
@@ -145,8 +145,8 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 				break;
 
-			case "2" :
-			case "3" :
+			case ENGINE_RELAY :
+			case PUMP_RELAY :
 				GpioPinDigitalOutput gpio = gpioController
 				.provisionDigitalOutputPin(Constants.BREW_GPIO
 						.get(actioner.getAct_raspi_pin()));
@@ -225,7 +225,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 					"param.batches.language").equals("python")) {
 				switch (actioner.getAct_type()) {
 
-				case "1":
+				case DS18B20:
 
 					// ds18b20
 
@@ -280,7 +280,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 					break;
 
-				case "2":
+				case ENGINE_RELAY:
 
 					// Relay
 

@@ -190,11 +190,12 @@
 								</tr>
 								<tr>
 									<td>Available actionners</td>
-									<td colspan="3"><span 
-										ng-repeat="actioner for actioner in brewController.availableActioners">
-											<img ng-click="brewConytoller.addActionerAndPop(actioner)" class="btn tooltip-top"
-											data-original-title="UUID : {{actioner.uuid}}"
-											src="{{actioner.picture}}" style="height: 40px; width: 50px;">
+									<td colspan="3"><span
+										ng-repeat="actioner in brewController.availableActionners">
+											<img class="actionner-button" 
+												ng-click="brewController.addActionerAndPop(actioner)"
+												src="{{actioner.picture}}"
+												style="height: 40px; width: 50px;"></img>
 									</span></td>
 								</tr>
 								<tr>

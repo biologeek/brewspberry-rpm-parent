@@ -6,9 +6,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import net.brewspberry.business.ISpecificActionerService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.Actioner.ActionerStatus;
+import net.brewspberry.business.beans.Actioner.ActionerType;
 import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.business.exceptions.NotAppropriateStatusException;
 import net.brewspberry.business.exceptions.ServiceException;
@@ -29,14 +33,11 @@ import net.brewspberry.dao.ActionerDaoImpl;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-
-@Service 
+@Service
 @Transactional
-public class ActionerServiceImpl implements IGenericService<Actioner>,
-		ISpecificActionerService {
+public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecificActionerService {
 
-	public static final Logger logger = LogManager
-			.getInstance(ActionerServiceImpl.class.toString());
+	public static final Logger logger = LogManager.getInstance(ActionerServiceImpl.class.toString());
 
 	String commandLineRegexp = "/home/pi/batches/bchrectemp.py [0-9]{0,5} [0-9]{0,5}";
 
@@ -47,14 +48,13 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	@Autowired
 	ISpecificActionerDao actionerSpecDao;
 
-
 	String getTemperatureRunningGrep = "ps -ef | grep bchrectemp.py";
 
 	RelayAdapter relayAdapter = RelayAdapter.getInstance();
 
 	public ActionerServiceImpl() {
 		super();
-		
+
 	}
 
 	@Override
@@ -66,8 +66,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	@Override
 	public Actioner update(Actioner arg0) {
 
-
-		return actionerDao.update (arg0);
+		return actionerDao.update(arg0);
 	}
 
 	@Override
@@ -83,7 +82,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 	@Override
 	public void deleteElement(long id) {
-		
+
 		actionerDao.deleteElement(id);
 	}
 
@@ -96,7 +95,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	@Override
 	public List<Actioner> getAllDistinctElements() {
 
-		return actionerDao.getAllDistinctElements();
+		return this.getDistinctActioners(actionerDao.getAllDistinctElements()).stream().collect(Collectors.toList());
 	}
 
 	@Override
@@ -110,7 +109,6 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 		return actionerSpecDao.getActionnerByEtape(etape);
 	}
 
-	
 	/**
 	 * Deprecated if using java batches
 	 * 
@@ -123,9 +121,8 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	 * @throws ServiceException
 	 */
 	@Deprecated
-	public List<Actioner> getRealTimeActionersByName(List<String> which,
-			Boolean uuid, Brassin brassin, Etape etape) throws IOException,
-			ServiceException {
+	public List<Actioner> getRealTimeActionersByName(List<String> which, Boolean uuid, Brassin brassin, Etape etape)
+			throws IOException, ServiceException {
 
 		/*
 		 * command format : BCHRECTEMP.py ActionerName ActionerUUID
@@ -136,15 +133,12 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 		for (String actName : which) {
 			try {
-				commandResult = Runtime.getRuntime().exec(
-						getTemperatureRunningGrep + "| grep " + which);
+				commandResult = Runtime.getRuntime().exec(getTemperatureRunningGrep + "| grep " + which);
 			} catch (IOException e) {
-				System.out.println(getTemperatureRunningGrep + "| grep "
-						+ which + " threw Exception");
+				System.out.println(getTemperatureRunningGrep + "| grep " + which + " threw Exception");
 			}
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					commandResult.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(commandResult.getInputStream()));
 			String s = "";
 			while ((s = reader.readLine()) != null) {
 
@@ -165,23 +159,20 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 						actionerProbeName = actionerCommand[1];
 						actionerProbeUUID = actionerCommand[2];
 
-						curAct.setAct_type(Constants.ACT_DS18B20);
+						curAct.setAct_type(ActionerType.DS18B20);
 						curAct.setAct_nom(actionerProbeName);
 						curAct.setAct_uuid(actionerProbeUUID);
 						curAct.setAct_brassin(brassin);
 						curAct.setAct_etape(etape);
 
-						actionerDoesExists = actionerSpecDao
-								.getActionerByFullCharacteristics(curAct);
+						actionerDoesExists = actionerSpecDao.getActionerByFullCharacteristics(curAct);
 
 						if (actionerDoesExists.getAct_date_debut() != null) {
 
 							curAct = actionerDoesExists;
 							result.add(curAct);
 						} else {
-							throw new ServiceException(
-									"Actioner does not exist ! "
-											+ curAct.toString());
+							throw new ServiceException("Actioner does not exist ! " + curAct.toString());
 						}
 
 					}
@@ -199,62 +190,59 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	}
 
 	/**
-	 * Starts the action and saves it in database.
-	 * If an actioner already exists for this step, brew type and UUID, no need to recreate it, just update previous one 
+	 * Starts the action and saves it in database. If an actioner already exists
+	 * for this step, brew type and UUID, no need to recreate it, just update
+	 * previous one
+	 * 
 	 * @param arg0
 	 * @return
 	 * @throws ServiceException
 	 * @throws NotAppropriateStatusException
 	 */
-	public Actioner startActionInDatabase(Actioner arg0)
-			throws ServiceException, NotAppropriateStatusException {
+	public Actioner startActionInDatabase(Actioner arg0) throws ServiceException, NotAppropriateStatusException {
 
 		boolean isAlreadyStored = false;
-	
+
 		Actioner result = actionerSpecDao.getActionerByFullCharacteristics(arg0);
-		
-		
-		if (result != null){
+
+		if (result != null) {
 			isAlreadyStored = true;
 		}
-		
+
 		if (arg0.getAct_date_debut() == null) {
 			arg0.setAct_date_debut(new Date());
-			arg0.setAct_status(Constants.ACT_RUNNING);
+			arg0.setAct_status(ActionerStatus.STARTED);
 		}
 
 		if (arg0.getAct_activated() == false && arg0.getAct_used() == false) {
 
 			arg0.setAct_activated(true);
-			
+
 		} else
 			throw new NotAppropriateStatusException();
 		try {
-			logger.info("Situation : is alread stored ? " + isAlreadyStored+" Actionner ID : "+arg0.getAct_id());
-			if(isAlreadyStored && arg0.getAct_id() > 0) {
-				
+			logger.info("Situation : is alread stored ? " + isAlreadyStored + " Actionner ID : " + arg0.getAct_id());
+			if (isAlreadyStored && arg0.getAct_id() > 0) {
+
 				result = this.update(arg0);
-				
+
 			} else {
-				
+
 				try {
 					result = this.save(arg0);
 				} catch (Exception e) {
-					throw new ServiceException("Couldn't update Actioner "
-							+ arg0.toString());
+					throw new ServiceException("Couldn't update Actioner " + arg0.toString());
 				}
-				
+
 			}
 		} catch (Exception e) {
-			
-			throw new ServiceException("Couldn't update Actioner "
-					+ arg0.toString());
+
+			throw new ServiceException("Couldn't update Actioner " + arg0.toString());
 		}
 		return result;
 	}
 
-	public Actioner stopActionInDatabase(Actioner arg0)
-			throws ServiceException, NotAppropriateStatusException {
+	public Actioner stopActionInDatabase(Actioner arg0) throws ServiceException, NotAppropriateStatusException {
 
 		/*
 		 * When clicking stop for example, adds end date and saves the action
@@ -270,7 +258,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 		if (arg0.getAct_date_fin() == null) {
 			arg0.setAct_date_fin(new Date());
-			arg0.setAct_status(Constants.ACT_STOPPED);
+			arg0.setAct_status(ActionerStatus.STOPPED);
 		}
 		if (arg0.getAct_activated() == true && arg0.getAct_used() == false) {
 
@@ -282,8 +270,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 		try {
 			result = actionerDao.update(arg0);
 		} catch (Exception e) {
-			throw new ServiceException("Couldn't update Actioner :"
-					+ arg0.toString());
+			throw new ServiceException("Couldn't update Actioner :" + arg0.toString());
 		}
 		return result;
 	}
@@ -305,13 +292,12 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 	/**
 	 * 
-	 * @see BatchLauncherService
-	 * Whenever user stops an actioner (for example switch off a relay), this
-	 * method must be called !
+	 * @see BatchLauncherService Whenever user stops an actioner (for example
+	 *      switch off a relay), this method must be called !
 	 * 
-	 * It stops configured devices. for the moment : - relays (type 2) - ds18b20
-	 * temperature sensors (type 1). For these ones in fact it stops the job
-	 * collecting temperatures.
+	 *      It stops configured devices. for the moment : - relays (type 2) -
+	 *      ds18b20 temperature sensors (type 1). For these ones in fact it
+	 *      stops the job collecting temperatures.
 	 * 
 	 * @param Actioner
 	 *            that has to be stopped. Actioner must have ID
@@ -322,7 +308,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	@Override
 	@Deprecated
 	public Actioner stopAction(Actioner actioner) throws Exception {
-		
+
 		return actioner;
 
 	}
@@ -339,12 +325,10 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	public String getPIDFromPs(String line) throws IOException {
 
 		String result = null;
-		Process proc = Runtime.getRuntime().exec(
-				"/bin/ps -fe | grep \"" + line
-						+ "\" | grep -v \"grep\" | awk \'{print $2}\'");
+		Process proc = Runtime.getRuntime()
+				.exec("/bin/ps -fe | grep \"" + line + "\" | grep -v \"grep\" | awk \'{print $2}\'");
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(
-				proc.getInputStream()));
+		BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 		String grepLine = null;
 
 		if ((grepLine = br.readLine()) != null) {
@@ -380,6 +364,20 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 		return result;
 	}
 
+	public Set<Actioner> getDistinctActioners(List<Actioner> actioners) {
+
+		for (Actioner act : actioners) {
+
+			act.setAct_id(0);
+			act.setAct_status(ActionerStatus.IDLE);
+			act.setAct_date_debut(null);
+			act.setAct_date_fin(null);
+			act.setAct_used(false);
+		}
+
+		return actioners.stream().collect(Collectors.toSet());
+
+	}
 
 	public String getCommandLineRegexp() {
 		return commandLineRegexp;
@@ -412,7 +410,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 	public void setActionerSpecDao(ISpecificActionerDao actionerSpecDao) {
 		this.actionerSpecDao = actionerSpecDao;
 	}
-	
+
 	public String getGetTemperatureRunningGrep() {
 		return getTemperatureRunningGrep;
 	}
@@ -435,7 +433,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>,
 
 	@Override
 	public Actioner getElementByName(String name) throws ServiceException {
-		
+
 		return null;
 	}
 

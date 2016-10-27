@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -31,10 +33,31 @@ public class Actioner {
 	/**
 	 * 1 : thermometer measurement 2 : Engine (relay) 3 : Pump (relay)
 	 */
-	private String act_type;
+	@Enumerated(EnumType.STRING)
+	private ActionerType act_type;
+	
+	
+	public enum ActionerType {
+		DS18B20, ENGINE_RELAY, PUMP_RELAY
+	}
+	
+	public enum ActionerStatus {
+		STOPPED, STARTED, PAUSED, IDLE
+	}
+
+	public static final String DS18B20_OFF = "images/thermo-off.jpg";
+	public static final String DS18B20_ON = "images/thermo-on.jpg";
+	
+	public static final String ENGINE_OFF = "images/engine-off.png";
+	public static final String ENGINE_ON = "images/engine-on.png";
+	
+	public static final String PUMP_OFF = "images/pump-off.jpg";
+	public static final String PUMP_ON = "images/pump-on.jpg";
+	
 	private String act_nom;
 	private String act_uuid;
-	private int act_status;
+	@Enumerated(EnumType.STRING)
+	private ActionerStatus act_status;
 	private Date act_date_debut;
 	private Date act_date_fin;
 	private String act_raspi_pin;
@@ -73,11 +96,11 @@ public class Actioner {
 		this.act_activated = act_activated;
 	}
 
-	public String getAct_type() {
+	public ActionerType getAct_type() {
 		return act_type;
 	}
 
-	public void setAct_type(String act_type) {
+	public void setAct_type(ActionerType act_type) {
 		this.act_type = act_type;
 	}
 
@@ -129,11 +152,11 @@ public class Actioner {
 		this.act_uuid = act_uuid;
 	}
 
-	public int getAct_status() {
+	public ActionerStatus getAct_status() {
 		return act_status;
 	}
 
-	public void setAct_status(int act_status) {
+	public void setAct_status(ActionerStatus act_status) {
 		this.act_status = act_status;
 	}
 
@@ -179,7 +202,6 @@ public class Actioner {
 		result = prime * result + (int) (act_id ^ (act_id >>> 32));
 		result = prime * result + ((act_nom == null) ? 0 : act_nom.hashCode());
 		result = prime * result + ((act_raspi_pin == null) ? 0 : act_raspi_pin.hashCode());
-		result = prime * result + act_status;
 		result = prime * result
 				+ ((act_temperature_measurements == null) ? 0 : act_temperature_measurements.hashCode());
 		result = prime * result + ((act_type == null) ? 0 : act_type.hashCode());
@@ -259,6 +281,20 @@ public class Actioner {
 
 	public void setAct_picture(String act_picture) {
 		this.act_picture = act_picture;
+	}
+
+	public String getOffPicture(net.brewspberry.business.beans.Actioner.ActionerType act_type2) {
+		
+		switch(act_type2){
+		case DS18B20:
+			return DS18B20_OFF;
+		case ENGINE_RELAY:
+			return ENGINE_OFF;
+		case PUMP_RELAY:
+			return PUMP_OFF;
+		default:
+			return "";			
+		}		
 	}
 
 }

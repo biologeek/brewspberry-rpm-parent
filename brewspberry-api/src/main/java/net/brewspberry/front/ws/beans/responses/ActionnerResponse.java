@@ -8,12 +8,22 @@ public class ActionnerResponse {
 	private long id;
 	private String name;
 	private String uuid;
-	private int type;
+	private ActionerType type;
+
+	public enum ActionerType {
+		DS18B20, ENGINE_RELAY, PUMP_RELAY
+	}
+	
+
+	public enum ActionerStatus {
+		STOPPED, STARTED, PAUSED, IDLE
+	}
+	
 	private String picture;
 	private List<ChartResponse> chart;
 	private String pin;
 	private boolean isActive;
-	private int status;
+	private ActionerStatus status;
 	private boolean used;
 	private long begin;
 	private long end;
@@ -37,11 +47,11 @@ public class ActionnerResponse {
 	public void setUuid(String uuid) {
 		this.uuid = uuid;
 	}
-	public int getType() {
+	public ActionerType getType() {
 		return type;
 	}
-	public void setType(int type) {
-		this.type = type;
+	public void setType(ActionerType string) {
+		this.type = string;
 	}
 	public String getPicture() {
 		return picture;
@@ -67,10 +77,10 @@ public class ActionnerResponse {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	public int getStatus() {
+	public ActionerStatus getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(ActionerStatus status) {
 		this.status = status;
 	}
 	public boolean isUsed() {

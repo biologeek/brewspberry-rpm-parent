@@ -149,7 +149,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	@Override
 	public List<Actioner> getAllDistinctElements() {
 
-		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("from Actioner");
+		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("select distinct a from Actioner a").list();
 	}
 
 	@Override

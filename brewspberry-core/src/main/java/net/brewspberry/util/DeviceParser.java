@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import net.brewspberry.business.beans.Actioner;
+import net.brewspberry.business.beans.Actioner.ActionerType;
 import net.brewspberry.business.service.ActionerServiceImpl;
 
 public class DeviceParser extends ConfigLoader {
@@ -73,7 +74,7 @@ public class DeviceParser extends ConfigLoader {
 						if (actioner.getAct_id() == 0) {
 
 							actioner.setAct_nom(names[i]);
-							actioner.setAct_type(types[i]);
+							actioner.setAct_type(ActionerType.valueOf(types[i]));
 							actioner.setAct_uuid(uuids[i]);
 							actioner.setAct_raspi_pin(pins[i]);
 							actioner.setAct_used(false);

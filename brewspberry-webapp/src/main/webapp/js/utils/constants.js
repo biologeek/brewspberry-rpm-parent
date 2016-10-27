@@ -9,13 +9,16 @@ var app = angular.module('brewspberry');
 
 
 var base_url = 'http://localhost:8080/'
-app.constant('CONSTANTS', {
+var root_path = 'brewspberry-api'
+	app.constant('CONSTANTS', {
+
     'BACK_OFFICE_URL' : base_url,
-    'USER_SERVICE_URL' : base_url+'brewspberry-api/userService',
-    'PRODUCT_SERVICE_URL' : base_url+'brewspberry-api/productService',
-    'BREW_SERVICE_URL' : base_url+'brewspberry-api/brewService',
-    'STEP_SERVICE_URL' : base_url+'brewspberry-api/stepService',
-    'TEMP_SERVICE_URL' : base_url+'brewspberry-api/temperatureService',
+    'USER_SERVICE_URL' : base_url+root_path+'/userService',
+    'PRODUCT_SERVICE_URL' : base_url+root_path+'/productService',
+    'BREW_SERVICE_URL' : base_url+root_path+'/brewService',
+    'STEP_SERVICE_URL' : base_url+root_path+'/stepService',
+    'TEMP_SERVICE_URL' : base_url+root_path+'/temperatureService',
+    'ACTIONNER_SERVICE_URL' : base_url + root_path + '/actionner',
     'DEFAULT_CHART_RELOAD' : 5000,
     'CHART_MAX_DATA_SIZE' : 30,
     'DEFAULT_RANGE_MINUTES' : 10,

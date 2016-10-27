@@ -8,9 +8,9 @@
 
 	angular.module('brewspberry').controller('BrewController', BrewController);
 
-	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService'];
+	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService', 'ActionnerService'];
 
-	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService) {
+	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService, ActionnerService) {
 
 		var vm = this;
 		vm.currentFullBrew = {};
@@ -27,6 +27,7 @@
 		vm.brewID = $routeParams.brewID;
 		vm.stageTypes=CONSTANTS.STAGE_TYPES;
 		vm.stepTypes=CONSTANTS.STEP_TYPES;
+		vm.availableActionners = [];
 		
 		
 		
@@ -80,14 +81,19 @@
 			
 			
 			ActionnerService.getAvailableActionners(function(response){
-				
+				console.log(response.data);
+				vm.availableActionners = response.data;
 				
 			}, function(response){
 				
+				vm.showErrors = true;
+
+				vm.submissionFailureMessage.concat("<br><br>Could not retrieve actionners. Error : "
+					+ response.statusText
+					+ ", "
+					+ response.data);			
 				
-			}
-
-
+			});
 		}
 
 		/**
@@ -460,9 +466,13 @@
 		}
 		
 		vm.addActionerAndPop = function(actioner){
+			if (typeof vm.addedStep.actioners == 'undefined'){
+				vm.addedStep.actioners = [];
+			}
+			vm.addedStep.actioners.push(actioner);
 			
-			vm.addedStep.push(actioner);
-			$.jGrowl("Added "+actioner.uuid);
+			console.log("jQuery.jGrowl('Added '"+actioner.uuid+")")
+			jQuery.jGrowl("Added "+actioner.uuid);
 		}
 	}
 
