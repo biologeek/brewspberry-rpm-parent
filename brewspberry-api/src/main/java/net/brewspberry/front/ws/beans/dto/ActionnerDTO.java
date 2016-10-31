@@ -3,8 +3,10 @@ package net.brewspberry.front.ws.beans.dto;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.brewspberry.business.beans.Actioner;
+import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.front.ws.beans.responses.ActionnerResponse;
 import net.brewspberry.front.ws.beans.responses.ActionnerResponse.ActionerStatus;
 import net.brewspberry.front.ws.beans.responses.ActionnerResponse.ActionerType;
@@ -12,45 +14,54 @@ import net.brewspberry.front.ws.beans.responses.ChartResponse;
 
 public class ActionnerDTO {
 
-	public List<ActionnerResponse> toActionnerResponse(List<Actioner> actionners) {
+	List<ActionnerResponse> resultAPI;
 
-		List<ActionnerResponse> result = new ArrayList<ActionnerResponse>();
+	public ActionnerDTO() {
+		resultAPI = new ArrayList<ActionnerResponse>();
+	}
+
+	public ActionnerDTO toActionnerResponse(List<Actioner> actionners) {
+		resultAPI = new ArrayList<>();
+
 		for (Actioner act : actionners) {
 
 			if (act != null) {
 
-				result.add(this.toActionnerResponse(act));
+				resultAPI.add(this.toActionnerResponse(act));
 
 			}
 
 		}
 
-		return result;
+		return this;
 	}
-	
-	
-	public List<ActionnerResponse> toRawActionnerResponse(List<Actioner> actionners) {
 
+	public List<ActionnerResponse> buildAPI() {
+		return resultAPI;
+	}
 
-		List<ActionnerResponse> result = new ArrayList<ActionnerResponse>();
-		for (Actioner act : actionners) {
+	
+	public ActionnerDTO toRawActionnerResponse(List<? extends GenericActionner> actionners) {
+		resultAPI = new ArrayList<>();
+
+		for (GenericActionner act : actionners) {
 
 			if (act != null) {
 
-				result.add(this.toRawActionnerResponse(act));
+				resultAPI.add(this.toRawActionnerResponse(act));
 
 			}
 
 		}
 
-		return result;
- 
+		return this;
+
 	}
 
-	private ActionnerResponse toRawActionnerResponse(Actioner actionners) {
+	public ActionnerResponse toRawActionnerResponse(GenericActionner actionners) {
 		ActionnerResponse resp = new ActionnerResponse();
 
-		resp.setChart(new ArrayList<ChartResponse>());
+
 		resp.setName(actionners.getAct_nom());
 		resp.setPicture(actionners.getOffPicture(actionners.getAct_type()));
 		resp.setType(ActionerType.valueOf(actionners.getAct_type().name()));
@@ -59,12 +70,12 @@ public class ActionnerDTO {
 		resp.setActive(false);
 		resp.setStatus(ActionerStatus.IDLE);
 		resp.setUsed(false);
-		
+
 		return resp;
 
 	}
 
-
+	
 	/**
 	 * Transforms business objet to Transfer object
 	 * 
@@ -122,5 +133,6 @@ public class ActionnerDTO {
 
 		return res;
 	}
+
 
 }

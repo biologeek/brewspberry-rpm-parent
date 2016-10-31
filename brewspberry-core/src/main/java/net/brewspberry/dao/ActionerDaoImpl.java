@@ -16,17 +16,16 @@ import net.brewspberry.business.ISpecificActionerDao;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 
 @Repository
-public class ActionerDaoImpl implements IGenericDao<Actioner>,
-		ISpecificActionerDao {
+public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActionerDao {
 
-	static final Logger logger = LogManager.getInstance(ActionerDaoImpl.class
-			.toString());
+	static final Logger logger = LogManager.getInstance(ActionerDaoImpl.class.toString());
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -45,8 +44,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 				arg0.setAct_id(actID);
 			} else {
 
-				logger.severe("Oh, I think we got a problem here : act_id = "
-						+ actID);
+				logger.severe("Oh, I think we got a problem here : act_id = " + actID);
 			}
 		} catch (HibernateException e) {
 			tx.rollback();
@@ -61,17 +59,17 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	@Override
 	public Actioner update(Actioner arg0) {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		
+
 		try {
-			
-			sessionFactory.getCurrentSession().update (arg0);
+
+			sessionFactory.getCurrentSession().update(arg0);
 			tx.commit();
-			
-		} catch (HibernateException e){
-			
+
+		} catch (HibernateException e) {
+
 			e.printStackTrace();
 			tx.rollback();
-			
+
 		} finally {
 			HibernateUtil.closeSession();
 		}
@@ -83,43 +81,41 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 		Actioner result = new Actioner();
 
 		result = (Actioner) sessionFactory.getCurrentSession().get(Actioner.class, id);
-		HibernateUtil.closeSession();
 
 		return result;
 	}
 
 	@Override
 	public Actioner getElementByName(String name) {
-		
+
 		Actioner result = new Actioner();
 
-		result = (Actioner) sessionFactory.getCurrentSession().createQuery("from Actioner where act_nom = "+name).uniqueResult();
-		HibernateUtil.closeSession();
+		result = (Actioner) sessionFactory.getCurrentSession().createQuery("from Actioner where act_nom = " + name)
+				.uniqueResult();
 		return result;
 	}
 
 	@Override
 	public List<Actioner> getAllElements() {
-		
 
 		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("from Actioner");
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		
+
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		Actioner toDel = new Actioner();
-		
+
 		try {
-			
+
 			toDel = this.getElementById(id);
-			
+
 			sessionFactory.getCurrentSession().delete(toDel);
 			tx.commit();
-			
-		} catch (HibernateException e){
-			
+
+		} catch (HibernateException e) {
+
 			tx.rollback();
 			e.printStackTrace();
 		}
@@ -129,37 +125,45 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 	@Override
 	public void deleteElement(Actioner arg0) {
 		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-		
-		
+
 		try {
-			
+
 			sessionFactory.getCurrentSession().delete(arg0);
 			tx.commit();
-			
-		} catch (HibernateException e){
-			
+
+		} catch (HibernateException e) {
+
 			tx.rollback();
 			e.printStackTrace();
 		}
 
-		
-
 	}
 
 	@Override
+	/**
+	 * Returns distinct elements from datasource. Entities are evicted so they
+	 * can be later modified
+	 * 
+	 * @return
+	 */
 	public List<Actioner> getAllDistinctElements() {
+		@SuppressWarnings("unchecked")
+		List<Actioner> result = sessionFactory.getCurrentSession().createQuery("select distinct a from Actioner a")
+				.list();
 
-		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("select distinct a from Actioner a").list();
+		for (Actioner elt : result) {
+			sessionFactory.getCurrentSession().evict(elt);
+		}
+
+		return result;
 	}
 
 	@Override
 	public Actioner getActionerByFullCharacteristics(Actioner actioner) {
 
-		String hqlReq = "from " + Actioner.class + " WHERE act_bra_id = "
-				+ actioner.getAct_brassin().getBra_id() + " AND act_etp_id = "
-				+ actioner.getAct_etape().getEtp_id() + " AND act_type = "
-				+ actioner.getAct_type() + " AND act_uuid = "
-				+ actioner.getAct_uuid();
+		String hqlReq = "from " + Actioner.class + " WHERE act_bra_id = " + actioner.getAct_brassin().getBra_id()
+				+ " AND act_etp_id = " + actioner.getAct_etape().getEtp_id() + " AND act_type = "
+				+ actioner.getAct_type() + " AND act_uuid = " + actioner.getAct_uuid();
 
 		Actioner result = (Actioner) sessionFactory.getCurrentSession().createQuery(hqlReq).uniqueResult();
 
@@ -168,14 +172,24 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>,
 		return result;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Actioner> getActionerByBrassin(Brassin brassin) {
-		return sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("act_brassin", brassin)).list();
+		return sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class)
+				.add(Restrictions.eq("act_brassin", brassin)).list();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Actioner> getActionnerByEtape(Etape etape) {
-		return sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("act_etape", etape)).list();
+		return sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class)
+				.add(Restrictions.eq("act_etape", etape)).list();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<GenericActionner> getAllGenericActionners() {
+
+		return sessionFactory.getCurrentSession().createCriteria(GenericActionner.class).list();
+	}
 }

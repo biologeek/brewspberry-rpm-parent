@@ -26,7 +26,7 @@ import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.exceptions.ValidationException;
-import net.brewspberry.business.validation.BusinessErrors;
+import net.brewspberry.business.validation.BusinessError;
 import net.brewspberry.business.validation.Validator;
 import net.brewspberry.front.ws.IBrewProcessingRESTService;
 import net.brewspberry.front.ws.IBrewRESTService;
@@ -245,7 +245,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 
 				Validator<Brassin> val = new BrewValidator();
 
-				List<BusinessErrors> errs = val.validate(brew);
+				List<BusinessError> errs = val.validate(brew);
 
 				if (errs == null || errs.isEmpty()) {
 
@@ -288,7 +288,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 
 				Validator<Brassin> val = new BrewValidator();
 
-				List<BusinessErrors> errs = val.validate(brew);
+				List<BusinessError> errs = val.validate(brew);
 
 				if (errs == null || errs.isEmpty()) {
 
@@ -324,7 +324,7 @@ public class BrewProcessingRestService implements IBrewProcessingRESTService, IB
 
 				Validator<Brassin> val = new BrewValidator();
 
-				List<BusinessErrors> errs = val.validate(brew);
+				List<BusinessError> errs = val.validate(brew);
 
 				if (errs == null || errs.isEmpty()) {
 

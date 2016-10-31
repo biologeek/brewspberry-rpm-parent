@@ -1,5 +1,6 @@
 package net.brewspberry.business.service;
 
+import java.awt.Desktop.Action;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +26,9 @@ import net.brewspberry.business.ISpecificActionerService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.Actioner.ActionerStatus;
-import net.brewspberry.business.beans.Actioner.ActionerType;
+import net.brewspberry.business.beans.GenericActionner;
+import net.brewspberry.business.beans.GenericActionner.ActionerStatus;
+import net.brewspberry.business.beans.GenericActionner.ActionerType;
 import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.business.exceptions.NotAppropriateStatusException;
 import net.brewspberry.business.exceptions.ServiceException;
@@ -95,7 +98,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 	@Override
 	public List<Actioner> getAllDistinctElements() {
 
-		return this.getDistinctActioners(actionerDao.getAllDistinctElements()).stream().collect(Collectors.toList());
+		return this.getDistinctActioners(actionerDao.getAllDistinctElements());
 	}
 
 	@Override
@@ -364,19 +367,9 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 		return result;
 	}
 
-	public Set<Actioner> getDistinctActioners(List<Actioner> actioners) {
+	public List<Actioner> getDistinctActioners(List<Actioner> actioners) {
 
-		for (Actioner act : actioners) {
-
-			act.setAct_id(0);
-			act.setAct_status(ActionerStatus.IDLE);
-			act.setAct_date_debut(null);
-			act.setAct_date_fin(null);
-			act.setAct_used(false);
-		}
-
-		return actioners.stream().collect(Collectors.toSet());
-
+		return null;
 	}
 
 	public String getCommandLineRegexp() {
@@ -437,4 +430,25 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 		return null;
 	}
 
+	@Override
+	public List<GenericActionner> getAllGenericActionners() {
+
+		List<GenericActionner> actioners = actionerSpecDao.getAllGenericActionners();
+		List<GenericActionner> result = new ArrayList<>();
+
+		for (GenericActionner act : actioners) {
+
+			act.setAct_id(0);
+			act.setAct_status(ActionerStatus.IDLE);
+			act.setAct_used(false);
+			act.setAct_activated(false);
+
+			if (!result.contains(act)) {
+				result.add(act);
+			}
+
+		}
+
+		return result;
+	}
 }

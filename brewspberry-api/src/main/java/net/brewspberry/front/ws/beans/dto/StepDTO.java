@@ -71,7 +71,7 @@ public class StepDTO {
 		res.setHops(new HopDTO().toFrontObjectList(new ArrayList<Houblon>(step.getEtp_houblons() != null ? step.getEtp_houblons() : new HashSet<Houblon>())));
 		res.setYeasts(new YeastDTO().toFrontObjectList(new ArrayList<Levure>(step.getEtp_levures() != null ? step.getEtp_levures() : new HashSet<Levure>())));
 
-		res.setActioners(new ActionnerDTO().toActionnerResponse(new ArrayList<Actioner>(step.getEtp_actioner() != null ? step.getEtp_actioner() : new HashSet<Actioner>())));
+		res.setActioners(new ActionnerDTO().toActionnerResponse(new ArrayList<Actioner>(step.getEtp_actioner() != null ? step.getEtp_actioner() : new HashSet<Actioner>())).buildAPI());
 
 		return res;
 

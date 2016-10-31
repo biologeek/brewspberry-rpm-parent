@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface Validator<T> {
 	
-	public List<BusinessErrors> validate(T toVal);
+	public List<BusinessError> validate(T toVal);
 	
-	public String computeErrors(List<BusinessErrors> errs, String delimiter);
+	public String computeErrors(List<BusinessError> errs, String delimiter);
 
 }

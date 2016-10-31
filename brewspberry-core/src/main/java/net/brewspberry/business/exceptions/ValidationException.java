@@ -2,26 +2,26 @@ package net.brewspberry.business.exceptions;
 
 import java.util.List;
 
-import net.brewspberry.business.validation.BusinessErrors;
+import net.brewspberry.business.validation.BusinessError;
 
 public class ValidationException extends Exception {
 	
 	
-	private List<BusinessErrors> errors;
+	private List<BusinessError> errors;
 	
 	
 	
-	public ValidationException(List<BusinessErrors> errs) {
+	public ValidationException(List<BusinessError> errs) {
 		super(getMessage(errs));
 
 		this.setErrors(errs);	
 	}
 
-	public static String getMessage(List<BusinessErrors> errors) {
+	public static String getMessage(List<BusinessError> errors) {
 		
 		StringBuilder message= new StringBuilder();
 
-		for (BusinessErrors err : errors){
+		for (BusinessError err : errors){
 			
 			if (!err.equals(errors.get(0)))
 				message.append(", ");
@@ -39,11 +39,11 @@ public class ValidationException extends Exception {
 		return super.equals(obj);
 	}
 
-	public List<BusinessErrors> getErrors() {
+	public List<BusinessError> getErrors() {
 		return errors;
 	}
 
-	public void setErrors(List<BusinessErrors> errors) {
+	public void setErrors(List<BusinessError> errors) {
 		this.errors = errors;
 	}
 

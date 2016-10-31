@@ -1,6 +1,6 @@
 package net.brewspberry.business.validation;
 
-public class BusinessErrors {
+public class BusinessError {
 	
 	private String errLabel;
 
@@ -12,7 +12,7 @@ public class BusinessErrors {
 		this.errLabel = errLabel;
 	}
 
-	public BusinessErrors error(String string) {
+	public BusinessError error(String string) {
 		setErrLabel(string);
 		return this;
 	}

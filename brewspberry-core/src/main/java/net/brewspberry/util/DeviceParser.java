@@ -9,7 +9,7 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import net.brewspberry.business.beans.Actioner;
-import net.brewspberry.business.beans.Actioner.ActionerType;
+import net.brewspberry.business.beans.GenericActionner.ActionerType;
 import net.brewspberry.business.service.ActionerServiceImpl;
 
 public class DeviceParser extends ConfigLoader {

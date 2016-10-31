@@ -6,6 +6,7 @@ import java.util.List;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.business.exceptions.NotAppropriateStatusException;
 import net.brewspberry.business.exceptions.ServiceException;
 
@@ -20,4 +21,6 @@ public interface ISpecificActionerService extends ISpecificActionerLauncherServi
 	public Actioner stopActionInDatabase (Actioner actioner) throws ServiceException, NotAppropriateStatusException;
 	
 	public String getPIDFromPs(String line) throws IOException;
+	
+	public List<GenericActionner> getAllGenericActionners();
 }

@@ -22,8 +22,10 @@ function AccueilController($scope, BrewService, $location) {
     
     
     vm.goToCreation = function(){
-    	$location.url('/creation/brew');    	
+    	$location.path('/create/brew');    	
     }
+    
+    
     var init = function (){
 
         console.log("ini");

@@ -21,6 +21,7 @@ import net.brewspberry.business.ISpecificActionerLauncherService;
 import net.brewspberry.business.ISpecificActionerService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.business.beans.GenericActionner.ActionerStatus;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
@@ -165,7 +166,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 						// Turning ON or OFF the pin
 						PinState state = relayAdapter.changePinState(gpio);
 
-						actioner.setAct_status(Constants.ACT_RUNNING);
+						actioner.setAct_status(ActionerStatus.STARTED);
 						logger.info("Actioner at pin "
 								+ actioner.getAct_raspi_pin()
 								+ " changed state to "
@@ -176,7 +177,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 						logger.severe("Couldn't change Pin state..."
 								+ actioner.getAct_raspi_pin()
 								+ ", setting status to FAILED !");
-						actioner.setAct_status(Constants.ACT_FAILED);
+						actioner.setAct_status(ActionerStatus.FAILED);
 
 					}
 					actioner = actionerService.startActionInDatabase(actioner);

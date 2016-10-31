@@ -13,13 +13,14 @@
 	function ActionnerService($http, CONSTANTS) {
 
 		var ActionnerServiceFactory = {};
-		
-		ActionnerServiceFactory.getAvailableActionners = function(callBackSuccess, callBackError){
-			
+
+		ActionnerServiceFactory.getAvailableActionners = function(
+				callBackSuccess, callBackError) {
+
 			var promise = $http({
 				method : 'GET',
-				//url : 'js/tests/mock.json'
-				url: CONSTANTS.ACTIONNER_SERVICE_URL+'/available',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL + '/available',
 
 			}).then(function(response) {
 				callBackSuccess(response);
@@ -28,10 +29,66 @@
 			});
 
 			return promise;
+
+		}
+
+		ActionnerServiceFactory.save = function(object, callBackSuccess,
+				callBackError) {
+
+			var promise = $http({
+				method : 'POST',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/save',
+
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callBackError(response);
+			});
+
+			return promise;
+
+		}
+		
+		ActionnerServiceFactory.getPins =  function(callBackSuccess, callBackError){
+
+			var promise = $http({
+				method : 'GET',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/pins',
+
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callBackError(response);
+			});
+
+			return promise;
+
 			
 		}
 		
-		return ActionnerServiceFactory;
+
 		
+		ActionnerServiceFactory.getActionnerTypes =  function(callBackSuccess, callBackError){
+
+			var promise = $http({
+				method : 'GET',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/types',
+
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callBackError(response);
+			});
+
+			return promise;
+
+			
+		}
+
+		return ActionnerServiceFactory;
+
 	}
 })();

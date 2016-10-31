@@ -13,7 +13,7 @@
                             <a href="#/"><i class="icon-chevron-right"></i> Liste des brassins</a>
                         </li>
                         <li>
-                            <a href="#/"><i class="icon-chevron-right"></i>Actionneurs</a>
+                            <a href="#/actionners"><i class="icon-chevron-right"></i>Actionneurs</a>
                         </li>
                         <li>
                             <a href="#/"><i class="icon-chevron-right"></i>Temps réel</a>
