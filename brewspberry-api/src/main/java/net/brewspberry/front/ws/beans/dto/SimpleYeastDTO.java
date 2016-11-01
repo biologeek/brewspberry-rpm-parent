@@ -7,6 +7,7 @@ import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.front.ws.DTO;
 import net.brewspberry.front.ws.beans.requests.IngredientRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientRequest.IngredientType;
 
 public class SimpleYeastDTO implements DTO<SimpleLevure, IngredientRequest>{
 
@@ -55,7 +56,7 @@ public class SimpleYeastDTO implements DTO<SimpleLevure, IngredientRequest>{
 		res.setAroma(cplObj.getSlev_aromes());
 		res.setFoculation(cplObj.getSlev_floculation());
 		res.setProvider(cplObj.getIng_fournisseur());
-		res.setType("Levure");
+		res.setType(IngredientType.YEAST);
 		res.setDescription(cplObj.getIng_desc());
 		res.setSpecie(cplObj.getSlev_espece());
 		res.setUnitaryPrice(cplObj.getIng_unitary_price());

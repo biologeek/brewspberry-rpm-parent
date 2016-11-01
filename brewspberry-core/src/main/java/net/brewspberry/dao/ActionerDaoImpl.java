@@ -98,7 +98,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 	@Override
 	public List<Actioner> getAllElements() {
 
-		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("from Actioner");
+		return (List<Actioner>) sessionFactory.getCurrentSession().createQuery("from Actioner").list();
 	}
 
 	@Override

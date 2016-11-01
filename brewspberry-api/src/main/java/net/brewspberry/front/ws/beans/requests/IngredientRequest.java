@@ -6,6 +6,10 @@ import net.brewspberry.business.beans.stock.StockUnit;
 
 public class IngredientRequest implements Serializable{
 	
+	public enum IngredientType{
+		MALT, HOP, YEAST;		
+	}
+	
 	
 	/**
 	 * 
@@ -15,7 +19,7 @@ public class IngredientRequest implements Serializable{
 	/**
 	 * Type of ingredient
 	 */
-	private String type;
+	private IngredientType type;
 	private String provider;
 	private String description;
 	private float unitaryPrice;
@@ -45,10 +49,10 @@ public class IngredientRequest implements Serializable{
 	public void setId(long id) {
 		this.id = id;
 	}
-	public String getType() {
+	public IngredientType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(IngredientType type) {
 		this.type = type;
 	}
 	public String getProvider() {

@@ -20,6 +20,7 @@
 		var initPage = function(){
 			getActionnerTypes();
 			getPins();
+			vm.getActionners();
 		}
 		
 		var getActionnerTypes = function(){
@@ -52,6 +53,24 @@
 				vm.submissionFailureMessage = vm.submissionFailureMessage+ "<br /> Could not get pins !";
 				
 			});
+		}
+		
+		vm.getActionners = function(){
+			
+			ActionnerService.getAllActionners(function(response){
+				
+				vm.genericActionners = response.data;
+				
+			}, function(response){
+
+				vm.showSuccess = false;
+				vm.showErrors = true;
+				
+				vm.submissionFailureMessage = vm.submissionFailureMessage+ "<br /> Could not get actionners !";
+
+				
+			});
+			
 		}
 
 		vm.processActionner = function(actionnerForm) {

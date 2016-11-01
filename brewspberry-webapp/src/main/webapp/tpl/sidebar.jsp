@@ -7,7 +7,7 @@
                             <a href="#/create/brew"><i class="icon-chevron-right"></i>Ajouter brassin</a>
                         </li>
                         <li>
-                            <a href="#/"><i class="icon-chevron-right"></i>Ingredients</a>
+                            <a href="#/ingredients"><i class="icon-chevron-right"></i>Ingredients</a>
                         </li>
                         <li>
                             <a href="#/"><i class="icon-chevron-right"></i> Liste des brassins</a>

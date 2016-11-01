@@ -7,6 +7,7 @@ import net.brewspberry.business.beans.SimpleHoublon;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.front.ws.DTO;
 import net.brewspberry.front.ws.beans.requests.IngredientRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientRequest.IngredientType;
 
 public class SimpleHopDTO implements DTO<SimpleHoublon, IngredientRequest>{
 
@@ -56,7 +57,7 @@ public class SimpleHopDTO implements DTO<SimpleHoublon, IngredientRequest>{
 		res.setAroma(cplObj.getShbl_aromes());
 		res.setHopType(cplObj.getShbl_type());
 		res.setProvider(cplObj.getIng_fournisseur());
-		res.setType("Houblon");
+		res.setType(IngredientType.HOP);
 		res.setDescription(cplObj.getIng_desc());
 		res.setAlphaAcid(cplObj.getShbl_acide_alpha());
 		res.setVariety(cplObj.getShbl_variete());

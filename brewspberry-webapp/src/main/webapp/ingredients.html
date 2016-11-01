@@ -1,0 +1,104 @@
+<div ng-controller="IngredientController as ingredientController">
+
+	<div class="span9" id="content">
+
+		<!--/span-->
+		<div id="submissionFailed" class="alert alert-error"
+			ng-show="ingredientController.showErrors">
+			<button class="close" data-dismiss="alert">&times;</button>
+			<strong>Error!</strong> {{ ingredientController.submissionFailureMessage }}
+		</div>
+		<div id="submissionSuccess" class="alert alert-success"
+			ng-show="ingredientController.showSuccess">
+			<button class="close" data-dismiss="alert">&times;</button>
+			<strong>Success!</strong> {{ ingredientController.submissionSuccessMessage
+			}}
+		</div>
+		<div class="block">
+			<div class="navbar navbar-inner block-header">
+				<div class="muted pull-left"
+					style="font-weight: bold; text-align: center;">ingredients</div>
+			</div>
+		</div>
+
+		<!-- block -->
+		<div class="block">
+			<div class="navbar navbar-inner block-header">
+				<div class="muted pull-left">ingredients</div>
+			</div>
+			<div class="block-content collapse in">
+				<div class="span12">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Provider</th>
+								<th>Description</th>
+								<th>Type</th>
+								<th ng-if="ingredient.type == 'MALT'">Cereal</th>
+								<th ng-if="ingredient.type == 'HOP'">Variety</th>
+								<th ng-if="ingredient.type == 'YEAST'">Specie</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+
+
+							<tr ng-repeat="ingredient in ingredientController.listOfIngredients">
+								<td>{{ingredient.id}}</td>
+								<td>{{ingredient.provider}}</td>
+								<td>{{ingredient.description}}</td>
+								<td ng-if="ingredient.type == 'MALT'">{{ingredient.cereal}}</td>
+								<td ng-if="ingredient.type == 'HOP'">{{ingredient.variety}}</td>
+								<td ng-if="ingredient.type == 'YEAST'">{{ingredient.specie}}</td>
+								<td>{{ingredient.pin}}</td>
+								<td>{{ingredient.status}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- /block -->
+		<div class="block">
+			<form ng-submit="ingredientController.processingredient(ingredientForm)"
+				name="ingredientForm">
+
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<td>UUID</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.uuid"
+								ng-required="true"></td>
+
+							<td>Name</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.name"
+								ng-required="true"></td>
+						</tr>
+						<tr>
+							<td>Type</td>
+							<td><select
+								ng-model="ingredientController.toCreateingredient.type"
+								ng-options="status for status in ingredientController.types"></select></td>
+							<td>Pin</td>
+							<td><select
+								ng-model="ingredientController.toCreateingredient.pin"
+								ng-options="status for status in ingredientController.pins"></select></td>
+						</tr>
+
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td><button type="submit" class="btn btn-primary">+</button></td>
+						</tr>
+					</tbody>
+					</form>
+
+					</div>
+
+
+					</div>
+					</div>

@@ -1,4 +1,4 @@
-package net.brewspberry.business;
+package net.brewspberry.business.validation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,8 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 
 import net.brewspberry.business.beans.Brassin;
-import net.brewspberry.business.validation.BusinessError;
-import net.brewspberry.business.validation.Validator;
+import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.util.DateManipulator;
 
 public class BrewValidator implements Validator<Brassin> {
@@ -18,6 +17,7 @@ public class BrewValidator implements Validator<Brassin> {
 	Integer dateDelay;
 	@Value("${param.validation.brew.maxDelayUnit}")
 	Integer dateDelayUnit;
+	
 
 	public BrewValidator() {
 		if (dateDelay == null) {
@@ -85,6 +85,12 @@ public class BrewValidator implements Validator<Brassin> {
 
 		}
 		return builder.toString();
+	}
+
+	@Override
+	public void setOTherParameters(Object... otherParams) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -19,6 +19,7 @@ var root_path = 'brewspberry-api'
     'STEP_SERVICE_URL' : base_url+root_path+'/stepService',
     'TEMP_SERVICE_URL' : base_url+root_path+'/temperatureService',
     'ACTIONNER_SERVICE_URL' : base_url + root_path + '/actionner',
+    'INGREDIENT_SERVICE_URL' : base_url + root_path + '/ingredient',
     'DEFAULT_CHART_RELOAD' : 5000,
     'CHART_MAX_DATA_SIZE' : 30,
     'DEFAULT_RANGE_MINUTES' : 10,

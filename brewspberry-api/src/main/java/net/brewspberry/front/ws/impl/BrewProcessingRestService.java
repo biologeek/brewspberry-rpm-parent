@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.brewspberry.business.BrewValidator;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificBrassinService;
 import net.brewspberry.business.ISpecificEtapeService;
@@ -26,6 +25,7 @@ import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.business.exceptions.ValidationException;
+import net.brewspberry.business.validation.BrewValidator;
 import net.brewspberry.business.validation.BusinessError;
 import net.brewspberry.business.validation.Validator;
 import net.brewspberry.front.ws.IBrewProcessingRESTService;

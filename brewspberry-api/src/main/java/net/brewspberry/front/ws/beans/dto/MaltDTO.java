@@ -8,6 +8,7 @@ import java.util.Set;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.front.ws.DTO;
 import net.brewspberry.front.ws.beans.requests.ConcreteIngredientRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientRequest.IngredientType;
 
 public class MaltDTO implements DTO<Malt, ConcreteIngredientRequest> {
 
@@ -64,7 +65,7 @@ public class MaltDTO implements DTO<Malt, ConcreteIngredientRequest> {
 			res.setCereal(cplObj.getSmal_cereale());
 			res.setColor(cplObj.getSmal_couleur());
 			res.setProvider(cplObj.getIng_fournisseur());
-			res.setType("malt");
+			res.setType(IngredientType.MALT);
 			res.setDescription(cplObj.getIng_desc());
 			res.setMaltType(cplObj.getSmal_type());
 			res.setUnitaryPrice(cplObj.getIng_unitary_price());

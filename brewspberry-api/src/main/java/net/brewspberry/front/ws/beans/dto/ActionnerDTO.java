@@ -39,41 +39,7 @@ public class ActionnerDTO {
 	public List<ActionnerResponse> buildAPI() {
 		return resultAPI;
 	}
-
 	
-	public ActionnerDTO toRawActionnerResponse(List<? extends GenericActionner> actionners) {
-		resultAPI = new ArrayList<>();
-
-		for (GenericActionner act : actionners) {
-
-			if (act != null) {
-
-				resultAPI.add(this.toRawActionnerResponse(act));
-
-			}
-
-		}
-
-		return this;
-
-	}
-
-	public ActionnerResponse toRawActionnerResponse(GenericActionner actionners) {
-		ActionnerResponse resp = new ActionnerResponse();
-
-
-		resp.setName(actionners.getAct_nom());
-		resp.setPicture(actionners.getOffPicture(actionners.getAct_type()));
-		resp.setType(ActionerType.valueOf(actionners.getAct_type().name()));
-		resp.setUuid(actionners.getAct_uuid());
-		resp.setPin(actionners.getAct_raspi_pin());
-		resp.setActive(false);
-		resp.setStatus(ActionerStatus.IDLE);
-		resp.setUsed(false);
-
-		return resp;
-
-	}
 
 	
 	/**
@@ -134,5 +100,66 @@ public class ActionnerDTO {
 		return res;
 	}
 
+	
+	public class GenericActionnerDTO {
+		
+		
+		public GenericActionnerDTO() {
+			
+		}
+
+		public GenericActionner toBusinessObject(net.brewspberry.front.ws.beans.responses.GenericActionner actioner) {
+			GenericActionner res = new Actioner();
+
+			
+			res.setAct_status(net.brewspberry.business.beans.Actioner.ActionerStatus.IDLE);
+			res.setAct_id(actioner.getId());
+			res.setAct_nom(actioner.getName());
+			res.setAct_picture(actioner.getPicture());
+			res.setAct_raspi_pin(actioner.getPin());
+			res.setAct_type(net.brewspberry.business.beans.Actioner.ActionerType.valueOf(actioner.getType().name()));
+			res.setAct_uuid(actioner.getUuid());
+
+			return res;
+		}
+		
+
+
+		public net.brewspberry.front.ws.beans.responses.GenericActionner toRawActionnerResponse(GenericActionner actionners) {
+			net.brewspberry.front.ws.beans.responses.GenericActionner resp = new net.brewspberry.front.ws.beans.responses.GenericActionner();
+
+
+			resp.setName(actionners.getAct_nom());
+			resp.setPicture(actionners.getOffPicture(actionners.getAct_type()));
+			resp.setType(ActionerType.valueOf(actionners.getAct_type().name()));
+			resp.setUuid(actionners.getAct_uuid());
+			resp.setPin(actionners.getAct_raspi_pin());
+			
+
+			return resp;
+
+		}
+		
+		
+
+		
+		public List<net.brewspberry.front.ws.beans.responses.GenericActionner> toRawActionnerResponse(List<GenericActionner> actionners) {
+			List<net.brewspberry.front.ws.beans.responses.GenericActionner> result = new ArrayList<>();
+
+			for (GenericActionner act : actionners) {
+
+				if (act != null) {
+
+					result.add(this.toRawActionnerResponse(act));
+
+				}
+
+			}
+
+			return result;
+
+		}
+
+	}
 
 }

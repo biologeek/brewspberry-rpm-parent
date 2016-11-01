@@ -19,17 +19,24 @@ import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
+import net.brewspberry.business.beans.SimpleHoublon;
+import net.brewspberry.business.beans.SimpleLevure;
+import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.exceptions.BusinessException;
 import net.brewspberry.business.exceptions.DataTransferException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IProductRESTService;
 import net.brewspberry.front.ws.beans.dto.IngredientDTO;
+import net.brewspberry.front.ws.beans.dto.SimpleHopDTO;
+import net.brewspberry.front.ws.beans.dto.SimpleMaltDTO;
+import net.brewspberry.front.ws.beans.dto.SimpleYeastDTO;
+import net.brewspberry.front.ws.beans.dto.YeastDTO;
 import net.brewspberry.front.ws.beans.requests.IngredientRequest;
 import net.brewspberry.front.ws.beans.responses.StandardResponse;
 import net.brewspberry.util.LogManager;
 
 
-@RequestMapping("/productService")
+@RequestMapping("/ingredient")
 @RestController
 public class ProductRESTServiceImpl implements IProductRESTService {
 
@@ -45,13 +52,26 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	@Qualifier("yeastServiceImpl")
 	IGenericService<Levure> levService;
 
+
+	@Autowired
+	@Qualifier("simpleMaltServiceImpl")
+	IGenericService<SimpleMalt> simpleMaltService;
+
+	@Autowired
+	@Qualifier("simpleHopServiceImpl")
+	IGenericService<SimpleHoublon> simpleHopService;
+
+	@Autowired
+	@Qualifier("simpleYeastServiceImpl")
+	IGenericService<SimpleLevure> simpleYeastService;
+
 	Logger logger;
 
 	public ProductRESTServiceImpl() {
 		logger = LogManager.getInstance(this.getClass().getName());
 	}
-
-	@PostMapping("/create")
+	
+	@PostMapping("/save")
 	public IngredientRequest addIngredient(IngredientRequest request) throws Exception {
 
 		AbstractIngredient businessIngredient = null;
@@ -61,22 +81,21 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 			if (isThereOnlyOneIngredientInRequest(request)) {
 				try {
 
-					switch (request.getType().toLowerCase()) {
-					case "malt":
+					switch (request.getType()) {
+					case MALT:
 
-						businessIngredient = new IngredientDTO().toMalt(request);
-						maltService.save((Malt) businessIngredient);
-
+						businessIngredient = new SimpleMaltDTO().toBusinessObject(request);
+						simpleMaltService.save((SimpleMalt) businessIngredient);
 						break;
-					case "hop":
+					case HOP:
 
-						businessIngredient = new IngredientDTO().toHop(request);
-						hopService.save((Houblon) businessIngredient);
+						businessIngredient = new SimpleHopDTO().toBusinessObject(request);
+						simpleHopService.save((SimpleHoublon) businessIngredient);
 						break;
-					case "yeast":
+					case YEAST:
 
-						businessIngredient = new IngredientDTO().toYeast(request);
-						levService.save((Levure) businessIngredient);
+						businessIngredient = new SimpleYeastDTO().toBusinessObject(request);
+						simpleYeastService.save((SimpleLevure) businessIngredient);
 						break;
 					default:
 						logger.severe("This type of ingredient does not exist : " + request.getType());

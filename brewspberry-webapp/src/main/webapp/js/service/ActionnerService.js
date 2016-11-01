@@ -31,6 +31,21 @@
 			return promise;
 
 		}
+		
+		ActionnerServiceFactory.getAllActionners = function(callBackSuccess, callBackError){
+
+			var promise = $http({
+				method : 'GET',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/',
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callBackError(response);
+			});
+
+			
+		}
 
 		ActionnerServiceFactory.save = function(object, callBackSuccess,
 				callBackError) {
@@ -39,6 +54,7 @@
 				method : 'POST',
 				// url : 'js/tests/mock.json'
 				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/save',
+				data : object,
 
 			}).then(function(response) {
 				callBackSuccess(response);

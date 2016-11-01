@@ -8,10 +8,11 @@ import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.business.exceptions.DataTransferException;
 import net.brewspberry.front.ws.beans.requests.IngredientRequest;
+import net.brewspberry.front.ws.beans.requests.IngredientRequest.IngredientType;
 
 public class IngredientDTO {
 
-	public AbstractIngredient toMalt(IngredientRequest obj) {
+	public AbstractIngredient toSimpleMalt(IngredientRequest obj) {
 		SimpleMalt malt = null;
 
 		if (obj != null) {
@@ -47,6 +48,8 @@ public class IngredientDTO {
 			if (ingredient instanceof SimpleMalt) {
 
 				SimpleMalt malt = (SimpleMalt) ingredient;
+				
+				result.setType(IngredientType.MALT);
 
 				result.setCereal(malt.getSmal_cereale());
 				result.setColor(malt.getSmal_couleur());
@@ -55,7 +58,7 @@ public class IngredientDTO {
 			} else if (ingredient instanceof SimpleHoublon) {
 
 				SimpleHoublon hop = (SimpleHoublon) ingredient;
-
+				result.setType(IngredientType.HOP);
 				result.setAlphaAcid(hop.getShbl_acide_alpha());
 				result.setAroma(hop.getShbl_aromes());
 				result.setHopType(hop.getShbl_type());
@@ -64,7 +67,7 @@ public class IngredientDTO {
 			} else if (ingredient instanceof SimpleLevure) {
 
 				SimpleLevure lev = (SimpleLevure) ingredient;
-
+				result.setType(IngredientType.YEAST);
 				result.setFoculation(lev.getSlev_floculation());
 				result.setSpecie(lev.getSlev_espece());
 				result.setAroma(lev.getSlev_aromes());
@@ -78,7 +81,7 @@ public class IngredientDTO {
 
 	}
 
-	public AbstractIngredient toHop(IngredientRequest request) {
+	public AbstractIngredient toSimpleHop(IngredientRequest request) {
 		SimpleHoublon hop = null;
 		if (request != null) {
 			hop = new SimpleHoublon();
@@ -96,7 +99,7 @@ public class IngredientDTO {
 		return hop;
 	}
 
-	public AbstractIngredient toYeast(IngredientRequest request) {
+	public AbstractIngredient toSimpleYeast(IngredientRequest request) {
 		SimpleLevure lev = null;
 		if (request != null) {
 			lev = new SimpleLevure();

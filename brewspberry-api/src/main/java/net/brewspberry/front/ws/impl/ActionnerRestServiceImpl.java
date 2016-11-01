@@ -20,6 +20,8 @@ import net.brewspberry.business.ISpecificActionerService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.business.beans.RaspiPins;
+import net.brewspberry.business.exceptions.ValidationException;
+import net.brewspberry.business.validation.BusinessError;
 import net.brewspberry.business.validation.GenericActionnerValidator;
 import net.brewspberry.business.validation.Validator;
 import net.brewspberry.front.ws.beans.dto.ActionnerDTO;
@@ -31,60 +33,71 @@ import net.brewspberry.util.Constants;
 @RestController
 public class ActionnerRestServiceImpl {
 
-	
-	
-
 	@Autowired
 	@Qualifier("actionerServiceImpl")
 	private IGenericService<Actioner> actionnerService;
-	
 
 	@Autowired
 	@Qualifier("genericActionnerServiceImpl")
 	private IGenericService<GenericActionner> genericActionnerService;
-	
+
 	@Autowired
 	@Qualifier("actionerServiceImpl")
 	private ISpecificActionerService actionnerSpecService;
 
 	@GetMapping("/available")
 	@ResponseBody
-	public List<ActionnerResponse> getAvailableActionners(){
-		
-		return new ActionnerDTO().toRawActionnerResponse(actionnerSpecService.getAllGenericActionners()).buildAPI();	
+	public List<net.brewspberry.front.ws.beans.responses.GenericActionner> getAvailableActionners() {
+		ActionnerDTO dto = new ActionnerDTO();
+		return dto.new GenericActionnerDTO().toRawActionnerResponse(actionnerSpecService.getAllGenericActionners());
 	}
-	
-	
+
 	@PostMapping("/save")
 	@ResponseBody
-	public ActionnerResponse saveGenericActionner(@RequestBody ActionnerResponse arg0) throws Exception{
-		
+	public net.brewspberry.front.ws.beans.responses.GenericActionner saveGenericActionner(
+			@RequestBody net.brewspberry.front.ws.beans.responses.GenericActionner arg0) throws Exception {
+		ActionnerDTO dto = new ActionnerDTO();
 		Validator<GenericActionner> validator = new GenericActionnerValidator();
+
+		GenericActionner genAct = dto.new GenericActionnerDTO().toBusinessObject(arg0);
+
+		net.brewspberry.front.ws.beans.responses.GenericActionner result = null;
 		
-		GenericActionner genAct = new ActionnerDTO().toBusinessObject(arg0);
 		
-		ActionnerResponse result = null;
+		/*
+		 * Validating against recorded actionners
+		 */
+		List<GenericActionner> actionnersList = genericActionnerService.getAllElements();
+
+		validator.setOTherParameters(actionnersList);
+		List<BusinessError> errs = validator.validate(genAct);
 		
-		if (validator.validate(genAct) == null || validator.validate(genAct).isEmpty()){
-			
-			 result = new ActionnerDTO().toRawActionnerResponse(genericActionnerService.save(genAct));
-			
+		if (errs == null || errs.isEmpty()) {
+
+			result = dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.save(genAct));
+
+		} else {
+			throw new ValidationException(errs);
 		}
-		
+
 		return result;
 	}
-	
+
 	@GetMapping("/types")
-	public List<ActionerType> getActionnerTypes(){
-		
+	public List<ActionerType> getActionnerTypes() {
+
 		return Arrays.asList(ActionerType.values());
 	}
-	
 
-	
 	@GetMapping("/pins")
-	public List<String> getPins(){
-		
+	public List<String> getPins() {
+
 		return Arrays.asList(RaspiPins.getRealPins());
+	}
+
+	@GetMapping("/")
+	public List<net.brewspberry.front.ws.beans.responses.GenericActionner> getAllActionners() {
+		ActionnerDTO dto = new ActionnerDTO();
+		return dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.getAllElements());
 	}
 }
