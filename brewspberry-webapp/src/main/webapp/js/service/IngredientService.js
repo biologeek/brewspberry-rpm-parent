@@ -5,9 +5,9 @@
 
 	angular.module('brewspberry').factory('IngredientService', IngredientService);
 
-	BrewService.$inject = [ '$http', 'CONSTANTS' ];
+	IngredientService.$inject = [ '$http', 'CONSTANTS' ];
 
-	function BrewService($http, CONSTANTS) {
+	function IngredientService($http, CONSTANTS) {
 		
 		var IngredientServiceFactory = {};
 		
@@ -48,7 +48,7 @@
 
 		}
 
-		
+		return IngredientServiceFactory;
 		
 		
 	}

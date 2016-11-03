@@ -1,5 +1,7 @@
 package net.brewspberry.front.ws.impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.DataFormatException;
 
@@ -27,6 +29,7 @@ import net.brewspberry.business.exceptions.DataTransferException;
 import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.front.ws.IProductRESTService;
 import net.brewspberry.front.ws.beans.dto.IngredientDTO;
+import net.brewspberry.front.ws.beans.dto.MaltDTO;
 import net.brewspberry.front.ws.beans.dto.SimpleHopDTO;
 import net.brewspberry.front.ws.beans.dto.SimpleMaltDTO;
 import net.brewspberry.front.ws.beans.dto.SimpleYeastDTO;
@@ -70,6 +73,20 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	public ProductRESTServiceImpl() {
 		logger = LogManager.getInstance(this.getClass().getName());
 	}
+	
+	
+	
+	@GetMapping("/")
+	public List<IngredientRequest> getAllIngredients(){
+		
+		List<IngredientRequest> result = new ArrayList<>();
+		result.addAll(new SimpleMaltDTO().toFrontObjectList(simpleMaltService.getAllElements()));
+		result.addAll(new SimpleHopDTO().toFrontObjectList(simpleHopService.getAllElements()));
+		result.addAll(new SimpleYeastDTO().toFrontObjectList(simpleYeastService.getAllElements()));
+		
+		return result;
+	}
+	
 	
 	@PostMapping("/save")
 	public IngredientRequest addIngredient(IngredientRequest request) throws Exception {
@@ -140,13 +157,13 @@ public class ProductRESTServiceImpl implements IProductRESTService {
 	private boolean isThereOnlyOneIngredientInRequest(IngredientRequest request) {
 
 		if (((request.getCereal() != null || request.getMaltType() != null || request.getColor() != 0)
-				&& ((request.getAlphaAcid() != 0 || request.getHopType() != 0 || request.getVariety() != null)
+				&& ((request.getAlphaAcid() != 0 || request.getHopType() != null || request.getVariety() != null)
 						|| (request.getFoculation() != null && request.getSpecie() != null)))
-				|| ((request.getAlphaAcid() != 0 || request.getHopType() != 0 || request.getVariety() != null)
+				|| ((request.getAlphaAcid() != 0 || request.getHopType() != null || request.getVariety() != null)
 						&& ((request.getCereal() != null || request.getMaltType() != null || request.getColor() != 0)
 								|| (request.getFoculation() != null && request.getSpecie() != null)))
 				|| ((request.getFoculation() != null && request.getSpecie() != null)
-						&& ((request.getAlphaAcid() != 0 || request.getHopType() != 0 || request.getVariety() != null)
+						&& ((request.getAlphaAcid() != 0 || request.getHopType() != null || request.getVariety() != null)
 								|| (request.getCereal() != null || request.getMaltType() != null
 										|| request.getColor() != 0)))) {
 			return false;

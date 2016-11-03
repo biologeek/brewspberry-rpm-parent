@@ -14,6 +14,7 @@ import net.brewspberry.dao.SimpleHopDaoImpl;
 import net.brewspberry.util.LogManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +25,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISpecificIngredientService {
 
 	
-	IGenericDao<SimpleHoublon> sHopDao = new SimpleHopDaoImpl ();
+	@Autowired
+	@Qualifier("simpleHopDaoImpl")
+	private IGenericDao<SimpleHoublon> sHopDao;
 	
 	final Logger logger = LogManager.getInstance(SimpleHopServiceImpl.class.getName());
 
+	@Autowired
+	@Qualifier("hopDaoImpl")
 	private IGenericDao<Houblon> hopDao;
 	
 	@Override
@@ -52,7 +57,7 @@ public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISp
 	@Override
 	public List<SimpleHoublon> getAllElements() {
 
-			return (List<SimpleHoublon>) sHopDao.getAllElements();
+			return sHopDao.getAllElements();
 	}
 
 	@Override

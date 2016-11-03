@@ -1,36 +1,41 @@
 (function() {
 	'use strict';
 
-	angular.module('brewspberry').controller('ActionnerController',
-			AccueilController);
+	angular.module('brewspberry').controller('IngredientController',
+			IngredientController);
 
-	AccueilController.$inject = [ '$scope', 'IngredientService' ];
+	IngredientController.$inject = [ '$scope', 'IngredientService', 'UtilsService', 'CONSTANTS' ];
 
-	function AccueilController($scope, IngredientService) {
+	function IngredientController($scope, IngredientService, UtilsService, CONSTANTS) {
 
 		var vm = this;
-		
+
 		vm.listOfIngredients = [];
-		
-		
-		var getAllIngredients = function(){
-			
-			IngredientService.getAllIngredients (function(response){
-				
+		vm.units = [];
+
+		vm.floculationLevels = CONSTANTS.FLOCULATION_LEVELS;
+
+		vm.types = CONSTANTS.ING_TYPES;
+
+		vm.hopTypes = CONSTANTS.HOP_TYPES;
+
+		var getAllIngredients = function() {
+
+			IngredientService.getAllIngredients(function(response) {
+
 				vm.listOfIngredients = response.data;
-				
-			}, function(response){
-				
+
+			}, function(response) {
+
 				vm.showSuccess = false;
 				vm.showErrors = true;
-				
-				vm.submissionFailureMessage = vm.submissionFailureMessage+ "<br /> Could not get ingredients !";
-				
+
+				vm.submissionFailureMessage = vm.submissionFailureMessage
+						+ "\n Could not get ingredients !";
+
 			});
-			
-			
+
 		}
-		
 
 		vm.processIngredient = function(ingredientForm) {
 
@@ -38,7 +43,7 @@
 
 				IngredientService
 						.save(
-								vm.currentIngredient,
+								vm.toCreateIngredient,
 								function(response) {
 
 									vm.showSuccess = true;
@@ -60,16 +65,35 @@
 
 			}
 		}
-		
-		
-		function init(){
+
+		function getAllUnits (){
 			
-			getAllIngredients();
+			UtilsService.getAllUnits(function(response){
+				
+				vm.units = response.data;
+				
+			}, function(response){
+				
+
+				vm.showSuccess = false;
+				vm.showErrors = true;
+
+				vm.submissionFailureMessage = vm.submissionFailureMessage
+				+ "Could not retrieve units : "+response.statusCode;
+				
+			})
 			
 		}
 		
 		
-		
+		function init() {
+
+			getAllIngredients();
+			
+			getAllUnits();
+
+		}
+
 		init();
 	}
 })();

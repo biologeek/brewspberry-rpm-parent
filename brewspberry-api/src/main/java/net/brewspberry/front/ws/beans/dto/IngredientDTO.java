@@ -3,6 +3,7 @@ package net.brewspberry.front.ws.beans.dto;
 import net.brewspberry.business.beans.AbstractIngredient;
 import net.brewspberry.business.beans.Malt;
 import net.brewspberry.business.beans.SimpleHoublon;
+import net.brewspberry.business.beans.SimpleHoublon.HopType;
 import net.brewspberry.business.beans.SimpleLevure;
 import net.brewspberry.business.beans.SimpleMalt;
 import net.brewspberry.business.beans.stock.StockUnit;
@@ -61,7 +62,7 @@ public class IngredientDTO {
 				result.setType(IngredientType.HOP);
 				result.setAlphaAcid(hop.getShbl_acide_alpha());
 				result.setAroma(hop.getShbl_aromes());
-				result.setHopType(hop.getShbl_type());
+				result.setHopType(hop.getShbl_type().name());
 				result.setVariety(hop.getShbl_variete());
 
 			} else if (ingredient instanceof SimpleLevure) {
@@ -91,7 +92,7 @@ public class IngredientDTO {
 			hop.setIng_fournisseur(request.getProvider());
 			hop.setShbl_acide_alpha(request.getAlphaAcid());
 			hop.setShbl_aromes(request.getAroma());
-			hop.setShbl_type(request.getHopType());
+			hop.setShbl_type(HopType.valueOf(request.getHopType()));
 			hop.setShbl_variete(request.getVariety());
 			hop.setIng_unitary_price(request.getUnitaryPrice());
 			hop.setIng_unitary_price_unit(StockUnit.fromString(request.getUnitaryPriceUnit()));

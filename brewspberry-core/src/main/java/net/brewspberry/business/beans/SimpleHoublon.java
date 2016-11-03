@@ -22,9 +22,13 @@ public class SimpleHoublon extends AbstractIngredient implements Serializable {
 	private String shbl_variete;
     private double shbl_acide_alpha;
     private String shbl_aromes;
-    private int shbl_type;
+    private HopType shbl_type;
     
     
+    
+    public enum HopType{
+    	BITTERING, AROMATIC, BOTH;
+    }
     
 	public SimpleHoublon() {
 		super();
@@ -68,13 +72,13 @@ public class SimpleHoublon extends AbstractIngredient implements Serializable {
 
 
 
-	public Integer getShbl_type() {
+	public HopType getShbl_type() {
 		return shbl_type;
 	}
 
 
 
-	public void setShbl_type(int shbl_type) {
+	public void setShbl_type(HopType shbl_type) {
 		this.shbl_type = shbl_type;
 	}
 

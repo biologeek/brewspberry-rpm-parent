@@ -11,6 +11,7 @@ import net.brewspberry.business.exceptions.ServiceException;
 import net.brewspberry.dao.SimpleYeastDAOImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class SimpleYeastServiceImpl implements IGenericService<SimpleLevure>,
 		ISpecificIngredientService {
 
-	IGenericDao<SimpleLevure> levureDao = new SimpleYeastDAOImpl();
+	@Autowired
+	@Qualifier("simpleYeastDAOImpl")
+	IGenericDao<SimpleLevure> levureDao;
 
 	
 	@Override

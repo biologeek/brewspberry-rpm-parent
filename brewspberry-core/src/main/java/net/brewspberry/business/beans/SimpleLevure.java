@@ -1,14 +1,7 @@
 package net.brewspberry.business.beans;
 
-import java.io.Serializable;
-
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-
 import org.springframework.stereotype.Component;
-
-import net.brewspberry.business.beans.stock.Stockable;
 
 @Entity
 @Component

@@ -35,7 +35,7 @@ public class IngredientRequest implements Serializable{
 	private String variety;
 	private double alphaAcid;
 	private String aroma;
-	private int hopType;
+	private String hopType;
 	
 	private String specie;
 	private String foculation;
@@ -103,10 +103,10 @@ public class IngredientRequest implements Serializable{
 	public void setAroma(String aroma) {
 		this.aroma = aroma;
 	}
-	public int getHopType() {
+	public String getHopType() {
 		return hopType;
 	}
-	public void setHopType(int hopType) {
+	public void setHopType(String hopType) {
 		this.hopType = hopType;
 	}
 	public String getSpecie() {

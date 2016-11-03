@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.brewspberry.business.beans.SimpleHoublon;
+import net.brewspberry.business.beans.SimpleHoublon.HopType;
 import net.brewspberry.business.beans.stock.StockUnit;
 import net.brewspberry.front.ws.DTO;
 import net.brewspberry.front.ws.beans.requests.IngredientRequest;
@@ -25,7 +26,7 @@ public class SimpleHopDTO implements DTO<SimpleHoublon, IngredientRequest>{
 		smal.setStb_id(cplObj.getId());
 		smal.setShbl_acide_alpha(cplObj.getAlphaAcid());
 		smal.setShbl_aromes(cplObj.getAroma());
-		smal.setShbl_type(cplObj.getHopType());
+		smal.setShbl_type(HopType.valueOf(cplObj.getHopType()));
 		smal.setShbl_variete(cplObj.getVariety());
 		smal.setIng_unitary_price(cplObj.getUnitaryPrice());
 		smal.setIng_unitary_price_unit(StockUnit.fromString(cplObj.getUnitaryPriceUnit()));
@@ -55,7 +56,7 @@ public class SimpleHopDTO implements DTO<SimpleHoublon, IngredientRequest>{
 		
 		res.setId(cplObj.getStb_id());
 		res.setAroma(cplObj.getShbl_aromes());
-		res.setHopType(cplObj.getShbl_type());
+		res.setHopType(cplObj.getShbl_type().name());
 		res.setProvider(cplObj.getIng_fournisseur());
 		res.setType(IngredientType.HOP);
 		res.setDescription(cplObj.getIng_desc());

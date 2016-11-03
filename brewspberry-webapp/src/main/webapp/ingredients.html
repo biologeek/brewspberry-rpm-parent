@@ -6,13 +6,14 @@
 		<div id="submissionFailed" class="alert alert-error"
 			ng-show="ingredientController.showErrors">
 			<button class="close" data-dismiss="alert">&times;</button>
-			<strong>Error!</strong> {{ ingredientController.submissionFailureMessage }}
+			<strong>Error!</strong> {{
+			ingredientController.submissionFailureMessage }}
 		</div>
 		<div id="submissionSuccess" class="alert alert-success"
 			ng-show="ingredientController.showSuccess">
 			<button class="close" data-dismiss="alert">&times;</button>
-			<strong>Success!</strong> {{ ingredientController.submissionSuccessMessage
-			}}
+			<strong>Success!</strong> {{
+			ingredientController.submissionSuccessMessage }}
 		</div>
 		<div class="block">
 			<div class="navbar navbar-inner block-header">
@@ -35,24 +36,28 @@
 								<th>Provider</th>
 								<th>Description</th>
 								<th>Type</th>
+								<th>Unitary price</th>
 								<th ng-if="ingredient.type == 'MALT'">Cereal</th>
-								<th ng-if="ingredient.type == 'HOP'">Variety</th>
+								<th ng-if="ingredient.type == 'HOP'">Variety (% Alpha
+									Acids)</th>
 								<th ng-if="ingredient.type == 'YEAST'">Specie</th>
-								<th>Status</th>
 							</tr>
 						</thead>
 						<tbody>
 
 
-							<tr ng-repeat="ingredient in ingredientController.listOfIngredients">
+							<tr
+								ng-repeat="ingredient in ingredientController.listOfIngredients">
 								<td>{{ingredient.id}}</td>
 								<td>{{ingredient.provider}}</td>
 								<td>{{ingredient.description}}</td>
+								<td>{{ingredient.unitaryPrice}}
+									€/{{ingredient.unitaryPriceUnit}}</td>
 								<td ng-if="ingredient.type == 'MALT'">{{ingredient.cereal}}</td>
-								<td ng-if="ingredient.type == 'HOP'">{{ingredient.variety}}</td>
+								<td ng-if="ingredient.type == 'HOP'">{{ingredient.variety}}
+									({{ingredient.alphaAcid}} %)</td>
 								<td ng-if="ingredient.type == 'YEAST'">{{ingredient.specie}}</td>
 								<td>{{ingredient.pin}}</td>
-								<td>{{ingredient.status}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -61,31 +66,104 @@
 		</div>
 		<!-- /block -->
 		<div class="block">
-			<form ng-submit="ingredientController.processingredient(ingredientForm)"
+			<form
+				ng-submit="ingredientController.processingredient(ingredientForm)"
 				name="ingredientForm">
 
 				<table class="table table-striped">
 					<tbody>
 						<tr>
-							<td>UUID</td>
+							<td>Provider</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.uuid"
+								ng-model="ingredientController.toCreateingredient.provider"
 								ng-required="true"></td>
 
-							<td>Name</td>
+							<td>Description</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.name"
+								ng-model="ingredientController.toCreateingredient.description"
 								ng-required="true"></td>
 						</tr>
 						<tr>
 							<td>Type</td>
 							<td><select
 								ng-model="ingredientController.toCreateingredient.type"
-								ng-options="status for status in ingredientController.types"></select></td>
-							<td>Pin</td>
+								ng-options="type.enum as type.trad for type in ingredientController.types"></select></td>
+							<td>Unitary price</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.unitaryPrice"><select
+								ng-model="ingredientController.toCreateingredient.unitaryPriceUnit"
+								ng-options="unit.obj as unit.trad for unit in ingredientController.units"></select></td>
+						</tr>
+						<tr>
+							<td>Unitary weight</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.unitaryWeight"><select
+								ng-model="ingredientController.toCreateingredient.unitaryWeightUnit"
+								ng-options="unit.obj as unit.trad for unit in ingredientController.units"></select></td>
+							<td></td>
+							<td></td>
+						</tr>
+
+						<tr ng-if="ingredientController.toCreateingredient.type == 'MALT'">
+							<td>Cereal</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.cereal"></td>
+							<td>Color</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.color"></td>
+						</tr>
+
+						<tr ng-if="ingredientController.toCreateingredient.type == 'MALT'">
+							<td>Malt type</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.maltType"></td>
+							<td>Color</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.color"></td>
+						</tr>
+
+						<tr ng-if="ingredientController.toCreateingredient.type == 'HOP'">
+							<td>Variety</td>
+							<td><input type="text" ng-model="ingredientController.toCreateIngredient.variety"></td>
+							<td>Alpha Acids (%)</td>
+							<td><input type="text" ng-model="ingredientController.toCreateIngredient.alphaAcid"></td>
+						</tr>
+						<tr ng-if="ingredientController.toCreateingredient.type == 'HOP'">
+							<td>Aromas</td>
+							<td><input type="text"
+								ng-model="ingredientController.toCreateingredient.aroma"></td>
+							<td>Type</td>
 							<td><select
-								ng-model="ingredientController.toCreateingredient.pin"
-								ng-options="status for status in ingredientController.pins"></select></td>
+								ng-model="ingredientController.toCreateingredient.hopType"
+								ng-options="hop.enum as hop.trad for hop in ingredientController.hopTypes"></select></td>
+						</tr>
+
+						<tr
+							ng-if="ingredientController.toCreateingredient.type == 'YEAST'">
+							<td>Specie</td>
+							<td><select
+								ng-model="ingredientController.toCreateingredient.specie"
+								ng-options="unit for unit in ingredientController.yeastSpecies"></select></td>
+							<td>Floculation</td>
+							<td><select
+								ng-options="item.trad as item.enum for item in ingredientController.floculationLevels"
+								ng-model="ingredientController.toCreateingredient.floculation"></select></td>
+						</tr>
+
+
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+
+
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
 						</tr>
 
 						<tr>
