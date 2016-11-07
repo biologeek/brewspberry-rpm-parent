@@ -1,0 +1,31 @@
+<div ng-controller="BrewController as brewController">
+
+	<div class="span9" id="content">
+
+		<div class="block">
+			<div class="navbar navbar-inner block-header">
+				<div class="muted pull-left">Visualisation en temps réel</div>
+			</div>
+		</div>
+
+
+		<div class="block-content collapse in">
+			<div class="span12">
+
+				<md-content> <md-tabs md-dynamic-height
+					md-border-bottom> <md-tab ng-repeat="actioner in brewController.currentFullStep"
+					ng-if="actioner.type == 1" label="{{actioner.uuid}}"> <md-content
+					class="md-padding">
+				<canvas class="chart chart-line" chart-data="actioner.chart[0].data"
+					chart-series="actioner.chart[0].series"
+					chart-labels="actioner.chart[0].labels"
+					chart-options="brewController.chartOptions"></canvas>
+				</md-content> </md-tab> </md-tabs> </md-content>
+			</div>
+		</div>
+
+		<div class="block-content collapse in">
+			<div class="span12"></div>
+		</div>
+	</div>
+</div>

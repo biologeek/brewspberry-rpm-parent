@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -15,10 +18,18 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
-public class Actioner extends GenericActionner {
+public class Actioner {
 
 	
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long act_id;
+	
+	
+	@ManyToOne
+	@JoinColumn(name="act_generic_id")
+	private GenericActionner act_generic;
 
 	private Date act_date_debut;
 	private Date act_date_fin;
@@ -30,6 +41,7 @@ public class Actioner extends GenericActionner {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "act_etp_id")
 	private Etape act_etape;
+	private boolean act_used;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tmes_actioner")
 	List<ConcreteTemperatureMeasurement> act_temperature_measurements;
@@ -39,6 +51,16 @@ public class Actioner extends GenericActionner {
 	}
 
 	
+	public long getAct_id() {
+		return act_id;
+	}
+
+
+	public void setAct_id(long act_id) {
+		this.act_id = act_id;
+	}
+
+
 	public Date getAct_date_debut() {
 		return act_date_debut;
 	}
@@ -79,4 +101,21 @@ public class Actioner extends GenericActionner {
 		this.act_etape = act_etape;
 	}
 
+
+	public GenericActionner getAct_generic() {
+		return act_generic;
+	}
+
+
+	public void setAct_generic(GenericActionner act_generic) {
+		this.act_generic = act_generic;
+	}
+
+	public boolean getAct_used() {
+		return act_used;
+	}
+
+	public void setAct_used(boolean act_used) {
+		this.act_used = act_used;
+	}
 }

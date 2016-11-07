@@ -52,7 +52,7 @@
 								<td>{{ingredient.provider}}</td>
 								<td>{{ingredient.description}}</td>
 								<td>{{ingredient.unitaryPrice}}
-									€/{{ingredient.unitaryPriceUnit}}</td>
+									€/{{ingredient.unitaryPriceUnit | unitFilter : ingredientController.units}}</td>
 								<td ng-if="ingredient.type == 'MALT'">{{ingredient.cereal}}</td>
 								<td ng-if="ingredient.type == 'HOP'">{{ingredient.variety}}
 									({{ingredient.alphaAcid}} %)</td>
@@ -66,8 +66,8 @@
 		</div>
 		<!-- /block -->
 		<div class="block">
-			<form
-				ng-submit="ingredientController.processingredient(ingredientForm)"
+			<form class="form-horizontal"
+				ng-submit="ingredientController.processIngredient(ingredientForm)"
 				name="ingredientForm">
 
 				<table class="table table-striped">
@@ -75,97 +75,79 @@
 						<tr>
 							<td>Provider</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.provider"
+								ng-model="ingredientController.toCreateIngredient.provider"
 								ng-required="true"></td>
 
 							<td>Description</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.description"
+								ng-model="ingredientController.toCreateIngredient.description"
 								ng-required="true"></td>
 						</tr>
 						<tr>
 							<td>Type</td>
 							<td><select
-								ng-model="ingredientController.toCreateingredient.type"
+								ng-model="ingredientController.toCreateIngredient.type"
 								ng-options="type.enum as type.trad for type in ingredientController.types"></select></td>
 							<td>Unitary price</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.unitaryPrice"><select
-								ng-model="ingredientController.toCreateingredient.unitaryPriceUnit"
+								ng-model="ingredientController.toCreateIngredient.unitaryPrice"><select
+								ng-model="ingredientController.toCreateIngredient.unitaryPriceUnit"
 								ng-options="unit.obj as unit.trad for unit in ingredientController.units"></select></td>
 						</tr>
 						<tr>
 							<td>Unitary weight</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.unitaryWeight"><select
-								ng-model="ingredientController.toCreateingredient.unitaryWeightUnit"
+								ng-model="ingredientController.toCreateIngredient.unitaryWeight"><select
+								ng-model="ingredientController.toCreateIngredient.unitaryWeightUnit"
 								ng-options="unit.obj as unit.trad for unit in ingredientController.units"></select></td>
 							<td></td>
 							<td></td>
 						</tr>
 
-						<tr ng-if="ingredientController.toCreateingredient.type == 'MALT'">
+						<tr ng-if="ingredientController.toCreateIngredient.type == 'MALT'">
 							<td>Cereal</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.cereal"></td>
+								ng-model="ingredientController.toCreateIngredient.cereal"></td>
 							<td>Color</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.color"></td>
+								ng-model="ingredientController.toCreateIngredient.color"></td>
 						</tr>
 
-						<tr ng-if="ingredientController.toCreateingredient.type == 'MALT'">
+						<tr ng-if="ingredientController.toCreateIngredient.type == 'MALT'">
 							<td>Malt type</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.maltType"></td>
-							<td>Color</td>
-							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.color"></td>
+								ng-model="ingredientController.toCreateIngredient.maltType"></td>
+							<td></td>
+							<td></td>
 						</tr>
 
-						<tr ng-if="ingredientController.toCreateingredient.type == 'HOP'">
+						<tr ng-if="ingredientController.toCreateIngredient.type == 'HOP'">
 							<td>Variety</td>
 							<td><input type="text" ng-model="ingredientController.toCreateIngredient.variety"></td>
 							<td>Alpha Acids (%)</td>
 							<td><input type="text" ng-model="ingredientController.toCreateIngredient.alphaAcid"></td>
 						</tr>
-						<tr ng-if="ingredientController.toCreateingredient.type == 'HOP'">
+						<tr ng-if="ingredientController.toCreateIngredient.type == 'HOP'">
 							<td>Aromas</td>
 							<td><input type="text"
-								ng-model="ingredientController.toCreateingredient.aroma"></td>
+								ng-model="ingredientController.toCreateIngredient.aroma"></td>
 							<td>Type</td>
 							<td><select
-								ng-model="ingredientController.toCreateingredient.hopType"
+								ng-model="ingredientController.toCreateIngredient.hopType"
 								ng-options="hop.enum as hop.trad for hop in ingredientController.hopTypes"></select></td>
 						</tr>
 
 						<tr
-							ng-if="ingredientController.toCreateingredient.type == 'YEAST'">
+							ng-if="ingredientController.toCreateIngredient.type == 'YEAST'">
 							<td>Specie</td>
 							<td><select
-								ng-model="ingredientController.toCreateingredient.specie"
+								ng-model="ingredientController.toCreateIngredient.specie"
 								ng-options="unit for unit in ingredientController.yeastSpecies"></select></td>
 							<td>Floculation</td>
 							<td><select
 								ng-options="item.trad as item.enum for item in ingredientController.floculationLevels"
-								ng-model="ingredientController.toCreateingredient.floculation"></select></td>
+								ng-model="ingredientController.toCreateIngredient.floculation"></select></td>
 						</tr>
-
-
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-
-
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-
 						<tr>
 							<td></td>
 							<td></td>

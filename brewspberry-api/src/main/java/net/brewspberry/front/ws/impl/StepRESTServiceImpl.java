@@ -3,6 +3,8 @@ package net.brewspberry.front.ws.impl;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +59,18 @@ public class StepRESTServiceImpl implements IStepRESTService {
 		}
 
 		throw new Exception("Null object sent");
+	}
+
+	@Override
+	@GetMapping("/{id}")
+	public CompleteStep get(@PathVariable("id") long stepID) throws Exception {
+
+
+		if (stepID > 0){
+			return new StepDTO().toCompleteStep(genStepService.getElementById(stepID));
+		} else 
+			throw new Exception("id must be > 0");
+		
 	}
 
 	/*

@@ -101,7 +101,7 @@ public class Accueil extends AbstractAutowiredServlet {
 			availableActioners = DeviceParser.getInstance().getDevices(Constants.DEVICES_PROPERTIES);
 			for (Actioner act : availableActioners){
 				
-				logger.fine("Device : "+act.getAct_nom()+", pin="+act.getAct_raspi_pin()+", uuid="+act.getAct_uuid());
+				logger.fine("Device : "+act.getAct_generic().getAct_nom()+", pin="+act.getAct_generic().getAct_raspi_pin()+", uuid="+act.getAct_generic().getAct_uuid());
 				
 			}
 			

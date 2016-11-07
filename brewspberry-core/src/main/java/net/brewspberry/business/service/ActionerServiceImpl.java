@@ -162,12 +162,12 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 						actionerProbeName = actionerCommand[1];
 						actionerProbeUUID = actionerCommand[2];
 
-						curAct.setAct_type(ActionerType.DS18B20);
+						/*curAct.setAct_type(ActionerType.DS18B20);
 						curAct.setAct_nom(actionerProbeName);
 						curAct.setAct_uuid(actionerProbeUUID);
 						curAct.setAct_brassin(brassin);
 						curAct.setAct_etape(etape);
-
+*/
 						actionerDoesExists = actionerSpecDao.getActionerByFullCharacteristics(curAct);
 
 						if (actionerDoesExists.getAct_date_debut() != null) {
@@ -214,15 +214,15 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 
 		if (arg0.getAct_date_debut() == null) {
 			arg0.setAct_date_debut(new Date());
-			arg0.setAct_status(ActionerStatus.STARTED);
+		//	arg0.setAct_status(ActionerStatus.STARTED);
 		}
-
+/*
 		if (arg0.getAct_activated() == false && arg0.getAct_used() == false) {
 
 			arg0.setAct_activated(true);
 
 		} else
-			throw new NotAppropriateStatusException();
+			throw new NotAppropriateStatusException();*/
 		try {
 			logger.info("Situation : is alread stored ? " + isAlreadyStored + " Actionner ID : " + arg0.getAct_id());
 			if (isAlreadyStored && arg0.getAct_id() > 0) {
@@ -261,9 +261,9 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 
 		if (arg0.getAct_date_fin() == null) {
 			arg0.setAct_date_fin(new Date());
-			arg0.setAct_status(ActionerStatus.STOPPED);
+			arg0.getAct_generic().setAct_status(ActionerStatus.STOPPED);
 		}
-		if (arg0.getAct_activated() == true && arg0.getAct_used() == false) {
+		if (arg0.getAct_generic().getAct_activated() == true && arg0.getAct_used() == false) {
 
 			arg0.setAct_used(true);
 
@@ -437,10 +437,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 		List<GenericActionner> result = new ArrayList<>();
 
 		for (GenericActionner act : actioners) {
-
-			act.setAct_id(0);
 			act.setAct_status(ActionerStatus.IDLE);
-			act.setAct_used(false);
 			act.setAct_activated(false);
 
 			if (!result.contains(act)) {

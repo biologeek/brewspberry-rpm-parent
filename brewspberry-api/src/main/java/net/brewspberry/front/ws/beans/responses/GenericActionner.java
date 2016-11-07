@@ -12,6 +12,7 @@ public class GenericActionner {
 	private ActionerType type;
 	private String picture;
 	private String pin;
+	private String state;
 	
 	public long getId() {
 		return id;
@@ -48,5 +49,11 @@ public class GenericActionner {
 	}
 	public void setPin(String pin) {
 		this.pin = pin;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
 }

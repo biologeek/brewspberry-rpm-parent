@@ -7,16 +7,16 @@
                             <a href="#/create/brew"><i class="icon-chevron-right"></i>Ajouter brassin</a>
                         </li>
                         <li>
-                            <a href="#/ingredients"><i class="icon-chevron-right"></i>Ingredients</a>
+                            <a href="#/"><i class="icon-chevron-right"></i> Liste des brassins</a>
                         </li>
                         <li>
-                            <a href="#/"><i class="icon-chevron-right"></i> Liste des brassins</a>
+                            <a href="#/ingredients"><i class="icon-chevron-right"></i>Ingredients</a>
                         </li>
                         <li>
                             <a href="#/actionners"><i class="icon-chevron-right"></i>Actionneurs</a>
                         </li>
                         <li>
-                            <a href="#/"><i class="icon-chevron-right"></i>Temps rÃ©el</a>
+                            <a href="#/"><i class="icon-chevron-right"></i>Temps réel</a>
                         </li>
                     </ul>
                 </div>

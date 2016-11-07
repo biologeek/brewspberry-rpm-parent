@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.SimpleHoublon;
+import net.brewspberry.business.beans.SimpleHoublon.HopType;
 import net.brewspberry.util.LogManager;
 
 @Component
@@ -27,7 +28,7 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 	private String shbl_variete;
 	private double shbl_acide_alpha;
 	private String shbl_aromes;
-	private Integer shbl_type;
+	private HopType shbl_type;
 	
 
 	@Override
@@ -86,7 +87,7 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 
 			 if (request.getParameter("shbl_type") != null){
 				 
-				 shbl_type = Integer.parseInt((String) request.getParameter("shbl_type"));
+				 shbl_type = HopType.valueOf((String) request.getParameter("shbl_type"));
 				 
 				 parentObject.setShbl_type(shbl_type);
 			 } else {
@@ -203,12 +204,12 @@ public class SimpleHopProcessor implements Processor<SimpleHoublon> {
 	}
 
 
-	public Integer getShbl_type() {
+	public HopType getShbl_type() {
 		return shbl_type;
 	}
 
 
-	public void setShbl_type(Integer shbl_type) {
+	public void setShbl_type(HopType shbl_type) {
 		this.shbl_type = shbl_type;
 	}
 

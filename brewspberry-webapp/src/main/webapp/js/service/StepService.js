@@ -62,6 +62,21 @@
 			});
 
 		}
+
+		StepServiceFactory.getStep = function(stepID, callBackSuccess,
+				callBackError) {
+
+			var promise = $http({
+				method : 'GET',
+				url : CONSTANTS.STEP_SERVICE_URL + '/' + stepID
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callbackError(response);
+			});
+
+		}
+		
 		return StepServiceFactory;
 
 	}

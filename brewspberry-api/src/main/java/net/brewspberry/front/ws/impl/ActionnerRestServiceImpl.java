@@ -49,7 +49,7 @@ public class ActionnerRestServiceImpl {
 	@ResponseBody
 	public List<net.brewspberry.front.ws.beans.responses.GenericActionner> getAvailableActionners() {
 		ActionnerDTO dto = new ActionnerDTO();
-		return dto.new GenericActionnerDTO().toRawActionnerResponse(actionnerSpecService.getAllGenericActionners());
+		return dto.new GenericActionnerDTO().toRawActionnerResponse(actionnerSpecService.getAllGenericActionners(), true);
 	}
 
 	@PostMapping("/save")
@@ -74,7 +74,7 @@ public class ActionnerRestServiceImpl {
 		
 		if (errs == null || errs.isEmpty()) {
 
-			result = dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.save(genAct));
+			result = dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.save(genAct), false);
 
 		} else {
 			throw new ValidationException(errs);
@@ -98,6 +98,6 @@ public class ActionnerRestServiceImpl {
 	@GetMapping("/")
 	public List<net.brewspberry.front.ws.beans.responses.GenericActionner> getAllActionners() {
 		ActionnerDTO dto = new ActionnerDTO();
-		return dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.getAllElements());
+		return dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.getAllElements(), false);
 	}
 }

@@ -1,21 +1,23 @@
 package net.brewspberry.business.beans;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public class GenericActionner {
 	
 
@@ -59,8 +61,10 @@ public class GenericActionner {
 	private ActionerStatus act_status;
 	private String act_raspi_pin;
 	private boolean act_activated;
-	private boolean act_used;
 	private String act_picture;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="act_generic")
+	private List<Actioner> act_actionners;
 
 
 	public long getAct_id() {
@@ -96,13 +100,6 @@ public class GenericActionner {
 		this.act_raspi_pin = act_raspi_pin;
 	}
 
-	public boolean getAct_used() {
-		return act_used;
-	}
-
-	public void setAct_used(boolean act_used) {
-		this.act_used = act_used;
-	}
 
 	public String getAct_nom() {
 		return act_nom;
@@ -138,7 +135,7 @@ public class GenericActionner {
 	}
 
 
-	public String getOffPicture(net.brewspberry.business.beans.Actioner.ActionerType act_type2) {
+	public String getOffPicture(ActionerType act_type2) {
 
 		switch (act_type2) {
 		case DS18B20:
@@ -163,7 +160,6 @@ public class GenericActionner {
 		result = prime * result + ((act_raspi_pin == null) ? 0 : act_raspi_pin.hashCode());
 		result = prime * result + ((act_status == null) ? 0 : act_status.hashCode());
 		result = prime * result + ((act_type == null) ? 0 : act_type.hashCode());
-		result = prime * result + (act_used ? 1231 : 1237);
 		result = prime * result + ((act_uuid == null) ? 0 : act_uuid.hashCode());
 		return result;
 	}
@@ -199,8 +195,6 @@ public class GenericActionner {
 		if (act_status != other.act_status)
 			return false;
 		if (act_type != other.act_type)
-			return false;
-		if (act_used != other.act_used)
 			return false;
 		if (act_uuid == null) {
 			if (other.act_uuid != null)

@@ -4,9 +4,11 @@
 	angular.module('brewspberry').controller('IngredientController',
 			IngredientController);
 
-	IngredientController.$inject = [ '$scope', 'IngredientService', 'UtilsService', 'CONSTANTS' ];
+	IngredientController.$inject = [ '$scope', 'IngredientService',
+			'UtilsService', 'CONSTANTS' ];
 
-	function IngredientController($scope, IngredientService, UtilsService, CONSTANTS) {
+	function IngredientController($scope, IngredientService, UtilsService,
+			CONSTANTS) {
 
 		var vm = this;
 
@@ -38,7 +40,7 @@
 		}
 
 		vm.processIngredient = function(ingredientForm) {
-
+			console.log("ici")
 			if (ingredientForm.$dirty && ingredientForm.$valid) {
 
 				IngredientService
@@ -66,30 +68,28 @@
 			}
 		}
 
-		function getAllUnits (){
-			
-			UtilsService.getAllUnits(function(response){
-				
+		function getAllUnits() {
+
+			UtilsService.getAllUnits(function(response) {
+
 				vm.units = response.data;
-				
-			}, function(response){
-				
+
+			}, function(response) {
 
 				vm.showSuccess = false;
 				vm.showErrors = true;
 
 				vm.submissionFailureMessage = vm.submissionFailureMessage
-				+ "Could not retrieve units : "+response.statusCode;
-				
+						+ "Could not retrieve units : " + response.statusCode;
+
 			})
-			
+
 		}
-		
-		
+
 		function init() {
 
 			getAllIngredients();
-			
+
 			getAllUnits();
 
 		}

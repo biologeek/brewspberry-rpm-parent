@@ -20,6 +20,7 @@ import net.brewspberry.business.beans.BrewStatus;
 import net.brewspberry.business.beans.Houblon;
 import net.brewspberry.business.beans.Levure;
 import net.brewspberry.business.beans.Malt;
+import net.brewspberry.business.beans.SimpleHoublon.HopType;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.model.Processor;
 
@@ -336,7 +337,7 @@ public class BrewProcessorDelegate implements Processor<Brassin> {
 
 				logger.fine("Got " + currentBrassinHoublons.length + " hops, brew hop id=" + currentBrassinHoublons[i]);
 				houblon.setIng_quantite(Float.parseFloat(currentBrassinHoublonsQte[i]));
-				houblon.setShbl_type(Integer.parseInt(currentBrassinHoublonsType[i]));
+				houblon.setShbl_type(HopType.valueOf(currentBrassinHoublonsType[i]));
 			}
 
 		} else {

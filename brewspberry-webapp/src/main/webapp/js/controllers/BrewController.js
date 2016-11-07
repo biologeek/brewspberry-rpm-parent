@@ -8,16 +8,16 @@
 
 	angular.module('brewspberry').controller('BrewController', BrewController);
 
-	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService', 'ActionnerService'];
+	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService', 'ActionnerService', 'Notification'];
 
-	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService, ActionnerService) {
+	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService, ActionnerService, Notification) {
 
 		var vm = this;
 		vm.currentFullBrew = {};
 		vm.currentFullBrew.steps = [{}];
-		
 		vm.lastIDs = {};
 
+		vm.currentFullStep = {};
 
 		vm.updateDelay = vm.updateDelay || CONSTANTS.DEFAULT_CHART_RELOAD;
 		vm.defaultmaxPtsValue = vm.defaultmaxPtsValue || CONSTANTS.CHART_MAX_DATA_SIZE;
@@ -25,6 +25,7 @@
 		vm.showErrors = false;
 		vm.showSuccess = false;
 		vm.brewID = $routeParams.brewID;
+		vm.stepID = $routeParams.stepID; 
 		vm.stageTypes=CONSTANTS.STAGE_TYPES;
 		vm.stepTypes=CONSTANTS.STEP_TYPES;
 		vm.availableActionners = [];
@@ -56,42 +57,66 @@
 		 */
 		var init = function () {
 
-			BrewService.getBrew(vm.brewID, true, function (response) {
-				/**
-				 * In case of success
-				 */
-
-				vm.currentFullBrew = response.data;
-
-				vm.initCharts(function () {
-
-
+			if (typeof vm.brewID != 'undefined'){
+				BrewService.getBrew(vm.brewID, true, function (response) {
+					/**
+					 * In case of success
+					 */
+	
+					vm.currentFullBrew = response.data;
+	
+					vm.initCharts(function () {
+	
+	
+					});
+				}, function (response) {
+					/**
+					 * In case of error
+					 */
+	
+					vm.showErrors = true;
+	
+					vm.submissionFailureMessage = "Code : " + response.statusCode
+						+ ". Message : " + response.data;
+	
 				});
-			}, function (response) {
-				/**
-				 * In case of error
-				 */
-
-				vm.showErrors = true;
-
-				vm.submissionFailureMessage = "Code : " + response.statusCode
-					+ ". Message : " + response.data;
-
-			})
-			
+			} else if (typeof vm.stepID != 'undefined'){
+				
+				StepService.getStep(vm.stepID, true, function (response) {
+					/**
+					 * In case of success
+					 */
+	
+					vm.currentFullStep = response.data;
+	
+					vm.initCharts(function (){});
+				}, function (response) {
+					/**
+					 * In case of error
+					 */
+	
+					vm.showErrors = true;
+	
+					vm.submissionFailureMessage = "Code : " + response.statusCode
+						+ ". Message : " + response.data;
+	
+				})
+	
+				
+			}
 			
 			ActionnerService.getAvailableActionners(function(response){
 				console.log(response.data);
 				vm.availableActionners = response.data;
 				
+				console.log (response.data)
+				
 			}, function(response){
 				
 				vm.showErrors = true;
 
-				vm.submissionFailureMessage.concat("<br><br>Could not retrieve actionners. Error : "
-					+ response.statusText
-					+ ", "
-					+ response.data);			
+				vm.submissionFailureMessage = vm.submissionFailureMessage + "\nCould not retrieve actionners. Error : "
+					+ response.statusText;			
 				
 			});
 		}
@@ -104,6 +129,8 @@
 		vm.initCharts = function (callback) {
 
 
+			// FIXME Pas ouf de passer par des variables globale, penser a les
+			// injecter en paramètre
 			if (typeof(vm.currentFullBrew) != 'undefined') {
 
 				var steps = vm.currentFullBrew.steps;
@@ -111,51 +138,53 @@
 
 
 				for (let step in steps) {
-
-
+					
 					// For each step, if step is active, initiates
 					// if (steps[step].isActive) {
 						// vm.currentFullBrew.steps[step].charts = [{data :
 						// [[]], series : [], labels : []}];
-						
-						for (let act in steps[step].actioners){
-							
-							if(steps[step].actioners[act].type == 1){
-								TemperatureService.initTemperaturesForStep(steps[step].id, steps[step].actioners[act].uuid, function(response){
-
-
-									/*
-									 * Receiving object : [ { id : 1, value :
-									 * 20.0, date : 123456789123456, //date in
-									 * milliseconds uuid : '123456azerty456987',
-									 * name : 'PROBE1', actionner : 3, step : 4,
-									 * brew : 1, } , ... ]
-									 * 
-									 */
-
-									
-									vm.lastIDs[steps[step].actioners[act].uuid] = response.data.lastID;
-									processRawDataAndFeedActionners(response.data, step, steps[step].actioners[act].uuid, false);
-								}, function (response) {
-
-									vm.currentFullBrew.steps[step].chart = [{data: [[]], series: [], labels: []}];
-
-								});
-							}
-						}
-					}
-// }
-
-
+					initChartForStep(steps[step]);
 				}
 
 
 				callback();
 
-
+			} else if (typeof vm.currentFullStep != 'undefined'){
+				
+				initChartForStep(vm.currentFullStep);				
+				
+			}
 
 		}
 
+			
+		var initChartForStep = function (stepObj){
+			for (let act in stepObj.actioners){
+				
+				if(steps[step].actioners[act].type == 1){
+					TemperatureService.initTemperaturesForStep(stepObj.id, stepObj.actioners[act].uuid, function(response){
+
+
+						/*
+						 * Receiving object : [ { id : 1, value : 20.0, date :
+						 * 123456789123456, //date in milliseconds uuid :
+						 * '123456azerty456987', name : 'PROBE1', actionner : 3,
+						 * step : 4, brew : 1, } , ... ]
+						 * 
+						 */
+
+						
+						vm.lastIDs[stepObj.actioners[act].uuid] = response.data.lastID;
+						processRawDataAndFeedActionners(response.data, step, stepObj.actioners[act].uuid, false);
+					}, function (response) {
+
+						stepObj.chart = [{data: [[]], series: [], labels: []}];
+
+					});
+				}
+			}
+		}
+	
 
 		/**
 		 * Updates charts data
@@ -163,31 +192,34 @@
 		vm.updateCharts = function () {
 			
 			for (let step in vm.currentFullBrew.steps) {
-
-				if (vm.currentFullBrew.steps[step].active) {
-
-					for (let act in vm.currentFullBrew.steps[step].actioners) {
-						
-					
-						TemperatureService.updateTemperaturesForStep(vm.currentFullBrew.steps[step].id, 
-								vm.currentFullBrew.steps[step].actioners[act], 
-								vm.lastIDs[vm.currentFullBrew.steps[step].actioners[act].uuid], 
-								function (response) {
-
-						processRawDataAndFeedActionners(response.data, step, vm.currentFullBrew.steps[step].actioners[act].uuid, true);
-
-					}, function (response) {
-							return ;
-					});
-					}
-
-				}
-
+				updateChartForStep(vm.currentFullBrew.steps[step]);				
 			}
 
 		}
 
 
+		var updateChartForStep = function(stepObj){
+			if (stepObj.active) {
+
+				for (let act in stepObj.actioners) {
+					
+				
+					TemperatureService.updateTemperaturesForStep(stepObj.id, 
+							stepObj.actioners[act], 
+						vm.lastIDs[stepObj.actioners[act].uuid], 
+						function (response) {
+
+							processRawDataAndFeedActionners(response.data, step, stepObj.actioners[act].uuid, true);
+
+						}, function (response) {
+								return ;
+						}
+					);
+				}
+
+			}
+
+		}
 		/**
 		 * From raw webservice data, appends temperture measurements to brew
 		 * object and cuts excedent data
@@ -323,8 +355,7 @@
 		 */
 		/** *************************************************************************************** */
 
-
-
+	
 		/**
 		 * 
 		 * 
@@ -471,8 +502,7 @@
 			}
 			vm.addedStep.actioners.push(actioner);
 			
-			console.log("jQuery.jGrowl('Added '"+actioner.uuid+")")
-			jQuery.jGrowl("Added "+actioner.uuid);
+			Notification.success("Added "+actioner.uuid);
 		}
 	}
 

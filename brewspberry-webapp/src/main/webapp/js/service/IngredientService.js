@@ -31,7 +31,7 @@
 
 		IngredientServiceFactory.save = function(object, callBackSuccess,
 				callBackError) {
-
+			console.log(object);
 			var promise = $http({
 				method : 'POST',
 				// url : 'js/tests/mock.json'

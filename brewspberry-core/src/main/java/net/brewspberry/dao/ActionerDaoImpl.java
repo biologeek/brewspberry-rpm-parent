@@ -3,6 +3,7 @@ package net.brewspberry.dao;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -36,7 +37,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 		Long actID;
 
 		try {
-			logger.info("Saving Actioner whith uuid " + arg0.getAct_uuid());
+			logger.info("Saving Actioner whith uuid " + arg0.getAct_generic().getAct_uuid());
 			actID = (Long) sessionFactory.getCurrentSession().save(arg0);
 
 			tx.commit();
@@ -163,7 +164,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 
 		String hqlReq = "from " + Actioner.class + " WHERE act_bra_id = " + actioner.getAct_brassin().getBra_id()
 				+ " AND act_etp_id = " + actioner.getAct_etape().getEtp_id() + " AND act_type = "
-				+ actioner.getAct_type() + " AND act_uuid = " + actioner.getAct_uuid();
+				+ actioner.getAct_generic().getAct_type() + " AND act_uuid = " + actioner.getAct_generic().getAct_uuid();
 
 		Actioner result = (Actioner) sessionFactory.getCurrentSession().createQuery(hqlReq).uniqueResult();
 
@@ -190,6 +191,8 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 	@Override
 	public List<GenericActionner> getAllGenericActionners() {
 
-		return sessionFactory.getCurrentSession().createCriteria(GenericActionner.class).list();
+		 Criteria list = sessionFactory.getCurrentSession().createCriteria(GenericActionner.class);
+		
+		 return list.list();
 	}
 }

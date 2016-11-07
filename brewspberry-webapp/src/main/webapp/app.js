@@ -10,7 +10,8 @@ var app = angular.module('brewspberry', [
     'ngRoute',
     'ngMaterial',
     'chart.js',
-    'mdPickers'
+    'mdPickers',
+    'ui-notification'
 ]);
 
     app.config(function($routeProvider){
@@ -36,7 +37,23 @@ var app = angular.module('brewspberry', [
         }).when('/ingredients', {
         	templateUrl : 'ingredients.html',
         	controller : 'IngredientController'
+        }).when('/realtime', {
+        	templateUrl : 'realtime.html',
+        	controller : 'BrewController'
         })
         .otherwise( {redirectTo : '/accueil'});
+    });
+    
+    
+    app.config(function(NotificationProvider) {
+        NotificationProvider.setOptions({
+            delay: 5000,
+            startTop: 20,
+            startRight: 10,
+            verticalSpacing: 20,
+            horizontalSpacing: 20,
+            positionX: 'right',
+            positionY: 'bottom'
+        });
     });
 })();

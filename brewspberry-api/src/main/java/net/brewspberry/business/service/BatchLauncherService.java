@@ -76,7 +76,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 			logger .fine(actioner.getAct_etape() + " "
 					+ actioner.getAct_brassin());
-			switch (actioner.getAct_type()) {
+			switch (actioner.getAct_generic().getAct_type()) {
 
 			case DS18B20:
 				// DS18B20
@@ -150,34 +150,33 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 			case PUMP_RELAY :
 				GpioPinDigitalOutput gpio = gpioController
 				.provisionDigitalOutputPin(Constants.BREW_GPIO
-						.get(actioner.getAct_raspi_pin()));
+						.get(actioner.getAct_generic().getAct_raspi_pin()));
 				// Relay
 				logger.info("It's a relay !");
 
-				if (actioner.getAct_raspi_pin() != "") {
+				if (actioner.getAct_generic().getAct_raspi_pin() != "") {
 
 					logger.info("Provisionning pin "
-							+ actioner.getAct_raspi_pin()
+							+ actioner.getAct_generic().getAct_raspi_pin()
 							+ " "
-							+ Constants.BREW_GPIO.get(actioner
-									.getAct_raspi_pin()));
+							+ Constants.BREW_GPIO.get(actioner.getAct_generic().getAct_raspi_pin()));
 					try {
 						
 						// Turning ON or OFF the pin
 						PinState state = relayAdapter.changePinState(gpio);
 
-						actioner.setAct_status(ActionerStatus.STARTED);
+						actioner.getAct_generic().setAct_status(ActionerStatus.STARTED);
 						logger.info("Actioner at pin "
-								+ actioner.getAct_raspi_pin()
+								+ actioner.getAct_generic().getAct_raspi_pin()
 								+ " changed state to "
-								+ actioner.getAct_status());
+								+ actioner.getAct_generic().getAct_status());
 
 					} catch (Exception e) {
 
 						logger.severe("Couldn't change Pin state..."
-								+ actioner.getAct_raspi_pin()
+								+ actioner.getAct_generic().getAct_raspi_pin()
 								+ ", setting status to FAILED !");
-						actioner.setAct_status(ActionerStatus.FAILED);
+						actioner.getAct_generic().setAct_status(ActionerStatus.FAILED);
 
 					}
 					actioner = actionerService.startActionInDatabase(actioner);
@@ -224,7 +223,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 			} else if (ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
 					"param.batches.language").equals("python")) {
-				switch (actioner.getAct_type()) {
+				switch (actioner.getAct_generic().getAct_type()) {
 
 				case DS18B20:
 
@@ -286,10 +285,10 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 					// Relay
 
 					GpioPinDigitalOutput gpio = null;
-					if (actioner.getAct_raspi_pin() != null) {
+					if (actioner.getAct_generic().getAct_raspi_pin() != null) {
 						gpio = gpioController
 								.provisionDigitalOutputPin(Constants.BREW_GPIO
-										.get(actioner.getAct_raspi_pin()));
+										.get(actioner.getAct_generic().getAct_raspi_pin()));
 
 						if (gpio.getState().equals(PinState.HIGH)) {
 

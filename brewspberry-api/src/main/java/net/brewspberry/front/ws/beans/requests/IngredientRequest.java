@@ -2,8 +2,15 @@ package net.brewspberry.front.ws.beans.requests;
 
 import java.io.Serializable;
 
-import net.brewspberry.business.beans.stock.StockUnit;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+
+@JsonInclude(content=Include.NON_EMPTY)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class IngredientRequest implements Serializable{
 	
 	public enum IngredientType{
@@ -15,29 +22,46 @@ public class IngredientRequest implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -2011649263052366049L;
+	@JsonProperty(required=false)
 	private long id;
 	/**
 	 * Type of ingredient
 	 */
+	@JsonProperty(required=true)
 	private IngredientType type;
+	@JsonProperty(required=true)
 	private String provider;
+	@JsonProperty(required=true)
 	private String description;
+	@JsonProperty(required=true)
 	private float unitaryPrice;
+	@JsonProperty(required=true)
 	private String unitaryPriceUnit;
+	@JsonProperty(required=true)
 	private float unitaryWeight;
+	@JsonProperty(required=true)
 	private String unitaryWeightUnit;
 	
+	@JsonProperty(required=false) 
 	private String cereal;
+	@JsonProperty(required=false)
 	private String maltType;
+	@JsonProperty(required=false)
 	private int color;
 	
 	
+	@JsonProperty(required=false)
 	private String variety;
+	@JsonProperty(required=false)
 	private double alphaAcid;
+	@JsonProperty(required=false)
 	private String aroma;
+	@JsonProperty(required=false)
 	private String hopType;
 	
+	@JsonProperty(required=false)
 	private String specie;
+	@JsonProperty(required=false)
 	private String foculation;
 	
 	

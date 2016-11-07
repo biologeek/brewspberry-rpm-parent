@@ -73,10 +73,10 @@ public class DeviceParser extends ConfigLoader {
 
 						if (actioner.getAct_id() == 0) {
 
-							actioner.setAct_nom(names[i]);
-							actioner.setAct_type(ActionerType.valueOf(types[i]));
-							actioner.setAct_uuid(uuids[i]);
-							actioner.setAct_raspi_pin(pins[i]);
+							actioner.getAct_generic().setAct_nom(names[i]);
+							actioner.getAct_generic().setAct_type(ActionerType.valueOf(types[i]));
+							actioner.getAct_generic().setAct_uuid(uuids[i]);
+							actioner.getAct_generic().setAct_raspi_pin(pins[i]);
 							actioner.setAct_used(false);
 
 						} else {
@@ -109,7 +109,7 @@ public class DeviceParser extends ConfigLoader {
 
 		for (Actioner actioner : actioners) {
 
-			if (actioner.getAct_uuid().equals(uuid))
+			if (actioner.getAct_generic().getAct_uuid().equals(uuid))
 				result = actioner;
 
 		}
@@ -128,10 +128,10 @@ public class DeviceParser extends ConfigLoader {
 			// Modifying devices with new ID
 			for (Actioner device : devices) {
 
-				logger.fine("Device : " + device.getAct_uuid() + " "
-						+ device.getAct_id()+"Actioner : " + actioner.getAct_uuid() + " "
+				logger.fine("Device : " + device.getAct_generic().getAct_uuid() + " "
+						+ device.getAct_id()+"Actioner : " + actioner.getAct_generic().getAct_uuid() + " "
 						+ actioner.getAct_id());
-				if (device.getAct_uuid().equals(actioner.getAct_uuid())) {
+				if (device.getAct_generic().getAct_uuid().equals(actioner.getAct_generic().getAct_uuid())) {
 
 					if (found) {
 
@@ -176,10 +176,10 @@ public class DeviceParser extends ConfigLoader {
 		for (Actioner device : devices) {
 
 			dev_id = dev_id + device.getAct_id() + ";";
-			dev_pin = dev_pin + device.getAct_raspi_pin() + ";";
-			dev_name = dev_name + device.getAct_nom() + ";";
-			dev_uuid = dev_uuid + device.getAct_uuid() + ";";
-			dev_type = dev_type + device.getAct_type() + ";";
+			dev_pin = dev_pin + device.getAct_generic().getAct_raspi_pin() + ";";
+			dev_name = dev_name + device.getAct_generic().getAct_nom() + ";";
+			dev_uuid = dev_uuid + device.getAct_generic().getAct_uuid() + ";";
+			dev_type = dev_type + device.getAct_generic().getAct_type() + ";";
 		}
 
 		dev_id = dev_id.substring(0, dev_id.length() - 1);
