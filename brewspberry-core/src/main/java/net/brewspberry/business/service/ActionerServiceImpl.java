@@ -1,23 +1,16 @@
 package net.brewspberry.business.service;
 
-import java.awt.Desktop.Action;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import net.brewspberry.adapter.RelayAdapter;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
@@ -28,16 +21,11 @@ import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.business.beans.GenericActionner.ActionerStatus;
-import net.brewspberry.business.beans.GenericActionner.ActionerType;
-import net.brewspberry.business.exceptions.DAOException;
 import net.brewspberry.business.exceptions.NotAppropriateStatusException;
 import net.brewspberry.business.exceptions.ServiceException;
-import net.brewspberry.dao.ActionerDaoImpl;
-import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
 @Service
-@Transactional
 public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecificActionerService {
 
 	public static final Logger logger = LogManager.getInstance(ActionerServiceImpl.class.toString());
@@ -261,9 +249,9 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 
 		if (arg0.getAct_date_fin() == null) {
 			arg0.setAct_date_fin(new Date());
-			arg0.getAct_generic().setAct_status(ActionerStatus.STOPPED);
+			arg0.getAct_generic().setGact_status(ActionerStatus.STOPPED);
 		}
-		if (arg0.getAct_generic().getAct_activated() == true && arg0.getAct_used() == false) {
+		if (arg0.getAct_generic().getGact_activated() == true && arg0.getAct_used() == false) {
 
 			arg0.setAct_used(true);
 
@@ -437,8 +425,8 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 		List<GenericActionner> result = new ArrayList<>();
 
 		for (GenericActionner act : actioners) {
-			act.setAct_status(ActionerStatus.IDLE);
-			act.setAct_activated(false);
+			act.setGact_status(ActionerStatus.IDLE);
+			act.setGact_activated(false);
 
 			if (!result.contains(act)) {
 				result.add(act);

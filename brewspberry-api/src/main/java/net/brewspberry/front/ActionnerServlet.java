@@ -122,7 +122,7 @@ public class ActionnerServlet extends HttpServlet {
 				for (Actioner actioner : actioners) {
 
 					logger.log(Level.FINE,
-							"Nom de l'actionner : " + actioner.getAct_generic().getAct_nom());
+							"Nom de l'actionner : " + actioner.getAct_generic().getGact_nom());
 				}
 
 				request.setAttribute("actioners", actioners);
@@ -168,7 +168,7 @@ public class ActionnerServlet extends HttpServlet {
 						
 						actioner.setAct_brassin(currentBrew);
 						actioner.setAct_etape(currentStep);
-						actioner.getAct_generic().setAct_activated(false); //@see ActionerServiceImpl.startActionInDatabase
+						actioner.getAct_generic().setGact_activated(false); //@see ActionerServiceImpl.startActionInDatabase
 
 						
 						try {
@@ -263,7 +263,7 @@ public class ActionnerServlet extends HttpServlet {
 						}
 
 						// Start action if type=ds18b20
-						if (dactioner.getAct_generic().getAct_type().equals(
+						if (dactioner.getAct_generic().getGact_type().equals(
 								Constants.ACT_DS18B20)) {
 
 							try {
@@ -277,7 +277,7 @@ public class ActionnerServlet extends HttpServlet {
 							try {
 								throw new Exception(
 										"Could not found ID for UUID"
-												+ dactioner.getAct_generic().getAct_uuid());
+												+ dactioner.getAct_generic().getGact_uuid());
 							} catch (Exception e) {
 								
 								e.printStackTrace();

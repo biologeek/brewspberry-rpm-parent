@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.hibernate.SessionFactory;
 import org.hibernate.dialect.H2Dialect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +25,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan(basePackages = { "net.brewspberry" })
 @EnableTransactionManagement
-@PropertySources(value = { @PropertySource("classpath:config.properties"),
-		@PropertySource("classpath:c3po.properties"),
-		@PropertySource("classpath:devices.properties") })
+@PropertySources(value={@PropertySource("file:/#{systemProperties.app.parameters}/config.properties")
+, @PropertySource("classpath:c3po.properties")
+, @PropertySource("file:/#{systemProperties.app.parameters}/devices.properties")
+})
 public class SpringCoreTestConfiguration {
 	@Autowired
 	private Environment environment;
@@ -52,6 +54,10 @@ public class SpringCoreTestConfiguration {
 		return dataSource;
 	}
 
+	@Bean
+	public static PropertyPlaceholderConfigurer configurer (){
+		return new PropertyPlaceholderConfigurer();
+	}
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");

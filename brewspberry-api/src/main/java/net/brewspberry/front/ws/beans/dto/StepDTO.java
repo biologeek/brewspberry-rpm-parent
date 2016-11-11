@@ -23,36 +23,39 @@ import net.brewspberry.front.ws.beans.responses.SimpleStepResponse;
 public class StepDTO {
 
 	public SimpleStepResponse toSimpleStepResponse(Etape step) {
-		// TODO
-		SimpleStepResponse res = new SimpleStepResponse();
+		if (step != null) {
+			SimpleStepResponse res = new SimpleStepResponse();
 
-		res.setId(step.getEtp_id());
-		if (step.getEtp_debut() != null)
-			res.setBeginning(step.getEtp_debut().getTime());
-		
-		if (step.getEtp_debut_reel() != null)
-			res.setRealBeginning(step.getEtp_debut_reel().getTime());
-		
-		if (step.getEtp_fin() != null)
-			res.setEnd(step.getEtp_fin().getTime());
-		
-		if (step.getEtp_fin_reel() != null)
-			res.setRealEnd(step.getEtp_fin_reel().getTime());
-		
-		res.setBrewID(step.getEtp_brassin().getBra_id());
-		res.setCreation(step.getEtp_creation_date().getTime());
-		res.setUpdate(step.getEtp_update_date().getTime());
-		res.setName(step.getEtp_nom());
-		res.setComment(step.getEtp_remarque());
-		if (step.getEtp_fin_reel() != null && step.getEtp_debut_reel() != null)
-			res.setDuration(step.getEtp_duree());
-		
-		res.setTheoreticalTemperature(res.getTheoreticalTemperature());
-		res.setNumber(step.getEtp_numero());
-		if(step.getEtp_palier_type() != null)
-			res.setStageType(step.getEtp_palier_type().getPlt_libelle());
-		res.setActive(step.isEtp_active());
-		return res;
+			res.setId(step.getEtp_id());
+			if (step.getEtp_debut() != null)
+				res.setBeginning(step.getEtp_debut().getTime());
+
+			if (step.getEtp_debut_reel() != null)
+				res.setRealBeginning(step.getEtp_debut_reel().getTime());
+
+			if (step.getEtp_fin() != null)
+				res.setEnd(step.getEtp_fin().getTime());
+
+			if (step.getEtp_fin_reel() != null)
+				res.setRealEnd(step.getEtp_fin_reel().getTime());
+
+			//res.setBrewID(step.getEtp_brassin().getBra_id());
+			res.setCreation(step.getEtp_creation_date().getTime());
+			res.setUpdate(step.getEtp_update_date().getTime());
+			res.setName(step.getEtp_nom());
+			res.setComment(step.getEtp_remarque());
+			if (step.getEtp_fin_reel() != null && step.getEtp_debut_reel() != null)
+				res.setDuration(step.getEtp_duree());
+
+			res.setTheoreticalTemperature(res.getTheoreticalTemperature());
+			res.setNumber(step.getEtp_numero());
+			if (step.getEtp_palier_type() != null)
+				res.setStageType(step.getEtp_palier_type().getPlt_libelle());
+			res.setActive(step.isEtp_active());
+			return res;
+
+		}
+		return null;
 	}
 
 	/**
@@ -65,19 +68,29 @@ public class StepDTO {
 	 */
 	public CompleteStep toCompleteStep(Etape step) {
 
-		CompleteStep res = new CompleteStep(this.toSimpleStepResponse(step));
+		if (step != null) {
+			CompleteStep res = new CompleteStep(this.toSimpleStepResponse(step));
 
-		res.setMalts(new MaltDTO().toFrontObjectList(new ArrayList<Malt>(step.getEtp_malts() != null ? step.getEtp_malts() : new HashSet<Malt>())));
-		res.setHops(new HopDTO().toFrontObjectList(new ArrayList<Houblon>(step.getEtp_houblons() != null ? step.getEtp_houblons() : new HashSet<Houblon>())));
-		res.setYeasts(new YeastDTO().toFrontObjectList(new ArrayList<Levure>(step.getEtp_levures() != null ? step.getEtp_levures() : new HashSet<Levure>())));
+			res.setMalts(new MaltDTO().toFrontObjectList(
+					new ArrayList<Malt>(step.getEtp_malts() != null ? step.getEtp_malts() : new HashSet<Malt>())));
+			res.setHops(new HopDTO().toFrontObjectList(new ArrayList<Houblon>(
+					step.getEtp_houblons() != null ? step.getEtp_houblons() : new HashSet<Houblon>())));
+			res.setYeasts(new YeastDTO().toFrontObjectList(new ArrayList<Levure>(
+					step.getEtp_levures() != null ? step.getEtp_levures() : new HashSet<Levure>())));
 
-		res.setActioners(new ActionnerDTO().toActionnerResponse(new ArrayList<Actioner>(step.getEtp_actioner() != null ? step.getEtp_actioner() : new HashSet<Actioner>())).buildAPI());
+			res.setActioners(new ActionnerDTO()
+					.toActionnerResponse(new ArrayList<Actioner>(
+							step.getEtp_actioner() != null ? step.getEtp_actioner() : new HashSet<Actioner>()))
+					.buildAPI());
 
-		return res;
+			return res;
+		}
+		return null;
 
 	}
+
 	public Etape toBusinessObject(SimpleStepResponse step) throws ConversionException {
-		
+
 		Etape res = new Etape();
 		res.setEtp_id(step.getId());
 		res.setEtp_creation_date(new Date(step.getCreation()));
@@ -126,7 +139,7 @@ public class StepDTO {
 			throw new ConversionException(e.getMessage());
 		}
 
-		res.setEtp_actioners(new HashSet<Actioner>(new ActionnerDTO().toBusinessObjectList(step.getActioners())));
+		res.setEtp_actioners(new ArrayList<Actioner>(new ActionnerDTO().toBusinessObjectList(step.getActioners())));
 
 		return res;
 	}
@@ -138,7 +151,7 @@ public class StepDTO {
 
 		return res;
 	}
-	
+
 	public Etape toBusinessObject(SimpleStepResponse step, Brassin attachedBrew) throws ConversionException {
 
 		Etape res = this.toBusinessObject(step);

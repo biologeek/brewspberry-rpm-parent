@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.stereotype.Component;
 
 import net.brewspberry.util.DateManipulator;
@@ -44,7 +45,6 @@ public class Etape implements Serializable {
 	private Date etp_debut_reel;
 	private Date etp_fin_reel;
 
-	
 	/**
 	 * etape type object contains tops to allow rules to apply or not for
 	 * various algorithms Fetching it eagerly, and cascading modfications to
@@ -56,36 +56,41 @@ public class Etape implements Serializable {
 	private Double etp_temperature_theorique;
 	private String etp_remarque;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToOne(fetch = FetchType.LAZY, cascade=javax.persistence.CascadeType.ALL)
 	@JoinColumn(name = "etp_bra_id")
+	@Cascade(CascadeType.ALL)
 	private Brassin etp_brassin;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tmes_etape")
 	private List<ConcreteTemperatureMeasurement> etp_temperature_measurement;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "act_etape" ,cascade=CascadeType.ALL)
-	private Set<Actioner> etp_actioner;
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "act_etape", cascade=javax.persistence.CascadeType.ALL)
+	@Cascade(CascadeType.ALL)
+	private List<Actioner> etp_actioner;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "malt_etape", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "malt_etape")
+	@Cascade(CascadeType.ALL)
 	private Set<Malt> etp_malts;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hbl_etape", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "hbl_etape")
+	@Cascade(CascadeType.ALL)
 	private Set<Houblon> etp_houblons;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lev_etape", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lev_etape")
+	@Cascade(CascadeType.ALL)
 	private Set<Levure> etp_levures;
 
 	@Enumerated(EnumType.STRING)
 	PalierType etp_palier_type;
- 
+
 	@Transient
 	private List<AbstractIngredient> etp_ingredients;
-	
+
 	private boolean etp_active;
 
 	public Etape() {
 		super();
-		
+
 	}
 
 	public Long getEtp_id() {
@@ -112,11 +117,11 @@ public class Etape implements Serializable {
 		this.etp_brassin = etp_brassin;
 	}
 
-	public Set<Actioner> getEtp_actioner() {
+	public List<Actioner> getEtp_actioner() {
 		return etp_actioner;
 	}
 
-	public void setEtp_actioners(Set<Actioner> etp_actioner) {
+	public void setEtp_actioners(List<Actioner> etp_actioner) {
 		this.etp_actioner = etp_actioner;
 	}
 
@@ -146,31 +151,29 @@ public class Etape implements Serializable {
 
 	/**
 	 * Returns duration in seconds
+	 * 
 	 * @return
 	 */
 	public long getEtp_duree() {
 		return (getEtp_fin_reel().getTime() - getEtp_debut_reel().getTime()) / 1000;
 	}
-	
+
 	/**
 	 * Returns duration in seconds
+	 * 
 	 * @return
 	 */
 	public void setEtp_duree() {
-		
-		if (this.getEtp_debut_reel() != null && DateManipulator.isDateInRange(etp_debut_reel, 5, Calendar.YEAR)){
-			
-			if (this.getEtp_fin_reel() == null){
-				
+
+		if (this.getEtp_debut_reel() != null && DateManipulator.isDateInRange(etp_debut_reel, 5, Calendar.YEAR)) {
+
+			if (this.getEtp_fin_reel() == null) {
+
 				this.setEtp_fin_reel(new Date(this.getEtp_debut_reel().getTime() - this.getEtp_duree()));
-				
+
 			}
 		}
 	}
-
-		
-	
-
 
 	public Double getEtp_temperature_theorique() {
 		return etp_temperature_theorique;
@@ -232,6 +235,14 @@ public class Etape implements Serializable {
 		this.etp_palier_type = etp_palier_type;
 	}
 
+	
+
+	public Etape id(long id) {
+		this.setEtp_id(id);
+		return this;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "Etape [etp_id=" + etp_id + ", etp_numero=" + etp_numero + ", etp_nom=" + etp_nom + ", etp_debut="
@@ -317,7 +328,7 @@ public class Etape implements Serializable {
 		this.etp_etape_type = etp_etape_type;
 	}
 
-	public void setEtp_actioner(Set<Actioner> etp_actioner) {
+	public void setEtp_actioner(List<Actioner> etp_actioner) {
 		this.etp_actioner = etp_actioner;
 	}
 
@@ -460,6 +471,16 @@ public class Etape implements Serializable {
 
 	public void setEtp_active(boolean etp_active) {
 		this.etp_active = etp_active;
+	}
+
+	public boolean hasActioners() {
+		if (etp_actioner != null) {
+			if (etp_actioner.size() > 0) {
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 }

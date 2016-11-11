@@ -12,6 +12,7 @@ import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificEtapeService;
 import net.brewspberry.business.ISpecificStockService;
+import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.stock.CounterType;
 import net.brewspberry.business.beans.stock.CounterTypeConstants;
@@ -26,12 +27,17 @@ import net.brewspberry.util.Constants;
 import net.brewspberry.util.DateManipulator;
 
 @Service
-@Transactional
+@Transactional(rollbackFor=Exception.class)
 public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeService {
 
 	@Autowired
 	@Qualifier("etapeDaoImpl")
 	IGenericDao<Etape> etapeDao;
+	
+	
+	@Autowired
+	@Qualifier("actionerServiceImpl")
+	IGenericService<Actioner> genActionerService;
 
 	@Autowired
 	@Qualifier("compteurTypeServiceImpl")
@@ -52,7 +58,17 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 	@Override
 	public Etape save(Etape arg0) throws Exception {
 
-		return etapeDao.save(arg0);
+		
+		arg0.setEtp_creation_date(new Date());
+		Etape saved = etapeDao.save(arg0);
+		
+		if (arg0.hasActioners()){
+			for (Actioner actioner : arg0.getEtp_actioner()){
+				actioner.setAct_etape(arg0);
+				//genActionerService.save(actioner);
+			}
+		}
+		return saved;
 	}
 
 	@Override

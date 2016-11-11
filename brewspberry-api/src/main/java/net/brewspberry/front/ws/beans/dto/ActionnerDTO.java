@@ -1,11 +1,14 @@
 package net.brewspberry.front.ws.beans.dto;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import net.brewspberry.business.beans.Actioner;
+import net.brewspberry.business.beans.Brassin;
+import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.front.ws.beans.responses.ActionnerResponse;
 import net.brewspberry.front.ws.beans.responses.ActionnerResponse.ActionerStatus;
@@ -39,9 +42,7 @@ public class ActionnerDTO {
 	public List<ActionnerResponse> buildAPI() {
 		return resultAPI;
 	}
-	
 
-	
 	/**
 	 * Transforms business objet to Transfer object
 	 * 
@@ -54,16 +55,19 @@ public class ActionnerDTO {
 
 		resp.setChart(new ArrayList<ChartResponse>());
 		resp.setId(actionners.getAct_id());
-		resp.setName(actionners.getAct_generic().getAct_nom());
-		resp.setPicture(actionners.getAct_generic().getAct_picture());
-		resp.setType(ActionerType.valueOf(actionners.getAct_generic().getAct_type().name()));
-		resp.setUuid(actionners.getAct_generic().getAct_uuid());
-		resp.setPin(actionners.getAct_generic().getAct_raspi_pin());
-		resp.setActive(actionners.getAct_generic().getAct_activated());
-		resp.setStatus(ActionerStatus.valueOf(actionners.getAct_generic().getAct_status().name()));
+		resp.setGenericId(actionners.getAct_generic().getGact_id());
+		resp.setName(actionners.getAct_generic().getGact_nom());
+		resp.setPicture(actionners.getAct_generic().getGact_picture());
+		resp.setType(ActionerType.valueOf(actionners.getAct_generic().getGact_type().name()));
+		resp.setUuid(actionners.getAct_generic().getGact_uuid());
+		resp.setPin(actionners.getAct_generic().getGact_raspi_pin());
+		resp.setActive(actionners.getAct_generic().getGact_activated());
+		resp.setStatus(ActionerStatus.valueOf(actionners.getAct_generic().getGact_status().name()));
 		resp.setUsed(actionners.getAct_used());
-		resp.setBegin(actionners.getAct_date_debut().getTime());
-		resp.setEnd(actionners.getAct_date_fin().getTime());
+		resp.setBegin(actionners.getAct_date_debut() == null ? 0 : actionners.getAct_date_debut().getTime());
+		resp.setEnd(actionners.getAct_date_fin() == null ? 0 : actionners.getAct_date_fin().getTime());
+		resp.setStepId(actionners.getAct_etape() == null ? null : actionners.getAct_etape().getEtp_id());
+		resp.setBrewId(actionners.getAct_brassin() == null ? null : actionners.getAct_brassin().getBra_id());
 
 		return resp;
 
@@ -85,34 +89,39 @@ public class ActionnerDTO {
 	public Actioner toBusinessObject(ActionnerResponse actioner) {
 		Actioner res = new Actioner();
 
-		res.setAct_date_debut(new Date(actioner.getBegin()));
-		res.setAct_date_fin(new Date(actioner.getEnd()));
-		res.setAct_id(actioner.getId());
+		if (actioner.getBegin() > 0) {
+			res.setAct_date_debut(new Date(actioner.getBegin()));
+		}
+		if (actioner.getEnd() > 0) {
+			res.setAct_date_fin(new Date(actioner.getEnd()));
+		}
+
+		res.setAct_id(actioner.getId() == 0 ? null : actioner.getId());
 		res.setAct_used(actioner.isUsed());
 		res.setAct_generic(new GenericActionnerDTO().toBusinessObject(actioner));
+		res.setAct_brassin(new Brassin().id(actioner.getBrewId()));
+		res.setAct_etape(actioner.getStepId() == 0 ? null : new Etape().id(actioner.getStepId()));
 
 		return res;
 	}
 
-	
 	public class GenericActionnerDTO {
-		
-		
+
 		public GenericActionnerDTO() {
-			
+
 		}
 
 		public GenericActionner toBusinessObject(net.brewspberry.front.ws.beans.responses.GenericActionner actioner) {
 			GenericActionner res = new GenericActionner();
 
-			
-			res.setAct_status(net.brewspberry.business.beans.GenericActionner.ActionerStatus.IDLE);
-			res.setAct_id(actioner.getId());
-			res.setAct_nom(actioner.getName());
-			res.setAct_picture(actioner.getPicture());
-			res.setAct_raspi_pin(actioner.getPin());
-			res.setAct_type(net.brewspberry.business.beans.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
-			res.setAct_uuid(actioner.getUuid());
+			res.setGact_status(net.brewspberry.business.beans.GenericActionner.ActionerStatus.IDLE);
+			res.setGact_id(actioner.getGenericId());
+			res.setGact_nom(actioner.getName());
+			res.setGact_picture(actioner.getPicture());
+			res.setGact_raspi_pin(actioner.getPin());
+			res.setGact_type(
+					net.brewspberry.business.beans.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
+			res.setGact_uuid(actioner.getUuid());
 
 			return res;
 		}
@@ -120,48 +129,47 @@ public class ActionnerDTO {
 		public GenericActionner toBusinessObject(ActionnerResponse actioner) {
 			GenericActionner res = new GenericActionner();
 
-			
-			res.setAct_status(net.brewspberry.business.beans.GenericActionner.ActionerStatus.IDLE);
-			res.setAct_id(actioner.getId());
-			res.setAct_nom(actioner.getName());
-			res.setAct_picture(actioner.getPicture());
-			res.setAct_raspi_pin(actioner.getPin());
-			res.setAct_type(net.brewspberry.business.beans.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
-			res.setAct_uuid(actioner.getUuid());
+			res.setGact_status(
+					actioner.getStatus() == null ? net.brewspberry.business.beans.GenericActionner.ActionerStatus.IDLE
+							: net.brewspberry.business.beans.GenericActionner.ActionerStatus
+									.valueOf(actioner.getStatus().name()));
+			res.setGact_id(actioner.getGenericId());
+			res.setGact_nom(actioner.getName());
+			res.setGact_picture(actioner.getPicture());
+			res.setGact_raspi_pin(actioner.getPin());
+			res.setGact_type(
+					net.brewspberry.business.beans.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
+			res.setGact_uuid(actioner.getUuid());
 
 			return res;
 		}
-		
 
-
-		public net.brewspberry.front.ws.beans.responses.GenericActionner toRawActionnerResponse(GenericActionner actionners, boolean alterID) {
+		public net.brewspberry.front.ws.beans.responses.GenericActionner toRawActionnerResponse(
+				GenericActionner actionners, boolean alterID) {
 			net.brewspberry.front.ws.beans.responses.GenericActionner resp = new net.brewspberry.front.ws.beans.responses.GenericActionner();
 
 			if (!alterID)
-				resp.setId(actionners.getAct_id());
-			resp.setName(actionners.getAct_nom());
-			resp.setPicture(actionners.getOffPicture(actionners.getAct_type()));
-			resp.setType(ActionerType.valueOf(actionners.getAct_type().name()));
-			resp.setUuid(actionners.getAct_uuid());
-			resp.setPin(actionners.getAct_raspi_pin());
-			resp.setState(actionners.getAct_status().name());
-			
+				resp.setGenericId(actionners.getGact_id());
+			resp.setName(actionners.getGact_nom());
+			resp.setPicture(actionners.getOffPicture(actionners.getGact_type()));
+			resp.setType(ActionerType.valueOf(actionners.getGact_type().name()));
+			resp.setUuid(actionners.getGact_uuid());
+			resp.setPin(actionners.getGact_raspi_pin());
+			resp.setState(actionners.getGact_status().name());
 
 			return resp;
 
 		}
-		
-		
 
-		
-		public List<net.brewspberry.front.ws.beans.responses.GenericActionner> toRawActionnerResponse(List<GenericActionner> actionners, boolean alterID) {
+		public List<net.brewspberry.front.ws.beans.responses.GenericActionner> toRawActionnerResponse(
+				List<GenericActionner> actionners, boolean alterID) {
 			List<net.brewspberry.front.ws.beans.responses.GenericActionner> result = new ArrayList<>();
 
 			for (GenericActionner act : actionners) {
 
 				if (act != null) {
 
-					result.add(this.toRawActionnerResponse(act, true));
+					result.add(this.toRawActionnerResponse(act, alterID));
 
 				}
 

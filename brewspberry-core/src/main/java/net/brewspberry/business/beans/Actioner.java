@@ -3,6 +3,7 @@ package net.brewspberry.business.beans;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -24,7 +27,7 @@ public class Actioner {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long act_id;
+	private Long act_id;
 	
 	
 	@ManyToOne
@@ -38,7 +41,7 @@ public class Actioner {
 	@JoinColumn(name = "act_bra_id")
 	private Brassin act_brassin;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
 	@JoinColumn(name = "act_etp_id")
 	private Etape act_etape;
 	private boolean act_used;
@@ -51,12 +54,12 @@ public class Actioner {
 	}
 
 	
-	public long getAct_id() {
+	public Long getAct_id() {
 		return act_id;
 	}
 
 
-	public void setAct_id(long act_id) {
+	public void setAct_id(Long act_id) {
 		this.act_id = act_id;
 	}
 

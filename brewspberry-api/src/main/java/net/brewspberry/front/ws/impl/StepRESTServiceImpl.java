@@ -32,7 +32,7 @@ public class StepRESTServiceImpl implements IStepRESTService {
 
 	@Override
 	@PostMapping("/add")
-	public CompleteStep add(@RequestBody SimpleStepResponse step) throws Exception {
+	public CompleteStep add(@RequestBody CompleteStep step) throws Exception {
 
 		Brassin attachedBrew;
 

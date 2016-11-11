@@ -98,7 +98,7 @@ public class StepBuilder {
 	}
 
 
-	public StepBuilder actioners(Set<Actioner> id) {
+	public StepBuilder actioners(List<Actioner> id) {
 
 		this.obj.setEtp_actioners(id);
 		return this;

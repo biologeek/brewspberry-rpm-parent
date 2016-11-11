@@ -30,12 +30,12 @@ public class GenericActionner {
 	 **/
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long act_id;
+	private long gact_id;
 	/**
 	 * 1 : thermometer measurement 2 : Engine (relay) 3 : Pump (relay)
 	 */
 	@Enumerated(EnumType.STRING)
-	private ActionerType act_type;
+	private ActionerType gact_type;
 	
 	
 	public enum ActionerType {
@@ -55,83 +55,83 @@ public class GenericActionner {
 	public static final String PUMP_OFF = "images/pump-off.jpg";
 	public static final String PUMP_ON = "images/pump-on.jpg";
 	
-	private String act_nom;
-	private String act_uuid;
+	private String gact_nom;
+	private String gact_uuid;
 	@Enumerated(EnumType.STRING)
-	private ActionerStatus act_status;
-	private String act_raspi_pin;
-	private boolean act_activated;
-	private String act_picture;
+	private ActionerStatus gact_status;
+	private String gact_raspi_pin;
+	private boolean gact_activated;
+	private String gact_picture;
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="act_generic")
-	private List<Actioner> act_actionners;
+	private List<Actioner> gact_actionners;
 
 
-	public long getAct_id() {
-		return act_id;
+	public long getGact_id() {
+		return gact_id;
 	}
 
-	public void setAct_id(long act_id) {
-		this.act_id = act_id;
+	public void setGact_id(long act_id) {
+		this.gact_id = act_id;
 	}
 
-	public boolean getAct_activated() {
-		return act_activated;
+	public boolean getGact_activated() {
+		return gact_activated;
 	}
 
-	public void setAct_activated(boolean act_activated) {
-		this.act_activated = act_activated;
+	public void setGact_activated(boolean act_activated) {
+		this.gact_activated = act_activated;
 	}
 
-	public ActionerType getAct_type() {
-		return act_type;
+	public ActionerType getGact_type() {
+		return gact_type;
 	}
 
-	public void setAct_type(ActionerType act_type) {
-		this.act_type = act_type;
-	}
-
-
-	public String getAct_raspi_pin() {
-		return act_raspi_pin;
-	}
-
-	public void setAct_raspi_pin(String act_raspi_pin) {
-		this.act_raspi_pin = act_raspi_pin;
+	public void setGact_type(ActionerType act_type) {
+		this.gact_type = act_type;
 	}
 
 
-	public String getAct_nom() {
-		return act_nom;
+	public String getGact_raspi_pin() {
+		return gact_raspi_pin;
 	}
 
-	public void setAct_nom(String act_nom) {
-		this.act_nom = act_nom;
-	}
-
-	public String getAct_uuid() {
-		return act_uuid;
-	}
-
-	public void setAct_uuid(String act_uuid) {
-		this.act_uuid = act_uuid;
-	}
-
-	public ActionerStatus getAct_status() {
-		return act_status;
-	}
-
-	public void setAct_status(ActionerStatus act_status) {
-		this.act_status = act_status;
+	public void setGact_raspi_pin(String act_raspi_pin) {
+		this.gact_raspi_pin = act_raspi_pin;
 	}
 
 
-	public String getAct_picture() {
-		return act_picture;
+	public String getGact_nom() {
+		return gact_nom;
 	}
 
-	public void setAct_picture(String act_picture) {
-		this.act_picture = act_picture;
+	public void setGact_nom(String act_nom) {
+		this.gact_nom = act_nom;
+	}
+
+	public String getGact_uuid() {
+		return gact_uuid;
+	}
+
+	public void setGact_uuid(String act_uuid) {
+		this.gact_uuid = act_uuid;
+	}
+
+	public ActionerStatus getGact_status() {
+		return gact_status;
+	}
+
+	public void setGact_status(ActionerStatus act_status) {
+		this.gact_status = act_status;
+	}
+
+
+	public String getGact_picture() {
+		return gact_picture;
+	}
+
+	public void setGact_picture(String act_picture) {
+		this.gact_picture = act_picture;
 	}
 
 
@@ -153,14 +153,14 @@ public class GenericActionner {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (act_activated ? 1231 : 1237);
-		result = prime * result + (int) (act_id ^ (act_id >>> 32));
-		result = prime * result + ((act_nom == null) ? 0 : act_nom.hashCode());
-		result = prime * result + ((act_picture == null) ? 0 : act_picture.hashCode());
-		result = prime * result + ((act_raspi_pin == null) ? 0 : act_raspi_pin.hashCode());
-		result = prime * result + ((act_status == null) ? 0 : act_status.hashCode());
-		result = prime * result + ((act_type == null) ? 0 : act_type.hashCode());
-		result = prime * result + ((act_uuid == null) ? 0 : act_uuid.hashCode());
+		result = prime * result + (gact_activated ? 1231 : 1237);
+		result = prime * result + (int) (gact_id ^ (gact_id >>> 32));
+		result = prime * result + ((gact_nom == null) ? 0 : gact_nom.hashCode());
+		result = prime * result + ((gact_picture == null) ? 0 : gact_picture.hashCode());
+		result = prime * result + ((gact_raspi_pin == null) ? 0 : gact_raspi_pin.hashCode());
+		result = prime * result + ((gact_status == null) ? 0 : gact_status.hashCode());
+		result = prime * result + ((gact_type == null) ? 0 : gact_type.hashCode());
+		result = prime * result + ((gact_uuid == null) ? 0 : gact_uuid.hashCode());
 		return result;
 	}
 
@@ -173,33 +173,33 @@ public class GenericActionner {
 		if (getClass() != obj.getClass())
 			return false;
 		GenericActionner other = (GenericActionner) obj;
-		if (act_activated != other.act_activated)
+		if (gact_activated != other.gact_activated)
 			return false;
-		if (act_id != other.act_id)
+		if (gact_id != other.gact_id)
 			return false;
-		if (act_nom == null) {
-			if (other.act_nom != null)
+		if (gact_nom == null) {
+			if (other.gact_nom != null)
 				return false;
-		} else if (!act_nom.equals(other.act_nom))
+		} else if (!gact_nom.equals(other.gact_nom))
 			return false;
-		if (act_picture == null) {
-			if (other.act_picture != null)
+		if (gact_picture == null) {
+			if (other.gact_picture != null)
 				return false;
-		} else if (!act_picture.equals(other.act_picture))
+		} else if (!gact_picture.equals(other.gact_picture))
 			return false;
-		if (act_raspi_pin == null) {
-			if (other.act_raspi_pin != null)
+		if (gact_raspi_pin == null) {
+			if (other.gact_raspi_pin != null)
 				return false;
-		} else if (!act_raspi_pin.equals(other.act_raspi_pin))
+		} else if (!gact_raspi_pin.equals(other.gact_raspi_pin))
 			return false;
-		if (act_status != other.act_status)
+		if (gact_status != other.gact_status)
 			return false;
-		if (act_type != other.act_type)
+		if (gact_type != other.gact_type)
 			return false;
-		if (act_uuid == null) {
-			if (other.act_uuid != null)
+		if (gact_uuid == null) {
+			if (other.gact_uuid != null)
 				return false;
-		} else if (!act_uuid.equals(other.act_uuid))
+		} else if (!gact_uuid.equals(other.gact_uuid))
 			return false;
 		return true;
 	}

@@ -6,7 +6,7 @@ import net.brewspberry.front.ws.beans.responses.ActionnerResponse.ActionerType;
 public class GenericActionner {
 
 	
-	private long id;
+	private long genericId;
 	private String name;
 	private String uuid;
 	private ActionerType type;
@@ -14,11 +14,11 @@ public class GenericActionner {
 	private String pin;
 	private String state;
 	
-	public long getId() {
-		return id;
+	public long getGenericId() {
+		return genericId;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setGenericId(long id) {
+		this.genericId = id;
 	}
 	public String getName() {
 		return name;

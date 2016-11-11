@@ -44,7 +44,7 @@
 			}).then(function(response) {
 				callBackSuccess(response);
 			}, function(response) {
-				callbackError(response);
+				callBackError(response);
 			});
 
 		}
@@ -58,7 +58,7 @@
 			}).then(function(response) {
 				callBackSuccess(response);
 			}, function(response) {
-				callbackError(response);
+				callBackError(response);
 			});
 
 		}
@@ -72,7 +72,7 @@
 			}).then(function(response) {
 				callBackSuccess(response);
 			}, function(response) {
-				callbackError(response);
+				callBackError(response);
 			});
 
 		}

@@ -3,11 +3,10 @@ package net.brewspberry.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,9 +14,9 @@ import org.springframework.stereotype.Repository;
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.DAOException;
-import net.brewspberry.util.HibernateUtil;
 
 @Repository
+@Transactional
 public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 
@@ -34,17 +33,13 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 			long etape = (long) sessionFactory.getCurrentSession().save(arg0);
 
-			
-
 			arg0.setEtp_id(etape);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			
 			arg0 = new Etape();
-		} finally {
-			
-		}
+		} 
 
 		return arg0;
 	}

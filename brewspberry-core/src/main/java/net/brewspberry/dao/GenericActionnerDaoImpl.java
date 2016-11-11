@@ -27,7 +27,7 @@ public class GenericActionnerDaoImpl implements IGenericDao<GenericActionner> {
 	@Override
 	public GenericActionner update(GenericActionner arg0) {
 		sessionFactory.getCurrentSession().update(arg0);
-		return this.getElementById(arg0.getAct_id());
+		return this.getElementById(arg0.getGact_id());
 	}
 
 	@Override

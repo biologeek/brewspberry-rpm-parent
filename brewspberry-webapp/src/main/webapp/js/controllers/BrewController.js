@@ -51,11 +51,25 @@
 			},
 			animation: false
 		}
+		
+		
+
+		
+		init();
+
+
+		 $interval(function () {
+			var delay = vm.updateDelay
+		 
+			 vm.updateCharts(); 
+		 
+		 }, vm.updateDelay);
+		 
 
 		/**
 		 * On page loaded, retrieves steps list and feeds view
 		 */
-		var init = function () {
+		function init () {
 
 			if (typeof vm.brewID != 'undefined'){
 				BrewService.getBrew(vm.brewID, true, function (response) {
@@ -82,7 +96,7 @@
 				});
 			} else if (typeof vm.stepID != 'undefined'){
 				
-				StepService.getStep(vm.stepID, true, function (response) {
+				StepService.getStep(vm.stepID, function (response) {
 					/**
 					 * In case of success
 					 */
@@ -307,16 +321,7 @@
 		}
 
 
-		init();
-
-
-		 $interval(function () {
-			var delay = vm.updateDelay
-		 
-			 vm.updateCharts(); 
-		 
-		 }, vm.updateDelay);
-		 
+		
 
  		/** *************************************************************************************** */
 		/**
@@ -497,9 +502,11 @@
 		}
 		
 		vm.addActionerAndPop = function(actioner){
+			
 			if (typeof vm.addedStep.actioners == 'undefined'){
 				vm.addedStep.actioners = [];
 			}
+			actioner.brewId = vm.currentFullBrew.id;
 			vm.addedStep.actioners.push(actioner);
 			
 			Notification.success("Added "+actioner.uuid);

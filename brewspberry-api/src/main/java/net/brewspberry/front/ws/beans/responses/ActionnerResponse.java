@@ -5,10 +5,13 @@ import java.util.List;
 public class ActionnerResponse {
 	
 	
+	private long genericId;
 	private long id;
 	private String name;
 	private String uuid;
 	private ActionerType type;
+	private long stepId;
+	private long brewId;
 
 	public enum ActionerType {
 		DS18B20, ENGINE_RELAY, PUMP_RELAY
@@ -100,6 +103,24 @@ public class ActionnerResponse {
 	}
 	public void setEnd(long end) {
 		this.end = end;
+	}
+	public long getGenericId() {
+		return genericId;
+	}
+	public void setGenericId(long genericId) {
+		this.genericId = genericId;
+	}
+	public long getStepId() {
+		return stepId;
+	}
+	public void setStepId(long stepId) {
+		this.stepId = stepId;
+	}
+	public long getBrewId() {
+		return brewId;
+	}
+	public void setBrewId(long brewId) {
+		this.brewId = brewId;
 	}
 
 }

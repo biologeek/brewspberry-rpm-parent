@@ -49,7 +49,7 @@ public class ActionnerRestServiceImpl {
 	@ResponseBody
 	public List<net.brewspberry.front.ws.beans.responses.GenericActionner> getAvailableActionners() {
 		ActionnerDTO dto = new ActionnerDTO();
-		return dto.new GenericActionnerDTO().toRawActionnerResponse(actionnerSpecService.getAllGenericActionners(), true);
+		return dto.new GenericActionnerDTO().toRawActionnerResponse(actionnerSpecService.getAllGenericActionners(), false);
 	}
 
 	@PostMapping("/save")

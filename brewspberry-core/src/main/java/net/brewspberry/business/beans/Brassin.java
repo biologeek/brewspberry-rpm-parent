@@ -236,6 +236,10 @@ public class Brassin implements Serializable{
 		this.bra_temperature_measurement = bra_temperature_measurement;
 	}
 
+	public Brassin id(long id) {
+		this.setBra_id(id);
+		return this;
+	}
 
 	@Override
 	public String toString() {

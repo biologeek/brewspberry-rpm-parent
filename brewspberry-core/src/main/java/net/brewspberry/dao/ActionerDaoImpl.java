@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.business.IGenericDao;
 import net.brewspberry.business.ISpecificActionerDao;
@@ -24,6 +25,7 @@ import net.brewspberry.util.HibernateUtil;
 import net.brewspberry.util.LogManager;
 
 @Repository
+@javax.transaction.Transactional
 public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActionerDao {
 
 	static final Logger logger = LogManager.getInstance(ActionerDaoImpl.class.toString());
@@ -33,14 +35,12 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 
 	@Override
 	public Actioner save(Actioner arg0) throws DAOException {
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		Long actID;
 
 		try {
-			logger.info("Saving Actioner whith uuid " + arg0.getAct_generic().getAct_uuid());
+			logger.info("Saving Actioner whith uuid " + arg0.getAct_generic().getGact_uuid());
 			actID = (Long) sessionFactory.getCurrentSession().save(arg0);
 
-			tx.commit();
 			if (arg0.getAct_id() == 0 && actID != 0) {
 				arg0.setAct_id(actID);
 			} else {
@@ -48,11 +48,8 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 				logger.severe("Oh, I think we got a problem here : act_id = " + actID);
 			}
 		} catch (HibernateException e) {
-			tx.rollback();
 			throw new DAOException();
-		} finally {
-			HibernateUtil.closeSession();
-		}
+		} 
 		logger.info("save returned id : " + actID + " " + arg0.getAct_id());
 		return arg0;
 	}
@@ -164,7 +161,7 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 
 		String hqlReq = "from " + Actioner.class + " WHERE act_bra_id = " + actioner.getAct_brassin().getBra_id()
 				+ " AND act_etp_id = " + actioner.getAct_etape().getEtp_id() + " AND act_type = "
-				+ actioner.getAct_generic().getAct_type() + " AND act_uuid = " + actioner.getAct_generic().getAct_uuid();
+				+ actioner.getAct_generic().getGact_type() + " AND act_uuid = " + actioner.getAct_generic().getGact_uuid();
 
 		Actioner result = (Actioner) sessionFactory.getCurrentSession().createQuery(hqlReq).uniqueResult();
 
