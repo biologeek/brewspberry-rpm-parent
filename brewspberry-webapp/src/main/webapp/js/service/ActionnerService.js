@@ -104,6 +104,43 @@
 			
 		}
 
+		
+		ActionnerServiceFactory.activate(actId, callBackSuccess, callBackError){
+
+			var promise = $http({
+				method : 'POST',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/activate/'+actId,
+
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callBackError(response);
+			});
+
+			return promise;
+
+			
+		}
+		
+		ActionnerServiceFactory.deactivate(actId, callBackSuccess, callBackError){
+
+			var promise = $http({
+				method : 'POST',
+				// url : 'js/tests/mock.json'
+				url : CONSTANTS.ACTIONNER_SERVICE_URL+'/deactivate/'+actId,
+
+			}).then(function(response) {
+				callBackSuccess(response);
+			}, function(response) {
+				callBackError(response);
+			});
+
+			return promise;
+
+			
+		}
+
 		return ActionnerServiceFactory;
 
 	}

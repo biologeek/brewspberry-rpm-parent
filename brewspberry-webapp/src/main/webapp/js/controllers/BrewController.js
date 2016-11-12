@@ -175,7 +175,7 @@
 		var initChartForStep = function (stepObj){
 			for (let act in stepObj.actioners){
 				
-				if(steps[step].actioners[act].type == 1){
+				if(stepObj.actioners[act].type == 1){
 					TemperatureService.initTemperaturesForStep(stepObj.id, stepObj.actioners[act].uuid, function(response){
 
 
@@ -366,8 +366,19 @@
 		 * 
 		 */
 		vm.changeActionnerState = function (actionerID, stepID, index) {
-			console.log('changing')
-			if (vm.currentFullBrew.steps[stepID].actioners[index].state == 'ON') {
+			console.log('changing'+actionerID+ ' '+stepID+' '+index)
+			
+			
+			var currentAct = _.find(
+					_.find(vm.currentFullBrew.steps, 
+							function (elt){ 
+								return elt.id == stepID ? elt : null
+							}).actioners, 
+							function (elt){ 
+								return elt.id == actionerID ? elt : null
+							});
+			
+			if (currentAct.status == 'STARTED') {
 				TemperatureService
 					.deactivate(
 						actionerID,
@@ -397,7 +408,7 @@
 
 						});
 
-			} else if (vm.currentFullBrew.steps[stepID].actioners[index].state == 'OFF') {
+			} else if (currentAct.status == 'IDLE' || currentAct.status == 'PAUSED' || currentAct.status == 'STOPPED') {
 
 				TemperatureService
 					.activate(
