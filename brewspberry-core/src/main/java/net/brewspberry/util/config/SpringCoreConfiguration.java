@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,6 +20,8 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
+
 @Configuration
 @ComponentScan({ "net.brewspberry" })
 @EnableTransactionManagement
@@ -28,9 +31,22 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		@PropertySource("file:/#{systemProperties.app.parameters}/batches.properties") })
 public class SpringCoreConfiguration {
 
+	
 	@Autowired
 	private Environment env;
-
+	
+	@Value("${datasource.jdbc.address}")
+	String address;
+	
+	@Value("${datasource.jdbc.address}")
+	String driver;
+	
+	@Value("${datasource.jdbc.address}")
+	String user;
+	
+	@Value("${datasource.jdbc.address}")
+	String password;
+	
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -45,10 +61,10 @@ public class SpringCoreConfiguration {
 		 * dataSource.setUsername("postgres");
 		 * dataSource.setPassword("postgres");
 		 */
-		dataSource.setDriverClassName("${datasource.jdbc.driver}");
-		dataSource.setUrl("${datasource.jdbc.address}");
-		dataSource.setUsername("${datasource.jdbc.user}");
-		dataSource.setPassword("${datasource.jdbc.password}");
+		dataSource.setDriverClassName(driver);
+		dataSource.setUrl(address);
+		dataSource.setUsername(user);
+		dataSource.setPassword(password);
 
 		return dataSource;
 	}

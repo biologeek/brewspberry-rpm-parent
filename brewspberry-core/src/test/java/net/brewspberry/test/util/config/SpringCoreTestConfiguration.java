@@ -25,9 +25,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan(basePackages = { "net.brewspberry" })
 @EnableTransactionManagement
-@PropertySources(value={@PropertySource("file:/#{systemProperties.app.parameters}/config.properties")
+@PropertySources(value={@PropertySource("file:/#{systemProperties.app.parameters}/config.test.properties")
 , @PropertySource("classpath:c3po.properties")
-, @PropertySource("file:/#{systemProperties.app.parameters}/devices.properties")
+, @PropertySource("file:/#{systemProperties.app.parameters}/devices.test.properties")
 })
 public class SpringCoreTestConfiguration {
 	@Autowired
