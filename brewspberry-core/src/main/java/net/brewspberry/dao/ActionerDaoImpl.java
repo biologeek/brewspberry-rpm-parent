@@ -157,15 +157,23 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 	}
 
 	@Override
+	
+	/**
+	 * Returns actioner corresponding using {brew, step, type of generic actionner, UUID of generic actionner}
+	 * @param actioner
+	 * @return the actionner corresponding to criteria  
+	 */
 	public Actioner getActionerByFullCharacteristics(Actioner actioner) {
+		
+		
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Actioner.class)
+		.add(Restrictions.eq("act_brassin", actioner.getAct_brassin()))
+		.add(Restrictions.eq("act_etape", actioner.getAct_etape()))
+		.add(Restrictions.eq("act_generic", actioner.getAct_generic()))
+		;
+		
+		Actioner result = (Actioner) crit.uniqueResult();
 
-		String hqlReq = "from " + Actioner.class + " WHERE act_bra_id = " + actioner.getAct_brassin().getBra_id()
-				+ " AND act_etp_id = " + actioner.getAct_etape().getEtp_id() + " AND act_type = "
-				+ actioner.getAct_generic().getGact_type() + " AND act_uuid = " + actioner.getAct_generic().getGact_uuid();
-
-		Actioner result = (Actioner) sessionFactory.getCurrentSession().createQuery(hqlReq).uniqueResult();
-
-		HibernateUtil.closeSession();
 
 		return result;
 	}

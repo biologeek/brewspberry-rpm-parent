@@ -9,10 +9,7 @@
 	<artifactId>brewspberry-api</artifactId>
 	<packaging>war</packaging>
 	<name>brewspberry-api</name>
-
 	<description>API and Webservices</description>
-
-
 
 	<properties>
 		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
@@ -194,6 +191,7 @@
 
 	</dependencies>
 	<build>
+	<finalName>brewspberry-api</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

@@ -379,7 +379,7 @@
 							});
 			
 			if (currentAct.status == 'STARTED') {
-				TemperatureService
+				ActionnerService
 					.deactivate(
 						actionerID,
 						function (response) {
@@ -410,7 +410,7 @@
 
 			} else if (currentAct.status == 'IDLE' || currentAct.status == 'PAUSED' || currentAct.status == 'STOPPED') {
 
-				TemperatureService
+				ActionnerService
 					.activate(
 						actionerID,
 						function (response) {

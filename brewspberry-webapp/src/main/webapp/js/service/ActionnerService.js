@@ -105,7 +105,7 @@
 		}
 
 		
-		ActionnerServiceFactory.activate(actId, callBackSuccess, callBackError){
+		ActionnerServiceFactory.activate = function(actId, callBackSuccess, callBackError){
 
 			var promise = $http({
 				method : 'POST',
@@ -123,7 +123,7 @@
 			
 		}
 		
-		ActionnerServiceFactory.deactivate(actId, callBackSuccess, callBackError){
+		ActionnerServiceFactory.deactivate = function(actId, callBackSuccess, callBackError){
 
 			var promise = $http({
 				method : 'POST',

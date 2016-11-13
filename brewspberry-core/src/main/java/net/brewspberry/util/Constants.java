@@ -40,7 +40,7 @@ public abstract class Constants {
 	public static String BREW_API = BREW_PARENT+"/brewspberry-core";
 	public static String BREW_BATCHES = BREW_PARENT+"/brewspberry-batches";
 	public static String BREW_TEMP = BREW_PARENT+"/brewspberry-api";
-	public static String BREW_CONF = BREW_PARENT+"/brewspberry-conf";
+	public static String BREW_CONF = "/home/pi/brewspberry/params";
 
 	public static String DEVICES_PROPERTIES = BREW_CONF + "/devices.properties";
 

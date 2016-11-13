@@ -10,17 +10,20 @@ import net.brewspberry.business.beans.GenericActionner;
 import net.brewspberry.business.exceptions.NotAppropriateStatusException;
 import net.brewspberry.business.exceptions.ServiceException;
 
-public interface ISpecificActionerService extends ISpecificActionerLauncherService{
-	
+public interface ISpecificActionerService {
+
 	public List<Actioner> getActionerByBrassin(Brassin brassin);
-	
+
 	public List<Actioner> getActionnerByEtape(Etape etape);
 
-	public Actioner isAlreadyStoredAndActivated (Actioner arg0);
-	public Actioner startActionInDatabase (Actioner actioner) throws ServiceException, NotAppropriateStatusException;
-	public Actioner stopActionInDatabase (Actioner actioner) throws ServiceException, NotAppropriateStatusException;
-	
+	public Actioner isAlreadyStoredAndActivated(Actioner arg0);
+
+	public Actioner startActionInDatabase(Actioner actioner) throws ServiceException, NotAppropriateStatusException;
+
+	public Actioner stopActionInDatabase(Actioner actioner) throws ServiceException, NotAppropriateStatusException;
+
 	public String getPIDFromPs(String line) throws IOException;
-	
+
 	public List<GenericActionner> getAllGenericActionners();
+
 }

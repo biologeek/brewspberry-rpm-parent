@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +19,7 @@ import com.pi4j.io.gpio.PinState;
 import net.brewspberry.adapter.RelayAdapter;
 import net.brewspberry.batches.launchers.Batch;
 import net.brewspberry.batches.launchers.BatchRecordTemperatures;
+import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.ISpecificActionerLauncherService;
 import net.brewspberry.business.ISpecificActionerService;
 import net.brewspberry.business.beans.Actioner;
@@ -33,8 +36,12 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 	private Logger logger = LogManager.getInstance(BatchLauncherService.class.getName());
 	
-	private ISpecificActionerService actionerService = new ActionerServiceImpl();
+	@Autowired
+	private ISpecificActionerService actionerService;
 
+	@Autowired
+	@Qualifier("actionerServiceImpl")
+	IGenericService<Actioner> genActionerService;
 
 	Batch temperatureBatch;
 	Thread recordTemperatureBatch;
@@ -61,10 +68,18 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 		}
 	}
 
+
+	/**
+	 * startAction starts device for selected Actioner - ds18b20 : launches Java
+	 * batch that collects and stores temperatures measured by ds18b20s - relays
+	 * : starting action means setting PinState to HIGH thus running the device
+	 * 
+	 * It also stores the Actioner in database
+	 */
 	@Override
 	public Actioner startAction(Actioner actioner) throws Exception {
 
-
+		// TODO : fix this part !!!!
 
 		Etape currentStep = null;
 		String duration = "";
@@ -115,15 +130,9 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 						actioner = actionerService.startActionInDatabase(actioner);
 
-						duration = String.valueOf(((double) currentStep
-								.getEtp_duree()/60)
-								* (Double.parseDouble(durationCoef)));
+						duration = calculateDuration(currentStep, durationCoef);
 
-						args[0] = "MINUTE";
-						args[1] = String.valueOf(duration);
-						args[2] = String.valueOf(actioner.getAct_brassin().getBra_id());
-						args[3] = String.valueOf(actioner.getAct_etape().getEtp_id());
-						args[4] = String.valueOf(actioner.getAct_id());
+						assignArgumentsToBatch(actioner, duration, args);
 
 						
 						logger.fine("Launching batch thread for "+duration+" "+args[0]);
@@ -195,6 +204,38 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 		return null;
 	}
 
+
+	private void assignArgumentsToBatch(Actioner actioner, String duration, String[] args) {
+		args[0] = "MINUTE";
+		args[1] = String.valueOf(duration);
+		args[2] = String.valueOf(actioner.getAct_brassin().getBra_id());
+		args[3] = String.valueOf(actioner.getAct_etape().getEtp_id());
+		args[4] = String.valueOf(actioner.getAct_id());
+	}
+
+
+	private String calculateDuration(Etape currentStep, String durationCoef) {
+		return String.valueOf(((double) currentStep
+				.getEtp_duree()/60)
+				* (Double.parseDouble(durationCoef)));
+	}
+
+
+	/**
+	 * 
+	 * @see BatchLauncherService Whenever user stops an actioner (for example
+	 *      switch off a relay), this method must be called !
+	 * 
+	 *      It stops configured devices. for the moment : - relays (type 2) -
+	 *      ds18b20 temperature sensors (type 1). For these ones in fact it
+	 *      stops the job collecting temperatures.
+	 * 
+	 * @param Actioner
+	 *            that has to be stopped. Actioner must have ID
+	 * @return
+	 * @throws Exception
+	 * 
+	 */
 	public Actioner stopAction(Actioner actioner) throws Exception {
 		if (actioner != null && actioner.getAct_id() != 0) {
 
@@ -319,6 +360,22 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 		}
 		return actioner;
 
+	}
+
+	@Override
+	public Actioner startAction(Long actioner) throws Exception {
+		
+		Actioner actionner = genActionerService.getElementById(actioner);
+		
+		return this.startAction(actionner);
+	}
+
+	@Override
+	public Actioner stopAction(Long actioner) throws Exception {
+
+		Actioner actionner = genActionerService.getElementById(actioner);
+		
+		return this.stopAction(actionner);
 	}
 
 

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import net.brewspberry.adapter.RelayAdapter;
 import net.brewspberry.business.IGenericDao;
@@ -35,6 +36,7 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 	Pattern pattern = Pattern.compile(commandLineRegexp);
 
 	@Autowired
+	@Qualifier("actionerDaoImpl")
 	IGenericDao<Actioner> actionerDao;
 	@Autowired
 	ISpecificActionerDao actionerSpecDao;
@@ -267,44 +269,6 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 	}
 
 	/**
-	 * startAction starts device for selected Actioner - ds18b20 : launches Java
-	 * batch that collects and stores temperatures measured by ds18b20s - relays
-	 * : starting action means setting PinState to HIGH thus running the device
-	 * 
-	 * It also stores the Actioner in database
-	 */
-	@Override
-	@Deprecated
-	public Actioner startAction(Actioner actioner) throws Exception {
-
-		return actioner;
-
-	}
-
-	/**
-	 * 
-	 * @see BatchLauncherService Whenever user stops an actioner (for example
-	 *      switch off a relay), this method must be called !
-	 * 
-	 *      It stops configured devices. for the moment : - relays (type 2) -
-	 *      ds18b20 temperature sensors (type 1). For these ones in fact it
-	 *      stops the job collecting temperatures.
-	 * 
-	 * @param Actioner
-	 *            that has to be stopped. Actioner must have ID
-	 * @return
-	 * @throws Exception
-	 * 
-	 */
-	@Override
-	@Deprecated
-	public Actioner stopAction(Actioner actioner) throws Exception {
-
-		return actioner;
-
-	}
-
-	/**
 	 * This method returns PIDs for line command Greps over line parameter,
 	 * deletes grep search process and display PID (2nd column)
 	 * 
@@ -436,4 +400,5 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 
 		return result;
 	}
+
 }

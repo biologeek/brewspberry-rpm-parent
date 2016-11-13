@@ -155,7 +155,12 @@ public class Etape implements Serializable {
 	 * @return
 	 */
 	public long getEtp_duree() {
-		return (getEtp_fin_reel().getTime() - getEtp_debut_reel().getTime()) / 1000;
+		long duration = 0;
+		try{
+			duration = (getEtp_fin_reel().getTime() - getEtp_debut_reel().getTime()) / 1000;
+		} catch (Exception e ){
+		}
+		return duration;
 	}
 
 	/**

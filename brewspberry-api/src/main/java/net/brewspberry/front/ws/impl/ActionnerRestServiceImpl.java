@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.pi4j.io.gpio.RaspiPin;
 
 import net.brewspberry.business.IGenericService;
+import net.brewspberry.business.ISpecificActionerLauncherService;
 import net.brewspberry.business.ISpecificActionerService;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.GenericActionner;
@@ -31,6 +35,7 @@ import net.brewspberry.util.Constants;
 
 @RequestMapping("/actionner")
 @RestController
+
 public class ActionnerRestServiceImpl {
 
 	@Autowired
@@ -44,6 +49,9 @@ public class ActionnerRestServiceImpl {
 	@Autowired
 	@Qualifier("actionerServiceImpl")
 	private ISpecificActionerService actionnerSpecService;
+	
+	@Autowired
+	ISpecificActionerLauncherService batchLauncherService;
 
 	@GetMapping("/available")
 	@ResponseBody
@@ -99,5 +107,27 @@ public class ActionnerRestServiceImpl {
 	public List<net.brewspberry.front.ws.beans.responses.GenericActionner> getAllActionners() {
 		ActionnerDTO dto = new ActionnerDTO();
 		return dto.new GenericActionnerDTO().toRawActionnerResponse(genericActionnerService.getAllElements(), false);
+	}
+	
+	
+	
+	@PostMapping("/activate/{actId}")
+	public ResponseEntity<String> activateActioner(@PathVariable("actId") Long actionerId){
+		
+		
+		if (actionerId != null && actionerId > 0){
+			
+			try {
+				batchLauncherService.startAction(actionerId);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.status(500).body("Could not start action due to internal error");
+			}
+		}
+		
+		
+		
+		return ResponseEntity.ok().body("");
+		
 	}
 }
