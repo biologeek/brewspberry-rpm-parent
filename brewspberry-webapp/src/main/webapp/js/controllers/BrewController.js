@@ -378,7 +378,7 @@
 								return elt.id == actionerID ? elt : null
 							});
 			
-			if (currentAct.status == 'STARTED') {
+			if (currentAct.state == 'STARTED') {
 				ActionnerService
 					.deactivate(
 						actionerID,
@@ -408,7 +408,7 @@
 
 						});
 
-			} else if (currentAct.status == 'IDLE' || currentAct.status == 'PAUSED' || currentAct.status == 'STOPPED') {
+			} else if (currentAct.state == 'IDLE' || currentAct.state == 'PAUSED' || currentAct.state == 'STOPPED') {
 
 				ActionnerService
 					.activate(

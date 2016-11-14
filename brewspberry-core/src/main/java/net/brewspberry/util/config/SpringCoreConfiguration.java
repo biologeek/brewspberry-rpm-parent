@@ -35,18 +35,18 @@ public class SpringCoreConfiguration {
 	@Autowired
 	private Environment env;
 	
-	@Value("${datasource.jdbc.address}")
-	String address;
-	
-	@Value("${datasource.jdbc.address}")
-	String driver;
-	
-	@Value("${datasource.jdbc.address}")
-	String user;
-	
-	@Value("${datasource.jdbc.address}")
-	String password;
-	
+//	@Value("${datasource.jdbc.address}")
+//	String address;
+//	
+//	@Value("${datasource.jdbc.address}")
+//	String driver;
+//	
+//	@Value("${datasource.jdbc.address}")
+//	String user;
+//	
+//	@Value("${datasource.jdbc.address}")
+//	String password;
+//	
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -55,16 +55,18 @@ public class SpringCoreConfiguration {
 		 * dataSource.setUrl("jdbc:h2:~/test"); dataSource.setUsername("sa");
 		 * dataSource.setPassword("");
 		 * 
-		 * 
-		 * dataSource.setDriverClassName("org.postgresql.Driver");
-		 * dataSource.setUrl("jdbc:postgresql://localhost:5432/brewspberry");
-		 * dataSource.setUsername("postgres");
-		 * dataSource.setPassword("postgres");
 		 */
-		dataSource.setDriverClassName(driver);
-		dataSource.setUrl(address);
-		dataSource.setUsername(user);
-		dataSource.setPassword(password);
+		
+		 dataSource.setDriverClassName("org.postgresql.Driver");
+		 dataSource.setUrl("jdbc:postgresql://localhost:5432/brewspberry");
+		 dataSource.setUsername("postgres");
+		 dataSource.setPassword("postgres");
+		
+		
+//		dataSource.setDriverClassName(driver);
+//		dataSource.setUrl(address);
+//		dataSource.setUsername(user);
+//		dataSource.setPassword(password);
 
 		return dataSource;
 	}

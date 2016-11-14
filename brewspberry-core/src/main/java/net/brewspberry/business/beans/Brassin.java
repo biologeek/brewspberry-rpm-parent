@@ -66,7 +66,7 @@ public class Brassin implements Serializable{
     @OneToMany(fetch=FetchType.LAZY, mappedBy="tmes_brassin")
     private List<ConcreteTemperatureMeasurement> bra_temperature_measurement;
     
-    @OneToMany(fetch=FetchType.EAGER, mappedBy="act_brassin")
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="act_brassin")
     private List<Actioner> bra_actioner;
     
     

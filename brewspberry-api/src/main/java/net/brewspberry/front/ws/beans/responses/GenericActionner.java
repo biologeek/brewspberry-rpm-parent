@@ -1,7 +1,9 @@
 package net.brewspberry.front.ws.beans.responses;
 
 
+import net.brewspberry.business.beans.GenericActionner.ActionerStatus;
 import net.brewspberry.front.ws.beans.responses.ActionnerResponse.ActionerType;
+import net.brewspberry.util.Constants;
 
 public class GenericActionner {
 
@@ -55,5 +57,34 @@ public class GenericActionner {
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+	
+	
+
+	public String getPictureWithStatus() {
+
+		if (this.state.equals(ActionerStatus.STARTED)) {
+			switch (this.type) {
+			case DS18B20:
+				return Constants.DS18B20_ON;
+			case ENGINE_RELAY:
+				return Constants.ENGINE_ON;
+			case PUMP_RELAY:
+				return Constants.PUMP_ON;
+			default:
+				return "";
+			}
+		} else {
+			switch (this.type) {
+			case DS18B20:
+				return Constants.DS18B20_OFF;
+			case ENGINE_RELAY:
+				return Constants.ENGINE_OFF;
+			case PUMP_RELAY:
+				return Constants.PUMP_OFF;
+			default:
+				return "";
+			}
+		}
 	}
 }

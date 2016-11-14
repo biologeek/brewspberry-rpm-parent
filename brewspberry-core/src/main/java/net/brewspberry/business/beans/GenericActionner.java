@@ -16,10 +16,11 @@ import javax.persistence.OneToMany;
 
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.util.Constants;
+
 @Entity
 @Component
 public class GenericActionner {
-	
 
 	/**
 	 * 
@@ -36,25 +37,16 @@ public class GenericActionner {
 	 */
 	@Enumerated(EnumType.STRING)
 	private ActionerType gact_type;
-	
-	
+
 	public enum ActionerType {
 		DS18B20, ENGINE_RELAY, PUMP_RELAY
 	}
-	
+
 	public enum ActionerStatus {
 		STOPPED, STARTED, PAUSED, IDLE, FAILED
 	}
 
-	public static final String DS18B20_OFF = "images/thermo-off.jpg";
-	public static final String DS18B20_ON = "images/thermo-on.jpg";
-	
-	public static final String ENGINE_OFF = "images/engine-off.png";
-	public static final String ENGINE_ON = "images/engine-on.png";
-	
-	public static final String PUMP_OFF = "images/pump-off.jpg";
-	public static final String PUMP_ON = "images/pump-on.jpg";
-	
+
 	private String gact_nom;
 	private String gact_uuid;
 	@Enumerated(EnumType.STRING)
@@ -62,10 +54,9 @@ public class GenericActionner {
 	private String gact_raspi_pin;
 	private boolean gact_activated;
 	private String gact_picture;
-	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="act_generic")
-	private List<Actioner> gact_actionners;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "act_generic")
+	private List<Actioner> gact_actionners;
 
 	public long getGact_id() {
 		return gact_id;
@@ -91,7 +82,6 @@ public class GenericActionner {
 		this.gact_type = act_type;
 	}
 
-
 	public String getGact_raspi_pin() {
 		return gact_raspi_pin;
 	}
@@ -99,7 +89,6 @@ public class GenericActionner {
 	public void setGact_raspi_pin(String act_raspi_pin) {
 		this.gact_raspi_pin = act_raspi_pin;
 	}
-
 
 	public String getGact_nom() {
 		return gact_nom;
@@ -125,29 +114,16 @@ public class GenericActionner {
 		this.gact_status = act_status;
 	}
 
-
 	public String getGact_picture() {
 		return gact_picture;
 	}
 
 	public void setGact_picture(String act_picture) {
-		this.gact_picture = act_picture;
-	}
-
-
-	public String getOffPicture(ActionerType act_type2) {
-
-		switch (act_type2) {
-		case DS18B20:
-			return DS18B20_OFF;
-		case ENGINE_RELAY:
-			return ENGINE_OFF;
-		case PUMP_RELAY:
-			return PUMP_OFF;
-		default:
-			return "";
+		if (this.gact_picture == null){
+			gact_picture = getPictureWithStatus();
 		}
 	}
+
 
 	@Override
 	public int hashCode() {
@@ -162,6 +138,34 @@ public class GenericActionner {
 		result = prime * result + ((gact_type == null) ? 0 : gact_type.hashCode());
 		result = prime * result + ((gact_uuid == null) ? 0 : gact_uuid.hashCode());
 		return result;
+	}
+	
+
+	public String getPictureWithStatus() {
+
+		if (this.gact_status.equals(ActionerStatus.STARTED)) {
+			switch (this.gact_type) {
+			case DS18B20:
+				return Constants.DS18B20_ON;
+			case ENGINE_RELAY:
+				return Constants.ENGINE_ON;
+			case PUMP_RELAY:
+				return Constants.PUMP_ON;
+			default:
+				return "";
+			}
+		} else {
+			switch (this.gact_type) {
+			case DS18B20:
+				return Constants.DS18B20_OFF;
+			case ENGINE_RELAY:
+				return Constants.ENGINE_OFF;
+			case PUMP_RELAY:
+				return Constants.PUMP_OFF;
+			default:
+				return "";
+			}
+		}
 	}
 
 	@Override
@@ -203,7 +207,5 @@ public class GenericActionner {
 			return false;
 		return true;
 	}
-
-
 
 }

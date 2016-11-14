@@ -65,7 +65,7 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 		if (arg0.hasActioners()){
 			for (Actioner actioner : arg0.getEtp_actioner()){
 				actioner.setAct_etape(arg0);
-				//genActionerService.save(actioner);
+				genActionerService.save(actioner);
 			}
 		}
 		return saved;

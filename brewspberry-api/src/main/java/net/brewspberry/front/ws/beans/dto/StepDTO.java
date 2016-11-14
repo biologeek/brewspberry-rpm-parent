@@ -139,7 +139,7 @@ public class StepDTO {
 			throw new ConversionException(e.getMessage());
 		}
 
-		res.setEtp_actioners(new ArrayList<Actioner>(new ActionnerDTO().toBusinessObjectList(step.getActioners())));
+		res.setEtp_actioners(new ArrayList<Actioner>(new ActionnerDTO().step(res).toBusinessObjectList(step.getActioners())));
 
 		return res;
 	}

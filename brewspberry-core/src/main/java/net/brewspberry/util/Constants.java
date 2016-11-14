@@ -163,5 +163,16 @@ public abstract class Constants {
 	public static final String DS18B20_DIR_PATTERN = "28*";
 	public static final String DS18B20_FILE_NAME = "w1_slave";
 	public static final String[] WRITABLE_ENTITIES = { "FILE", "SQL", "ALL" };
+	
+	
+
+	public static final String DS18B20_OFF = "images/thermo-off.jpg";
+	public static final String DS18B20_ON = "images/thermo-on.jpg";
+
+	public static final String ENGINE_OFF = "images/engine-off.png";
+	public static final String ENGINE_ON = "images/engine-on.png";
+
+	public static final String PUMP_OFF = "images/pump-off.jpg";
+	public static final String PUMP_ON = "images/pump-on.jpg";
 
 }

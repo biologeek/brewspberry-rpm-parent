@@ -2,6 +2,9 @@ package net.brewspberry.front.ws.beans.responses;
 
 import java.util.List;
 
+import net.brewspberry.business.beans.GenericActionner.ActionerStatus;
+import net.brewspberry.util.Constants;
+
 public class ActionnerResponse {
 	
 	
@@ -26,7 +29,7 @@ public class ActionnerResponse {
 	private List<ChartResponse> chart;
 	private String pin;
 	private boolean isActive;
-	private ActionerStatus status;
+	private ActionerStatus state;
 	private boolean used;
 	private long begin;
 	private long end;
@@ -57,10 +60,15 @@ public class ActionnerResponse {
 		this.type = string;
 	}
 	public String getPicture() {
-		return picture;
+		return getPictureWithStatus();
 	}
 	public void setPicture(String picture) {
-		this.picture = picture;
+		if (this.picture == null && picture == null){
+			picture = getPictureWithStatus();
+		}
+		else {
+			this.picture = picture;
+		}
 	}
 	public List<ChartResponse> getChart() {
 		return chart;
@@ -80,11 +88,11 @@ public class ActionnerResponse {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	public ActionerStatus getStatus() {
-		return status;
+	public ActionerStatus getState() {
+		return state;
 	}
-	public void setStatus(ActionerStatus status) {
-		this.status = status;
+	public void setState(ActionerStatus state) {
+		this.state = state;
 	}
 	public boolean isUsed() {
 		return used;
@@ -121,6 +129,36 @@ public class ActionnerResponse {
 	}
 	public void setBrewId(long brewId) {
 		this.brewId = brewId;
+	}
+	
+
+	
+
+	public String getPictureWithStatus() {
+
+		if (this.state.equals(ActionerStatus.STARTED)) {
+			switch (this.type) {
+			case DS18B20:
+				return Constants.DS18B20_ON;
+			case ENGINE_RELAY:
+				return Constants.ENGINE_ON;
+			case PUMP_RELAY:
+				return Constants.PUMP_ON;
+			default:
+				return "";
+			}
+		} else {
+			switch (this.type) {
+			case DS18B20:
+				return Constants.DS18B20_OFF;
+			case ENGINE_RELAY:
+				return Constants.ENGINE_OFF;
+			case PUMP_RELAY:
+				return Constants.PUMP_OFF;
+			default:
+				return "";
+			}
+		}
 	}
 
 }

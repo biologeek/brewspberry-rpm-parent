@@ -33,8 +33,7 @@ public class Etape implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1849499413089750093L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long etp_id;
 	private Integer etp_numero; // step number in the brew
 	private String etp_nom;
@@ -64,8 +63,7 @@ public class Etape implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "tmes_etape")
 	private List<ConcreteTemperatureMeasurement> etp_temperature_measurement;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "act_etape", cascade=javax.persistence.CascadeType.ALL)
-	@Cascade(CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "act_etape")
 	private List<Actioner> etp_actioner;
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "malt_etape")
@@ -341,134 +339,6 @@ public class Etape implements Serializable {
 		this.etp_ingredients = etp_ingredients;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((etp_actioner == null) ? 0 : etp_actioner.hashCode());
-		result = prime * result + ((etp_creation_date == null) ? 0 : etp_creation_date.hashCode());
-		result = prime * result + ((etp_debut == null) ? 0 : etp_debut.hashCode());
-		result = prime * result + ((etp_debut_reel == null) ? 0 : etp_debut_reel.hashCode());
-		result = prime * result + ((etp_fin == null) ? 0 : etp_fin.hashCode());
-		result = prime * result + ((etp_fin_reel == null) ? 0 : etp_fin_reel.hashCode());
-		result = prime * result + ((etp_houblons == null) ? 0 : etp_houblons.hashCode());
-		result = prime * result + ((etp_id == null) ? 0 : etp_id.hashCode());
-		result = prime * result + ((etp_ingredients == null) ? 0 : etp_ingredients.hashCode());
-		result = prime * result + ((etp_levures == null) ? 0 : etp_levures.hashCode());
-		result = prime * result + ((etp_malts == null) ? 0 : etp_malts.hashCode());
-		result = prime * result + ((etp_nom == null) ? 0 : etp_nom.hashCode());
-		result = prime * result + ((etp_numero == null) ? 0 : etp_numero.hashCode());
-		result = prime * result + ((etp_palier_type == null) ? 0 : etp_palier_type.hashCode());
-		result = prime * result + ((etp_remarque == null) ? 0 : etp_remarque.hashCode());
-		result = prime * result + ((etp_temperature_measurement == null) ? 0 : etp_temperature_measurement.hashCode());
-		result = prime * result + ((etp_temperature_theorique == null) ? 0 : etp_temperature_theorique.hashCode());
-		result = prime * result + ((etp_update_date == null) ? 0 : etp_update_date.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Etape other = (Etape) obj;
-		if (etp_actioner == null) {
-			if (other.etp_actioner != null)
-				return false;
-		} else if (!etp_actioner.equals(other.etp_actioner))
-			return false;
-		if (etp_brassin == null) {
-			if (other.etp_brassin != null)
-				return false;
-		} else if (!etp_brassin.equals(other.etp_brassin))
-			return false;
-		if (etp_creation_date == null) {
-			if (other.etp_creation_date != null)
-				return false;
-		} else if (!etp_creation_date.equals(other.etp_creation_date))
-			return false;
-		if (etp_debut == null) {
-			if (other.etp_debut != null)
-				return false;
-		} else if (!etp_debut.equals(other.etp_debut))
-			return false;
-		if (etp_debut_reel == null) {
-			if (other.etp_debut_reel != null)
-				return false;
-		} else if (!etp_debut_reel.equals(other.etp_debut_reel))
-			return false;
-		if (etp_fin == null) {
-			if (other.etp_fin != null)
-				return false;
-		} else if (!etp_fin.equals(other.etp_fin))
-			return false;
-		if (etp_fin_reel == null) {
-			if (other.etp_fin_reel != null)
-				return false;
-		} else if (!etp_fin_reel.equals(other.etp_fin_reel))
-			return false;
-		if (etp_houblons == null) {
-			if (other.etp_houblons != null)
-				return false;
-		} else if (!etp_houblons.equals(other.etp_houblons))
-			return false;
-		if (etp_id == null) {
-			if (other.etp_id != null)
-				return false;
-		} else if (!etp_id.equals(other.etp_id))
-			return false;
-		if (etp_ingredients == null) {
-			if (other.etp_ingredients != null)
-				return false;
-		} else if (!etp_ingredients.equals(other.etp_ingredients))
-			return false;
-		if (etp_levures == null) {
-			if (other.etp_levures != null)
-				return false;
-		} else if (!etp_levures.equals(other.etp_levures))
-			return false;
-		if (etp_malts == null) {
-			if (other.etp_malts != null)
-				return false;
-		} else if (!etp_malts.equals(other.etp_malts))
-			return false;
-		if (etp_nom == null) {
-			if (other.etp_nom != null)
-				return false;
-		} else if (!etp_nom.equals(other.etp_nom))
-			return false;
-		if (etp_numero == null) {
-			if (other.etp_numero != null)
-				return false;
-		} else if (!etp_numero.equals(other.etp_numero))
-			return false;
-		if (etp_palier_type != other.etp_palier_type)
-			return false;
-		if (etp_remarque == null) {
-			if (other.etp_remarque != null)
-				return false;
-		} else if (!etp_remarque.equals(other.etp_remarque))
-			return false;
-		if (etp_temperature_measurement == null) {
-			if (other.etp_temperature_measurement != null)
-				return false;
-		} else if (!etp_temperature_measurement.equals(other.etp_temperature_measurement))
-			return false;
-		if (etp_temperature_theorique == null) {
-			if (other.etp_temperature_theorique != null)
-				return false;
-		} else if (!etp_temperature_theorique.equals(other.etp_temperature_theorique))
-			return false;
-		if (etp_update_date == null) {
-			if (other.etp_update_date != null)
-				return false;
-		} else if (!etp_update_date.equals(other.etp_update_date))
-			return false;
-		return true;
-	}
 
 	public boolean isEtp_active() {
 		return etp_active;
@@ -487,5 +357,6 @@ public class Etape implements Serializable {
 		}
 		return false;
 	}
+
 
 }
