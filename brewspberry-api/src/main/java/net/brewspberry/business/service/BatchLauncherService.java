@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.mockito.exceptions.verification.ArgumentsAreDifferent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 
 import net.brewspberry.adapter.RelayAdapter;
+import net.brewspberry.batches.beans.BatchParams;
 import net.brewspberry.batches.launchers.Batch;
 import net.brewspberry.batches.launchers.BatchRecordTemperatures;
 import net.brewspberry.business.IGenericService;
@@ -30,12 +32,12 @@ import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 import net.brewspberry.util.OSUtils;
 
-@Service 
+@Service
 @Transactional
-public class BatchLauncherService implements ISpecificActionerLauncherService{
+public class BatchLauncherService implements ISpecificActionerLauncherService {
 
 	private Logger logger = LogManager.getInstance(BatchLauncherService.class.getName());
-	
+
 	@Autowired
 	private ISpecificActionerService actionerService;
 
@@ -43,31 +45,29 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 	@Qualifier("actionerServiceImpl")
 	IGenericService<Actioner> genActionerService;
 
+	@Autowired
 	Batch temperatureBatch;
-	Thread recordTemperatureBatch;
-
+	
+	Thread recordTemperatureThread;
 
 	String commandLineRegexp = "/home/pi/batches/bchrectemp.py [0-9]{0,5} [0-9]{0,5}";
 
 	Pattern pattern = Pattern.compile(commandLineRegexp);
 
 	String getTemperatureRunningGrep = "ps -ef | grep bchrectemp.py";
-	
+
 	private RelayAdapter relayAdapter = RelayAdapter.getInstance();
 
 	private GpioController gpioController;
-	
-	
 
 	public BatchLauncherService() {
 		super();
-		if (OSUtils.isRaspbian()){
-			gpioController  = GpioFactory.getInstance();
+		if (OSUtils.isRaspbian()) {
+			gpioController = GpioFactory.getInstance();
 		} else {
 			gpioController = null;
 		}
 	}
-
 
 	/**
 	 * startAction starts device for selected Actioner - ds18b20 : launches Java
@@ -84,13 +84,10 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 		Etape currentStep = null;
 		String duration = "";
 		String[] args = new String[5];
-		
-		
 
 		if (actioner != null) {
 
-			logger .fine(actioner.getAct_etape() + " "
-					+ actioner.getAct_brassin());
+			logger.fine(actioner.getAct_etape() + " " + actioner.getAct_brassin());
 			switch (actioner.getAct_generic().getGact_type()) {
 
 			case DS18B20:
@@ -103,17 +100,14 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 				 * Requires act_type, act_brassin, act_etape, name, uuid
 				 */
 
-				String durationCoef = ConfigLoader.getConfigByKey(
-						Constants.CONFIG_PROPERTIES,
+				String durationCoef = ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
 						"param.batches.length.coef");
 
 				logger.info("It's a DS18B20 :");
 
-
 				logger.fine("Duree : " + actioner.getAct_etape().getEtp_duree());
 				try {
-					if (actioner.getAct_brassin() != null
-							&& actioner.getAct_etape() != null) {
+					if (actioner.getAct_brassin() != null && actioner.getAct_etape() != null) {
 
 						currentStep = actioner.getAct_etape();
 
@@ -134,13 +128,14 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 						assignArgumentsToBatch(actioner, duration, args);
 
+						logger.fine("Launching batch thread for " + duration + " " + args[0]);
 						
-						logger.fine("Launching batch thread for "+duration+" "+args[0]);
-						temperatureBatch = new BatchRecordTemperatures(args);
+						BatchParams arguments = new BatchParams.BatchParamsBuilder().buildBatchParams(args);
+						temperatureBatch.setBatchParams(arguments);
 
-						recordTemperatureBatch = new Thread((Runnable) temperatureBatch);
+						recordTemperatureThread = new Thread((Runnable) temperatureBatch);
 
-						recordTemperatureBatch.start();
+						recordTemperatureThread.start();
 
 					} else {
 
@@ -155,35 +150,29 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 				break;
 
-			case ENGINE_RELAY :
-			case PUMP_RELAY :
-				GpioPinDigitalOutput gpio = gpioController
-				.provisionDigitalOutputPin(Constants.BREW_GPIO
-						.get(actioner.getAct_generic().getGact_raspi_pin()));
+			case ENGINE_RELAY:
+			case PUMP_RELAY:
+				GpioPinDigitalOutput gpio = gpioController.provisionDigitalOutputPin(
+						Constants.BREW_GPIO.get(actioner.getAct_generic().getGact_raspi_pin()));
 				// Relay
 				logger.info("It's a relay !");
 
 				if (actioner.getAct_generic().getGact_raspi_pin() != "") {
 
-					logger.info("Provisionning pin "
-							+ actioner.getAct_generic().getGact_raspi_pin()
-							+ " "
+					logger.info("Provisionning pin " + actioner.getAct_generic().getGact_raspi_pin() + " "
 							+ Constants.BREW_GPIO.get(actioner.getAct_generic().getGact_raspi_pin()));
 					try {
-						
+
 						// Turning ON or OFF the pin
 						PinState state = relayAdapter.changePinState(gpio);
 
 						actioner.getAct_generic().setGact_status(ActionerStatus.STARTED);
-						logger.info("Actioner at pin "
-								+ actioner.getAct_generic().getGact_raspi_pin()
-								+ " changed state to "
-								+ actioner.getAct_generic().getGact_status());
+						logger.info("Actioner at pin " + actioner.getAct_generic().getGact_raspi_pin()
+								+ " changed state to " + actioner.getAct_generic().getGact_status());
 
 					} catch (Exception e) {
 
-						logger.severe("Couldn't change Pin state..."
-								+ actioner.getAct_generic().getGact_raspi_pin()
+						logger.severe("Couldn't change Pin state..." + actioner.getAct_generic().getGact_raspi_pin()
 								+ ", setting status to FAILED !");
 						actioner.getAct_generic().setGact_status(ActionerStatus.FAILED);
 
@@ -193,7 +182,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 				} else {
 					throw new Exception("Empty Pin !!");
 				}
-				
+
 				gpioController.unprovisionPin(gpio);
 
 				break;
@@ -204,7 +193,6 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 		return null;
 	}
 
-
 	private void assignArgumentsToBatch(Actioner actioner, String duration, String[] args) {
 		args[0] = "MINUTE";
 		args[1] = String.valueOf(duration);
@@ -213,13 +201,10 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 		args[4] = String.valueOf(actioner.getAct_id());
 	}
 
-
 	private String calculateDuration(Etape currentStep, String durationCoef) {
-		return String.valueOf(((double) currentStep
-				.getEtp_duree()/60)
-				* (Double.parseDouble(durationCoef)));
+		return String.valueOf(((double) currentStep.getEtp_duree() / 60)
+				* (Double.parseDouble(durationCoef != null && !durationCoef.isEmpty() ? durationCoef : "0")));
 	}
-
 
 	/**
 	 * 
@@ -239,19 +224,18 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 	public Actioner stopAction(Actioner actioner) throws Exception {
 		if (actioner != null && actioner.getAct_id() != 0) {
 
-			if (ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
-					"param.batches.language").equals("java")) {
+			if (ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.batches.language").equals("java")) {
 
-				if (recordTemperatureBatch != null) {
+				if (recordTemperatureThread != null) {
 
-					if (recordTemperatureBatch.isAlive()) {
+					if (recordTemperatureThread.isAlive()) {
 
-						recordTemperatureBatch.interrupt();
+						recordTemperatureThread.interrupt();
 
 						actionerService.stopActionInDatabase(actioner);
 
 						// Wait for it to end
-						recordTemperatureBatch.join();
+						recordTemperatureThread.join();
 
 					} else {
 						logger.fine("Thread is dead");
@@ -262,8 +246,8 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 					logger.severe("Thread is null !!");
 				}
 
-			} else if (ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
-					"param.batches.language").equals("python")) {
+			} else if (ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.batches.language")
+					.equals("python")) {
 				switch (actioner.getAct_generic().getGact_type()) {
 
 				case DS18B20:
@@ -273,14 +257,12 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 					// First, checks if a process is currently running
 					Process proc = null;
 					try {
-						proc = Runtime.getRuntime().exec(
-								getTemperatureRunningGrep);
+						proc = Runtime.getRuntime().exec(getTemperatureRunningGrep);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 
-					BufferedReader br = new BufferedReader(
-							new InputStreamReader(proc.getInputStream()));
+					BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
 
 					String line = null;
 
@@ -296,20 +278,14 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 							 * Returns PID of program using bra_id, etape_id and
 							 * act_id So no way we kill the wrong process
 							 */
-							String pid = actionerService
-									.getPIDFromPs("bchrectemp.py "
-											+ actioner.getAct_brassin()
-													.getBra_id()
-											+ " "
-											+ actioner.getAct_etape()
-													.getEtp_id())
+							String pid = actionerService.getPIDFromPs("bchrectemp.py "
+									+ actioner.getAct_brassin().getBra_id() + " " + actioner.getAct_etape().getEtp_id())
 									+ " " + actioner.getAct_id();
 
 							if (pid != "") {
 
 								// Kills the process !
-								Runtime.getRuntime().exec(
-										"kill -SIGTERM " + pid);
+								Runtime.getRuntime().exec("kill -SIGTERM " + pid);
 								counter++;
 							}
 
@@ -327,9 +303,8 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 					GpioPinDigitalOutput gpio = null;
 					if (actioner.getAct_generic().getGact_raspi_pin() != null) {
-						gpio = gpioController
-								.provisionDigitalOutputPin(Constants.BREW_GPIO
-										.get(actioner.getAct_generic().getGact_raspi_pin()));
+						gpio = gpioController.provisionDigitalOutputPin(
+								Constants.BREW_GPIO.get(actioner.getAct_generic().getGact_raspi_pin()));
 
 						if (gpio.getState().equals(PinState.HIGH)) {
 
@@ -341,9 +316,8 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 						}
 
 					}
-					
 
-					relayAdapter.setShutdownOptionsandShutdown(gpioController,gpio , PinState.LOW, true);
+					relayAdapter.setShutdownOptionsandShutdown(gpioController, gpio, PinState.LOW, true);
 					break;
 
 				}
@@ -364,9 +338,9 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 
 	@Override
 	public Actioner startAction(Long actioner) throws Exception {
-		
+
 		Actioner actionner = genActionerService.getElementById(actioner);
-		
+
 		return this.startAction(actionner);
 	}
 
@@ -374,10 +348,8 @@ public class BatchLauncherService implements ISpecificActionerLauncherService{
 	public Actioner stopAction(Long actioner) throws Exception {
 
 		Actioner actionner = genActionerService.getElementById(actioner);
-		
+
 		return this.stopAction(actionner);
 	}
-
-
 
 }

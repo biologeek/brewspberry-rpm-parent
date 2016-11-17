@@ -35,24 +35,29 @@ public abstract class Constants {
 
 		}
 	}
-	public static String BREW_PARENT = PROJECT_ROOT_PATH+"/brewspberry-rpm-parent";
-	public static String BREW_VIEWER = BREW_PARENT+"/brewspberry-webapp";
-	public static String BREW_API = BREW_PARENT+"/brewspberry-core";
-	public static String BREW_BATCHES = BREW_PARENT+"/brewspberry-batches";
-	public static String BREW_TEMP = BREW_PARENT+"/brewspberry-api";
-	public static String BREW_CONF = "/home/pi/brewspberry/params";
+	public static String BREW_PARENT = PROJECT_ROOT_PATH + "/brewspberry-rpm-parent";
+	public static String BREW_VIEWER = BREW_PARENT + "/brewspberry-webapp";
+	public static String BREW_API = BREW_PARENT + "/brewspberry-core";
+	public static String BREW_BATCHES = BREW_PARENT + "/brewspberry-batches";
+	public static String BREW_TEMP = BREW_PARENT + "/brewspberry-api";
+	public static String BREW_CONF = BREW_PARENT + "/brewspberry/params";
 
+	static {
+		if (OSUtils.isWindows()) {
+			BREW_CONF = "D:/Profiles/xcaron/dev/config-brew";
+		}
+	}
 	public static String DEVICES_PROPERTIES = BREW_CONF + "/devices.properties";
 
 	public static String CONFIG_PROPERTIES = BREW_CONF + "/config.properties";
 
 	public static String BATCHES_PROPERTIES = BREW_CONF + "/batches.properties";
-	
+
 	public static String DS18B20_RAW_MEASUREMENTS = "/home/xavier/ownCloud/Projets/Brewhouse/Code/fic/ds18b20_raw_measurements.csv";
 
 	public Constants() {
 		super();
-		
+
 	}
 
 	public static Map<String, String> INGREDIENT_TYPES = new HashMap<String, String>();
@@ -163,8 +168,6 @@ public abstract class Constants {
 	public static final String DS18B20_DIR_PATTERN = "28*";
 	public static final String DS18B20_FILE_NAME = "w1_slave";
 	public static final String[] WRITABLE_ENTITIES = { "FILE", "SQL", "ALL" };
-	
-	
 
 	public static final String DS18B20_OFF = "images/thermo-off.jpg";
 	public static final String DS18B20_ON = "images/thermo-on.jpg";

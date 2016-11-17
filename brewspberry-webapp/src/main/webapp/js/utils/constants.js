@@ -6,7 +6,7 @@
 
 var app = angular.module('brewspberry');
 
-var base_url = 'http://127.0.0.1:8080/'
+var base_url = 'http://127.0.0.1:10080/'
 var root_path = 'brewspberry-api'
 app.constant('CONSTANTS', {
 

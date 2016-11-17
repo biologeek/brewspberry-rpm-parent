@@ -5,8 +5,11 @@ import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -22,11 +25,15 @@ import net.brewspberry.front.ws.beans.dto.BrassinDTO;
 import net.brewspberry.front.ws.beans.requests.BrewRequest;
 import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
+import net.brewspberry.tests.config.ApiSpringTestConfiguration;
 import net.brewspberry.tests.utils.TestUtils;
 
 
 
-
+@ActiveProfiles("test")
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class, classes={ApiSpringTestConfiguration.class})
+@WebAppConfiguration
 public class BrewDTOTest {
 	
 	

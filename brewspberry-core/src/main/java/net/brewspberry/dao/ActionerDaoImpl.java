@@ -49,29 +49,15 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 			}
 		} catch (HibernateException e) {
 			throw new DAOException();
-		} 
+		}
 		logger.info("save returned id : " + actID + " " + arg0.getAct_id());
 		return arg0;
 	}
 
 	@Override
 	public Actioner update(Actioner arg0) {
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-
-		try {
-
-			sessionFactory.getCurrentSession().update(arg0);
-			tx.commit();
-
-		} catch (HibernateException e) {
-
-			e.printStackTrace();
-			tx.rollback();
-
-		} finally {
-			HibernateUtil.closeSession();
-		}
-		return null;
+		sessionFactory.getCurrentSession().update(arg0);
+		return arg0;
 	}
 
 	@Override
@@ -101,39 +87,16 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 
 	@Override
 	public void deleteElement(long id) {
-
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
 		Actioner toDel = new Actioner();
 
-		try {
+		toDel = this.getElementById(id);
 
-			toDel = this.getElementById(id);
-
-			sessionFactory.getCurrentSession().delete(toDel);
-			tx.commit();
-
-		} catch (HibernateException e) {
-
-			tx.rollback();
-			e.printStackTrace();
-		}
-
+		sessionFactory.getCurrentSession().delete(toDel);
 	}
 
 	@Override
 	public void deleteElement(Actioner arg0) {
-		Transaction tx = sessionFactory.getCurrentSession().beginTransaction();
-
-		try {
-
-			sessionFactory.getCurrentSession().delete(arg0);
-			tx.commit();
-
-		} catch (HibernateException e) {
-
-			tx.rollback();
-			e.printStackTrace();
-		}
+		sessionFactory.getCurrentSession().delete(arg0);
 
 	}
 
@@ -157,23 +120,22 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 	}
 
 	@Override
-	
+
 	/**
-	 * Returns actioner corresponding using {brew, step, type of generic actionner, UUID of generic actionner}
+	 * Returns actioner corresponding using {brew, step, type of generic
+	 * actionner, UUID of generic actionner}
+	 * 
 	 * @param actioner
-	 * @return the actionner corresponding to criteria  
+	 * @return the actionner corresponding to criteria
 	 */
 	public Actioner getActionerByFullCharacteristics(Actioner actioner) {
-		
-		
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Actioner.class)
-		.add(Restrictions.eq("act_brassin", actioner.getAct_brassin()))
-		.add(Restrictions.eq("act_etape", actioner.getAct_etape()))
-		.add(Restrictions.eq("act_generic", actioner.getAct_generic()))
-		;
-		
-		Actioner result = (Actioner) crit.uniqueResult();
 
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(Actioner.class)
+				.add(Restrictions.eq("act_brassin", actioner.getAct_brassin()))
+				.add(Restrictions.eq("act_etape", actioner.getAct_etape()))
+				.add(Restrictions.eq("act_generic", actioner.getAct_generic()));
+
+		Actioner result = (Actioner) crit.uniqueResult();
 
 		return result;
 	}
@@ -196,8 +158,8 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 	@Override
 	public List<GenericActionner> getAllGenericActionners() {
 
-		 Criteria list = sessionFactory.getCurrentSession().createCriteria(GenericActionner.class);
-		
-		 return list.list();
+		Criteria list = sessionFactory.getCurrentSession().createCriteria(GenericActionner.class);
+
+		return list.list();
 	}
 }

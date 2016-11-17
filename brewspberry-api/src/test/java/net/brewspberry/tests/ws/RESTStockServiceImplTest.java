@@ -8,13 +8,15 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
+import net.brewspberry.tests.config.ApiSpringTestConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={SpringCoreTestConfiguration.class})
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class, classes={ApiSpringTestConfiguration.class})
 @WebAppConfiguration
 public class RESTStockServiceImplTest {
 

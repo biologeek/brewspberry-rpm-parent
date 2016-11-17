@@ -2,10 +2,12 @@ package net.brewspberry.batches.launchers;
 
 import java.util.logging.Logger;
 
-import javax.naming.spi.DirStateFactory.Result;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
+import net.brewspberry.batches.beans.BatchParams;
+import net.brewspberry.batches.beans.TaskParams;
 import net.brewspberry.batches.tasks.RecordTemperatureFromFileTask;
 import net.brewspberry.batches.tasks.Task;
 import net.brewspberry.business.IGenericService;
@@ -13,24 +15,25 @@ import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
 import net.brewspberry.business.exceptions.ServiceException;
-import net.brewspberry.business.service.ActionerServiceImpl;
-import net.brewspberry.business.service.BrassinServiceImpl;
-import net.brewspberry.business.service.EtapeServiceImpl;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
+@Service
 public class BatchRecordTemperatures implements Batch, Runnable {
 
 	Logger logger = LogManager.getInstance(BatchRecordTemperatures.class.getName());
 	Task currentTask = null;
 	@Autowired
+	@Qualifier("brassinServiceImpl")
 	IGenericService<Brassin> brassinService;
 	@Autowired
+	@Qualifier("etapeServiceImpl")
 	IGenericService<Etape> etapeService;
 	@Autowired
+	@Qualifier("actionerServiceImpl")
 	IGenericService<Actioner> actionerService;
-	String[] batchParams;
+	BatchParams batchParams;
 
 	public BatchRecordTemperatures() {
 		/**
@@ -41,13 +44,13 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 	}
 
-	public BatchRecordTemperatures(String[] args) {
+	public BatchRecordTemperatures(BatchParams args) {
 		/**
 		 * Parameters to pass for this batch : 0- 1- 2- 3- 4- 5-
 		 */
-		if (args.length != 5) {
+		if (!args.validateParams()) {
 
-			logger.severe("Could not initialize batch, number of arguments wrong : " + args.length + " (5 expected)");
+			logger.severe("Could not initialize batch, invalid params : " + args.getInvalidParams() + "");
 			System.exit(1);
 		}
 		this.batchParams = args;
@@ -66,13 +69,13 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		String[] specParams = new String[3];
 		Object[] result = new Object[3];
 
-		logger.info("Params : " + String.valueOf(String.join(";", batchParams) + " | " + String.join(";", specParams)));
-
 		if (batchParams.length > 0 && batchParams.length > firstElement) {
 
 			System.arraycopy(batchParams, firstElement, specParams, 0, result.length);
 
-			Brassin brassin = null;
+			logger.info("Params : " + String.valueOf(String.join(";", batchParams) + " | " + String.join(";", specParams)));
+
+				Brassin brassin = null;
 			Etape etape = null;
 			Actioner actioner = null;
 			try {
@@ -97,16 +100,16 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		return result;
 	}
 
-	public void setBatchParams(String[] batchParams) {
+	public void setBatchParams(BatchParams batchParams) {
 
 		this.batchParams = batchParams;
 
 	}
 
 	@Override
-	public void execute(String[] batchParams) {
+	public synchronized void execute(BatchParams batchParams) {
 
-		Object[] taskParams = this.getTaskParameters(batchParams, 2);
+		TaskParams taskParams = this.batchParams.getTaskParams();
 
 		Integer threadSleep = Integer.parseInt(ConfigLoader.getConfigByKey(
 				Constants.PROJECT_ROOT_PATH + "/" + Constants.BREW_CONF + "/batches.properties",
@@ -116,11 +119,11 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		long startTime;
 
 		logger.fine("Thread sleep param : " + threadSleep);
-		if (batchParams[0] != null) {
+		if (batchParams.getLaunchType() != null) {
 
-			switch (batchParams[0]) {
+			switch (batchParams.getLaunchType()) {
 
-			case "ONCE":
+			case ONCE:
 				try {
 					currentTask = new RecordTemperatureFromFileTask(taskParams);
 
@@ -134,9 +137,9 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 				}
 				break;
 
-			case "SECOND":
+			case SECOND:
 
-				timeLength = Double.parseDouble(batchParams[1]) * 1000;
+				timeLength = new Double(batchParams.getDuration()) * 1000;
 
 				startTime = System.currentTimeMillis();
 
@@ -157,14 +160,14 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 				break;
 
-			case "MINUTE":
+			case MINUTE:
 				try {
 
-					logger.info("Recording temperatures for " + batchParams[1] + " minutes");
-					timeLength = Double.parseDouble(batchParams[1]) * 1000.0 * 60.0;
+					logger.info("Recording temperatures for " + batchParams.getDuration() + " minutes");
+					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 60.0;
 					startTime = System.currentTimeMillis();
 
-					currentTask = new RecordTemperatureFromFileTask(taskParams);
+					currentTask.setTaskParameters(batchParams.getTaskParams());
 					currentTask.setWriteParameters("ALL");
 
 					while ((System.currentTimeMillis() - startTime) < timeLength) {
@@ -184,11 +187,11 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 				break;
 
-			case "HOUR":
+			case HOUR:
 				try {
-					logger.info("Recording temperatures for " + batchParams[1] + " hours");
+					logger.info("Recording temperatures for " + batchParams.getDuration() + " hours");
 
-					timeLength = Double.parseDouble(batchParams[1]) * 1000.0 * 3600.0;
+					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 3600.0;
 					startTime = System.currentTimeMillis();
 
 					currentTask = new RecordTemperatureFromFileTask(taskParams);
@@ -210,7 +213,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 				}
 				break;
 
-			case "INDEFINITE":
+			case INDEFINITE:
 
 				break;
 

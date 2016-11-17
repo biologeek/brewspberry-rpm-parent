@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import net.brewspberry.batches.beans.TaskParams;
 import net.brewspberry.batches.exceptions.NotTheGoodNumberOfArgumentsException;
 import net.brewspberry.batches.util.DS18b20TemperatureMeasurementParser;
 import net.brewspberry.business.IGenericService;
@@ -34,7 +35,7 @@ import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-@Service 
+@Service
 @Transactional
 public class RecordTemperatureFromFileTask implements Task {
 	/**
@@ -44,8 +45,7 @@ public class RecordTemperatureFromFileTask implements Task {
 	 * 
 	 */
 
-	DS18b20TemperatureMeasurementParser parser = DS18b20TemperatureMeasurementParser
-			.getInstance();
+	DS18b20TemperatureMeasurementParser parser = DS18b20TemperatureMeasurementParser.getInstance();
 	List<Path> filesToRead;
 	Map<String, Integer> valuesMap = new HashMap<String, Integer>();
 
@@ -55,20 +55,14 @@ public class RecordTemperatureFromFileTask implements Task {
 
 	String entityToWrite = "ALL";
 
-	Object[] specificParameters = null;
+	TaskParams specificParameters = null;
 	List<ConcreteTemperatureMeasurement> temperatureMeasurement = new ArrayList<ConcreteTemperatureMeasurement>();
 
+	private Logger logger = LogManager.getInstance(DS18b20TemperatureMeasurementParser.class.getName());
 
-	private Logger logger = LogManager
-			.getInstance(DS18b20TemperatureMeasurementParser.class.getName());
+	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	public static SimpleDateFormat sdf = new SimpleDateFormat(
-			"yyyy-MM-dd HH:mm:ss");
-
-	
-	
-
-	public RecordTemperatureFromFileTask(Object[] specificParameters) {
+	public RecordTemperatureFromFileTask(TaskParams specificParameters) {
 		super();
 
 		/*
@@ -77,18 +71,17 @@ public class RecordTemperatureFromFileTask implements Task {
 
 		this.specificParameters = specificParameters;
 	}
-	
-	
+
 	public void run() {
 
 		try {
 			filesToRead = parser.findFilesToOpen();
 		} catch (IOException e1) {
-			
+
 			e1.printStackTrace();
 		}
 
-		logger.info("Thread started. Found "+filesToRead.size()+" files :");
+		logger.info("Thread started. Found " + filesToRead.size() + " files :");
 		Iterator<Path> itP = filesToRead.iterator();
 
 		while (itP.hasNext()) {
@@ -108,8 +101,7 @@ public class RecordTemperatureFromFileTask implements Task {
 		try {
 			if (checkSpecificParameters(specificParameters)) {
 
-				Iterator<Entry<String, Integer>> entries = valuesMap.entrySet()
-						.iterator();
+				Iterator<Entry<String, Integer>> entries = valuesMap.entrySet().iterator();
 
 				int i = 0;
 				while (entries.hasNext()) {
@@ -117,7 +109,7 @@ public class RecordTemperatureFromFileTask implements Task {
 					ConcreteTemperatureMeasurement tmes = new ConcreteTemperatureMeasurement();
 					Entry<String, Integer> entry = entries.next();
 
-					tmes.setTmes_brassin((Brassin) specificParameters[0]);
+					tmes.setTmes_brassin((Brassin) specificParameters.getBrew());
 					tmes.setTmes_etape((Etape) specificParameters[1]);
 					tmes.setTmes_actioner((Actioner) specificParameters[2]);
 					tmes.setTmes_date(new Date());
@@ -134,12 +126,10 @@ public class RecordTemperatureFromFileTask implements Task {
 
 				if (temperatureMeasurement.size() > 0) {
 
-					if (entityToWrite.equals("ALL")
-							|| entityToWrite.equals("FILE")) {
+					if (entityToWrite.equals("ALL") || entityToWrite.equals("FILE")) {
 						logger.fine("Saving in File");
 
-						List<String> linesToAddToCSV = this
-								.formatDataForCSVFile(temperatureMeasurement);
+						List<String> linesToAddToCSV = this.formatDataForCSVFile(temperatureMeasurement);
 
 						Iterator<String> it2 = linesToAddToCSV.iterator();
 						while (it2.hasNext()) {
@@ -149,10 +139,8 @@ public class RecordTemperatureFromFileTask implements Task {
 						}
 
 					}
-					if (entityToWrite.equals("ALL")
-							|| entityToWrite.equals("SQL")) {
-						Iterator<ConcreteTemperatureMeasurement> it = temperatureMeasurement
-								.iterator();
+					if (entityToWrite.equals("ALL") || entityToWrite.equals("SQL")) {
+						Iterator<ConcreteTemperatureMeasurement> it = temperatureMeasurement.iterator();
 
 						while (it.hasNext()) {
 							ConcreteTemperatureMeasurement tmesToRec = it.next();
@@ -162,8 +150,8 @@ public class RecordTemperatureFromFileTask implements Task {
 								tmesService.save(tmesToRec);
 
 							} catch (Exception e) {
-								logger.severe("Could not record this measurement : UUID="
-										+ tmesToRec.getTmes_probeUI());
+								logger.severe(
+										"Could not record this measurement : UUID=" + tmesToRec.getTmes_probeUI());
 
 								e.printStackTrace();
 							}
@@ -184,37 +172,28 @@ public class RecordTemperatureFromFileTask implements Task {
 	 * 
 	 * @throws NotTheGoodNumberOfArgumentsException
 	 */
-	public boolean checkSpecificParameters(Object[] specs)
-			throws NotTheGoodNumberOfArgumentsException {
+	public boolean checkSpecificParameters(TaskParams specificParameters2) throws NotTheGoodNumberOfArgumentsException {
 
 		logger.fine("Got this : ");
 
-		if (specs[0] instanceof Brassin && specs[1] instanceof Etape
-				&& specs[2] instanceof Actioner) {
-			for (Object param : specs) {
+		
 
-				logger.fine("| " + param);
+			logger.fine("Parameters : Brew=" + specificParameters2.getBrew() + " Step=" + specificParameters2.getStep() + " Actioner="
+					+ specificParameters2.getActioner());
 
-			}
+			return true;
 
-			if (specs.length == 3) {
-
-				logger.fine("Parameters : Brew=" + specs[0] + " Step="
-						+ specs[1] + " Actioner=" + specs[2]);
-
-				return true;
-
-			} else {
-				throw new NotTheGoodNumberOfArgumentsException();
-			}
+		} else {
+			throw new NotTheGoodNumberOfArgumentsException();
 		}
-		else {
-			return false;
-		}
+	}else
+
+	{
+		return false;
+	}
 	}
 
-	public void buildSpecificParameters(String specs) {
-		
+	public void setTaskParameters(TaskParams specs) {
 
 	}
 
@@ -232,14 +211,10 @@ public class RecordTemperatureFromFileTask implements Task {
 
 				ConcreteTemperatureMeasurement tmesU = it.next();
 
-				lineResult = sdf.format(new Date()) + ";"
-						+ String.valueOf(tmesU.getTmes_brassin().getBra_id())
-						+ ";"
-						+ String.valueOf(tmesU.getTmes_etape().getEtp_id())
-						+ ";"
-						+ String.valueOf(tmesU.getTmes_actioner().getAct_id())
-						+ ";" + String.valueOf(tmesU.getTmes_probe_name())
-						+ ";" + String.valueOf(tmesU.getTmes_value());
+				lineResult = sdf.format(new Date()) + ";" + String.valueOf(tmesU.getTmes_brassin().getBra_id()) + ";"
+						+ String.valueOf(tmesU.getTmes_etape().getEtp_id()) + ";"
+						+ String.valueOf(tmesU.getTmes_actioner().getAct_id()) + ";"
+						+ String.valueOf(tmesU.getTmes_probe_name()) + ";" + String.valueOf(tmesU.getTmes_value());
 
 				result.add(lineResult);
 			}
@@ -260,22 +235,21 @@ public class RecordTemperatureFromFileTask implements Task {
 		try {
 			writer = new BufferedWriter(new OutputStreamWriter(
 
-			new FileOutputStream(ConfigLoader.getConfigByKey(
-					Constants.CONFIG_PROPERTIES,
-					"files.measurements.temperature")), "utf-8"));
+					new FileOutputStream(
+							ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "files.measurements.temperature")),
+					"utf-8"));
 
 			writer.write(str);
 
 		} catch (Exception e) {
 			logger.severe("Could not write line to file "
-					+ ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES,
-							"files.measurements.temperature"));
+					+ ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "files.measurements.temperature"));
 		} finally {
 
 			try {
 				writer.close();
 			} catch (IOException e) {
-				
+
 				e.printStackTrace();
 			}
 		}
@@ -292,8 +266,7 @@ public class RecordTemperatureFromFileTask implements Task {
 
 		if (entityToWrite != null) {
 
-			if (Arrays.asList(Constants.WRITABLE_ENTITIES).contains(
-					entityToWrite)) {
+			if (Arrays.asList(Constants.WRITABLE_ENTITIES).contains(entityToWrite)) {
 
 				this.entityToWrite = entityToWrite;
 			}

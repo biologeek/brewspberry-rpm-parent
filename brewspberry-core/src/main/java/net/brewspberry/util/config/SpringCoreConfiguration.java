@@ -7,66 +7,38 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
-import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-
-
 @Configuration
 @ComponentScan({ "net.brewspberry" })
 @EnableTransactionManagement
-@PropertySources(value = { @PropertySource("file:/#{systemProperties.app.parameters}/config.properties"),
-		@PropertySource("classpath:c3po.properties"),
-		@PropertySource("file:/#{systemProperties.app.parameters}/devices.properties"),
-		@PropertySource("file:/#{systemProperties.app.parameters}/batches.properties") })
-public class SpringCoreConfiguration {
+@PropertySources(value = { @PropertySource("file:${app.parameters}/config.properties"),
+		@PropertySource("classpath:c3po.properties"), @PropertySource("file:${app.parameters}/devices.properties"),
+		@PropertySource("file:${app.parameters}/batches.properties") })
+public class SpringCoreConfiguration implements EnvironmentAware {
 
-	
-	@Autowired
 	private Environment env;
-	
-//	@Value("${datasource.jdbc.address}")
-//	String address;
-//	
-//	@Value("${datasource.jdbc.address}")
-//	String driver;
-//	
-//	@Value("${datasource.jdbc.address}")
-//	String user;
-//	
-//	@Value("${datasource.jdbc.address}")
-//	String password;
-//	
+
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-		/*
-		 * dataSource.setDriverClassName("org.h2.Driver");
-		 * dataSource.setUrl("jdbc:h2:~/test"); dataSource.setUsername("sa");
-		 * dataSource.setPassword("");
-		 * 
-		 */
 		
-		 dataSource.setDriverClassName("org.postgresql.Driver");
-		 dataSource.setUrl("jdbc:postgresql://localhost:5432/brewspberry");
-		 dataSource.setUsername("postgres");
-		 dataSource.setPassword("postgres");
-		
-		
-//		dataSource.setDriverClassName(driver);
-//		dataSource.setUrl(address);
-//		dataSource.setUsername(user);
-//		dataSource.setPassword(password);
+
+		dataSource.setDriverClassName(env.getProperty("datasource.jdbc.driver"));
+		dataSource.setUrl(env.getProperty("datasource.jdbc.address"));
+		dataSource.setUsername(env.getProperty("datasource.jdbc.user"));
+		dataSource.setPassword(env.getProperty("datasource.jdbc.password"));
 
 		return dataSource;
 	}
@@ -84,7 +56,9 @@ public class SpringCoreConfiguration {
 
 	@Bean
 	public static PropertyPlaceholderConfigurer configurer() {
-		return new PropertyPlaceholderConfigurer();
+		PropertyPlaceholderConfigurer config = new PropertyPlaceholderConfigurer();
+
+		return config;
 	}
 
 	@Autowired
@@ -95,18 +69,6 @@ public class SpringCoreConfiguration {
 		return transactionManager;
 	}
 
-	/*
-	 * @Bean public static PropertySourcesPlaceholderConfigurer
-	 * propertySourcesPlaceholderConfigurer() {
-	 * PropertySourcesPlaceholderConfigurer placeholder = new
-	 * PropertySourcesPlaceholderConfigurer();
-	 * 
-	 * placeholder.setIgnoreResourceNotFound(false);
-	 * 
-	 * placeholder.
-	 * 
-	 * return placeholder; }
-	 */
 	@Bean
 	Properties hibernateProperties() {
 		return new Properties() {
@@ -120,6 +82,12 @@ public class SpringCoreConfiguration {
 				properties.put("hibernate.show_sql", "true");
 			}
 		};
+	}
+
+	@Override
+	public void setEnvironment(Environment arg0) {
+		this.env = arg0;
+
 	}
 
 }

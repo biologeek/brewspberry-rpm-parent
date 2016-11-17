@@ -1,10 +1,5 @@
 package net.brewspberry.util;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import net.brewspberry.util.config.SpringCoreConfiguration;

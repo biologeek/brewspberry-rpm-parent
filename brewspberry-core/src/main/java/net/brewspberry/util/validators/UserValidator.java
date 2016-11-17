@@ -3,8 +3,6 @@ package net.brewspberry.util.validators;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import net.brewspberry.business.beans.User;
 import net.brewspberry.util.ConfigLoader;
 import net.brewspberry.util.Constants;
