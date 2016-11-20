@@ -10,6 +10,7 @@ import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
@@ -19,14 +20,17 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import net.brewspberry.util.config.SpringCoreConfiguration;
+
 @Configuration
-@ComponentScan(basePackages = { "net.brewspberry" })
+@ComponentScan(basePackages = { "net.brewspberry" }, excludeFilters={
+		@ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value=SpringCoreConfiguration.class)
+})
 @EnableTransactionManagement
 @PropertySources(value={@PropertySource("classpath:config.test.properties")
 , @PropertySource("classpath:c3po.properties")
 , @PropertySource("classpath:devices.test.properties")
 })
-@Profile("test")
 public class SpringCoreTestConfiguration {
 	@Autowired
 	private Environment environment;

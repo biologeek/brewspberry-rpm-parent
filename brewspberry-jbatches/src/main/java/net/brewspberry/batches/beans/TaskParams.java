@@ -47,5 +47,22 @@ public class TaskParams {
 		this.actioner = actioner;
 		return this;
 	}
+	
+	
+	public boolean hasNullAttributes() {
+
+		if (this.getActioner() == null){
+			return true;
+		}
+		
+		if (this.getStep() == null){
+			return true;
+		}
+		
+		if (this.getBrew() == null){
+			return true;
+		}
+		return false;
+	}
 
 }

@@ -6,7 +6,7 @@ public interface Batch {
 
 	
 	
-	public void execute (BatchParams batchParams);
+	public void execute ();
 	public void setBatchParams(BatchParams batchParams);
 	
 }

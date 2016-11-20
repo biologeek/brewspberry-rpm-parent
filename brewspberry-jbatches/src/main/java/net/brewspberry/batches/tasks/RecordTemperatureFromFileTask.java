@@ -64,11 +64,9 @@ public class RecordTemperatureFromFileTask implements Task {
 
 	public RecordTemperatureFromFileTask(TaskParams specificParameters) {
 		super();
-
 		/*
 		 * Specific parameters are :
 		 */
-
 		this.specificParameters = specificParameters;
 	}
 
@@ -110,8 +108,8 @@ public class RecordTemperatureFromFileTask implements Task {
 					Entry<String, Integer> entry = entries.next();
 
 					tmes.setTmes_brassin((Brassin) specificParameters.getBrew());
-					tmes.setTmes_etape((Etape) specificParameters[1]);
-					tmes.setTmes_actioner((Actioner) specificParameters[2]);
+					tmes.setTmes_etape((Etape) specificParameters.getStep());
+					tmes.setTmes_actioner((Actioner) specificParameters.getActioner());
 					tmes.setTmes_date(new Date());
 
 					tmes.setTmes_probeUI(entry.getKey());
@@ -176,21 +174,16 @@ public class RecordTemperatureFromFileTask implements Task {
 
 		logger.fine("Got this : ");
 
-		
+		if (!specificParameters2.hasNullAttributes()) {
 
-			logger.fine("Parameters : Brew=" + specificParameters2.getBrew() + " Step=" + specificParameters2.getStep() + " Actioner="
-					+ specificParameters2.getActioner());
+			logger.fine("Parameters : Brew=" + specificParameters2.getBrew() + " Step=" + specificParameters2.getStep()
+					+ " Actioner=" + specificParameters2.getActioner());
 
 			return true;
 
 		} else {
 			throw new NotTheGoodNumberOfArgumentsException();
 		}
-	}else
-
-	{
-		return false;
-	}
 	}
 
 	public void setTaskParameters(TaskParams specs) {
@@ -263,14 +256,21 @@ public class RecordTemperatureFromFileTask implements Task {
 	 * @param entityToWrite
 	 */
 	public void setWriteParameters(String entityToWrite) {
-
 		if (entityToWrite != null) {
-
 			if (Arrays.asList(Constants.WRITABLE_ENTITIES).contains(entityToWrite)) {
-
 				this.entityToWrite = entityToWrite;
 			}
 		}
+	}
 
+	@Override
+	public boolean checkSpecificParameters(Object[] specs) throws NotTheGoodNumberOfArgumentsException {
+		
+		for (Object obj : specs){
+			if (obj == null)
+				return false;
+		}
+		
+		return true;
 	}
 }

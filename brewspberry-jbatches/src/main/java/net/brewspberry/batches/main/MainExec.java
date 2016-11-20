@@ -4,12 +4,15 @@ import java.util.logging.Logger;
 
 import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import net.brewspberry.batches.beans.BatchParams;
 import net.brewspberry.batches.beans.BatchParams.LaunchType;
 import net.brewspberry.batches.beans.TaskParams;
 import net.brewspberry.batches.launchers.Batch;
 import net.brewspberry.batches.launchers.BatchRecordTemperatures;
+import net.brewspberry.batches.util.config.JBatchesApplicationConfig;
 import net.brewspberry.business.ISpecificActionerLauncherService;
 import net.brewspberry.util.LogManager;
 
@@ -17,11 +20,22 @@ public class MainExec {
 
 	private static final Logger logger = LogManager.getInstance(MainExec.class.getName());
 	
+	ApplicationContext context;
+	
 	@Autowired
 	ISpecificActionerLauncherService launcherService;
+	
+	@Autowired
+	Batch recordTemperatureBatch;
+	
+	public MainExec() {
+		context = new AnnotationConfigApplicationContext(JBatchesApplicationConfig.class);
+	}
 
 	public static void main(String[] args) {
 
+		
+		MainExec main = new MainExec(); 
 		if (args.length > 0) {
 
 			switch (args[0]) {
@@ -35,8 +49,9 @@ public class MainExec {
 
 				try {
 					
-					laun
-					Batch recordTemperature = new BatchRecordTemperatures(batchParams);
+					main.setParams(batchParams);
+					main.start();
+					 
 					System.exit(0);
 
 				} catch (Exception e) {
@@ -50,6 +65,19 @@ public class MainExec {
 
 		}
 
+	}
+	
+
+	public void setParams(BatchParams params){
+		
+		this.recordTemperatureBatch.setBatchParams(params);
+		
+	}
+
+	public void start(){
+		
+		this.recordTemperatureBatch.execute();
+		
 	}
 
 }

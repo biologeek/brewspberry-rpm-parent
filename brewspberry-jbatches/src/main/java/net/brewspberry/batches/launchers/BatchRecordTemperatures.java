@@ -62,7 +62,12 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 	 * 1 Launch length 2-n Specific argument
 	 */
 	public void run() {
-		this.execute(batchParams);
+		
+		if (this.batchParams != null){
+			this.execute();
+		} else {
+			throw new RuntimeException("Could not start batch without parameters !");
+		}
 	}
 
 	private Object[] getTaskParameters(String[] batchParams, int firstElement) {
@@ -107,7 +112,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 	}
 
 	@Override
-	public synchronized void execute(BatchParams batchParams) {
+	public synchronized void execute() {
 
 		TaskParams taskParams = this.batchParams.getTaskParams();
 
