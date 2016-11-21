@@ -3,37 +3,28 @@ package net.brewspberry.batches.launchers;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import net.brewspberry.batches.beans.BatchParams;
 import net.brewspberry.batches.beans.TaskParams;
 import net.brewspberry.batches.tasks.RecordTemperatureFromFileTask;
 import net.brewspberry.batches.tasks.Task;
-import net.brewspberry.business.IGenericService;
-import net.brewspberry.business.beans.Actioner;
-import net.brewspberry.business.beans.Brassin;
-import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.exceptions.ServiceException;
-import net.brewspberry.util.ConfigLoader;
-import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
 
-@Service
+@Component
+@Scope("prototype")
 public class BatchRecordTemperatures implements Batch, Runnable {
 
 	Logger logger = LogManager.getInstance(BatchRecordTemperatures.class.getName());
-	Task currentTask = null;
+	
 	@Autowired
-	@Qualifier("brassinServiceImpl")
-	IGenericService<Brassin> brassinService;
-	@Autowired
-	@Qualifier("etapeServiceImpl")
-	IGenericService<Etape> etapeService;
-	@Autowired
-	@Qualifier("actionerServiceImpl")
-	IGenericService<Actioner> actionerService;
+	Task currentTask;
+
 	BatchParams batchParams;
+
+	@Value("brewspberry.batches.threads.delay")
+	Integer threadSleep;
 
 	public BatchRecordTemperatures() {
 		/**
@@ -70,56 +61,54 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		}
 	}
 
-	private Object[] getTaskParameters(String[] batchParams, int firstElement) {
-		String[] specParams = new String[3];
-		Object[] result = new Object[3];
-
-		if (batchParams.length > 0 && batchParams.length > firstElement) {
-
-			System.arraycopy(batchParams, firstElement, specParams, 0, result.length);
-
-			logger.info(
-					"Params : " + String.valueOf(String.join(";", batchParams) + " | " + String.join(";", specParams)));
-
-			Brassin brassin = null;
-			Etape etape = null;
-			Actioner actioner = null;
-			try {
-				brassin = brassinService.getElementById(Long.parseLong(specParams[0]));
-
-				etape = etapeService.getElementById(Long.parseLong(specParams[1]));
-				actioner = actionerService.getElementById(Long.parseLong(specParams[2]));
-			} catch (NumberFormatException e) {
-
-				e.printStackTrace();
-			} catch (ServiceException e) {
-
-				e.printStackTrace();
-			}
-			result[0] = brassin;
-			result[1] = etape;
-			result[2] = actioner;
-			logger.fine("Transmitting " + result[0] + result[1] + result[2] + " to task");
-
-		}
-
-		return result;
-	}
+	// private Object[] getTaskParameters(String[] batchParams, int
+	// firstElement) {
+	// String[] specParams = new String[3];
+	// Object[] result = new Object[3];
+	//
+	// if (batchParams.length > 0 && batchParams.length > firstElement) {
+	//
+	// System.arraycopy(batchParams, firstElement, specParams, 0,
+	// result.length);
+	//
+	// logger.info(
+	// "Params : " + String.valueOf(String.join(";", batchParams) + " | " +
+	// String.join(";", specParams)));
+	//
+	// Brassin brassin = null;
+	// Etape etape = null;
+	// Actioner actioner = null;
+	// try {
+	// brassin = brassinService.getElementById(Long.parseLong(specParams[0]));
+	//
+	// etape = etapeService.getElementById(Long.parseLong(specParams[1]));
+	// actioner = actionerService.getElementById(Long.parseLong(specParams[2]));
+	// } catch (NumberFormatException e) {
+	//
+	// e.printStackTrace();
+	// } catch (ServiceException e) {
+	//
+	// e.printStackTrace();
+	// }
+	// result[0] = brassin;
+	// result[1] = etape;
+	// result[2] = actioner;
+	// logger.fine("Transmitting " + result[0] + result[1] + result[2] + " to
+	// task");
+	//
+	// }
+	//
+	// return result;
+	// }
 
 	public void setBatchParams(BatchParams batchParams) {
-
 		this.batchParams = batchParams;
-
 	}
 
 	@Override
 	public synchronized void execute() {
 
 		TaskParams taskParams = this.batchParams.getTaskParams();
-
-		Integer threadSleep = Integer.parseInt(ConfigLoader.getConfigByKey(
-				Constants.PROJECT_ROOT_PATH + "/" + Constants.BREW_CONF + "/batches.properties",
-				"brewspberry.batches.threads.delay"));
 
 		double timeLength;
 		long startTime;
@@ -131,7 +120,6 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 			case ONCE:
 				try {
-					currentTask = new RecordTemperatureFromFileTask();
 
 					currentTask.setTaskParameters(taskParams);
 					currentTask.setWriteParameters("ALL");
@@ -156,7 +144,6 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 							+ (System.currentTimeMillis() - startTime));
 
 					try {
-						currentTask = new RecordTemperatureFromFileTask();
 
 						currentTask.setTaskParameters(taskParams);
 						currentTask.setWriteParameters("ALL");
@@ -209,9 +196,8 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 3600.0;
 					startTime = System.currentTimeMillis();
 
-					currentTask = new RecordTemperatureFromFileTask();
 					currentTask.setTaskParameters(taskParams);
-					currentTask.setWriteParameters(String.join("ALL"));
+					currentTask.setWriteParameters("ALL");
 
 					while ((System.currentTimeMillis() - startTime) < timeLength) {
 

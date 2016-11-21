@@ -36,6 +36,7 @@ public class MainExec {
 
 		
 		MainExec main = new MainExec(); 
+		
 		if (args.length > 0) {
 
 			switch (args[0]) {
@@ -51,7 +52,7 @@ public class MainExec {
 					
 					main.setParams(batchParams);
 					main.start();
-					 
+					
 					System.exit(0);
 
 				} catch (Exception e) {
@@ -63,6 +64,9 @@ public class MainExec {
 				break;
 			}
 
+		} else {
+			logger.warning("No arguments provided, exiting with status code 0");
+			System.exit(0);
 		}
 
 	}

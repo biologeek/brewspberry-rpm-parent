@@ -121,4 +121,10 @@ public class Actioner {
 	public void setAct_used(boolean act_used) {
 		this.act_used = act_used;
 	}
+
+
+	public Actioner id(Long id) {
+		this.act_id = id;
+		return this;
+	}
 }

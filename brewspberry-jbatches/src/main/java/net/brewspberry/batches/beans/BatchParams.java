@@ -1,9 +1,14 @@
 package net.brewspberry.batches.beans;
 
+import java.util.Arrays;
+import java.util.logging.Logger;
+
+
 import net.brewspberry.batches.beans.BatchParams.LaunchType;
 import net.brewspberry.business.beans.Actioner;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
+import net.brewspberry.util.LogManager;
 
 public class BatchParams {
 	
@@ -15,11 +20,17 @@ public class BatchParams {
 	
 	private String duration;
 	
-	private String brewID;
-	private String stepID;
-	private String actionerID;
+	private Brassin brew;
+	private Etape step;
+	private Actioner actionner;
 	
 	private TaskParams taskParams;
+
+	private Logger logger;
+	
+	private BatchParams() {
+		logger = LogManager.getInstance(this.getClass().getName());
+	}
 
 	public LaunchType getLaunchType() {
 		return launchType;
@@ -29,29 +40,6 @@ public class BatchParams {
 		this.launchType = launchType;
 	}
 
-	public String getBrewID() {
-		return brewID;
-	}
-
-	public void setBrewID(String brewID) {
-		this.brewID = brewID;
-	}
-
-	public String getStepID() {
-		return stepID;
-	}
-
-	public void setStepID(String stepID) {
-		this.stepID = stepID;
-	}
-
-	public String getActionerID() {
-		return actionerID;
-	}
-
-	public void setActionerID(String actionerID) {
-		this.actionerID = actionerID;
-	}
 
 	public TaskParams getTaskParams() {
 		return taskParams;
@@ -79,9 +67,25 @@ public class BatchParams {
 		this.duration = duration;
 	}
 
-	
+
 	public BatchParams duration(String duration) {
 		this.duration = duration;
+		return this;
+		
+	}
+
+	public BatchParams brew(Brassin brassin) {
+		this.brew = brassin;
+		return this;
+		
+	}
+	public BatchParams step(Etape brassin) {
+		this.step = brassin;
+		return this;
+		
+	}
+	public BatchParams actionner(Actioner brassin) {
+		this.actionner = brassin;
 		return this;
 		
 	}
@@ -92,49 +96,75 @@ public class BatchParams {
 		
 	}
 	
-	public BatchParams brew(String brew) {
-		this.brewID = brew;
-		return this;
-		
-	}
 	
-	public BatchParams step(String step) {
-		this.stepID = step;
-		return this;
-		
+	public Brassin getBrew() {
+		return brew;
 	}
 
-	public BatchParams actionner(String actionner) {
-		this.actionerID = actionner;
-		return this;
-		
+	public void setBrew(Brassin brew) {
+		this.brew = brew;
 	}
-	
+
+	public Etape getStep() {
+		return step;
+	}
+
+	public void setStep(Etape step) {
+		this.step = step;
+	}
+
+	public Actioner getActioner() {
+		return actionner;
+	}
+
+	public void setActioner(Actioner actioner) {
+		this.actionner = actioner;
+	}
+
+	public Logger getLogger() {
+		return logger;
+	}
+
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
 	public BatchParams taskParams(TaskParams taskParams) {
 		this.taskParams = taskParams;
 		return this;
 		
 	}
 	
-	
+
 	public static class BatchParamsBuilder{
 		
-
+		private Logger logger;
+		
+		public BatchParamsBuilder() {
+			logger = LogManager.getInstance(this.getClass().getName());
+		}
 		/**
 		 * Converts an array of objects to a BatchParams object
 		 * To correctly map parameters
-		 * @param args
+		 * @param args 
 		 * @return
 		 */
-		public BatchParams buildBatchParams(Object[] args) {
+		public BatchParams buildBatchParams(String[] args) {
 			BatchParams params = new BatchParams()//
 					.launchType(LaunchType.valueOf((String) args[0]))//
 					.duration((String) args[1])//
-					.brew((String) args[2])//
-					.step((String) args[3])//
-					.actionner((String) args[4])//
+					.brew(new Brassin().id(Long.parseLong(args[2])))//
+					.step(new Etape().id(Long.parseLong(args[3])))//
+					.actionner(new Actioner().id(Long.parseLong(args[4])))//
 					.taskParams(buildTaskParams(args));
 					;
+			
+			logger.info("Got following arguments : \n"
+			+params.getLaunchType()+",\n"
+			+params.getDuration()+",\n"
+			+params.getBrew()+",\n"
+			+params.getStep()+",\n"
+			+params.getActioner());
 			
 			
 			return params;
