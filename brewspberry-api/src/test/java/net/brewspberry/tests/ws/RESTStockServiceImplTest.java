@@ -14,9 +14,11 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import net.brewspberry.business.ISpecificStockService;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.tests.config.ApiSpringTestConfiguration;
+import net.brewspberry.tests.config.TestInitializer;
+import net.brewspberry.tests.utils.TestUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class, classes={ApiSpringTestConfiguration.class})
+@ContextConfiguration(classes={ApiSpringTestConfiguration.class, SpringCoreTestConfiguration.class})
 @WebAppConfiguration
 public class RESTStockServiceImplTest {
 
@@ -37,7 +39,7 @@ public class RESTStockServiceImplTest {
 	public void testAutowiring (){
 		
 		Assert.assertNotNull(stockSpecService);
-		
+				
 	}
 	
 	

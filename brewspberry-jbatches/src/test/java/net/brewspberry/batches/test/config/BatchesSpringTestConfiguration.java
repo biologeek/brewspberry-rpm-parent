@@ -7,22 +7,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-import net.brewspberry.batches.util.config.JBatchesApplicationConfig;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
-import net.brewspberry.util.config.SpringCoreConfiguration;
-
 
 @Configuration
-@ComponentScan(basePackages = { "net.brewspberry" }, excludeFilters={
-		@ComponentScan.Filter(type=FilterType.REGEX, pattern={"net\\.brewspberry\\.util\\.config*"})
-})
-@Import({ SpringCoreTestConfiguration.class})
-@PropertySources(value={@PropertySource("classpath:config.test.properties")
-, @PropertySource("classpath:c3po.properties")
-, @PropertySource("classpath:devices.test.properties")
-})
+@ComponentScan(basePackages = { "net.brewspberry.test" }, excludeFilters = {
+		@ComponentScan.Filter(type = FilterType.ANNOTATION, value = Configuration.class) })
+@Import({ SpringCoreTestConfiguration.class })
+@PropertySources(value = { @PropertySource("classpath:config.test.properties"),
+		@PropertySource("classpath:c3po.properties"), @PropertySource("classpath:devices.test.properties") })
 public class BatchesSpringTestConfiguration {
 
-	
-	
 }

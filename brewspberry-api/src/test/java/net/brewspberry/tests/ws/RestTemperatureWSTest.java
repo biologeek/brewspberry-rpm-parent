@@ -24,7 +24,7 @@ import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class, classes={ApiSpringTestConfiguration.class})
+@ContextConfiguration(classes={ApiSpringTestConfiguration.class, SpringCoreTestConfiguration.class})
 @WebAppConfiguration
 public class RestTemperatureWSTest {
 	

@@ -55,20 +55,18 @@ public class RecordTemperatureFromFileTask implements Task {
 
 	String entityToWrite = "ALL";
 
-	TaskParams specificParameters = null;
+	TaskParams specificParameters;
 	List<ConcreteTemperatureMeasurement> temperatureMeasurement = new ArrayList<ConcreteTemperatureMeasurement>();
 
 	private Logger logger = LogManager.getInstance(DS18b20TemperatureMeasurementParser.class.getName());
 
 	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	public RecordTemperatureFromFileTask(TaskParams specificParameters) {
+	public RecordTemperatureFromFileTask() {
 		super();
-		/*
-		 * Specific parameters are :
-		 */
-		this.specificParameters = specificParameters;
 	}
+	
+	
 
 	public void run() {
 

@@ -24,7 +24,7 @@ import net.brewspberry.util.config.SpringCoreConfiguration;
 
 @Configuration
 @ComponentScan(basePackages = { "net.brewspberry" }, excludeFilters={
-		@ComponentScan.Filter(type=FilterType.ASSIGNABLE_TYPE, value=SpringCoreConfiguration.class)
+		@ComponentScan.Filter(type=FilterType.ANNOTATION, value=Configuration.class)
 })
 @EnableTransactionManagement
 @PropertySources(value={@PropertySource("classpath:config.test.properties")

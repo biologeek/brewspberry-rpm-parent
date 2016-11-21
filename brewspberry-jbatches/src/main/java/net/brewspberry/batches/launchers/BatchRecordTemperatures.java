@@ -62,8 +62,8 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 	 * 1 Launch length 2-n Specific argument
 	 */
 	public void run() {
-		
-		if (this.batchParams != null){
+
+		if (this.batchParams != null) {
 			this.execute();
 		} else {
 			throw new RuntimeException("Could not start batch without parameters !");
@@ -78,9 +78,10 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 			System.arraycopy(batchParams, firstElement, specParams, 0, result.length);
 
-			logger.info("Params : " + String.valueOf(String.join(";", batchParams) + " | " + String.join(";", specParams)));
+			logger.info(
+					"Params : " + String.valueOf(String.join(";", batchParams) + " | " + String.join(";", specParams)));
 
-				Brassin brassin = null;
+			Brassin brassin = null;
 			Etape etape = null;
 			Actioner actioner = null;
 			try {
@@ -89,10 +90,10 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 				etape = etapeService.getElementById(Long.parseLong(specParams[1]));
 				actioner = actionerService.getElementById(Long.parseLong(specParams[2]));
 			} catch (NumberFormatException e) {
-				
+
 				e.printStackTrace();
 			} catch (ServiceException e) {
-				
+
 				e.printStackTrace();
 			}
 			result[0] = brassin;
@@ -130,8 +131,9 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 			case ONCE:
 				try {
-					currentTask = new RecordTemperatureFromFileTask(taskParams);
+					currentTask = new RecordTemperatureFromFileTask();
 
+					currentTask.setTaskParameters(taskParams);
 					currentTask.setWriteParameters("ALL");
 
 					Thread t = new Thread((Runnable) currentTask);
@@ -154,10 +156,18 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 							+ (System.currentTimeMillis() - startTime));
 
 					try {
-						new Thread((Runnable) new RecordTemperatureFromFileTask(taskParams)).start();
+						currentTask = new RecordTemperatureFromFileTask();
+
+						currentTask.setTaskParameters(taskParams);
+						currentTask.setWriteParameters("ALL");
+
+						Thread t = new Thread((Runnable) currentTask);
+
+						t.start();
+
 						Thread.sleep(threadSleep);
 					} catch (Throwable e) {
-						
+
 						e.printStackTrace();
 					}
 
@@ -172,7 +182,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 60.0;
 					startTime = System.currentTimeMillis();
 
-					currentTask.setTaskParameters(batchParams.getTaskParams());
+					currentTask.setTaskParameters(taskParams);
 					currentTask.setWriteParameters("ALL");
 
 					while ((System.currentTimeMillis() - startTime) < timeLength) {
@@ -182,7 +192,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 							t.start();
 							Thread.sleep(threadSleep);
 						} catch (Throwable e) {
-							
+
 							e.printStackTrace();
 						}
 					}
@@ -199,7 +209,8 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 3600.0;
 					startTime = System.currentTimeMillis();
 
-					currentTask = new RecordTemperatureFromFileTask(taskParams);
+					currentTask = new RecordTemperatureFromFileTask();
+					currentTask.setTaskParameters(taskParams);
 					currentTask.setWriteParameters(String.join("ALL"));
 
 					while ((System.currentTimeMillis() - startTime) < timeLength) {
@@ -208,7 +219,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 							new Thread((Runnable) currentTask).start();
 							Thread.sleep(threadSleep);
 						} catch (Throwable e) {
-							
+
 							e.printStackTrace();
 						}
 					}

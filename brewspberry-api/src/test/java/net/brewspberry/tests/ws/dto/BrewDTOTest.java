@@ -1,38 +1,31 @@
 package net.brewspberry.tests.ws.dto;
 
-import org.junit.Test;
-import org.junit.internal.runners.JUnit38ClassRunner;
-import org.junit.internal.runners.JUnit4ClassRunner;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import net.brewspberry.business.IGenericService;
 import net.brewspberry.business.beans.Brassin;
 import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.EtapeType;
 import net.brewspberry.business.beans.PalierType;
 import net.brewspberry.front.ws.beans.dto.BrassinDTO;
-import net.brewspberry.front.ws.beans.requests.BrewRequest;
 import net.brewspberry.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.front.ws.beans.responses.SimpleBrewResponse;
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.tests.config.ApiSpringTestConfiguration;
 import net.brewspberry.tests.utils.TestUtils;
 
 
 
-@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class, classes={ApiSpringTestConfiguration.class})
+@ContextConfiguration(classes={ApiSpringTestConfiguration.class, SpringCoreTestConfiguration.class})
 @WebAppConfiguration
 public class BrewDTOTest {
 	
@@ -41,7 +34,11 @@ public class BrewDTOTest {
 	
 	Brassin brew = TestUtils.SIMPLE_BREW;
 	@Autowired
+	@Qualifier("brassinServiceImpl")
 	private IGenericService<Brassin> brewService;
+	@Autowired
+	@Qualifier("etapeServiceImpl")
+	private IGenericService<Etape> stepService;
 	
 	@Test
 	public void shouldBeValidBrewWithOneStep(){
@@ -54,9 +51,11 @@ public class BrewDTOTest {
 		
 	}
 	
+	@Test
 	public void shouldBeAutowired (){
 		
-		Assert.assertNotNull(brewService);
+		//Assert.assertNotNull(brewService);
+		Assert.assertNotNull(stepService);
 	}
 
 	public void shouldConvertToComplexDTOObject(){
