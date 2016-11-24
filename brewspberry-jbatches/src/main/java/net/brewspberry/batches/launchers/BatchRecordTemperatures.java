@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import net.brewspberry.batches.beans.BatchParams;
 import net.brewspberry.batches.beans.TaskParams;
-import net.brewspberry.batches.tasks.RecordTemperatureFromFileTask;
 import net.brewspberry.batches.tasks.Task;
 import net.brewspberry.util.LogManager;
 
@@ -23,8 +22,12 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 	BatchParams batchParams;
 
-	@Value("brewspberry.batches.threads.delay")
+	@Value("${batches.threads.delay:1000}")
 	Integer threadSleep;
+
+	@Value("${param.batches.save.mode}")
+	private String writeParams;
+	
 
 	public BatchRecordTemperatures() {
 		/**
@@ -116,13 +119,14 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 		logger.fine("Thread sleep param : " + threadSleep);
 		if (batchParams.getLaunchType() != null) {
 
+			currentTask.setTaskParameters(taskParams);
+
 			switch (batchParams.getLaunchType()) {
 
 			case ONCE:
 				try {
 
-					currentTask.setTaskParameters(taskParams);
-					currentTask.setWriteParameters("ALL");
+					currentTask.setWriteParameters(writeParams);
 
 					Thread t = new Thread((Runnable) currentTask);
 
@@ -145,8 +149,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 
 					try {
 
-						currentTask.setTaskParameters(taskParams);
-						currentTask.setWriteParameters("ALL");
+						currentTask.setWriteParameters(writeParams);
 
 						Thread t = new Thread((Runnable) currentTask);
 
@@ -169,8 +172,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 60.0;
 					startTime = System.currentTimeMillis();
 
-					currentTask.setTaskParameters(taskParams);
-					currentTask.setWriteParameters("ALL");
+					currentTask.setWriteParameters(writeParams);
 
 					while ((System.currentTimeMillis() - startTime) < timeLength) {
 
@@ -196,8 +198,7 @@ public class BatchRecordTemperatures implements Batch, Runnable {
 					timeLength = new Double(batchParams.getDuration()) * 1000.0 * 3600.0;
 					startTime = System.currentTimeMillis();
 
-					currentTask.setTaskParameters(taskParams);
-					currentTask.setWriteParameters("ALL");
+					currentTask.setWriteParameters(writeParams);
 
 					while ((System.currentTimeMillis() - startTime) < timeLength) {
 

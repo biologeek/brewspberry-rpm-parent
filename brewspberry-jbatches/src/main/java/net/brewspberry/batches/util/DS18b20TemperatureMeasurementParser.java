@@ -3,6 +3,7 @@ package net.brewspberry.batches.util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,29 +12,34 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringEscapeUtils;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
 import net.brewspberry.util.Constants;
 import net.brewspberry.util.LogManager;
+import net.brewspberry.util.OSUtils;
 
+@Component
 public class DS18b20TemperatureMeasurementParser {
-
-	public static DS18b20TemperatureMeasurementParser instance = null;
 
 	public static int threadSleepMillis = 100;
 
-	private Logger logger = LogManager
-			.getInstance(DS18b20TemperatureMeasurementParser.class.getName());
+	private Logger logger;
 
-	public static DS18b20TemperatureMeasurementParser getInstance() {
+	private String baseFolder;
 
-		if (instance == null) {
-			instance = new DS18b20TemperatureMeasurementParser();
-		}
+	public DS18b20TemperatureMeasurementParser(String baseFolder2) {
+		this.setBaseFolder(baseFolder2 == null ? Constants.DS18B20_DEVICES_FOLDER : baseFolder2);
+	}
 
-		return instance;
+	public DS18b20TemperatureMeasurementParser() {
+		logger = LogManager.getInstance(DS18b20TemperatureMeasurementParser.class.getName());
 	}
 
 	public File loadFile(String path) {
@@ -58,45 +64,39 @@ public class DS18b20TemperatureMeasurementParser {
 	 * Searching and returning all files in /sys/bus/devices/28* /w1_slave
 	 * 
 	 * @return array of files
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public List<Path> findFilesToOpen() throws IOException {
-		
-		
-		List<Path> files = new ArrayList<Path>();
-		
-		String glob = "glob:"+Constants.DS18B20_DIR_PATTERN;
-		
-		
-		
-		final PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(
-				glob);
-		
-		
-		Files.walkFileTree(Paths.get(Constants.DS18B20_DEVICES_FOLDER), new SimpleFileVisitor<Path>() {
-			
-			@Override
-			public FileVisitResult visitFile(Path path,
-					BasicFileAttributes attrs) throws IOException {
-				
-				
-				logger.info("FileVisitor "+path.toString());
 
+		List<Path> files = new ArrayList<Path>();
+
+		String glob = "regex:"+Constants.DS18B20_FILE_NAME;
+
+		final PathMatcher pathMatcher = FileSystems.getDefault().getPathMatcher(glob);
+
+		Files.walkFileTree(Paths.get(baseFolder), EnumSet.noneOf(FileVisitOption.class), Integer.MAX_VALUE, new SimpleFileVisitor<Path>() {
+
+			@Override
+			public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
+
+				logger.info("FileVisitor " + path.getFileName());
+
+				
 				if (pathMatcher.matches(path.getFileName())) {
-						
-					files.add(Paths.get(path.toString(), Constants.DS18B20_FILE_NAME));
-					logger.fine("Added path "+Paths.get(path.toString(), Constants.DS18B20_FILE_NAME)+" to list");
+
+					files.add(Paths.get(path.toString()));
+					logger.fine("Added path " + Paths.get(path.toString()) + " to list");
 				}
 				return FileVisitResult.CONTINUE;
 			}
 
 			@Override
-			public FileVisitResult visitFileFailed(Path file, IOException exc)
-					throws IOException {
+			public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+				logger.info("File "+file.getFileName().toString()+" not corresponding to pattern");
 				return FileVisitResult.CONTINUE;
 			}
 		});
-			
+		
 
 		return files;
 	}
@@ -115,21 +115,17 @@ public class DS18b20TemperatureMeasurementParser {
 					List<String> content = Files.readAllLines(Paths.get(file));
 
 					if (content.size() == 2) {
-						while (!content.get(0)
-								.substring(content.get(0).length() - 3)
-								.equals("YES")) {
+						while (!content.get(0).substring(content.get(0).length() - 3).equals("YES")) {
 
 							try {
 								Thread.sleep(threadSleepMillis);
 							} catch (InterruptedException e) {
-								
+
 								e.printStackTrace();
 							}
 						}
-						
-						
-						String resultLine = content.get(1).substring(
-								content.get(1).length() - 5);
+
+						String resultLine = content.get(1).substring(content.get(1).length() - 5);
 
 						result = Integer.parseInt(resultLine);
 
@@ -141,7 +137,7 @@ public class DS18b20TemperatureMeasurementParser {
 			}
 
 		}
-		
+
 		return result;
 
 	}
@@ -150,8 +146,11 @@ public class DS18b20TemperatureMeasurementParser {
 
 		String result = null;
 		String UUIDPattern = Pattern.compile("28-[a-zA-Z0-9]{12}").pattern();
-
-		String[] fileSplit = file.split("/");
+		String[] fileSplit;
+		if (OSUtils.isWindows())
+			fileSplit = file.split("\\\\");
+		else
+			fileSplit = file.split("/");
 
 		for (String str : fileSplit) {
 
@@ -168,5 +167,13 @@ public class DS18b20TemperatureMeasurementParser {
 		}
 		return result;
 
+	}
+
+	public String getBaseFolder() {
+		return baseFolder;
+	}
+
+	public void setBaseFolder(String baseFolder) {
+		this.baseFolder = baseFolder;
 	}
 }

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
@@ -23,17 +24,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @ComponentScan({ "net.brewspberry" })
 @EnableTransactionManagement
-@PropertySources(value = { @PropertySource("file:${app.parameters}/config.properties"),
-		@PropertySource("classpath:c3po.properties"), @PropertySource("file:${app.parameters}/devices.properties"),
-		@PropertySource("file:${app.parameters}/batches.properties") })
 public class SpringCoreConfiguration implements EnvironmentAware {
 
+	@Autowired
 	private Environment env;
 
 	@Bean(name = "dataSource")
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
-		
+
 
 		dataSource.setDriverClassName(env.getProperty("datasource.jdbc.driver"));
 		dataSource.setUrl(env.getProperty("datasource.jdbc.address"));
@@ -55,8 +54,8 @@ public class SpringCoreConfiguration implements EnvironmentAware {
 	}
 
 	@Bean
-	public static PropertyPlaceholderConfigurer configurer() {
-		PropertyPlaceholderConfigurer config = new PropertyPlaceholderConfigurer();
+	public static PropertySourcesPlaceholderConfigurer configurer() {
+		PropertySourcesPlaceholderConfigurer config = new PropertySourcesPlaceholderConfigurer();
 
 		return config;
 	}

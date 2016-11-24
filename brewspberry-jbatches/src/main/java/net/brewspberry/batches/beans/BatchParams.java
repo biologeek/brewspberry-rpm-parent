@@ -151,12 +151,12 @@ public class BatchParams {
 		 */
 		public BatchParams buildBatchParams(String[] args) {
 			BatchParams params = new BatchParams()//
-					.launchType(LaunchType.valueOf((String) args[0]))//
-					.duration((String) args[1])//
-					.brew(new Brassin().id(Long.parseLong(args[2])))//
-					.step(new Etape().id(Long.parseLong(args[3])))//
-					.actionner(new Actioner().id(Long.parseLong(args[4])))//
-					.taskParams(buildTaskParams(args));
+					.launchType(LaunchType.valueOf((String) args[1]))//
+					.duration((String) args[2])//
+					.brew(new Brassin().id(Long.parseLong(args[3])))//
+					.step(new Etape().id(Long.parseLong(args[4])))//
+					.actionner(new Actioner().id(Long.parseLong(args[5])))//
+					.taskParams(buildTaskParams(new String[]{args[3], args[4], args[5]}));
 					;
 			
 			logger.info("Got following arguments : \n"
@@ -170,12 +170,12 @@ public class BatchParams {
 			return params;
 		}
 
-		public TaskParams buildTaskParams(Object[] args) {
+		public TaskParams buildTaskParams(String[] args) {
 
 			TaskParams params = new TaskParams()
-					.brew((Brassin) args[0])//
-					.step((Etape) args[1])//
-					.actioner((Actioner) args[2]);		
+					.brew(new Brassin().id(Long.parseLong(args[0])))//
+					.step(new Etape().id(Long.parseLong(args[1])))//
+					.actioner(new Actioner().id(Long.parseLong(args[2])));		
 			return params;
 		}
 

@@ -2,41 +2,56 @@ package net.brewspberry.batches.main;
 
 import java.util.logging.Logger;
 
-import org.jboss.jandex.Main;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
 import net.brewspberry.batches.beans.BatchParams;
-import net.brewspberry.batches.beans.BatchParams.LaunchType;
-import net.brewspberry.batches.beans.TaskParams;
 import net.brewspberry.batches.launchers.Batch;
-import net.brewspberry.batches.launchers.BatchRecordTemperatures;
 import net.brewspberry.batches.util.config.JBatchesApplicationConfig;
-import net.brewspberry.business.ISpecificActionerLauncherService;
 import net.brewspberry.util.LogManager;
+import net.brewspberry.util.config.SpringCoreConfiguration;
+
 
 public class MainExec {
 
 	private static final Logger logger = LogManager.getInstance(MainExec.class.getName());
 	
-	ApplicationContext context;
+	
 	
 	@Autowired
-	ISpecificActionerLauncherService launcherService;
-	
-	@Autowired
+	@Qualifier("batchRecordTemperatures")
 	Batch recordTemperatureBatch;
+
+	
 	
 	public MainExec() {
-		context = new AnnotationConfigApplicationContext(JBatchesApplicationConfig.class);
+
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+		
+		ctx.register(JBatchesApplicationConfig.class);
+		ctx.register(SpringCoreConfiguration.class);
+		ctx.refresh();
+		AutowireCapableBeanFactory acbFactory = ctx.getAutowireCapableBeanFactory();
+		
+		acbFactory.autowireBean(this);
+	
 	}
 
 	public static void main(String[] args) {
 
 		
-		MainExec main = new MainExec(); 
-		
+		MainExec main = new MainExec();
+						
+		processArgsAndLaunchBatch(args, main);
+
+	}
+
+	private static void processArgsAndLaunchBatch(String[] args, MainExec main) {
 		if (args.length > 0) {
 
 			switch (args[0]) {
@@ -45,7 +60,6 @@ public class MainExec {
 
 				BatchParams batchParams = new BatchParams.BatchParamsBuilder().buildBatchParams(args);
 
-				System.arraycopy(args, 1, batchParams, 0, args.length - 1);
 				logger.info("Launching batchRecordTemperatures batch");
 
 				try {
@@ -68,7 +82,6 @@ public class MainExec {
 			logger.warning("No arguments provided, exiting with status code 0");
 			System.exit(0);
 		}
-
 	}
 	
 

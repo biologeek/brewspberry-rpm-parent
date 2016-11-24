@@ -20,7 +20,9 @@ import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,7 +41,6 @@ import net.brewspberry.util.LogManager;
 
 @Component
 @Scope("prototype")
-@Transactional
 public class RecordTemperatureFromFileTask implements Task {
 	/**
 	 * RecordTemperatureFromFileTask represents 1 temperature record.
@@ -48,9 +49,14 @@ public class RecordTemperatureFromFileTask implements Task {
 	 * 
 	 */
 
-	DS18b20TemperatureMeasurementParser parser = DS18b20TemperatureMeasurementParser.getInstance();
+	@Autowired
+	DS18b20TemperatureMeasurementParser parser;
+
 	List<Path> filesToRead;
 	Map<String, Integer> valuesMap = new HashMap<String, Integer>();
+
+	@Value("${batches.files.parent.folder}")
+	String parentFolder;
 
 	@Autowired
 	@Qualifier("temperatureMeasurementServiceImpl")
@@ -68,10 +74,11 @@ public class RecordTemperatureFromFileTask implements Task {
 	public RecordTemperatureFromFileTask() {
 		super();
 	}
-	
-	
 
 	public void run() {
+		
+		System.out.println(parentFolder);
+		parser.setBaseFolder(parentFolder);
 
 		try {
 			filesToRead = parser.findFilesToOpen();
@@ -189,6 +196,7 @@ public class RecordTemperatureFromFileTask implements Task {
 
 	public void setTaskParameters(TaskParams specs) {
 
+		this.specificParameters = specs;
 	}
 
 	public List<String> formatDataForCSVFile(List<ConcreteTemperatureMeasurement> tmes) {
@@ -266,12 +274,12 @@ public class RecordTemperatureFromFileTask implements Task {
 
 	@Override
 	public boolean checkSpecificParameters(Object[] specs) throws NotTheGoodNumberOfArgumentsException {
-		
-		for (Object obj : specs){
+
+		for (Object obj : specs) {
 			if (obj == null)
 				return false;
 		}
-		
+
 		return true;
 	}
 }

@@ -147,7 +147,6 @@ public class TemperatureMeasurementDaoImpl
 
 	@Override
 	public ConcreteTemperatureMeasurement save(ConcreteTemperatureMeasurement arg0) throws DAOException {
-		Transaction tx = (Transaction) sessionFactory.getCurrentSession().beginTransaction();
 		ConcreteTemperatureMeasurement result = null;
 		try {
 
@@ -158,7 +157,6 @@ public class TemperatureMeasurementDaoImpl
 			logger.fine("Saved TemperatureMeasurement with id " + id);
 
 		} catch (HibernateException e) {
-
 			e.printStackTrace();
 		} finally {
 
