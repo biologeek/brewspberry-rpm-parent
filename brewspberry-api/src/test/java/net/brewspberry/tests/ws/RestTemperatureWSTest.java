@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.brewspberry.business.beans.Actioner;
-import net.brewspberry.business.beans.Brassin;
-import net.brewspberry.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.business.beans.Etape;
-import net.brewspberry.front.ws.impl.RESTTemperatureService;
+import net.brewspberry.main.business.beans.Actioner;
+import net.brewspberry.main.business.beans.Brassin;
+import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
+import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.front.ws.impl.RESTTemperatureService;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.tests.config.ApiSpringTestConfiguration;
 

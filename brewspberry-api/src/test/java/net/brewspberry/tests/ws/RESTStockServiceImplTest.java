@@ -11,7 +11,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import net.brewspberry.business.ISpecificStockService;
+import net.brewspberry.main.business.ISpecificStockService;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.tests.config.ApiSpringTestConfiguration;
 import net.brewspberry.tests.config.TestInitializer;

@@ -1,6 +1,6 @@
 import static org.junit.Assert.*;
 import junit.framework.Assert;
-import net.brewspberry.util.Constants;
+import net.brewspberry.main.util.Constants;
 
 import org.junit.After;
 import org.junit.AfterClass;

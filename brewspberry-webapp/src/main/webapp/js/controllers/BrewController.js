@@ -30,6 +30,8 @@
 		vm.stepTypes=CONSTANTS.STEP_TYPES;
 		vm.availableActionners = [];
 		
+		vm.durationUnits = CONSTANTS.DURATIONS
+		
 		
 		
 		vm.chartOptions = {
@@ -334,12 +336,22 @@
 		 * Calls service that will start or stop step and feed real beginning
 		 * and end dates
 		 */
-		var toggleStepForReal = function(isStart, stepID){
+		vm.toggleStepForReal = function(isStart, stepID){
 			
+			
+			console.log(stepID);
 			if (stepID >= 0){
 				if (isStart){
 					
-					StepService.startStepForReal(stepID);
+					StepService.startStepForReal(stepID, function(response){
+						
+						Notification.success("Step started !");
+						
+					}, function(response){
+						
+						Notification.error("Step did not start. " + response.data);
+
+					});
 					
 				} else {
 					
@@ -387,10 +399,10 @@
 							 * In case of success, changing picture
 							 */
 
-							var actionnerType = vm.currentFullBrew.steps[stepID].actioners[actionerID].type;
+							var actionnerType = currentAct.type;
 							
-							vm.currentFullBrew.steps[stepID].actioners[actionerID].picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
-							vm.currentFullBrew.steps[stepID].actioners[index].state == 'OFF'
+							currentAct.picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
+							currentAct.state == 'OFF'
 
 						},
 						function (response) {
@@ -418,11 +430,12 @@
 							 * In case of success, changing picture to off
 							 * picture
 							 */
-							var actionnerType = vm.currentFullBrew.steps[stepID].actioners[actionerID].type;
-							
-							vm.currentFullBrew.steps[stepID]
-							.actioners[actionerID].picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
-							vm.currentFullBrew.steps[stepID].actioners[index].state == 'ON'
+							console.log(currentAct)
+							var actionnerType = currentAct.type;
+							console.log(CONSTANTS.ACTIONNER_PICTURES)
+	
+							currentAct.picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
+							currentAct.state == 'ON'
 						},
 						function (response) {
 
@@ -478,8 +491,7 @@
 		
 		vm.createStep = function(){
 			
-			vm.addedStep.endDate = vm.addedStep.endDateJs.getTime();
-			vm.addedStep.beginningDate = vm.addedStep.beginningDateJs.getTime();
+			vm.addedStep.beginning = vm.addedStep.beginningDateJs.getTime();
 			
 			vm.addedStep.brewID = vm.currentFullBrew.id;
 			

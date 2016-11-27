@@ -1,9 +1,9 @@
 package net.brewspberry.test.service;
 
-import net.brewspberry.business.IGenericService;
-import net.brewspberry.business.ISpecificUserService;
-import net.brewspberry.business.beans.User;
-import net.brewspberry.business.beans.builders.DefaultUserBuilder;
+import net.brewspberry.main.business.IGenericService;
+import net.brewspberry.main.business.ISpecificUserService;
+import net.brewspberry.main.business.beans.User;
+import net.brewspberry.main.business.beans.builders.DefaultUserBuilder;
 import net.brewspberry.test.AbstractTest;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 

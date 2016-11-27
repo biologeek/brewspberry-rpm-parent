@@ -20,7 +20,7 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import net.brewspberry.util.config.SpringCoreConfiguration;
+import net.brewspberry.main.util.config.SpringCoreConfiguration;
 
 @Configuration
 @ComponentScan(basePackages = { "net.brewspberry" }, excludeFilters={

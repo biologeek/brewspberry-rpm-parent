@@ -10,10 +10,10 @@ import org.mockito.internal.runners.JUnit44RunnerImpl;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.brewspberry.business.beans.stock.StockUnit;
-import net.brewspberry.business.exceptions.UnitConversionFailedException;
+import net.brewspberry.main.business.beans.stock.StockUnit;
+import net.brewspberry.main.business.exceptions.UnitConversionFailedException;
+import net.brewspberry.main.util.StockUnitUtils;
 import net.brewspberry.test.AbstractTest;
-import net.brewspberry.util.StockUnitUtils;
 
 @RunWith(JUnit4.class)
 public class UnitUtilsTest {

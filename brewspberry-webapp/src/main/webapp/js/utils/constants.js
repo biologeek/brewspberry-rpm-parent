@@ -23,17 +23,17 @@ app.constant('CONSTANTS', {
 	'CHART_MAX_DATA_SIZE' : 30,
 	'DEFAULT_RANGE_MINUTES' : 10,
 	'ACTIONNER_PICTURES' : {
-		"1" : {
-			"on" : "images/thermo-on.png",
-			"off" : "images/thermo-off.png"
+		"DS18B20" : {
+			"on" : "images/thermo-on.jpg",
+			"off" : "images/thermo-off.jpg"
 		},
-		"2" : {
+		"ENGINE_RELAY" : {
 			"on" : "images/engine-on.png",
 			"off" : "images/engine-off.png"
 		},
-		"3" : {
-			"on" : "images/pump-on.png",
-			"off" : "images/pump-off.png"
+		"PUMP_RELAY" : {
+			"on" : "images/pump-on.jpg",
+			"off" : "images/pump-off.jpg"
 		},
 
 	},
@@ -45,7 +45,26 @@ app.constant('CONSTANTS', {
 			'MASH_OUT' ],
 	'BREW_STATUSES' : [ 'NOT_STARTED', 'COMPLETE', 'BREWING', 'FERMENTING',
 			'MATURING', 'BOTTLED', 'DRINKABLE', 'FINISHED' ],
-			
+	'DURATIONS' : [ {
+		"obj" : "13",
+		"trad" : "seconds"
+	}, {
+		"obj" : "12",
+		"trad" : "minutes"
+	}, {
+		"obj" : "10",
+		"trad" : "hours"
+	}, {
+		"obj" : "5",
+		"trad" : "days"
+	}, {
+		"obj" : "2",
+		"trad" : "months"
+	}, {
+		"obj" : "1",
+		"trad" : "years"
+	}, ],
+
 	'FLOCULATION_LEVELS' : [ {
 		"enum" : "HIGH",
 		"trad" : "high"
@@ -76,5 +95,5 @@ app.constant('CONSTANTS', {
 		"enum" : "BOTH",
 		"trad" : "Both"
 	} ]
-	
+
 });

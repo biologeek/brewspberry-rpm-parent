@@ -2,12 +2,12 @@ package net.brewspberry.tests.utils;
 
 import java.util.Date;
 
-import net.brewspberry.business.beans.Brassin;
-import net.brewspberry.business.beans.BrewStatus;
-import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.PalierType;
-import net.brewspberry.business.beans.builders.BrewBuilder;
-import net.brewspberry.business.beans.builders.StepBuilder;
+import net.brewspberry.main.business.beans.Brassin;
+import net.brewspberry.main.business.beans.BrewStatus;
+import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.PalierType;
+import net.brewspberry.main.business.beans.builders.BrewBuilder;
+import net.brewspberry.main.business.beans.builders.StepBuilder;
 
 public class TestUtils {
 

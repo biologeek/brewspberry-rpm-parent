@@ -3,8 +3,9 @@ package net.brewspberry.test;
 import java.util.Calendar;
 import org.junit.Test;
 
+import net.brewspberry.main.util.DateManipulator;
+
 import org.junit.Assert;
-import net.brewspberry.util.DateManipulator;
 
 
 public class DateManipulatorTest {

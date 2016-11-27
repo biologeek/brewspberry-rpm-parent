@@ -19,20 +19,21 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.Assert;
-import net.brewspberry.business.IGenericService;
-import net.brewspberry.business.beans.Etape;
-import net.brewspberry.business.beans.Malt;
-import net.brewspberry.business.beans.SimpleMalt;
-import net.brewspberry.business.beans.builders.IngredientStockCounterBuilder;
-import net.brewspberry.business.beans.stock.CounterType;
-import net.brewspberry.business.beans.stock.CounterTypeConstants;
-import net.brewspberry.business.beans.stock.RawMaterialCounter;
-import net.brewspberry.business.beans.stock.RawMaterialStockMotion;
-import net.brewspberry.business.beans.stock.StockUnit;
-import net.brewspberry.business.parser.Parser;
+
+import net.brewspberry.main.business.IGenericService;
+import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.Malt;
+import net.brewspberry.main.business.beans.SimpleMalt;
+import net.brewspberry.main.business.beans.builders.IngredientStockCounterBuilder;
+import net.brewspberry.main.business.beans.stock.CounterType;
+import net.brewspberry.main.business.beans.stock.CounterTypeConstants;
+import net.brewspberry.main.business.beans.stock.RawMaterialCounter;
+import net.brewspberry.main.business.beans.stock.RawMaterialStockMotion;
+import net.brewspberry.main.business.beans.stock.StockUnit;
+import net.brewspberry.main.business.parser.Parser;
+import net.brewspberry.main.util.ConfigLoader;
+import net.brewspberry.main.util.Constants;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
-import net.brewspberry.util.ConfigLoader;
-import net.brewspberry.util.Constants;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockRunnerDelegate(SpringJUnit4ClassRunner.class)

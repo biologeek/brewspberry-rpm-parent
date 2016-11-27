@@ -14,17 +14,17 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import net.brewspberry.business.IGenericDao;
-import net.brewspberry.business.ISpecificIngredientService;
-import net.brewspberry.business.beans.Houblon;
-import net.brewspberry.business.beans.Levure;
-import net.brewspberry.business.beans.Malt;
-import net.brewspberry.business.beans.SimpleHoublon;
-import net.brewspberry.business.service.HopServiceImpl;
-import net.brewspberry.dao.HopDaoImpl;
-import net.brewspberry.dao.SimpleHopDaoImpl;
-import net.brewspberry.util.HibernateUtil;
-import net.brewspberry.util.LogManager;
+import net.brewspberry.main.business.IGenericDao;
+import net.brewspberry.main.business.ISpecificIngredientService;
+import net.brewspberry.main.business.beans.Houblon;
+import net.brewspberry.main.business.beans.Levure;
+import net.brewspberry.main.business.beans.Malt;
+import net.brewspberry.main.business.beans.SimpleHoublon;
+import net.brewspberry.main.business.service.HopServiceImpl;
+import net.brewspberry.main.dao.HopDaoImpl;
+import net.brewspberry.main.dao.SimpleHopDaoImpl;
+import net.brewspberry.main.util.HibernateUtil;
+import net.brewspberry.main.util.LogManager;
 
 @PrepareForTest({ISpecificIngredientService.class, HibernateUtil.class, LogManager.class})
 @RunWith(PowerMockRunner.class)

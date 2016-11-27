@@ -42,12 +42,11 @@
 					<div class="navbar navbar-inner block-header">
 						<div class="muted pull-left">Etape</div>
 						<div class="pull-right">
-							<button class="btn">
-								<i class="icon-play" ng-click="toggleStepForReal(true, step.id)"></i>
+							<button class="btn" ng-click="brewController.toggleStepForReal(true, step.id)">
+								<i class="icon-play"></i>
 							</button>
-							<button class="btn">
-								<i class="icon-stop"
-									ng-click="toggleStepForReal(false, step.id)"></i>
+							<button class="btn" ng-click="brewController.toggleStepForReal(false, step.id)">
+								<i class="icon-stop"></i>
 							</button>
 						</div>
 					</div>
@@ -151,21 +150,16 @@
 											ng-model="brewController.addedStep.beginningDateJs"
 											md-placeholder="Enter date"></md-datepicker></td>
 
-									<td>Fin (<span
-										ng-click="brewController.beginNow('endDateJs')">Maintenant</span>)
+									<td>Durée
 									</td>
-									<td id="stepEndAdd"><md-datepicker md-placeholder="Date"
-											ng-model="brewController.addedStep.endDateJs">
-										</md-datepicker></td>
+									<td id="stepEndAdd"><input type="text" ng-model="brewController.addedStep.duration"></input></td>
 								</tr>
 								<tr>
 									<td></td>
 									<td><mdp-time-picker
-											ng-model="brewController.addedStep.beginningDateJs"></mdp-time-picker>
-									</td>
+                                            ng-model="brewController.addedStep.beginningDateJs"></mdp-time-picker></td>
 									<td></td>
-									<td><mdp-time-picker
-											ng-model="brewController.addedStep.endDateJs"></mdp-time-picker>
+									<td><select ng-model="brewController.addedStep.durationUnit" ng-options="a.obj as a.trad for a in brewController.durationUnits"></select>
 									</td>
 
 								</tr>

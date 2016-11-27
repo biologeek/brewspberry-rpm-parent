@@ -1,12 +1,12 @@
 package net.brewspberry.batches.test;
 
-import net.brewspberry.batches.exceptions.NotTheGoodNumberOfArgumentsException;
-import net.brewspberry.batches.tasks.RecordTemperatureFromFileTask;
-import net.brewspberry.batches.tasks.Task;
 import net.brewspberry.batches.test.config.BatchesSpringTestConfiguration;
-import net.brewspberry.business.beans.Actioner;
-import net.brewspberry.business.beans.Brassin;
-import net.brewspberry.business.beans.Etape;
+import net.brewspberry.main.batches.exceptions.NotTheGoodNumberOfArgumentsException;
+import net.brewspberry.main.batches.tasks.RecordTemperatureFromFileTask;
+import net.brewspberry.main.batches.tasks.Task;
+import net.brewspberry.main.business.beans.Actioner;
+import net.brewspberry.main.business.beans.Brassin;
+import net.brewspberry.main.business.beans.Etape;
 
 import org.junit.Assert;
 import org.junit.Test;
