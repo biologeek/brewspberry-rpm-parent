@@ -60,12 +60,7 @@
 		init();
 
 
-		 $interval(function () {
-			var delay = vm.updateDelay
 		 
-			 vm.updateCharts(); 
-		 
-		 }, vm.updateDelay);
 		 
 
 		/**
@@ -82,7 +77,12 @@
 					vm.currentFullBrew = response.data;
 	
 					vm.initCharts(function () {
-	
+						$interval(function () {
+							var delay = vm.updateDelay
+						 
+							 vm.updateCharts(); 
+						 
+						 }, vm.updateDelay);
 	
 					});
 				}, function (response) {
@@ -105,7 +105,16 @@
 	
 					vm.currentFullStep = response.data;
 	
-					vm.initCharts(function (){});
+					vm.initCharts(function (){
+						$interval(function () {
+							
+							console.log("PAR LA");
+						var delay = vm.updateDelay
+						 
+						 vm.updateCharts(); 
+					 
+					 }, vm.updateDelay);
+					});
 				}, function (response) {
 					/**
 					 * In case of error
@@ -176,8 +185,9 @@
 			
 		var initChartForStep = function (stepObj){
 			for (let act in stepObj.actioners){
-				
-				if(stepObj.actioners[act].type == 1){
+
+				if(stepObj.actioners[act].type == 'DS18B20'){
+					console.log("On passe par la")
 					TemperatureService.initTemperaturesForStep(stepObj.id, stepObj.actioners[act].uuid, function(response){
 
 
@@ -191,7 +201,7 @@
 
 						
 						vm.lastIDs[stepObj.actioners[act].uuid] = response.data.lastID;
-						processRawDataAndFeedActionners(response.data, step, stepObj.actioners[act].uuid, false);
+						processRawDataAndFeedActionners(response.data, stepObj, stepObj.actioners[act].uuid, false);
 					}, function (response) {
 
 						stepObj.chart = [{data: [[]], series: [], labels: []}];
@@ -221,11 +231,11 @@
 					
 				
 					TemperatureService.updateTemperaturesForStep(stepObj.id, 
-							stepObj.actioners[act], 
+							stepObj.actioners[act].uuid, 
 						vm.lastIDs[stepObj.actioners[act].uuid], 
 						function (response) {
 
-							processRawDataAndFeedActionners(response.data, step, stepObj.actioners[act].uuid, true);
+							processRawDataAndFeedActionners(response.data, stepObj, stepObj.actioners[act].uuid, true);
 
 						}, function (response) {
 								return ;
@@ -245,27 +255,27 @@
 		 * @param stepCounter
 		 *            step number in array
 		 */
-		var processRawDataAndFeedActionners = function (rawData, stepCounter, uuid, isUpdate) {
+		var processRawDataAndFeedActionners = function (rawData, step, uuid, isUpdate) {
 // TODO
 			if (rawData.concretes[0] != undefined){
 				if(!isUpdate){
-					for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
-						if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
-							vm.currentFullBrew.steps[stepCounter].actioners[act].chart = rawData.concretes;				
+					for(let act in step.actioners){
+						if (step.actioners[act].uuid == uuid){
+							step.actioners[act].chart = rawData.concretes[0];				
 						}
 					}
 					
 				} else {
-					for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
-						if (vm.currentFullBrew.steps[stepCounter].actioners[act].uuid == uuid){
+					for(let act in step.actioners){
+						if (step.actioners[act].uuid == uuid){
 							
-							vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].data.push(...rawData.concretes[0].data);
-							vm.currentFullBrew.steps[stepCounter].actioners[act].chart[0].labels.push(...rawData.concretes[0].labels);
+							step.actioners[act].chart[0].data.push(...rawData.concretes[0].data);
+							step.actioners[act].chart[0].labels.push(...rawData.concretes[0].labels);
 						}
 					}
 				}
 				
-				for(let act in vm.currentFullBrew.steps[stepCounter].actioners){
+				for(let act in step.actioners){
 	
 					limitDataSizeOnChart(stepCounter, act);
 				}
@@ -282,14 +292,14 @@
 		 */
 		var limitDataSizeOnChart = function (step, actionner) {
 
-			if (typeof vm.currentFullBrew.steps[step].actioners[actionner].chart[0] != "undefined") {
-				if (vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE) {
+			if (typeof step.actioners[actionner].chart[0] != "undefined") {
+				if (step.actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE) {
 					do  {
 					
-						vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.shift();
-						vm.currentFullBrew.steps[step].actioners[actionner].chart[0].labels.shift();
+						step.actioners[actionner].chart[0].data.shift();
+						step.actioners[actionner].chart[0].labels.shift();
 	
-					} while(vm.currentFullBrew.steps[step].actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE)
+					} while(step.actioners[actionner].chart[0].data.length > CONSTANTS.CHART_MAX_DATA_SIZE)
 				}
 			}
 

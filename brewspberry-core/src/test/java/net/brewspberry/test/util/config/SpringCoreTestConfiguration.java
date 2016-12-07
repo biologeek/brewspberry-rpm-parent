@@ -14,6 +14,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
@@ -27,9 +28,10 @@ import net.brewspberry.main.util.config.SpringCoreConfiguration;
 		@ComponentScan.Filter(type=FilterType.ANNOTATION, value=Configuration.class)
 })
 @EnableTransactionManagement
-@PropertySources(value={@PropertySource("classpath:config.test.properties")
+@PropertySources(value={@PropertySource("classpath:config.properties")
 , @PropertySource("classpath:c3po.properties")
-, @PropertySource("classpath:devices.test.properties")
+, @PropertySource("classpath:stock.properties")
+, @PropertySource("classpath:devices.properties")
 })
 public class SpringCoreTestConfiguration {
 	@Autowired
@@ -57,9 +59,10 @@ public class SpringCoreTestConfiguration {
 	}
 
 	@Bean
-	public static PropertyPlaceholderConfigurer configurer (){
-		return new PropertyPlaceholderConfigurer();
+	public static PropertySourcesPlaceholderConfigurer configurer (){
+		return new PropertySourcesPlaceholderConfigurer();
 	}
+	
 	private Properties hibernateProperties() {
 		Properties properties = new Properties();
 		properties.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");

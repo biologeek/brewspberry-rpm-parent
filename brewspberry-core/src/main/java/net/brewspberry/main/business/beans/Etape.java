@@ -351,4 +351,167 @@ public class Etape implements Serializable {
 		return false;
 	}
 
+	public static class Builder {
+		private Long etp_id;
+		private Integer etp_numero;
+		private String etp_nom;
+		private Date etp_debut;
+		private Date etp_fin;
+		private Date etp_creation_date;
+		private Date etp_update_date;
+		private Date etp_debut_reel;
+		private Date etp_fin_reel;
+		private DurationBO etp_duree;
+		private EtapeType etp_etape_type;
+		private Double etp_temperature_theorique;
+		private String etp_remarque;
+		private Brassin etp_brassin;
+		private List<ConcreteTemperatureMeasurement> etp_temperature_measurement;
+		private List<Actioner> etp_actioner;
+		private Set<Malt> etp_malts;
+		private Set<Houblon> etp_houblons;
+		private Set<Levure> etp_levures;
+		private PalierType etp_palier_type;
+		private List<AbstractIngredient> etp_ingredients;
+		private boolean etp_active;
+
+		public Builder etp_id(Long etp_id) {
+			this.etp_id = etp_id;
+			return this;
+		}
+
+		public Builder etp_numero(Integer etp_numero) {
+			this.etp_numero = etp_numero;
+			return this;
+		}
+
+		public Builder etp_nom(String etp_nom) {
+			this.etp_nom = etp_nom;
+			return this;
+		}
+
+		public Builder etp_debut(Date etp_debut) {
+			this.etp_debut = etp_debut;
+			return this;
+		}
+
+		public Builder etp_fin(Date etp_fin) {
+			this.etp_fin = etp_fin;
+			return this;
+		}
+
+		public Builder etp_creation_date(Date etp_creation_date) {
+			this.etp_creation_date = etp_creation_date;
+			return this;
+		}
+
+		public Builder etp_update_date(Date etp_update_date) {
+			this.etp_update_date = etp_update_date;
+			return this;
+		}
+
+		public Builder etp_debut_reel(Date etp_debut_reel) {
+			this.etp_debut_reel = etp_debut_reel;
+			return this;
+		}
+
+		public Builder etp_fin_reel(Date etp_fin_reel) {
+			this.etp_fin_reel = etp_fin_reel;
+			return this;
+		}
+
+		public Builder etp_duree(DurationBO etp_duree) {
+			this.etp_duree = etp_duree;
+			return this;
+		}
+
+		public Builder etp_etape_type(EtapeType etp_etape_type) {
+			this.etp_etape_type = etp_etape_type;
+			return this;
+		}
+
+		public Builder etp_temperature_theorique(Double etp_temperature_theorique) {
+			this.etp_temperature_theorique = etp_temperature_theorique;
+			return this;
+		}
+
+		public Builder etp_remarque(String etp_remarque) {
+			this.etp_remarque = etp_remarque;
+			return this;
+		}
+
+		public Builder etp_brassin(Brassin etp_brassin) {
+			this.etp_brassin = etp_brassin;
+			return this;
+		}
+
+		public Builder etp_temperature_measurement(List<ConcreteTemperatureMeasurement> etp_temperature_measurement) {
+			this.etp_temperature_measurement = etp_temperature_measurement;
+			return this;
+		}
+
+		public Builder etp_actioner(List<Actioner> etp_actioner) {
+			this.etp_actioner = etp_actioner;
+			return this;
+		}
+
+		public Builder etp_malts(Set<Malt> etp_malts) {
+			this.etp_malts = etp_malts;
+			return this;
+		}
+
+		public Builder etp_houblons(Set<Houblon> etp_houblons) {
+			this.etp_houblons = etp_houblons;
+			return this;
+		}
+
+		public Builder etp_levures(Set<Levure> etp_levures) {
+			this.etp_levures = etp_levures;
+			return this;
+		}
+
+		public Builder etp_palier_type(PalierType etp_palier_type) {
+			this.etp_palier_type = etp_palier_type;
+			return this;
+		}
+
+		public Builder etp_ingredients(List<AbstractIngredient> etp_ingredients) {
+			this.etp_ingredients = etp_ingredients;
+			return this;
+		}
+
+		public Builder etp_active(boolean etp_active) {
+			this.etp_active = etp_active;
+			return this;
+		}
+
+		public Etape build() {
+			return new Etape(this);
+		}
+	}
+
+	private Etape(Builder builder) {
+		this.etp_id = builder.etp_id;
+		this.etp_numero = builder.etp_numero;
+		this.etp_nom = builder.etp_nom;
+		this.etp_debut = builder.etp_debut;
+		this.etp_fin = builder.etp_fin;
+		this.etp_creation_date = builder.etp_creation_date;
+		this.etp_update_date = builder.etp_update_date;
+		this.etp_debut_reel = builder.etp_debut_reel;
+		this.etp_fin_reel = builder.etp_fin_reel;
+		this.etp_duree = builder.etp_duree;
+		this.etp_etape_type = builder.etp_etape_type;
+		this.etp_temperature_theorique = builder.etp_temperature_theorique;
+		this.etp_remarque = builder.etp_remarque;
+		this.etp_brassin = builder.etp_brassin;
+		this.etp_temperature_measurement = builder.etp_temperature_measurement;
+		this.etp_actioner = builder.etp_actioner;
+		this.etp_malts = builder.etp_malts;
+		this.etp_houblons = builder.etp_houblons;
+		this.etp_levures = builder.etp_levures;
+		this.etp_palier_type = builder.etp_palier_type;
+		this.etp_ingredients = builder.etp_ingredients;
+		this.etp_active = builder.etp_active;
+	}
 }

@@ -208,4 +208,9 @@ public class GenericActionner {
 		return true;
 	}
 
+	public GenericActionner uuid(String string) {
+		this.setGact_uuid(string);
+		return this;
+	}
+
 }

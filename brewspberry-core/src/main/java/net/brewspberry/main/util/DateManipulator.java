@@ -215,7 +215,7 @@ public class DateManipulator {
 		if (date != null){
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(date);
-			cal.add(duration.getUnit(), duration.getDuration());			
+			cal.add(duration.getUnit(), duration.getDuration());	
 		}
 		return null;
 	}

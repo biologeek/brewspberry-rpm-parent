@@ -5,10 +5,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificEtapeService;
 import net.brewspberry.main.business.ISpecificStockService;
+import net.brewspberry.main.business.beans.Brassin;
+import net.brewspberry.main.business.beans.DurationBO;
 import net.brewspberry.main.business.beans.Etape;
 import net.brewspberry.main.business.beans.SimpleMalt;
 import net.brewspberry.main.business.beans.builders.IngredientStockCounterBuilder;
@@ -18,28 +18,30 @@ import net.brewspberry.main.business.beans.stock.StockCounter;
 import net.brewspberry.main.business.beans.stock.StockUnit;
 import net.brewspberry.main.business.exceptions.BusinessException;
 import net.brewspberry.main.business.exceptions.ServiceException;
+import net.brewspberry.main.business.service.CompteurTypeServiceImpl;
 import net.brewspberry.main.business.service.EtapeServiceImpl;
 import net.brewspberry.main.business.service.StockServiceImpl;
+import net.brewspberry.main.dao.EtapeDaoImpl;
 import net.brewspberry.main.util.ConfigLoader;
-import net.brewspberry.main.util.Constants;
+import net.brewspberry.main.util.DateManipulator;
+import net.brewspberry.test.examples.IngredientExemple;
+import net.brewspberry.test.examples.ProductExemple;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
-import org.powermock.reflect.Whitebox;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -49,29 +51,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @PrepareForTest({ ConfigLoader.class, EtapeServiceImpl.class })
 public class EtapeServiceImplTest {
 
-	@InjectMocks
-	ISpecificEtapeService specEtapeService = new EtapeServiceImpl();
-
-	@Autowired
-	@Qualifier("etapeServiceImpl")
-	IGenericService<Etape> genEtapeService;
+	@Spy
+	EtapeServiceImpl sut = new EtapeServiceImpl();
 
 	Etape etape;
 	Calendar calCrea, calBegin, calEnd;
 
 	@Mock
-	private ISpecificStockService specStockService;
+	private StockServiceImpl specStockService;
 
 	@Mock
-	IGenericDao<Etape> etapeDaoMock;
+	EtapeDaoImpl etapeDaoMock;
 
-	private Etape newEtape;
 
-	private Etape oldEtape;
-
-	@Autowired
-	@Qualifier("compteurTypeServiceImpl")
-	private IGenericService<CounterType> genCounterTypeService;
+	@Mock
+	CompteurTypeServiceImpl genCounterTypeService;
 
 	private List<CounterType> list;
 
@@ -79,6 +73,13 @@ public class EtapeServiceImplTest {
 	public void init() throws ServiceException {
 
 		MockitoAnnotations.initMocks(this);
+	
+		
+		sut.setEtapeDao(etapeDaoMock);
+		sut.setCounterTypeService(genCounterTypeService);
+		sut.specStockService = specStockService;
+		
+		sut.setParamStockDelayLimitToStockInFabMinutes("10");
 
 		calCrea = Calendar.getInstance();
 		calCrea.add(Calendar.HOUR, -1);
@@ -89,13 +90,14 @@ public class EtapeServiceImplTest {
 		calEnd = Calendar.getInstance();
 		calEnd.add(Calendar.MINUTE, -10);
 
-		etape = genEtapeService.getElementById(1);
 
-		newEtape = new Etape();
+		etape = new Etape.Builder().etp_id(1L).etp_active(false).etp_debut(new Date()).build();
 
 		etape.setEtp_creation_date(calCrea.getTime());
 		etape.setEtp_debut(calBegin.getTime());
 		etape.setEtp_fin(calEnd.getTime());
+		etape.setEtp_duree(new DurationBO(5, Calendar.MINUTE));
+		etape.setEtp_brassin(new Brassin().id(1L));
 
 	}
 
@@ -104,25 +106,23 @@ public class EtapeServiceImplTest {
 
 		list = getList();
 		PowerMockito.mockStatic(ConfigLoader.class);
-		ISpecificEtapeService stepServiceSpy = (ISpecificEtapeService) PowerMockito.spy(specEtapeService);
+		ISpecificEtapeService stepServiceSpy = (ISpecificEtapeService) PowerMockito.spy(sut);
 
 		Calendar calExpected = Calendar.getInstance();
 		Calendar calActual = Calendar.getInstance();
 
-		Date date = new Date();
+		
 
-		String param = "param.stock.delay.limitToStockInFab.minutes";
-		String path = Constants.CONFIG_PROPERTIES;
-		PowerMockito.when(ConfigLoader.getConfigByKey(path, param)).thenReturn("30");
+//		String param = "param.stock.delay.limitToStockInFab.minutes";
+//		String path = Constants.CONFIG_PROPERTIES;
+//		PowerMockito.when(ConfigLoader.getConfigByKey(path, param)).thenReturn("30");
 
-		try {
-			PowerMockito.doReturn(list).when(stepServiceSpy, "getList");
-		} catch (Exception e) {
+		Mockito.when(genCounterTypeService.getAllElements()).thenReturn(getList());
+		Mockito.when(etapeDaoMock.getElementById(Mockito.anyLong())).thenReturn(etape);
+		Mockito.when(specStockService.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
+			.thenReturn(listOfStockCounters());
 
-			e.printStackTrace();
-		}
-
-		Etape result = stepServiceSpy.startStepForReal(etape);
+		Etape result = sut.startStepForReal(etape);
 		calActual.setTime(result.getEtp_debut_reel());
 
 		Assert.assertEquals(calExpected.get(Calendar.DAY_OF_WEEK), calActual.get(Calendar.DAY_OF_WEEK));
@@ -133,11 +133,24 @@ public class EtapeServiceImplTest {
 
 	}
 
+	private List<StockCounter> listOfStockCounters() {
+		List<StockCounter> counters = new ArrayList<>();
+		
+		counters.add(new IngredientStockCounterBuilder()//
+				.ingredient(IngredientExemple.aSimpleMalt())//
+				.type(CounterTypeConstants.STOCK_DISPO_FAB.toDBCouter(list))
+				.unit(StockUnit.KILO)
+				.value(10)
+				.build());
+		
+		return counters;
+	}
+
 	@Test
 	public void shouldStopStepForReal() {
 		list = getList();
 
-		ISpecificEtapeService stepServiceSpy = (ISpecificEtapeService) PowerMockito.spy(specEtapeService);
+		ISpecificEtapeService stepServiceSpy = (ISpecificEtapeService) PowerMockito.spy(sut);
 
 		CounterType counterTypeFrom = CounterTypeConstants.STOCK_EN_FAB.toDBCouter(list);
 		CounterType counterTypeTo = CounterTypeConstants.NONE.toDBCouter(list);
@@ -148,12 +161,7 @@ public class EtapeServiceImplTest {
 		Mockito.when(specStockService.compareOldAndNewStepToExtractStockMotionsAndUpdateStockCounters(etape, null,
 				counterTypeFrom, counterTypeTo)).thenReturn(mockResult);
 
-		try {
-			PowerMockito.doReturn(list).when(stepServiceSpy, "getList");
-		} catch (Exception e) {
-
-			e.printStackTrace();
-		}
+		Mockito.when(genCounterTypeService.getAllElements()).thenReturn(getList());
 
 		etape.setEtp_debut_reel(calBegin.getTime());
 		etape.setEtp_fin(calEnd.getTime());
@@ -161,8 +169,15 @@ public class EtapeServiceImplTest {
 		Calendar calExpected = Calendar.getInstance();
 		Calendar calActual = Calendar.getInstance();
 
-		Mockito.doReturn(new Etape()).when(etapeDaoMock).update(etape);
+		Mockito.when(etapeDaoMock.update(etape)).thenAnswer(new Answer<Etape>() {
+		    @Override
+		    public Etape answer(InvocationOnMock invocation) throws Throwable {
+		      Object[] args = invocation.getArguments();
+		      return (Etape) args[0];
+		    }
+		  });
 
+		etape.setEtp_active(true);
 		Date date = new Date();
 		// TODO : mock service calls so that only step service is tested
 		Etape result = stepServiceSpy.stopStepForReal(etape);
@@ -189,7 +204,11 @@ public class EtapeServiceImplTest {
 	}
 
 	private List<CounterType> getList() {
-
-		return genCounterTypeService.getAllElements();
+		List<CounterType> counters = new ArrayList<>();
+		
+		for (CounterTypeConstants val : CounterTypeConstants.values()){
+			counters.add(new CounterType(val.getCty_id(), val.getCty_libelle()));			
+		}
+		return counters;
 	}
 }

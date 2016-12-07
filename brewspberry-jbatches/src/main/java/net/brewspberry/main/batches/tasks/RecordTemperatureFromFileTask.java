@@ -96,10 +96,9 @@ public class RecordTemperatureFromFileTask implements Task {
 			if (file != null) {
 
 				Integer temperature = parser.parseTemperature(file);
-				String uuid = parser.getProbeUUIDFromFileName(file);
-
-				valuesMap.put(uuid, temperature);
-			}
+				
+				valuesMap.put(specificParameters.getUuid(), temperature);
+				}
 		}
 
 		logger.info("Could find " + valuesMap.size() + " devices");

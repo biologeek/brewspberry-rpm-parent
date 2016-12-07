@@ -114,12 +114,12 @@ public class BatchLauncherService implements ISpecificActionerLauncherService {
 						/*
 						 * Duration of step converted in Minutes * Coefficient =
 						 * recommended time In case thread is not finished at
-						 * the end of real step, a security mechanism is to
+						 * the end of real step, a mechanism is to
 						 * interrupt it.
 						 * 
 						 * Is implemented in
 						 * 
-						 * @see stopActionInDatabase
+						 * @see startActionInDatabase
 						 */
 
 						actioner = actionerService.startActionInDatabase(actioner);
@@ -189,16 +189,17 @@ public class BatchLauncherService implements ISpecificActionerLauncherService {
 			}
 
 		}
-		return null;
+		return actioner;
 	}
 
 	private BatchParams assignArgumentsToBatch(Actioner actioner, String duration) {
-		String[] args = new String[5];
+		String[] args = new String[6];
 		args[0] = "MINUTE";
 		args[1] = String.valueOf(duration);
 		args[2] = String.valueOf(actioner.getAct_brassin().getBra_id());
 		args[3] = String.valueOf(actioner.getAct_etape().getEtp_id());
 		args[4] = String.valueOf(actioner.getAct_id());
+		args[5] = String.valueOf(actioner.getAct_generic().getGact_uuid());
 
 		return new BatchParams.BatchParamsBuilder().buildBatchParams(args);
 

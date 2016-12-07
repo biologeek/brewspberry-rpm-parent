@@ -302,4 +302,70 @@ public class Biere extends AbstractFinishedProduct {
 	
 	
 	
+	public static class Builder {
+		
+		Biere instance;
+		
+		public Builder(long brewId){
+			instance = new Biere();
+			instance.setStb_id(brewId);
+		}
+		
+		
+		public Builder alcohol(float rate){
+			instance.setBeer_alcohol(rate);
+			return this;		
+		}
+		
+		
+		public Builder aroma(String aroma){
+			instance.setBeer_aroma(aroma);
+			return this;		
+		}
+		
+		
+		public Builder brew(Brassin brew){
+			instance.setBeer_brassin(brew);
+			return this;		
+		}
+		
+		
+		public Builder bubbles(int bubbles){
+			instance.setBeer_bubbles(bubbles);
+			return this;		
+		}
+		
+		
+		public Builder color(int ebc){
+			instance.setBeer_color_ebc(ebc);
+			return this;		
+		}
+		
+		
+		public Builder comment(String comment){
+			instance.setBeer_comment(comment);
+			return this;		
+		}
+		
+		
+		public Builder conso(double conso){
+			instance.setBeer_conso_progress(conso);
+			return this;		
+		}
+		
+		
+		public Builder quantity(double qty){
+			instance.setBeer_quantity(qty);
+			return this;		
+		}
+
+
+		public Biere build() {
+			return instance;
+		}
+		
+	}
+	
+	
+	
 }

@@ -205,15 +205,16 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 
 		if (arg0.getAct_date_debut() == null) {
 			arg0.setAct_date_debut(new Date());
-		//	arg0.setAct_status(ActionerStatus.STARTED);
+			arg0.getAct_generic().setGact_status(ActionerStatus.STARTED);
 		}
-/*
-		if (arg0.getAct_activated() == false && arg0.getAct_used() == false) {
 
-			arg0.setAct_activated(true);
+		if (!arg0.getAct_generic().getGact_activated() && !arg0.getAct_used()) {
+
+			arg0.getAct_generic().setGact_activated(true);
 
 		} else
-			throw new NotAppropriateStatusException();*/
+			throw new NotAppropriateStatusException();
+		
 		try {
 			logger.info("Situation : is alread stored ? " + isAlreadyStored + " Actionner ID : " + arg0.getAct_id());
 			if (isAlreadyStored && arg0.getAct_id() > 0) {

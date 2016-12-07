@@ -41,11 +41,11 @@ public class CounterType implements Serializable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cpt_counter_type")
 	private List<StockCounter> cty_counters;
 
-	CounterType() {
+	public CounterType() {
 		super();
 	}
 
-	CounterType(int cty_id, String cty_libelle) {
+	public CounterType(int cty_id, String cty_libelle) {
 		this.cty_id = cty_id;
 		this.cty_libelle = cty_libelle;
 		this.setCty_date_cre(new Date());

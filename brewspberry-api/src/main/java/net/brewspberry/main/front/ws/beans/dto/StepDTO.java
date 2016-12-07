@@ -121,6 +121,9 @@ public class StepDTO {
 		} catch (BusinessException e) {
 			throw new ConversionException(e.getMessage());
 		}
+		
+		
+		res.setEtp_active(step.isActive());
 
 		return res;
 	}
@@ -152,6 +155,8 @@ public class StepDTO {
 
 		res.setEtp_actioners(
 				new ArrayList<Actioner>(new ActionnerDTO().step(res).toBusinessObjectList(step.getActioners())));
+
+		res.setEtp_active(step.isActive());
 
 		return res;
 	}

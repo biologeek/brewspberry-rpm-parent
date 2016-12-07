@@ -11,6 +11,7 @@ public class TaskParams {
 	private Brassin brew;
 	private Etape step;
 	private Actioner actioner;
+	private String uuid;
 	
 	
 	public Brassin getBrew() {
@@ -63,6 +64,12 @@ public class TaskParams {
 			return true;
 		}
 		return false;
+	}
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
 	}
 
 }

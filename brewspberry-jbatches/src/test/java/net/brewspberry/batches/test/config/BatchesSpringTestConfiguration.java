@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
+import net.brewspberry.tests.util.config.SpringCoreTestConfiguration;
 
 @Configuration
 @ComponentScan(basePackages = { "net.brewspberry.test" }, excludeFilters = {

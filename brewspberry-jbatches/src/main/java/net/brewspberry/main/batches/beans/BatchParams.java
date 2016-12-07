@@ -7,6 +7,7 @@ import net.brewspberry.main.batches.beans.BatchParams.LaunchType;
 import net.brewspberry.main.business.beans.Actioner;
 import net.brewspberry.main.business.beans.Brassin;
 import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.GenericActionner;
 import net.brewspberry.main.util.LogManager;
 
 public class BatchParams {
@@ -22,7 +23,8 @@ public class BatchParams {
 	private Brassin brew;
 	private Etape step;
 	private Actioner actionner;
-	
+	private String uuid;
+		
 	private TaskParams taskParams;
 
 	private Logger logger;
@@ -94,7 +96,10 @@ public class BatchParams {
 		return this;
 		
 	}
-	
+	public BatchParams uuid(String string) {
+		this.setUuid(string);
+		return this;
+	}
 	
 	public Brassin getBrew() {
 		return brew;
@@ -131,9 +136,15 @@ public class BatchParams {
 	public BatchParams taskParams(TaskParams taskParams) {
 		this.taskParams = taskParams;
 		return this;
-		
 	}
 	
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
 	public static class BatchParamsBuilder{
 		
@@ -157,6 +168,11 @@ public class BatchParams {
 					.actionner(new Actioner().id(Long.parseLong(args[4])))//
 					.taskParams(buildTaskParams(new String[]{args[2], args[3], args[4]}));
 					;
+					
+			if (args.length == 6){
+				params.uuid(args[5]);
+				params.taskParams(buildTaskParams(new String[]{args[2], args[3], args[4], args[5]}));
+			}
 			
 			logger.info("Got following arguments : \n"
 			+params.getLaunchType()+",\n"
@@ -164,6 +180,7 @@ public class BatchParams {
 			+params.getBrew()+",\n"
 			+params.getStep()+",\n"
 			+params.getActioner());
+			logger.info("+ uuid "+params.getUuid() );
 			
 			
 			return params;
@@ -174,11 +191,12 @@ public class BatchParams {
 			TaskParams params = new TaskParams()
 					.brew(new Brassin().id(Long.parseLong(args[0])))//
 					.step(new Etape().id(Long.parseLong(args[1])))//
-					.actioner(new Actioner().id(Long.parseLong(args[2])));		
+					.actioner(new Actioner().id(Long.parseLong(args[2])));	
+			
+			if (args.length == 4){
+				params.setUuid(args[3]);
+			}
 			return params;
 		}
-
 	}
-	
-
 }

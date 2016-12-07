@@ -153,8 +153,9 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 		CounterType counterTypeFrom = null;
 
 		// Starting step
-		if (oldStepInDatabase.getEtp_debut_reel() == null) {
+		if (!oldStepInDatabase.isEtp_active()) {
 			oldStepInDatabase.setEtp_debut_reel(new Date());
+			oldStepInDatabase.setEtp_active(true);
 			
 			/*
 			 * Calculates theoretical end date with given duration   
@@ -228,4 +229,54 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 		}
 		return step;
 	}
+
+	public IGenericDao<Etape> getEtapeDao() {
+		return etapeDao;
+	}
+
+	public void setEtapeDao(IGenericDao<Etape> etapeDao) {
+		this.etapeDao = etapeDao;
+	}
+
+	public IGenericService<Actioner> getGenActionerService() {
+		return genActionerService;
+	}
+
+	public void setGenActionerService(IGenericService<Actioner> genActionerService) {
+		this.genActionerService = genActionerService;
+	}
+
+	public IGenericService<CounterType> getCounterTypeService() {
+		return counterTypeService;
+	}
+
+	public void setCounterTypeService(IGenericService<CounterType> counterTypeService) {
+		this.counterTypeService = counterTypeService;
+	}
+
+	public Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> getStepParserForRawMaterial() {
+		return stepParserForRawMaterial;
+	}
+
+	public void setStepParserForRawMaterial(
+			Parser<RawMaterialCounter, Etape, RawMaterialStockMotion> stepParserForRawMaterial) {
+		this.stepParserForRawMaterial = stepParserForRawMaterial;
+	}
+
+	public ISpecificStockService getSpecStockService() {
+		return specStockService;
+	}
+
+	public void setSpecStockService(ISpecificStockService specStockService) {
+		this.specStockService = specStockService;
+	}
+
+	public String getParamStockDelayLimitToStockInFabMinutes() {
+		return paramStockDelayLimitToStockInFabMinutes;
+	}
+
+	public void setParamStockDelayLimitToStockInFabMinutes(String paramStockDelayLimitToStockInFabMinutes) {
+		this.paramStockDelayLimitToStockInFabMinutes = paramStockDelayLimitToStockInFabMinutes;
+	}
+
 }

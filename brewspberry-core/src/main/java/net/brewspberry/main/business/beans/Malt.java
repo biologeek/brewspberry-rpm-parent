@@ -13,13 +13,14 @@ import javax.persistence.Table;
 
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.main.util.StockUnitUtils;
 
 @Entity
 @DiscriminatorValue("m")
 @Component
-public class Malt extends SimpleMalt implements Serializable{
+public class Malt extends SimpleMalt implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4717132502498393810L;
@@ -28,27 +29,26 @@ public class Malt extends SimpleMalt implements Serializable{
 	 * Malt attached to brew and step
 	 */
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="malt_bra_id")
-    private Brassin malt_brassin;
-    
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="malt_etp_id")
-    private Brassin malt_etape;
-    
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "malt_bra_id")
+	private Brassin malt_brassin;
 
-    private float ing_quantite;
-    private float ing_prix;
-    
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "malt_etp_id")
+	private Etape malt_etape;
+
+	private float ing_quantite;
+	private float ing_prix;
 
 	public Malt() {
 		super();
-		
+
 	}
+
 	public Malt(SimpleMalt sm) {
-		
+
 		super();
-	
+
 		this.setIng_desc(sm.getIng_desc());
 		this.setIng_disc(sm.getIng_disc());
 		this.setIng_fournisseur(sm.getIng_fournisseur());
@@ -71,11 +71,11 @@ public class Malt extends SimpleMalt implements Serializable{
 		this.malt_brassin = malt_brassin;
 	}
 
-	public Brassin getMalt_etape() {
+	public Etape getMalt_etape() {
 		return malt_etape;
 	}
 
-	public void setMalt_etape(Brassin malt_etape) {
+	public void setMalt_etape(Etape malt_etape) {
 		this.malt_etape = malt_etape;
 	}
 
@@ -88,7 +88,7 @@ public class Malt extends SimpleMalt implements Serializable{
 	}
 
 	public float getIng_prix() {
-		return ing_prix;
+		return computePrice();
 	}
 
 	public void setIng_prix(float ing_prix) {
@@ -98,6 +98,15 @@ public class Malt extends SimpleMalt implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	
+	public float computePrice(){
+		
+		double unitaryPrice = StockUnitUtils.convertToStandardUnit(ing_unitary_price, ing_unitary_price_unit);
+		return new Float(unitaryPrice * ing_quantite).floatValue();
+		
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -106,6 +115,7 @@ public class Malt extends SimpleMalt implements Serializable{
 		result = prime * result + Float.floatToIntBits(ing_quantite);
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -120,6 +130,49 @@ public class Malt extends SimpleMalt implements Serializable{
 		if (Float.floatToIntBits(ing_quantite) != Float.floatToIntBits(other.ing_quantite))
 			return false;
 		return true;
+	}
+
+	public static class Builder {
+
+		Malt malt;
+
+		public Builder() {
+			malt = new Malt();
+		}
+
+		public Builder(SimpleMalt simple) {
+			malt = new Malt(simple);
+		}
+
+		
+		public Builder brew(Brassin brew) {
+			malt.setMalt_brassin(brew);
+			return this;
+		}
+
+		
+		public Builder step(Etape step) {
+			malt.setMalt_etape(step);
+			return this;
+		}
+
+		
+		public Builder quantity(float quantity) {
+			malt.setIng_quantite(quantity);
+			return this;
+		}
+
+		
+		public Builder price(float price) {
+			malt.setIng_prix(price);
+			return this;
+		}
+		
+		
+		public Malt build(){
+			return this.malt;
+		}
+		
 	}
 
 }
