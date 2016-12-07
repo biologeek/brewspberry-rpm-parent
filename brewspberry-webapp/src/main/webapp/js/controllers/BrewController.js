@@ -108,7 +108,6 @@
 					vm.initCharts(function (){
 						$interval(function () {
 							
-							console.log("PAR LA");
 						var delay = vm.updateDelay
 						 
 						 vm.updateCharts(); 
@@ -131,18 +130,11 @@
 			}
 			
 			ActionnerService.getAvailableActionners(function(response){
-				console.log(response.data);
 				vm.availableActionners = response.data;
-				
-				console.log (response.data)
-				
 			}, function(response){
-				
 				vm.showErrors = true;
-
 				vm.submissionFailureMessage = vm.submissionFailureMessage + "\nCould not retrieve actionners. Error : "
 					+ response.statusText;			
-				
 			});
 		}
 
@@ -187,24 +179,13 @@
 			for (let act in stepObj.actioners){
 
 				if(stepObj.actioners[act].type == 'DS18B20'){
-					console.log("On passe par la")
 					TemperatureService.initTemperaturesForStep(stepObj.id, stepObj.actioners[act].uuid, function(response){
-
-
-						/*
-						 * Receiving object : [ { id : 1, value : 20.0, date :
-						 * 123456789123456, //date in milliseconds uuid :
-						 * '123456azerty456987', name : 'PROBE1', actionner : 3,
-						 * step : 4, brew : 1, } , ... ]
-						 * 
-						 */
-
-						
+						//Updating last ID received from back-end
 						vm.lastIDs[stepObj.actioners[act].uuid] = response.data.lastID;
 						processRawDataAndFeedActionners(response.data, stepObj, stepObj.actioners[act].uuid, false);
 					}, function (response) {
 
-						stepObj.chart = [{data: [[]], series: [], labels: []}];
+						stepObj.actioners[act].chart = [{data: [[]], series: [], labels: []}];
 
 					});
 				}
@@ -252,36 +233,49 @@
 		 * 
 		 * @param rawData
 		 *            data from WS
-		 * @param stepCounter
-		 *            step number in array
+		 * @param step
+		 *            step object
+		 * @param uuid the uuid of the actionner to display
+		 * @parma isUpdate if true reinitializes the chart 
 		 */
 		var processRawDataAndFeedActionners = function (rawData, step, uuid, isUpdate) {
 // TODO
-			if (rawData.concretes[0] != undefined){
+			if (rawData.concretes[0] != undefined && rawData.concretes[0] != null){
 				if(!isUpdate){
-					for(let act in step.actioners){
-						if (step.actioners[act].uuid == uuid){
-							step.actioners[act].chart = rawData.concretes[0];				
-						}
-					}
-					
+					var actionner = _.find(step.actioners, function(act){return act.uuid == uuid;});
+						actionner.chart = rawData.concretes[0];				
 				} else {
-					for(let act in step.actioners){
-						if (step.actioners[act].uuid == uuid){
-							
-							step.actioners[act].chart[0].data.push(...rawData.concretes[0].data);
-							step.actioners[act].chart[0].labels.push(...rawData.concretes[0].labels);
-						}
+					var actionner = _.find(step.actioners, function(act){return act.uuid == uuid;});
+					
+					if (actionner.chart[0] == null){
+							actionner.chart[0] = {data: [], series: [], labels: []};
+					} else {							
+						actionner.chart[0].data.push(...rawData.concretes[0].data);
+						momentizeLabels(rawData.concretes[0].labels, function(result){
+							actionner.chart[0].labels.push(...result);
+						})	;
 					}
 				}
 				
 				for(let act in step.actioners){
 	
-					limitDataSizeOnChart(stepCounter, act);
+					limitDataSizeOnChart(step, act);
 				}
 			}
 		}
 
+		
+		
+		var momentizeLabels = function(timestampLabels, callback){
+			var momentLabels = [];
+			
+			_.each(timestampLabels, function(){
+				var date = new Date(parseInt(timestampLabels));
+				console.log(date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+				momentLabels.push(date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+			});
+			callback(momentLabels)
+		}
 		/**
 		 * If dataset is too large, removes first points to maximum dataset size
 		 * 
@@ -349,7 +343,6 @@
 		vm.toggleStepForReal = function(isStart, stepID){
 			
 			
-			console.log(stepID);
 			if (stepID >= 0){
 				if (isStart){
 					
@@ -388,9 +381,6 @@
 		 * 
 		 */
 		vm.changeActionnerState = function (actionerID, stepID, index) {
-			console.log('changing'+actionerID+ ' '+stepID+' '+index)
-			
-			
 			var currentAct = _.find(
 					_.find(vm.currentFullBrew.steps, 
 							function (elt){ 
@@ -440,9 +430,7 @@
 							 * In case of success, changing picture to off
 							 * picture
 							 */
-							console.log(currentAct)
 							var actionnerType = currentAct.type;
-							console.log(CONSTANTS.ACTIONNER_PICTURES)
 	
 							currentAct.picture = CONSTANTS.ACTIONNER_PICTURES[actionnerType].off;
 							currentAct.state == 'ON'
@@ -506,7 +494,6 @@
 			vm.addedStep.brewID = vm.currentFullBrew.id;
 			
 
-			console.log(vm.addedStep);
 
 			// Service call
 			StepService.add(vm.currentFullBrew.id, vm.addedStep, function (response) {

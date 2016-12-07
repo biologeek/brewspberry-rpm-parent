@@ -92,11 +92,13 @@
 
 						</div>
 					</div>
-
+<div ng-repeat="actioner in step.actioners" > aazeare {{actioner.chart[0].data}}</div>
 					<md-content> <md-tabs md-dynamic-height
 						md-border-bottom> <md-tab
-						ng-repeat="actioner in step.actioners" ng-if="actioner.type == 1"
+						ng-repeat="actioner in step.actioners" ng-if="actioner.type == 'DS18B20'"
 						label="{{actioner.uuid}}"> <md-content class="md-padding">
+						
+						actioner.chart[0].data
 					<canvas class="chart chart-line"
 						chart-data="actioner.chart[0].data"
 						chart-series="actioner.chart[0].series"
