@@ -46,7 +46,22 @@
 			return promise;
 		};
 		
-		
+		TemperatureService.getTemperaturesForActiveActionners = function(callBackSuccess, callbackError){
+			
+			var promise = $http({
+				method: 'GET',
+				//url : 'js/tests/mockStepTemps.json'
+				url: CONSTANTS.TEMP_SERVICE_URL+'/actionners/available'
+
+			}).then(function (response) {
+				callBackSuccess(response);
+			}, function (response) {
+				callbackError(response);
+			});
+
+			return promise;
+			
+		}
 		
 		return TemperatureService;
 	}

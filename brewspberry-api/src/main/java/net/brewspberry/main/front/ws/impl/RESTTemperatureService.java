@@ -241,6 +241,19 @@ public class RESTTemperatureService {
 
 		return response;
 	}
+	
+	
+	@GetMapping("/actionners/available")
+	/**
+	 * 
+	 * @return
+	 */
+	public List<MergedTemperatureMeasurementsForChart> getTemperaturesForActiveActionners(){
+		
+		
+		
+		return null;
+	}
 
 	/*
 	 * **************************************************************** USELESS

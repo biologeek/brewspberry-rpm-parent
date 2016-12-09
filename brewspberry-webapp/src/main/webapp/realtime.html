@@ -1,10 +1,10 @@
-<div ng-controller="BrewController as brewController">
+<div ng-controller="RealtimeController as realtimeController">
 
 	<div class="span9" id="content">
 
 		<div class="block">
 			<div class="navbar navbar-inner block-header">
-				<div class="muted pull-left">Visualisation en temps r�el</div>
+				<div class="muted pull-left">Visualisation en temps reel</div>
 			</div>
 		</div>
 
@@ -13,7 +13,7 @@
 			<div class="span12">
 
 				<md-content> <md-tabs md-dynamic-height
-					md-border-bottom> <md-tab ng-repeat="actioner in brewController.currentFullStep.actioners"
+					md-border-bottom> <md-tab ng-repeat="actioner in RealtimeController.charts"
 					ng-if="actioner.type == 1" label="{{actioner.uuid}}"> <md-content
 					class="md-padding">
 				<canvas class="chart chart-line" chart-data="actioner.chart[0].data"
