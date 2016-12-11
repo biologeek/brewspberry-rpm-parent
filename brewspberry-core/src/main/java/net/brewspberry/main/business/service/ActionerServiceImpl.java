@@ -403,4 +403,10 @@ public class ActionerServiceImpl implements IGenericService<Actioner>, ISpecific
 		return result;
 	}
 
+	@Override
+	public List<Actioner> getAllActiveActionners() {
+		
+		return actionerSpecDao.getActiveActionners();
+	}
+
 }

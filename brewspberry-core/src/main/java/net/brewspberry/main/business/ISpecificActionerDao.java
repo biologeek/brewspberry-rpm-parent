@@ -12,8 +12,11 @@ public interface ISpecificActionerDao {
 	public Actioner getActionerByFullCharacteristics (Actioner actioner);
 	
 	public List<Actioner> getActionerByBrassin(Brassin brassin);
-	
+
 	public List<Actioner> getActionnerByEtape(Etape etape);
+
+	public List<Actioner> getActiveActionners();
 	
 	public List<GenericActionner> getAllGenericActionners();
+	
 }

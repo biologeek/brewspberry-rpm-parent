@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,10 +20,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
+import net.brewspberry.main.business.ISpecificTemperatureMeasurementDao;
 import net.brewspberry.main.business.ISpecificTemperatureMeasurementService;
+import net.brewspberry.main.business.beans.Actioner;
 import net.brewspberry.main.business.beans.Brassin;
 import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.MultiActionnerTemperatures;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.dao.TemperatureMeasurementDaoImpl;
 import net.brewspberry.main.util.ChartPointsCalculator;
@@ -40,7 +44,7 @@ public class TemperatureMeasurementServiceImpl
 	SimpleDateFormat sdf = new SimpleDateFormat("YYYY-mm-dd hh:MM:ss.SSSSSS");
 
 	@Autowired
-	private ISpecificTemperatureMeasurementService tempDao;
+	private ISpecificTemperatureMeasurementDao tempDao;
 	@Autowired
 	@Qualifier("brassinServiceImpl")
 	private IGenericService<Brassin> brassinService;
@@ -449,9 +453,56 @@ public class TemperatureMeasurementServiceImpl
 
 				result = tmesSpecDao.getTemperaturesByStepAndUUID(stepID, uuid, lastID);
 
-			} 
+			}
 		}
 		return result;
+	}
+
+	@Override
+	public MultiActionnerTemperatures getTemperaturesForActionners(List<Actioner> actionners) {
+		List<ConcreteTemperatureMeasurement> temperatures = tempDao.getTemperaturesForActionners(actionners);
+
+		MultiActionnerTemperatures result = assignMultipleTemperaturesToActionners(temperatures);
+
+		return result;
+	}
+
+	/**
+	 * Classifies melted temperatures from database to an ordered object much
+	 * easier to manipulate and that emphasizes link of temperature to actionner
+	 * 
+	 * @param temperatures
+	 * @return
+	 */
+	private MultiActionnerTemperatures assignMultipleTemperaturesToActionners(
+			List<ConcreteTemperatureMeasurement> temperatures) {
+
+		MultiActionnerTemperatures result = new MultiActionnerTemperatures();
+		for (ConcreteTemperatureMeasurement temp : temperatures) {
+			String uuid = temp.getTmes_actioner().getAct_generic().getGact_uuid();
+			if (result.isAlreadySet(uuid)) {
+				doAddTemperatureToMap(result, temp, uuid);
+			} else {
+				result.createMapEntry(uuid);
+				doAddTemperatureToMap(result, temp, uuid);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Simply adds temperature to map
+	 * @param result
+	 * @param temp
+	 * @param uuid
+	 */
+	private void doAddTemperatureToMap(MultiActionnerTemperatures result, ConcreteTemperatureMeasurement temp,
+			String uuid) {
+		
+		if (result.getTemperatures() == null)
+			result.setTemperatures(new HashMap<>());
+		result.getTemperatures().get(uuid).add(temp);
 	}
 
 }

@@ -8,7 +8,7 @@ import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.beans.Etape;
 import net.brewspberry.main.business.beans.MultiActionnerTemperatures;
 
-public interface ISpecificTemperatureMeasurementService {
+public interface ISpecificTemperatureMeasurementDao {
 	
 	
 	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(Brassin bid);
@@ -27,6 +27,6 @@ public interface ISpecificTemperatureMeasurementService {
 	
 	public List<ConcreteTemperatureMeasurement> getTemperaturesByStepAndUUID(
 			Etape stepID, String uuid, Long lastID);
-	public MultiActionnerTemperatures getTemperaturesForActionners(List<Actioner> actionners);
+	public List<ConcreteTemperatureMeasurement> getTemperaturesForActionners(List<Actioner> actionners);
 
 }

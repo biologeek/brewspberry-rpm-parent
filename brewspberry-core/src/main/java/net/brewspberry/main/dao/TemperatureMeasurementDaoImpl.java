@@ -14,16 +14,21 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
+import net.brewspberry.main.business.ISpecificTemperatureMeasurementDao;
 import net.brewspberry.main.business.ISpecificTemperatureMeasurementService;
+import net.brewspberry.main.business.beans.Actioner;
 import net.brewspberry.main.business.beans.Brassin;
 import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.MultiActionnerTemperatures;
 import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.util.ConfigLoader;
 import net.brewspberry.main.util.Constants;
@@ -32,7 +37,7 @@ import net.brewspberry.main.util.LogManager;
 
 @Repository
 public class TemperatureMeasurementDaoImpl
-		implements ISpecificTemperatureMeasurementService, IGenericDao<ConcreteTemperatureMeasurement> {
+		implements ISpecificTemperatureMeasurementDao, IGenericDao<ConcreteTemperatureMeasurement> {
 
 	Logger logger = LogManager.getInstance(TemperatureMeasurementDaoImpl.class.getName());
 
@@ -358,6 +363,16 @@ public class TemperatureMeasurementDaoImpl
 		System.out.println("AAA " + result.size());
 
 		return result;
+	}
+
+	@Override
+	public List<ConcreteTemperatureMeasurement> getTemperaturesForActionners(List<Actioner> actionners) {
+		Criteria crit = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+		for (Actioner act : actionners){
+			crit.add(Restrictions.or(Restrictions.eq("tmes_actioner", act)));
+		}
+		
+		return crit.list();
 	}
 
 }

@@ -162,4 +162,11 @@ public class ActionerDaoImpl implements IGenericDao<Actioner>, ISpecificActioner
 
 		return list.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Actioner> getActiveActionners() {
+		return sessionFactory.getCurrentSession()//
+				.createQuery("from Actioner where act_generic.gact_activated = true").list();
+	}
 }

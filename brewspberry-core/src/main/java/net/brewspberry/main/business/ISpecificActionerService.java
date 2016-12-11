@@ -26,4 +26,6 @@ public interface ISpecificActionerService {
 
 	public List<GenericActionner> getAllGenericActionners();
 
+	public List<Actioner> getAllActiveActionners();
+
 }

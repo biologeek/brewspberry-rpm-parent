@@ -16,7 +16,7 @@
                             <a href="#/actionners"><i class="icon-chevron-right"></i>Actionneurs</a>
                         </li>
                         <li>
-                            <a href="#/"><i class="icon-chevron-right"></i>Temps réel</a>
+                            <a href="#/realtime"><i class="icon-chevron-right"></i>Temps réel</a>
                         </li>
                     </ul>
                 </div>

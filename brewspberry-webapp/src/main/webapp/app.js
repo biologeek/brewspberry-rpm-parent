@@ -39,7 +39,7 @@ var app = angular.module('brewspberry', [
         	controller : 'IngredientController'
         }).when('/realtime', {
         	templateUrl : 'realtime.html',
-        	controller : 'BrewController'
+        	controller : 'RealtimeController'
         })
         .otherwise( {redirectTo : '/accueil'});
     });

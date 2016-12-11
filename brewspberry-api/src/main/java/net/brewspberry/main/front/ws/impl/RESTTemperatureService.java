@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.brewspberry.main.business.IGenericService;
+import net.brewspberry.main.business.ISpecificActionerService;
 import net.brewspberry.main.business.ISpecificTemperatureMeasurementService;
+import net.brewspberry.main.business.beans.Actioner;
 import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.beans.Etape;
 import net.brewspberry.main.business.beans.PalierType;
@@ -38,6 +40,7 @@ import net.brewspberry.main.util.LogManager;
 
 @RequestMapping("/temperatureService")
 @RestController
+@CrossOrigin
 public class RESTTemperatureService {
 
 	@Autowired
@@ -50,6 +53,10 @@ public class RESTTemperatureService {
 	@Qualifier("etapeServiceImpl")
 	IGenericService<Etape> stepService;
 	private Etape currentStep;
+	
+	
+	@Autowired
+	ISpecificActionerService actionerSpecService;
 
 	Logger logger = LogManager.getInstance(RESTTemperatureService.class.getName());
 
@@ -250,9 +257,11 @@ public class RESTTemperatureService {
 	 */
 	public List<MergedTemperatureMeasurementsForChart> getTemperaturesForActiveActionners(){
 		
+		List<Actioner> actionners = actionerSpecService.getAllActiveActionners();
 		
-		
-		return null;
+		return new TemperatureMeasurementDTO().convertToMergedAPIObject(
+					tmesSpecService.getTemperaturesForActionners(actionners)
+				);
 	}
 
 	/*
