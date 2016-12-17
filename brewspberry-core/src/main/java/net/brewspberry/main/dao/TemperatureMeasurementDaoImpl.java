@@ -23,7 +23,6 @@ import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.ISpecificTemperatureMeasurementDao;
-import net.brewspberry.main.business.ISpecificTemperatureMeasurementService;
 import net.brewspberry.main.business.beans.Actioner;
 import net.brewspberry.main.business.beans.Brassin;
 import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
@@ -360,8 +359,7 @@ public class TemperatureMeasurementDaoImpl
 		crit.addOrder(Order.desc("tmes_date"));
 
 		result = crit.list();
-		System.out.println("AAA " + result.size());
-
+		
 		return result;
 	}
 

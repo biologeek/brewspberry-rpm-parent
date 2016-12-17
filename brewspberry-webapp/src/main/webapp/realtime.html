@@ -12,13 +12,17 @@
 		<div class="block-content collapse in">
 			<div class="span12">
 
+
+
 				<md-content> <md-tabs md-dynamic-height
-					md-border-bottom> <md-tab ng-repeat="actioner in RealtimeController.charts"
-					ng-if="actioner.type == 1" label="{{actioner.uuid}}"> <md-content
+					md-border-bottom> <md-tab ng-repeat="actioner in realtimeController.charts"
+					 label="{{actioner.chart.series[0]}}"> <md-content
 					class="md-padding">
-				<canvas class="chart chart-line" chart-data="actioner.chart[0].data"
-					chart-series="actioner.chart[0].series"
-					chart-labels="actioner.chart[0].labels"
+					
+					
+				<canvas class="chart chart-line" chart-data="actioner.chart.data"
+					chart-series="actioner.chart.series[0]"
+					chart-labels="actioner.chart.labels"
 					chart-options="brewController.chartOptions"></canvas>
 				</md-content> </md-tab> </md-tabs> </md-content>
 			</div>

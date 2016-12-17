@@ -1,6 +1,9 @@
 package net.brewspberry.main.front.ws.beans.responses;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.mysql.fabric.xmlrpc.base.Array;
 
 /**
  * Object in charge of storing temperature measurements transmitted to front.
@@ -14,6 +17,11 @@ public class TemperatureChartData {
 	List<String> series;
 	
 	
+	public TemperatureChartData(){
+		this.data = new ArrayList<>();
+		this.labels = new ArrayList<>();
+		this.series = new ArrayList<>();
+	}
 	public List<Float> getData() {
 		return data;
 	}

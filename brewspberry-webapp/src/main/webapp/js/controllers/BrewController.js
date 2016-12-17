@@ -8,9 +8,9 @@
 
 	angular.module('brewspberry').controller('BrewController', BrewController);
 
-	BrewController.$inject = [ '$scope', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService', 'ActionnerService', 'Notification'];
+	BrewController.$inject = [ '$scope', 'moment', 'BrewService', '$routeParams', 'TemperatureService', '$interval', 'CONSTANTS', 'StepService', 'ActionnerService', 'Notification'];
 
-	function BrewController($scope, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService, ActionnerService, Notification) {
+	function BrewController($scope, moment, BrewService, $routeParams, TemperatureService, $interval, CONSTANTS, StepService, ActionnerService, Notification) {
 
 		var vm = this;
 		vm.currentFullBrew = {};
@@ -271,8 +271,14 @@
 			
 			_.each(timestampLabels, function(){
 				var date = new Date(parseInt(timestampLabels));
-				console.log(date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
-				momentLabels.push(date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+//				console.log(date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+//
+//				console.log(moment(date));
+				if (!moment(date).isSame(moment(), 'day')){
+					momentLabels.push(date.getDay()+'/'+date.getMonth()+'/'+date.getYear()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+				} else {
+					momentLabels.push(date.getHours()+':'+date.getMinutes()+':'+date.getSeconds());
+				}
 			});
 			callback(momentLabels)
 		}

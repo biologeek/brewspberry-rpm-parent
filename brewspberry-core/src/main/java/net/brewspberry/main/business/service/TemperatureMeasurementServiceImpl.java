@@ -57,7 +57,8 @@ public class TemperatureMeasurementServiceImpl
 	@Qualifier("temperatureMeasurementDaoImpl")
 	private IGenericDao<ConcreteTemperatureMeasurement> tmesDao;
 	@Autowired
-	private ISpecificTemperatureMeasurementService tmesSpecDao;
+	
+	private ISpecificTemperatureMeasurementDao tmesSpecDao;
 
 	static final Logger logger = LogManager.getInstance(TemperatureMeasurementServiceImpl.class.getName());
 

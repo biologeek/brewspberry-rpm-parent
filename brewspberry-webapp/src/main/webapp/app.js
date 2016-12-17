@@ -11,7 +11,8 @@ var app = angular.module('brewspberry', [
     'ngMaterial',
     'chart.js',
     'mdPickers',
-    'ui-notification'
+    'ui-notification',
+    'angularMoment'
 ]);
 
     app.config(function($routeProvider){

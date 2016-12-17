@@ -94,6 +94,7 @@ app.constant('CONSTANTS', {
 	}, {
 		"enum" : "BOTH",
 		"trad" : "Both"
-	} ]
+	} ],
+	'maxTimeRangeToDisplayInMinutes' : 10
 
 });

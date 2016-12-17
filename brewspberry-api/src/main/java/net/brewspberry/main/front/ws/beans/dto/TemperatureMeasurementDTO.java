@@ -1,8 +1,14 @@
 package net.brewspberry.main.front.ws.beans.dto;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import org.mockito.internal.listeners.CollectCreatedMocks;
 
 import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.beans.MultiActionnerTemperatures;
@@ -12,7 +18,7 @@ import net.brewspberry.main.front.ws.beans.responses.TemperatureChartData;
 public class TemperatureMeasurementDTO {
 
 	private Long lastID;
-	
+
 	public TemperatureMeasurementDTO() {
 		lastID = 0L;
 	}
@@ -30,82 +36,96 @@ public class TemperatureMeasurementDTO {
 		return result;
 	}
 
+	/**
+	 * Transforms a unordered list of temperatureMeasurements to an ordered and
+	 * sorted API object
+	 * 
+	 * @param list
+	 * @return
+	 */
 	public List<TemperatureChartData> convertToChart(List<ConcreteTemperatureMeasurement> list) {
-		/*
-		 * 1 serie per probe but keeping list of series for front compatibility
-		 */
-		
-		List<TemperatureChartData> result = new ArrayList<>();
-		for (ConcreteTemperatureMeasurement mes : list) {
 
-			if (mes.getTmes_id() > lastID)
-				lastID = mes.getTmes_id();
-			
-			
-			int currentSerieIndex = 0;
-			Integer i = 0;
-			if (result.size() == 0) {
-				i = -1;
+		Collections.sort(list, new Comparator<ConcreteTemperatureMeasurement>() {
+
+			@Override
+			public int compare(ConcreteTemperatureMeasurement o1, ConcreteTemperatureMeasurement o2) {
+				if (o1.getTmes_date().before(o2.getTmes_date())) {
+					return -1;
+				} else if (o1.getTmes_date().equals(o2.getTmes_date()))
+					return 0;
+				else
+					return 1;
 			}
-			if (i > -1) {
-				for (i = 0; i < result.size(); i++) {
-// TODO Fix this infinite loop
-					System.out.println(result.get(i) + "name : " + mes.getTmes_probe_name());
-					if (!result.get(i).getSeries().isEmpty()
-							&& result.get(i).getSeries().contains(mes.getTmes_probeUI())) {
+		});
 
-						currentSerieIndex = i;
+		List<TemperatureChartData> result = new ArrayList<>();
 
-						break;
-					} else {
-						i = -1;
+		for (ConcreteTemperatureMeasurement temp : list) {
+
+			TemperatureChartData currentChart = null;
+			currentChart = this.findByUUID(temp.getTmes_probeUI(), result);
+
+			if (currentChart == null) {
+				currentChart = new TemperatureChartData();
+
+				currentChart.getSeries().add(temp.getTmes_probeUI());
+				result.add(currentChart);
+			} else {
+				currentChart.getData().add(temp.getTmes_value());
+				currentChart.getLabels().add(String.valueOf(temp.getTmes_date().getTime()));
+			}
+
+		}
+		return result;
+	}
+
+	/**
+	 * Searches in result if a TemperatureChartData matches uuid passed in first
+	 * parameter.
+	 * 
+	 * If so, returns a reference to the object in result. Else null
+	 * 
+	 * @param uuid
+	 * @param result
+	 * @return
+	 */
+	private TemperatureChartData findByUUID(String uuid, List<TemperatureChartData> result) {
+		if (uuid != null && !uuid.equals("")) {
+			if (result != null && !result.isEmpty()) {
+				for (TemperatureChartData data : result) {
+					if (data.getSeries().get(0).equals(uuid)) {
+						return data;
 					}
 				}
 			}
-			/*
-			 * Initializing chart fields as it is a new serie
-			 */
-			if (i == -1) {
-
-				TemperatureChartData newData = new TemperatureChartData();
-
-				newData.setData(new ArrayList<Float>());
-				newData.setLabels(new ArrayList<String>());
-				newData.setSeries(new ArrayList<String>());
-
-				result.add(newData);
-
-				i = result.size() - 1;
-				result.get(i).getSeries().add(mes.getTmes_probeUI());
-
-			}
-			System.out.println("i " + i);
-
-			result.get(i).getData().add(mes.getTmes_value());
-			result.get(i).getLabels().add(String.valueOf(mes.getTmes_date().getTime()));
 		}
-		
-
-		return result;
+		return null;
 	}
 
 	public List<MergedTemperatureMeasurementsForChart> convertToMergedAPIObject(
 			MultiActionnerTemperatures temperaturesForActionners) {
-		
+
 		List<MergedTemperatureMeasurementsForChart> result = new ArrayList<>();
 		Set<String> keySet = temperaturesForActionners.getTemperatures().keySet();
-		
-		
-		for (String key : keySet){
-			
-			List<ConcreteTemperatureMeasurement> obj = temperaturesForActionners.getTemperatures().get(key);
-			MergedTemperatureMeasurementsForChart chart = new MergedTemperatureMeasurementsForChart();
 
-			chart.setConcretes(this.convertToChart(obj));
-			chart.setLastID(0L);
-			result.add(chart);
+		for (String key : keySet) {
+
+			List<ConcreteTemperatureMeasurement> obj = temperaturesForActionners.getTemperatures().get(key);
+
+			List<TemperatureChartData> data = this.convertToChart(obj);
+
+			for (TemperatureChartData unit : data) {
+				MergedTemperatureMeasurementsForChart chart = new MergedTemperatureMeasurementsForChart();
+				chart.setConcretes(new ArrayList<>());
+				chart.getConcretes().add(unit);
+				
+				chart.setTheoreticals(new ArrayList<>());
+
+				chart.setLastID(0L);
+				result.add(chart);
+			}
 		}
-		
+
 		return result;
 	}
 
