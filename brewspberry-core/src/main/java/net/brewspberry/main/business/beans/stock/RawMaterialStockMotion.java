@@ -1,6 +1,6 @@
 package net.brewspberry.main.business.beans.stock;
 
-import net.brewspberry.main.business.beans.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
 
 public class RawMaterialStockMotion extends AbstractStockMotion{
 

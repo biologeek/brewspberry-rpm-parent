@@ -1,7 +1,7 @@
 package net.brewspberry.main.front.ws.beans.responses;
 
 
-import net.brewspberry.main.business.beans.GenericActionner.ActionerStatus;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerStatus;
 import net.brewspberry.main.front.ws.beans.responses.ActionnerResponse.ActionerType;
 import net.brewspberry.main.util.Constants;
 

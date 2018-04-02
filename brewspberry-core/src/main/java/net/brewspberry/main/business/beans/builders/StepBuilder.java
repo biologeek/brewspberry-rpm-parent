@@ -4,13 +4,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.DurationBO;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.Houblon;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.PalierType;
+import net.brewspberry.main.business.beans.brewing.DurationBO;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.Houblon;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.PalierType;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
 
 public class StepBuilder {
 

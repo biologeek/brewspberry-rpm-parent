@@ -7,10 +7,10 @@ import java.util.List;
 
 import net.brewspberry.main.business.ISpecificEtapeService;
 import net.brewspberry.main.business.ISpecificStockService;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.DurationBO;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.SimpleMalt;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.DurationBO;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.main.business.beans.stock.CounterType;
 import net.brewspberry.main.business.beans.stock.CounterTypeConstants;

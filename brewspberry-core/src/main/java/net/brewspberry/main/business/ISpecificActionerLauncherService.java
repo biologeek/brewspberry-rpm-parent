@@ -1,6 +1,6 @@
 package net.brewspberry.main.business;
 
-import net.brewspberry.main.business.beans.Actioner;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
 
 public interface ISpecificActionerLauncherService {
 

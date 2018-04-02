@@ -6,10 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.GenericActionner;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
 import net.brewspberry.main.front.ws.beans.responses.ActionnerResponse;
 import net.brewspberry.main.front.ws.beans.responses.ChartResponse;
 import net.brewspberry.main.front.ws.beans.responses.ActionnerResponse.ActionerStatus;
@@ -115,12 +115,12 @@ public class ActionnerDTO {
 		public GenericActionner toBusinessObject(net.brewspberry.main.front.ws.beans.responses.GenericActionner actioner) {
 			GenericActionner res = new GenericActionner();
 
-			res.setGact_status(net.brewspberry.main.business.beans.GenericActionner.ActionerStatus.IDLE);
+			res.setGact_status(net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerStatus.IDLE);
 			res.setGact_id(actioner.getGenericId());
 			res.setGact_nom(actioner.getName());
 			res.setGact_raspi_pin(actioner.getPin());
 			res.setGact_type(
-					net.brewspberry.main.business.beans.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
+					net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
 			res.setGact_uuid(actioner.getUuid());
 			res.setGact_picture(actioner.getPicture());
 
@@ -131,14 +131,14 @@ public class ActionnerDTO {
 			GenericActionner res = new GenericActionner();
 
 			res.setGact_status(
-					actioner.getState() == null ? net.brewspberry.main.business.beans.GenericActionner.ActionerStatus.IDLE
-							: net.brewspberry.main.business.beans.GenericActionner.ActionerStatus
+					actioner.getState() == null ? net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerStatus.IDLE
+							: net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerStatus
 									.valueOf(actioner.getState().name()));
 			res.setGact_id(actioner.getGenericId());
 			res.setGact_nom(actioner.getName());
 			res.setGact_raspi_pin(actioner.getPin());
 			res.setGact_type(
-					net.brewspberry.main.business.beans.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
+					net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerType.valueOf(actioner.getType().name()));
 			res.setGact_uuid(actioner.getUuid());
 			res.setGact_picture(actioner.getPictureWithStatus());
 

@@ -1,8 +1,8 @@
 package net.brewspberry.test.examples;
 
-import net.brewspberry.main.business.beans.AbstractIngredient;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.SimpleMalt;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.beans.stock.StockUnit;
 
 public class IngredientExemple {

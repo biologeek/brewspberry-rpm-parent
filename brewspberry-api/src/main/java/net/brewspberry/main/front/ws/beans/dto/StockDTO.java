@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.xml.crypto.Data;
 
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.business.beans.stock.CounterType;
 import net.brewspberry.main.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.main.business.beans.stock.StockCounter;

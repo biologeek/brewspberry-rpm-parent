@@ -14,13 +14,12 @@ import net.brewspberry.main.util.Constants;
 import net.brewspberry.main.util.LogManager;
 import net.brewspberry.main.util.OSUtils;
 
+/**
+ * This class acts as a layer over Pi4J API. <br>
+ * <br>
+ * Allows to handle actions over relays, change states, get current state, ...
+ */
 public class RelayAdapter {
-	/**
-	 * This class acts as a layer over Pi4J API.
-	 * 
-	 * Allows to handle actions over relays, change states, get current state,
-	 * ...
-	 */
 
 	static RelayAdapter instance;
 	final GpioController gpioController;
@@ -49,14 +48,14 @@ public class RelayAdapter {
 
 	public PinState changePinState(GpioPinDigitalOutput pin) {
 
-		
 		pin.toggle();
-		
+
 		return pin.getState();
 	}
-	
+
 	/**
 	 * Changes Pin state
+	 * 
 	 * @param pin
 	 * @param newPinState
 	 * @return
@@ -68,12 +67,12 @@ public class RelayAdapter {
 		PinState state = pin.getState();
 
 		if (state.equals(newPinState)) {
-			logger.warning("Not changing state as state="+this.getStateAsString(state));
+			logger.warning("Not changing state as state=" + this.getStateAsString(state));
 
 		} else if (state.equals(PinState.LOW)) {
 			pin.setState(PinState.HIGH);
 			result = true;
-		}else if (state.equals(PinState.HIGH)) {
+		} else if (state.equals(PinState.HIGH)) {
 			pin.setState(PinState.LOW);
 			result = true;
 		}
@@ -84,18 +83,16 @@ public class RelayAdapter {
 	public String getStateAsString(GpioPinDigitalOutput device) {
 
 		String result = "";
-		
-		PinState state = device.getState();
 
+		PinState state = device.getState();
 
 		return this.getStateAsString(state);
 	}
-	
+
 	public String getStateAsString(PinState state) {
 
 		String result = "";
 
-		
 		switch (state) {
 
 		case HIGH:
@@ -114,15 +111,16 @@ public class RelayAdapter {
 		}
 		return result;
 	}
-	
-	
-	public void setShutdownOptionsandShutdown (GpioController controller, GpioPin pin, PinState state, boolean unexport){
-		
+
+	public void setShutdownOptionsandShutdown(GpioController controller, GpioPin pin, PinState state,
+			boolean unexport) {
+
 		pin.setShutdownOptions(unexport, state);
-		
-		logger.info("Shutting down "+Constants.BREW_GPIO_TO_STR.get(pin));
-		
-		controller.shutdown();;
-		
+
+		logger.info("Shutting down " + Constants.BREW_GPIO_TO_STR.get(pin));
+
+		controller.shutdown();
+		;
+
 	}
 }

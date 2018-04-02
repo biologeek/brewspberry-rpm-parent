@@ -7,15 +7,15 @@ import java.util.List;
 
 import javax.sql.rowset.serial.SerialException;
 
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.DurationBO;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.EtapeType;
-import net.brewspberry.main.business.beans.Houblon;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.PalierType;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.DurationBO;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.EtapeType;
+import net.brewspberry.main.business.beans.brewing.Houblon;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.PalierType;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
 import net.brewspberry.main.business.exceptions.BusinessException;
 import net.brewspberry.main.business.exceptions.ConversionException;
 import net.brewspberry.main.business.exceptions.ServiceException;

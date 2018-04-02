@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.business.exceptions.DAOException;
 
 @Repository

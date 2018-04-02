@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import net.brewspberry.main.business.beans.TemperatureAlgorithmData;
+import net.brewspberry.main.business.beans.monitoring.TemperatureAlgorithmData;
 import net.brewspberry.main.regulation.IRegulationAlgorithm;
 
 public class TemperatureRegulatorAlgorithmlmpl implements IRegulationAlgorithm<TemperatureAlgorithmData> {

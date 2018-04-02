@@ -10,8 +10,8 @@ import java.util.Set;
 
 import org.mockito.internal.listeners.CollectCreatedMocks;
 
-import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.main.business.beans.MultiActionnerTemperatures;
+import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
+import net.brewspberry.main.business.beans.monitoring.MultiActionnerTemperatures;
 import net.brewspberry.main.front.ws.beans.responses.MergedTemperatureMeasurementsForChart;
 import net.brewspberry.main.front.ws.beans.responses.TemperatureChartData;
 

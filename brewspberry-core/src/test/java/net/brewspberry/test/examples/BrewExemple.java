@@ -1,7 +1,7 @@
 package net.brewspberry.test.examples;
 
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
 
 public class BrewExemple {
 

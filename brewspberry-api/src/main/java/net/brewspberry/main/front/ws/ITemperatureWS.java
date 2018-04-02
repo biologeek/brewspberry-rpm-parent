@@ -7,7 +7,7 @@ import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 
-import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
+import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
 
 @WebService
 @SOAPBinding(style=Style.RPC)

@@ -1,11 +1,11 @@
 package net.brewspberry.main.front.ws.beans.dto;
 
-import net.brewspberry.main.business.beans.AbstractIngredient;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.SimpleHoublon;
-import net.brewspberry.main.business.beans.SimpleLevure;
-import net.brewspberry.main.business.beans.SimpleMalt;
-import net.brewspberry.main.business.beans.SimpleHoublon.HopType;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
+import net.brewspberry.main.business.beans.brewing.SimpleLevure;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon.HopType;
 import net.brewspberry.main.business.beans.stock.StockUnit;
 import net.brewspberry.main.business.exceptions.DataTransferException;
 import net.brewspberry.main.front.ws.beans.requests.IngredientRequest;

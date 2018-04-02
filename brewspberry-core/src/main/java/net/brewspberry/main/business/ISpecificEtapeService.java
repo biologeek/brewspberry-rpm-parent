@@ -1,6 +1,6 @@
 package net.brewspberry.main.business;
 
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.business.exceptions.BusinessException;
 
 public interface ISpecificEtapeService {

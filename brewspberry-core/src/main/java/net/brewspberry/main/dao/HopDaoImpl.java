@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.beans.Houblon;
+import net.brewspberry.main.business.beans.brewing.Houblon;
 import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.util.HibernateUtil;
 

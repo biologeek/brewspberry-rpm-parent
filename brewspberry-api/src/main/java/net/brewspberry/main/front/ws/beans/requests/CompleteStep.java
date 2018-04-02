@@ -2,10 +2,10 @@ package net.brewspberry.main.front.ws.beans.requests;
 
 import java.util.List;
 
-import net.brewspberry.main.business.beans.Houblon;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.PalierType;
+import net.brewspberry.main.business.beans.brewing.Houblon;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.PalierType;
 import net.brewspberry.main.business.exceptions.BusinessException;
 import net.brewspberry.main.front.ws.beans.responses.ActionnerResponse;
 import net.brewspberry.main.front.ws.beans.responses.SimpleStepResponse;

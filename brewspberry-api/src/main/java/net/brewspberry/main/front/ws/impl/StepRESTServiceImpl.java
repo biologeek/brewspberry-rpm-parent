@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.ResourceAccessException;
 
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.front.ws.IStepRESTService;
 import net.brewspberry.main.front.ws.beans.dto.StepDTO;
 import net.brewspberry.main.front.ws.beans.requests.CompleteStep;

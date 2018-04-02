@@ -9,7 +9,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import net.brewspberry.main.business.ISpecificTemperatureMeasurementService;
-import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
+import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.service.TemperatureMeasurementServiceImpl;
 
 @WebService

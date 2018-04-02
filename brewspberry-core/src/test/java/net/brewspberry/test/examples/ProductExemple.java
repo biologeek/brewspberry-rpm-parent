@@ -1,6 +1,6 @@
 package net.brewspberry.test.examples;
 
-import net.brewspberry.main.business.beans.Biere;
+import net.brewspberry.main.business.beans.brewing.Biere;
 
 public class ProductExemple {
 

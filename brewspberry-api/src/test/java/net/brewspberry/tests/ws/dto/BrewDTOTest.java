@@ -12,9 +12,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.PalierType;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.PalierType;
 import net.brewspberry.main.front.ws.beans.dto.BrassinDTO;
 import net.brewspberry.main.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.main.front.ws.beans.responses.SimpleBrewResponse;

@@ -13,15 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.ISpecificStockDao;
-import net.brewspberry.main.business.beans.AbstractFinishedProduct;
-import net.brewspberry.main.business.beans.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.AbstractFinishedProduct;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
 import net.brewspberry.main.business.beans.stock.CounterType;
 import net.brewspberry.main.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.main.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.main.business.beans.stock.StockCounter;
 import net.brewspberry.main.business.beans.stock.Stockable;
 import net.brewspberry.main.business.exceptions.DAOException;
+import net.brewspberry.main.data.ISpecificStockDao;
 
 @Repository
 public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDao {

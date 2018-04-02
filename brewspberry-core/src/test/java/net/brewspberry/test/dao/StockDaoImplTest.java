@@ -7,13 +7,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.ISpecificStockDao;
 import net.brewspberry.main.business.beans.stock.CounterType;
 import net.brewspberry.main.business.beans.stock.CounterTypeConstants;
 import net.brewspberry.main.business.beans.stock.FinishedProductCounter;
 import net.brewspberry.main.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.main.business.beans.stock.StockCounter;
 import net.brewspberry.main.business.beans.stock.Stockable;
+import net.brewspberry.main.data.ISpecificStockDao;
 import net.brewspberry.test.AbstractTest;
 
 import org.junit.Before;

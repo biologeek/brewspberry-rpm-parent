@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.Date;
 
-import net.brewspberry.main.business.beans.Actioner;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
 import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.service.ActionerServiceImpl;
 import net.brewspberry.main.util.Constants;

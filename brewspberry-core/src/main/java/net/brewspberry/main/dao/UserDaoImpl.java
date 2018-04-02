@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.ISpecificUserDao;
 import net.brewspberry.main.business.beans.User;
 import net.brewspberry.main.business.exceptions.DAOException;
+import net.brewspberry.main.data.ISpecificUserDao;
 
 @Repository
 @Transactional

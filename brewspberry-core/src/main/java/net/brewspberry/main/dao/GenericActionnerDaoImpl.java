@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.beans.GenericActionner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
 import net.brewspberry.main.business.exceptions.DAOException;
 
 @Repository

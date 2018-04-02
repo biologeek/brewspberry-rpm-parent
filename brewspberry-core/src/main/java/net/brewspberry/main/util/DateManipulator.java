@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.brewspberry.main.business.beans.DurationBO;
+import net.brewspberry.main.business.beans.brewing.DurationBO;
 
 public class DateManipulator {
 

@@ -1,7 +1,7 @@
 package net.brewspberry.main.business.service;
 
-import net.brewspberry.main.business.beans.AbstractFinishedProduct;
-import net.brewspberry.main.business.beans.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.AbstractFinishedProduct;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
 import net.brewspberry.main.business.beans.builders.StockCounterBuilder;
 import net.brewspberry.main.business.beans.stock.CounterType;
 import net.brewspberry.main.business.beans.stock.FinishedProductCounter;

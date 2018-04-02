@@ -2,8 +2,8 @@ package net.brewspberry.main.front.ws.beans.responses;
 
 import java.util.Date;
 
-import net.brewspberry.main.business.beans.BrewStatus;
-import net.brewspberry.main.business.beans.EtapeType;
+import net.brewspberry.main.business.beans.brewing.BrewStatus;
+import net.brewspberry.main.business.beans.brewing.EtapeType;
 
 public class SimpleBrewResponse {
 	

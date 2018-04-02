@@ -21,9 +21,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.junit.Assert;
 
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.SimpleMalt;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.main.business.beans.stock.CounterType;
 import net.brewspberry.main.business.beans.stock.CounterTypeConstants;

@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificIngredientService;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.SimpleLevure;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.SimpleLevure;
 import net.brewspberry.main.business.exceptions.ServiceException;
 
 @Service (value="yeastServiceImpl")

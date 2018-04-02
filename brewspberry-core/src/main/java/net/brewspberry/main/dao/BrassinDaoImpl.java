@@ -15,11 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.ISpecificBrassinDAO;
-import net.brewspberry.main.business.beans.Biere;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.BrewStatus;
+import net.brewspberry.main.business.beans.brewing.Biere;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.BrewStatus;
 import net.brewspberry.main.business.exceptions.DAOException;
+import net.brewspberry.main.data.ISpecificBrassinDAO;
 import net.brewspberry.main.util.HibernateUtil;
 import net.brewspberry.main.util.LogManager;
 

@@ -2,8 +2,8 @@ package net.brewspberry.main.front.ws.beans.responses;
 
 import java.util.List;
 
-import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.main.business.beans.TheoreticalTemperatureMeasurement;
+import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
+import net.brewspberry.main.business.beans.monitoring.TheoreticalTemperatureMeasurement;
 
 public class MergedTemperatureMeasurement {
 

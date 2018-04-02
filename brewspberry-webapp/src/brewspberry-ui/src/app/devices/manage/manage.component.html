@@ -1,0 +1,40 @@
+<div class="devices-manager-container">
+	
+	<div class="devices-container">
+		<div class="row header-row">
+			<div class="col-xs-5 col-sm-5">Device</div>
+			<div class="col-xs-2 col-sm-2">On/Off</div>
+			<div class="col-xs-5 col-sm-5">Actions</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-5 col-sm-5">DS18B20 Cuve 1</div>
+			<div class="col-xs-2 col-sm-2">
+				<ngx-toggle
+				onColor="{{model.onColor}}"
+				onText="{{model.onText}}"
+				offColor="{{model.offColor}}"
+				offText="{{model.offText}}"
+				[disabled]="model.disabled"
+				[size]="model.size"
+				[(value)]="model.value">
+			</ngx-toggle>
+		</div>
+		<div class="col-xs-5 col-sm-5"><i class="fa fa-pencil" style="font-size: 1.5em;"></i> <i class="fa fa-trash" style="font-size: 1.5em;"></i></div>
+	</div>
+	<div class="row">
+		<div class="col-xs-5 col-sm-5">Relay pump 1</div>
+		<div class="col-xs-2 col-sm-2">
+			<ngx-toggle
+			onColor="{{model.onColor}}"
+			onText="{{model.onText}}"
+			offColor="{{model.offColor}}"
+			offText="{{model.offText}}"
+			[disabled]="model.disabled"
+			[size]="model.size"
+			[(value)]="model.value">
+		</ngx-toggle>
+	</div>
+	<div class="col-xs-5 col-sm-5"><i class="fa fa-pencil" style="font-size: 1.5em;"></i> <i class="fa fa-trash" style="font-size: 1.5em;"></i></div>
+</div>
+</div>
+</div>

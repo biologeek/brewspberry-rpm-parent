@@ -16,15 +16,15 @@ import org.springframework.stereotype.Service;
 import net.brewspberry.main.adapter.RelayAdapter;
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.ISpecificActionerDao;
 import net.brewspberry.main.business.ISpecificActionerService;
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.GenericActionner;
-import net.brewspberry.main.business.beans.GenericActionner.ActionerStatus;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerStatus;
 import net.brewspberry.main.business.exceptions.NotAppropriateStatusException;
 import net.brewspberry.main.business.exceptions.ServiceException;
+import net.brewspberry.main.data.ISpecificActionerDao;
 import net.brewspberry.main.util.LogManager;
 
 @Service

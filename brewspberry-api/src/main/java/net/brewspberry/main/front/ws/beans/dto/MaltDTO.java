@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.brewspberry.main.business.beans.Malt;
+import net.brewspberry.main.business.beans.brewing.Malt;
 import net.brewspberry.main.front.ws.DTO;
 import net.brewspberry.main.front.ws.beans.requests.ConcreteIngredientRequest;
 import net.brewspberry.main.front.ws.beans.requests.IngredientRequest.IngredientType;

@@ -10,21 +10,21 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import net.brewspberry.main.business.beans.AbstractIngredient;
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.Biere;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.main.business.beans.DurationBO;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.Houblon;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.PalierType;
-import net.brewspberry.main.business.beans.SimpleHoublon;
-import net.brewspberry.main.business.beans.SimpleLevure;
-import net.brewspberry.main.business.beans.SimpleMalt;
 import net.brewspberry.main.business.beans.User;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.Biere;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.DurationBO;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.Houblon;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.PalierType;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
+import net.brewspberry.main.business.beans.brewing.SimpleLevure;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
+import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
 
 @SuppressWarnings("deprecation")
 public class HibernateUtil {

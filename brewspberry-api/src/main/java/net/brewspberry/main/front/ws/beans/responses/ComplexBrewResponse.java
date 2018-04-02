@@ -3,7 +3,7 @@ package net.brewspberry.main.front.ws.beans.responses;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.brewspberry.main.business.beans.Biere;
+import net.brewspberry.main.business.beans.brewing.Biere;
 import net.brewspberry.main.front.ws.beans.requests.CompleteStep;
 import net.brewspberry.main.front.ws.beans.requests.ConcreteIngredientRequest;
 import net.brewspberry.main.front.ws.beans.requests.HopRequest;

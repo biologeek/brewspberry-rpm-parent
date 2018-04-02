@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.ISpecificUserDao;
 import net.brewspberry.main.business.ISpecificUserService;
 import net.brewspberry.main.business.beans.User;
 import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
+import net.brewspberry.main.data.ISpecificUserDao;
 import net.brewspberry.main.util.EncryptionUtils;
 import net.brewspberry.main.util.LogManager;
 import net.brewspberry.main.util.validators.UserValidator;

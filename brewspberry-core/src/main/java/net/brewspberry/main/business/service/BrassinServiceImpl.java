@@ -12,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.ISpecificBrassinDAO;
 import net.brewspberry.main.business.ISpecificBrassinService;
-import net.brewspberry.main.business.beans.Biere;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.BrewStatus;
+import net.brewspberry.main.business.beans.brewing.Biere;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.BrewStatus;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.dao.BrassinDaoImpl;
+import net.brewspberry.main.data.ISpecificBrassinDAO;
 import net.brewspberry.main.util.HibernateUtil;
 
 @Service

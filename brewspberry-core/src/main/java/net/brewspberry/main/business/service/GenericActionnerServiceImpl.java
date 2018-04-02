@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.beans.GenericActionner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
 import net.brewspberry.main.business.exceptions.ServiceException;
 
 @Service

@@ -6,8 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import net.brewspberry.main.business.beans.AbstractFinishedProduct;
-import net.brewspberry.main.business.beans.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.AbstractFinishedProduct;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
 
 
 

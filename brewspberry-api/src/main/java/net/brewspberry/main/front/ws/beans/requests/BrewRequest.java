@@ -2,9 +2,9 @@ package net.brewspberry.main.front.ws.beans.requests;
 
 import java.util.List;
 
-import net.brewspberry.main.business.beans.Houblon;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.Malt;
+import net.brewspberry.main.business.beans.brewing.Houblon;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.Malt;
 
 public class BrewRequest {
 	

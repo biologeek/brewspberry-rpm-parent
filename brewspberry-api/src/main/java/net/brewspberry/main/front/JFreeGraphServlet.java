@@ -28,9 +28,9 @@ import org.jfree.data.time.TimeSeriesCollection;
 
 import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificTemperatureMeasurementService;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.ConcreteTemperatureMeasurement;
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.business.service.BrassinServiceImpl;
 import net.brewspberry.main.business.service.EtapeServiceImpl;

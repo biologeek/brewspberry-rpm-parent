@@ -4,10 +4,10 @@ import java.util.Arrays;
 import java.util.logging.Logger;
 
 import net.brewspberry.main.batches.beans.BatchParams.LaunchType;
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.GenericActionner;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
 import net.brewspberry.main.util.LogManager;
 
 public class BatchParams {

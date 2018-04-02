@@ -2,7 +2,7 @@ package net.brewspberry.main.front.ws.beans.responses;
 
 import java.util.List;
 
-import net.brewspberry.main.business.beans.GenericActionner.ActionerStatus;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerStatus;
 import net.brewspberry.main.util.Constants;
 
 public class ActionnerResponse {

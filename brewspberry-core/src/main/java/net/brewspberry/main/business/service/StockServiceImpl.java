@@ -12,11 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.ISpecificStockDao;
 import net.brewspberry.main.business.ISpecificStockService;
-import net.brewspberry.main.business.beans.AbstractFinishedProduct;
-import net.brewspberry.main.business.beans.AbstractIngredient;
-import net.brewspberry.main.business.beans.Etape;
+import net.brewspberry.main.business.beans.brewing.AbstractFinishedProduct;
+import net.brewspberry.main.business.beans.brewing.AbstractIngredient;
+import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.main.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.main.business.beans.stock.CounterType;
@@ -34,6 +33,7 @@ import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.business.exceptions.StockException;
 import net.brewspberry.main.business.parser.Parser;
+import net.brewspberry.main.data.ISpecificStockDao;
 import net.brewspberry.main.util.LogManager;
 import net.brewspberry.main.util.StockUnitUtils;
 

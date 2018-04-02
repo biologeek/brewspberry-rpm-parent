@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.beans.Malt;
+import net.brewspberry.main.business.beans.brewing.Malt;
 import net.brewspberry.main.business.exceptions.DAOException;
 
 @Repository

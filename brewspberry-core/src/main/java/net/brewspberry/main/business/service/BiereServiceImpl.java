@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.ISpecificBiereDAO;
-import net.brewspberry.main.business.beans.Biere;
+import net.brewspberry.main.business.beans.brewing.Biere;
 import net.brewspberry.main.business.exceptions.DAOException;
+import net.brewspberry.main.data.ISpecificBiereDAO;
 
 @Service 
 @Transactional

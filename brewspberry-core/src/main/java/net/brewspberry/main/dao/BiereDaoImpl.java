@@ -12,10 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.ISpecificBiereDAO;
-import net.brewspberry.main.business.beans.Biere;
-import net.brewspberry.main.business.beans.Malt;
+import net.brewspberry.main.business.beans.brewing.Biere;
+import net.brewspberry.main.business.beans.brewing.Malt;
 import net.brewspberry.main.business.exceptions.DAOException;
+import net.brewspberry.main.data.ISpecificBiereDAO;
 import net.brewspberry.main.util.HibernateUtil;
 
 @Repository

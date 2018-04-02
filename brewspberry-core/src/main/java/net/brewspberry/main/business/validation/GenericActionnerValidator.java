@@ -2,7 +2,7 @@ package net.brewspberry.main.business.validation;
 
 import java.util.List;
 
-import net.brewspberry.main.business.beans.GenericActionner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
 
 public class GenericActionnerValidator implements Validator<GenericActionner> {
 	private List<GenericActionner> actionnersList;

@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.GenericActionner;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner;
 import net.brewspberry.main.util.DateManipulator;
 
 public class BrewValidator implements Validator<Brassin> {

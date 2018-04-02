@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import net.brewspberry.main.business.beans.Actioner;
-import net.brewspberry.main.business.beans.GenericActionner.ActionerType;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
+import net.brewspberry.main.business.beans.monitoring.GenericActionner.ActionerType;
 import net.brewspberry.main.business.service.ActionerServiceImpl;
 
 public class DeviceParser extends ConfigLoader {

@@ -4,10 +4,10 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 
-import net.brewspberry.main.business.beans.Brassin;
-import net.brewspberry.main.business.beans.BrewStatus;
-import net.brewspberry.main.business.beans.Etape;
-import net.brewspberry.main.business.beans.EtapeType;
+import net.brewspberry.main.business.beans.brewing.Brassin;
+import net.brewspberry.main.business.beans.brewing.BrewStatus;
+import net.brewspberry.main.business.beans.brewing.Etape;
+import net.brewspberry.main.business.beans.brewing.EtapeType;
 import net.brewspberry.main.business.exceptions.ConversionException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.front.ws.beans.requests.BrewRequest;

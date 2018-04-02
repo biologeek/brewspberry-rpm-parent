@@ -1,0 +1,55 @@
+
+
+
+.devices-container{
+	max-height: 800px;
+	min-height: 200px;
+	position: relative;
+	margin: 10% auto;
+	background-color: white;
+	text-align: center;
+	padding : 10px;
+	border-radius: 5px;
+}
+
+.header-row{
+	background-color: #444444;
+	border-radius: 5px;
+	color: white;
+	font-weight: bold;
+	margin-bottom: 5px; 
+}
+
+.row{
+	margin-right: 0px;
+	margin-left: 0px;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	vertical-align: middle;
+	height: 50px;
+}
+
+
+@media screen and (max-width: 500px) {
+
+	.devices-container{
+		width: 95%;
+	}
+	.col-xs-5{
+		width: 40%;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	.col-xs-2{
+		width: 20%;
+	}
+}
+@media screen and (min-width: 500px) {
+	.devices-manager-container{
+		margin-left: 80px;
+	}
+	.devices-container{
+		width: 70%;
+
+	}
+}

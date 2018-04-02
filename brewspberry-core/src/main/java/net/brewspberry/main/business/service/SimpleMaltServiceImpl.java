@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificIngredientService;
-import net.brewspberry.main.business.beans.SimpleMalt;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.dao.SimpleMaltDAOImpl;
 

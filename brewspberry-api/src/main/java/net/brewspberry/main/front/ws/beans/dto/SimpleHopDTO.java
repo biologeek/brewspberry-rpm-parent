@@ -3,8 +3,8 @@ package net.brewspberry.main.front.ws.beans.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.brewspberry.main.business.beans.SimpleHoublon;
-import net.brewspberry.main.business.beans.SimpleHoublon.HopType;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon.HopType;
 import net.brewspberry.main.business.beans.stock.StockUnit;
 import net.brewspberry.main.front.ws.DTO;
 import net.brewspberry.main.front.ws.beans.requests.IngredientRequest;

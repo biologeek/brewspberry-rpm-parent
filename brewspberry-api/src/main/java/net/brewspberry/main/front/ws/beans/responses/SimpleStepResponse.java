@@ -1,7 +1,7 @@
 package net.brewspberry.main.front.ws.beans.responses;
 
-import net.brewspberry.main.business.beans.EtapeType;
-import net.brewspberry.main.business.beans.PalierType;
+import net.brewspberry.main.business.beans.brewing.EtapeType;
+import net.brewspberry.main.business.beans.brewing.PalierType;
 import net.brewspberry.main.business.exceptions.BusinessException;
 
 public class SimpleStepResponse implements Comparable<SimpleStepResponse> {

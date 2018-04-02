@@ -16,10 +16,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.ISpecificIngredientService;
-import net.brewspberry.main.business.beans.Houblon;
-import net.brewspberry.main.business.beans.Levure;
-import net.brewspberry.main.business.beans.Malt;
-import net.brewspberry.main.business.beans.SimpleHoublon;
+import net.brewspberry.main.business.beans.brewing.Houblon;
+import net.brewspberry.main.business.beans.brewing.Levure;
+import net.brewspberry.main.business.beans.brewing.Malt;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
 import net.brewspberry.main.business.service.HopServiceImpl;
 import net.brewspberry.main.dao.HopDaoImpl;
 import net.brewspberry.main.dao.SimpleHopDaoImpl;

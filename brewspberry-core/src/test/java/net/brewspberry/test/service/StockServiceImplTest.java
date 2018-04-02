@@ -23,10 +23,9 @@ import org.junit.Assert;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.ISpecificStockDao;
 import net.brewspberry.main.business.ISpecificStockService;
-import net.brewspberry.main.business.beans.SimpleHoublon;
-import net.brewspberry.main.business.beans.SimpleMalt;
+import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
+import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.beans.builders.IngredientStockCounterBuilder;
 import net.brewspberry.main.business.beans.stock.AbstractStockMotion;
 import net.brewspberry.main.business.beans.stock.CounterType;
@@ -42,6 +41,7 @@ import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.business.exceptions.StockException;
 import net.brewspberry.main.business.service.StockServiceImpl;
 import net.brewspberry.main.dao.StockDAOImpl;
+import net.brewspberry.main.data.ISpecificStockDao;
 import net.brewspberry.test.AbstractTest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
