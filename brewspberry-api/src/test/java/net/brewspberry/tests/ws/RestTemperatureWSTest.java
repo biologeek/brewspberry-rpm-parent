@@ -8,7 +8,7 @@ import net.brewspberry.main.business.beans.brewing.Brassin;
 import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.business.beans.monitoring.Actioner;
 import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
-import net.brewspberry.main.front.ws.impl.RESTTemperatureService;
+import net.brewspberry.main.front.ws.impl.TemperatureController;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 import net.brewspberry.tests.config.ApiSpringTestConfiguration;
 
@@ -29,7 +29,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 public class RestTemperatureWSTest {
 	
 	
-	RESTTemperatureService temperatureService = new RESTTemperatureService();
+	TemperatureController temperatureService = new TemperatureController();
 	
 	@Test
 	public void mergeJSONArrayTest () throws JSONException{

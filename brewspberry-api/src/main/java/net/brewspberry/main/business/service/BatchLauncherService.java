@@ -82,7 +82,7 @@ public class BatchLauncherService implements ISpecificActionerLauncherService {
 	@Override
 	public Actioner startAction(Actioner actioner) throws Exception {
 
-		// TODO : fix this part !!!!
+		// TODO : FIXME fix this part !!!!
 
 		Etape currentStep = null;
 		String duration = "";

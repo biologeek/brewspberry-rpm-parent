@@ -41,7 +41,7 @@ import net.brewspberry.main.util.LogManager;
 @RequestMapping("/temperatureService")
 @RestController
 @CrossOrigin
-public class RESTTemperatureService {
+public class TemperatureController {
 
 	@Autowired
 	@Qualifier("temperatureMeasurementServiceImpl")
@@ -58,7 +58,7 @@ public class RESTTemperatureService {
 	@Autowired
 	ISpecificActionerService actionerSpecService;
 
-	Logger logger = LogManager.getInstance(RESTTemperatureService.class.getName());
+	Logger logger = LogManager.getInstance(TemperatureController.class.getName());
 
 	@GetMapping("/step/{stepId}/act/{actUUID}")
 	public MergedTemperatureMeasurementsForChart initTemperatures(@PathVariable("stepId") Long stepId,

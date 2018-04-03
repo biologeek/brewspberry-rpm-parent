@@ -28,7 +28,7 @@ import net.brewspberry.main.front.ws.beans.requests.StockCounterRequest;
 
 @RestController
 @RequestMapping("/stockService")
-public abstract class StockRESTServiceImpl implements IStockRESTService {
+public abstract class StockController implements IStockRESTService {
 
 	@Autowired
 	@Qualifier("stockServiceImpl")
@@ -44,7 +44,7 @@ public abstract class StockRESTServiceImpl implements IStockRESTService {
 	private List<CounterType> list;
 	
 	
-	public StockRESTServiceImpl() {
+	public StockController() {
 		this.list = genericCompteurTypeService.getAllElements();
 	}
 

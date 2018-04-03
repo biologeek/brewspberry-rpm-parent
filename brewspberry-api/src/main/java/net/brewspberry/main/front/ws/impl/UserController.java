@@ -29,14 +29,14 @@ import net.brewspberry.main.util.LogManager;
 
 @RequestMapping("/userService")
 @RestController
-public class UserRestServiceImpl implements IUserRESTService {
+public class UserController implements IUserRESTService {
 
 	private Logger logger;
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private IGenericService<User> userGenService;
 
-	public UserRestServiceImpl() {
+	public UserController() {
 		super();
 
 		logger = LogManager.getInstance(this.getClass().getName());

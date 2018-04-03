@@ -9,7 +9,7 @@ import net.brewspberry.main.front.ws.beans.requests.BrewRequest;
 import net.brewspberry.main.front.ws.beans.responses.ComplexBrewResponse;
 import net.brewspberry.main.front.ws.beans.responses.SimpleBrewResponse;
 
-public interface IBrewRESTService {
+public interface IBrewingProcessController {
 
 	
 	

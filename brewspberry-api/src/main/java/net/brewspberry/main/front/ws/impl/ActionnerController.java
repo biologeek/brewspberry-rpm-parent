@@ -33,10 +33,10 @@ import net.brewspberry.main.front.ws.beans.responses.ActionnerResponse;
 import net.brewspberry.main.front.ws.beans.responses.ActionnerResponse.ActionerType;
 import net.brewspberry.main.util.Constants;
 
-@RequestMapping("/actionner")
+@RequestMapping("/device")
 @RestController
 
-public class ActionnerRestServiceImpl {
+public class ActionnerController {
 
 	@Autowired
 	@Qualifier("actionerServiceImpl")
@@ -93,13 +93,11 @@ public class ActionnerRestServiceImpl {
 
 	@GetMapping("/types")
 	public List<ActionerType> getActionnerTypes() {
-
 		return Arrays.asList(ActionerType.values());
 	}
 
 	@GetMapping("/pins")
 	public List<String> getPins() {
-
 		return Arrays.asList(RaspiPins.getRealPins());
 	}
 
