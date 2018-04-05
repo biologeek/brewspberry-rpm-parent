@@ -3,52 +3,38 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projection;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
-import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
 import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.exceptions.DAOException;
-import net.brewspberry.main.util.HibernateUtil;
 
 @Repository
 public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 
 
 	@Override
 	public SimpleMalt save(SimpleMalt arg0) throws DAOException {
 		
-
-		long resultId;
-		SimpleMalt result = new SimpleMalt();
 		try {
-			Session session = sessionFactory.getCurrentSession();
-			resultId = (long) session.save(arg0);
-			result = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, resultId);
-			
-
+			em.persist(arg0);
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			
 		} finally {
 			
 		}
-		return result;
+		return arg0;
 	}
 
 	@Override
@@ -59,7 +45,7 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
 		if (arg0.getStb_id() != 0) {
 			try {
-				sessionFactory.getCurrentSession().update(arg0);
+				em.persist(arg0);
 				
 				result = arg0;
 
@@ -86,7 +72,7 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 	@Override
 	public SimpleMalt getElementById(long id) {
 
-		SimpleMalt malt = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, id);
+		SimpleMalt malt = (SimpleMalt) em.find(SimpleMalt.class, id);
 
 		
 		return malt;
@@ -100,8 +86,8 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 		long resultId;
 		List<SimpleMalt> result = new ArrayList<SimpleMalt>();
 
-		result = (List<SimpleMalt>) sessionFactory.getCurrentSession().createQuery("from SimpleMalt")
-				.list();
+		result = (List<SimpleMalt>) em.createQuery("from SimpleMalt")
+				.getResultList();
 		
 		return result;
 	}
@@ -111,8 +97,8 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 		
 
 		try {
-			SimpleMalt malt = (SimpleMalt) sessionFactory.getCurrentSession().get(SimpleMalt.class, id);
-			sessionFactory.getCurrentSession().delete(malt);
+			SimpleMalt malt = (SimpleMalt) em.find(SimpleMalt.class, id);
+			em.remove(malt);
 		} catch (HibernateException e) {
 			e.printStackTrace();
 			
@@ -123,7 +109,7 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 
 	@Override
 	public void deleteElement(SimpleMalt arg0) {
-		sessionFactory.getCurrentSession().delete(arg0);
+		em.remove(arg0);
 
 		
 
@@ -134,8 +120,8 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 	public List<SimpleMalt> getAllDistinctElements() {
 
 		List<SimpleMalt> result = new ArrayList<SimpleMalt>();
-		result = sessionFactory.getCurrentSession().createQuery("from SimpleMalt group by ing_desc")
-				.list();
+		result = em.createQuery("from SimpleMalt group by ing_desc")
+				.getResultList();
 
 		
 		return result;
@@ -144,21 +130,12 @@ public class SimpleMaltDAOImpl implements IGenericDao<SimpleMalt> {
 	@Override
 	public SimpleMalt getElementByName(String name) {
 
-		SimpleMalt result = (SimpleMalt) sessionFactory.getCurrentSession().createQuery(
+		SimpleMalt result = (SimpleMalt) em.createQuery(
 				"from SimpleMalt where ing_desc = '" + name + "'")
-				.uniqueResult();
+				.getSingleResult();
 
 		
 		return result;
 
 	}
-
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
 }

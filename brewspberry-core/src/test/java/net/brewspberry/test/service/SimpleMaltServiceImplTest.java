@@ -5,23 +5,16 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
-import net.brewspberry.main.business.ISpecificIngredientService;
-import net.brewspberry.main.business.ISpecificStockService;
-import net.brewspberry.main.business.beans.User;
 import net.brewspberry.main.business.beans.brewing.SimpleMalt;
 import net.brewspberry.main.business.beans.stock.StockUnit;
 import net.brewspberry.main.business.exceptions.ServiceException;
-import net.brewspberry.main.business.service.SimpleMaltServiceImpl;
 import net.brewspberry.test.AbstractTest;
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 

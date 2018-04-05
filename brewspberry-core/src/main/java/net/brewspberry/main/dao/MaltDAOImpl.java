@@ -3,8 +3,9 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,48 +16,39 @@ import net.brewspberry.main.business.exceptions.DAOException;
 @Repository
 public class MaltDAOImpl implements IGenericDao<Malt> {
 
-
 	@Autowired
-	SessionFactory sessionFactory;
-
+	EntityManager em;
 
 	@Override
 	public Malt save(Malt arg0) throws DAOException {
-		
-
-		long resultId;
-		Malt result = new Malt();
 		try {
-			resultId = (long) sessionFactory.getCurrentSession().save(arg0);
-			result = (Malt) sessionFactory.getCurrentSession().get(Malt.class, resultId);
-			
-
+			em.persist(arg0);
+			return arg0;
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			
+
 		} finally {
-			
+
 		}
-		return result;
+		throw new DAOException();
 	}
 
 	@Override
 	public Malt update(Malt arg0) {
-		
 
 		Malt result = new Malt();
 
 		if (arg0.getStb_id() != 0) {
 			try {
-				sessionFactory.getCurrentSession().update(arg0);
-				
+				em.persist(arg0);
+
 				result = arg0;
 
 			} catch (HibernateException e) {
 				e.printStackTrace();
-				
+
 			} finally {
-				
+
 			}
 		} else {
 
@@ -64,9 +56,9 @@ public class MaltDAOImpl implements IGenericDao<Malt> {
 				result = this.save(arg0);
 			} catch (HibernateException | DAOException e) {
 				e.printStackTrace();
-				
+
 			} finally {
-				
+
 			}
 		}
 		return result;
@@ -75,9 +67,8 @@ public class MaltDAOImpl implements IGenericDao<Malt> {
 	@Override
 	public Malt getElementById(long id) {
 
-		Malt malt = (Malt) sessionFactory.getCurrentSession().get(Malt.class, id);
+		Malt malt = (Malt) em.find(Malt.class, id);
 
-		
 		return malt;
 
 	}
@@ -89,51 +80,40 @@ public class MaltDAOImpl implements IGenericDao<Malt> {
 		long resultId;
 		List<Malt> result = new ArrayList<Malt>();
 
-		result = (List<Malt>) sessionFactory.getCurrentSession().createQuery("from Malt").list();
-
-		
+		result = (List<Malt>) em.createQuery("from Malt").getResultList();
 
 		return result;
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		
 
 		try {
-			Malt malt = (Malt) sessionFactory.getCurrentSession().get(Malt.class, id);
-			sessionFactory.getCurrentSession().delete(malt);
+			Malt malt = (Malt) em.find(Malt.class, id);
+			em.remove(malt);
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			
+
 		} finally {
-			
+
 		}
 	}
 
 	@Override
 	public void deleteElement(Malt arg0) {
-		sessionFactory.getCurrentSession().delete(arg0);
-
-		
+		em.remove(arg0);
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Malt> getAllDistinctElements() {
-
-		List<Malt> result = new ArrayList<Malt>();
-		result = sessionFactory.getCurrentSession().createQuery("from Malt group by ing_desc").list();
-
-		
-
-		return result;
+		return em.createQuery("from Malt group by ing_desc").getResultList();
 	}
 
 	@Override
 	public Malt getElementByName(String name) {
-		
+
 		return null;
 	}
 

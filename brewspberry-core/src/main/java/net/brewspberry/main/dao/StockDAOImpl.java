@@ -3,12 +3,9 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Disjunction;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,36 +24,29 @@ import net.brewspberry.main.data.ISpecificStockDao;
 public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDao {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getWholeStockForProduct(Stockable arg0) {
-
-		Session session = sessionFactory.getCurrentSession();
-
-		Criteria crit = session.createCriteria(StockCounter.class);
-		crit.add(Restrictions.eqOrIsNull("cpt_product", arg0));
-		crit.addOrder(Order.asc("cpt_id"));
-
-		return (List<StockCounter>) crit.list();
+		Query crit = em.createQuery("from StockCounter where cpt_product = "+arg0+" order by cpt_id");
+		return (List<StockCounter>) crit.getResultList();
 	}
 
 	@Override
 	public StockCounter save(StockCounter arg0) throws DAOException {
+		em.persist(arg0);
 
-		long id = (long) sessionFactory.getCurrentSession().save(arg0);
-		
-		return this.getElementById(id);
+		return arg0;
 	}
 
 	@Override
 	public StockCounter update(StockCounter arg0) {
 
 		try {
-			sessionFactory.getCurrentSession().update(arg0);
+			em.persist(arg0);
 			return arg0;
-		} catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -65,12 +55,12 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@Override
 	public StockCounter getElementById(long id) {
 
-		return (StockCounter) sessionFactory.getCurrentSession().get(StockCounter.class, id);
+		return (StockCounter) em.find(StockCounter.class, id);
 	}
 
 	@Override
 	public StockCounter getElementByName(String name) {
-		
+
 		return null;
 	}
 
@@ -78,95 +68,76 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@Override
 	public List<StockCounter> getAllElements() {
 
-		return (List<StockCounter>) sessionFactory.getCurrentSession().createQuery("from StockCounter").list();
+		return (List<StockCounter>) em.createQuery("from StockCounter").getResultList();
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		
 
 	}
 
 	@Override
 	public void deleteElement(StockCounter arg0) {
-		
 
 	}
 
 	@Override
 	public List<StockCounter> getAllDistinctElements() {
-		
+
 		return null;
-	}
-
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<RawMaterialCounter> getStockForPrimaryMaterials() {
 
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(RawMaterialCounter.class);
+		Query crit = em.createQuery("from RawMaterialCounter");
 
 		// Getting all Abstract ingedients
 
-		return (List<RawMaterialCounter>) crit.list();
+		return (List<RawMaterialCounter>) crit.getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<FinishedProductCounter> getStockForFinishedProducts() {
 
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(FinishedProductCounter.class);
+		Query crit = em.createQuery("from FinishedProductCounter");
 
 		// Getting all Abstract ingedients
 
-		return (List<FinishedProductCounter>) crit.list();
+		return (List<FinishedProductCounter>) crit.getResultList();
 	}
 
 	@Override
 	public StockCounter getStockCounterByProductAndType(Stockable arg0, CounterType arg1) throws DAOException {
-		Session session = sessionFactory.getCurrentSession();
-		
-		Criteria crit;
-		if (arg0 instanceof AbstractFinishedProduct){
-			crit = session.createCriteria(FinishedProductCounter.class);
+
+		Query crit;
+		String query = "";
+		if (arg0 instanceof AbstractFinishedProduct) {
+			query = "from FinishedProductCounter";
 		} else if (arg0 instanceof AbstractIngredient) {
-			
-			crit = session.createCriteria(RawMaterialCounter.class);
-			
+
+			query = "from RawMaterialCounter";
+
 		} else {
 			throw new DAOException("This type of stockable is not usable !");
 		}
-		
-		
-		crit.add(Restrictions.eq("cpt_product", arg0));
-		crit.add(Restrictions.eq("cpt_counter_type", arg1));
-		
-		return (StockCounter) crit.uniqueResult();
+
+		query += "where cpt_product = " + arg0.getStb_id();
+		query += "and cpt_counter_type = " + arg1;
+
+		crit = em.createQuery(query);
+		return (StockCounter) crit.getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getStockCountersByTypes(List<CounterType> ar0) {
 
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(StockCounter.class);
-		Disjunction or = Restrictions.disjunction();
+		Query crit = em.createQuery("from StockCounter where cpt_counter_type in (" + ar0.toArray() + ")");
 
-		for (CounterType cpt : ar0) {
-
-			or.add(Restrictions.eq("cpt_counter_type", cpt));
-
-		}
-
-		crit.add(or);
-
-		return (List<StockCounter>) crit.list();
+		return (List<StockCounter>) crit.getResultList();
 	}
 
 	@Override
@@ -174,24 +145,20 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 
 		int i = 0;
 		List<StockCounter> result = new ArrayList<StockCounter>();
-		
-		
-		Session session = sessionFactory.getCurrentSession();
 
 		for (StockCounter object : listOfStockCounters) {
 
 			try {
-				long stkID = (long) session.save(object);
-
+				em.persist(object);
 				if (i % 50 == 0) { // Same as the JDBC batch size
 					// flush a batch of inserts and release memory:
-					session.flush();
-					session.clear();
+					em.flush();
+					em.clear();
 				}
 				i++;
-				
+
 				result.add(object);
-				
+
 			} catch (Exception e) {
 
 				e.printStackTrace();

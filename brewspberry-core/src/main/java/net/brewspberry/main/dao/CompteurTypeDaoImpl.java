@@ -3,7 +3,8 @@ package net.brewspberry.main.dao;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.hibernate.SessionFactory;
+import javax.persistence.EntityManager;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,78 +17,67 @@ import net.brewspberry.main.util.LogManager;
 public class CompteurTypeDaoImpl implements IGenericDao<CounterType> {
 
 	@Autowired
-	private SessionFactory sessionFactory;
+	private EntityManager em;
 	private Logger logger = LogManager.getInstance(CompteurTypeDaoImpl.class.getName());
 
 	@Override
 	public CounterType save(CounterType arg0) throws DAOException {
 
 		CounterType result = null;
-		long id = (long) sessionFactory.getCurrentSession().save(arg0);
+		em.persist(arg0);
 
-		if (id > 0) {
-
-			result = this.getElementById(id);
-
+		if (arg0.getCty_id() > 0) {
+			return result;
 		}
-
-		return result;
+		throw new DAOException("save.counter.type.error");
 	}
 
 	@Override
-	public CounterType update(CounterType arg0) {
+	public CounterType update(CounterType arg0) throws DAOException {
 
 		try {
-			sessionFactory.getCurrentSession().update(arg0);
+			em.persist(arg0);
 			return arg0;
 
 		} catch (Exception e) {
-			return null;
-
+			throw new DAOException("update.counter.type.error");
 		}
 
 	}
 
 	@Override
 	public CounterType getElementById(long id) {
-		return (CounterType) sessionFactory.getCurrentSession().get(
-				CounterType.class, id);
+		return (CounterType) em.find(CounterType.class, id);
 
 	}
 
 	@Override
 	public CounterType getElementByName(String name) {
-		
+
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<CounterType> getAllElements() {
-		logger .info("Size of counter type list : "
-				+ sessionFactory.getCurrentSession()
-						.createQuery("from CounterType").list().size());
-		
-		
-		return sessionFactory.getCurrentSession()
-				.createQuery("from CounterType").list();
+		logger.info("Size of counter type list : " + em.createQuery("from CounterType").getResultList().size());
+
+		return em.createQuery("from CounterType").getResultList();
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		
 
 	}
 
 	@Override
 	public void deleteElement(CounterType arg0) {
-		
 
 	}
 
 	@Override
 	public List<CounterType> getAllDistinctElements() {
-		
+
 		return null;
 	}
 

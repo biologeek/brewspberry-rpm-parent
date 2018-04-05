@@ -2,8 +2,6 @@ package net.brewspberry.test.service;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -23,10 +21,9 @@ import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
 import net.brewspberry.main.business.service.HopServiceImpl;
 import net.brewspberry.main.dao.HopDaoImpl;
 import net.brewspberry.main.dao.SimpleHopDaoImpl;
-import net.brewspberry.main.util.HibernateUtil;
 import net.brewspberry.main.util.LogManager;
 
-@PrepareForTest({ISpecificIngredientService.class, HibernateUtil.class, LogManager.class})
+@PrepareForTest({ISpecificIngredientService.class, LogManager.class})
 @RunWith(PowerMockRunner.class)
 public class IngredientsServiceTest {
 
@@ -91,15 +88,12 @@ public class IngredientsServiceTest {
 	public void shouldReturnIngredientFromHopArrayId() throws NoSuchMethodException, SecurityException {
 
 		PowerMockito.mockStatic(LogManager.class);
-		PowerMockito.mockStatic(HibernateUtil.class);
 		
 		ingDAO = Mockito.mock(HopDaoImpl.class);
 		singDAO = Mockito.mock(SimpleHopDaoImpl.class);
 
 		ingService = new HopServiceImpl();
 		PowerMockito.spy(HopServiceImpl.class);
-
-		mockHibernateSession();
 		
 
 		//Mockito.when(new HopDaoImpl()).thenReturn(ingDAO);
@@ -108,8 +102,6 @@ public class IngredientsServiceTest {
 
 		PowerMockito.when(LogManager.getInstance(HopServiceImpl.class.getName()))
 		.thenReturn(Logger.getAnonymousLogger());
-		PowerMockito.when(LogManager.getInstance(HibernateUtil.class.getName()))
-		.thenReturn(Logger.getGlobal());
 
 		
 		
@@ -127,18 +119,5 @@ public class IngredientsServiceTest {
 		
 	}
 
-	
-	public void mockHibernateSession(){
-		
-		SessionFactory mockedSessFact = Mockito.mock(SessionFactory.class);
-		Session mockedSession = Mockito.mock(Session.class);
-		PowerMockito.when(HibernateUtil.configureSessionFactory()).thenReturn(mockedSessFact);
-		PowerMockito.when(HibernateUtil.getSession()).thenReturn(mockedSession);
-	}
-	
-	private void getMockedVoidSession() {
-		PowerMockito.when(HibernateUtil.getSession()).thenReturn(null);
-		
-	}
 
 }

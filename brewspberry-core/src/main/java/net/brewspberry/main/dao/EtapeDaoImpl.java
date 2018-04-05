@@ -3,10 +3,10 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,7 +21,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 
 	
 	
@@ -30,14 +30,9 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 		
 
 		try {
-
-			long etape = (long) sessionFactory.getCurrentSession().save(arg0);
-
-			arg0.setEtp_id(etape);
-
+			em.persist(arg0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			
 			arg0 = new Etape();
 		} 
 
@@ -46,7 +41,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 	@Override
 	public Etape update(Etape arg0) {
-		sessionFactory.getCurrentSession().update(arg0);
+		em.persist(arg0);
 		
 		return this.getElementById(arg0.getEtp_id());
 	}
@@ -55,7 +50,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 	public Etape getElementById(long id) {
 		Etape result;
 
-		result = (Etape) sessionFactory.getCurrentSession().get(Etape.class, id);
+		result = (Etape) em.find(Etape.class, id);
 		
 
 		return result;
@@ -66,7 +61,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 	public List<Etape> getAllElements() {
 		List<Etape> result;
 		try {
-			result = (List<Etape>) sessionFactory.getCurrentSession().createQuery("from Etape").list();
+			result = (List<Etape>) em.createQuery("from Etape").getResultList();
 		} finally {
 			
 		}
@@ -80,8 +75,8 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 		
 		try {
 			
-			Etape toDel = (Etape) sessionFactory.getCurrentSession().get(Etape.class, id);
-			sessionFactory.getCurrentSession().delete(toDel);
+			Etape toDel = (Etape) em.find(Etape.class, id);
+			em.remove(toDel);
 						
 		} catch (HibernateException e){
 			e.printStackTrace();
@@ -96,7 +91,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 		
 		
 		try {
-			sessionFactory.getCurrentSession().delete(arg0);
+			em.remove(arg0);
 						
 		} catch (HibernateException e){
 			e.printStackTrace();
@@ -109,7 +104,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 	public List<Etape> getAllDistinctElements() {
 
 		List<Etape> result = new ArrayList<Etape>();
-		result = sessionFactory.getCurrentSession().createQuery("from Etape group by etp_nom").list();
+		result = em.createQuery("from Etape group by etp_nom").getResultList();
 
 		
 
@@ -118,7 +113,7 @@ public class EtapeDaoImpl implements IGenericDao<Etape> {
 
 	@Override
 	public Etape getElementByName(String name) {
-		Etape result = (Etape) sessionFactory.getCurrentSession().createCriteria(Etape.class).add(Restrictions.eq("etp_nom", name)).uniqueResult();
+		Etape result = (Etape) em.createQuery("from Etape where etp_nom = "+ name).getSingleResult();
 		return result;
 	}
 

@@ -3,36 +3,32 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.beans.brewing.SimpleLevure;
 import net.brewspberry.main.business.exceptions.DAOException;
-import net.brewspberry.main.util.HibernateUtil;
 
 @Repository
 public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 
 	@Override
 	public void deleteElement(long arg0) {
 
-		sessionFactory.getCurrentSession()
-				.delete((SimpleLevure) sessionFactory.getCurrentSession().get(SimpleLevure.class, arg0));
+		em.remove((SimpleLevure) em.find(SimpleLevure.class, arg0));
 
 	}
 
 	@Override
 	public void deleteElement(SimpleLevure arg0) {
-		sessionFactory.getCurrentSession().delete(arg0);
+		em.remove(arg0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,7 +36,7 @@ public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 	public List<SimpleLevure> getAllDistinctElements() {
 		List<SimpleLevure> result = new ArrayList<SimpleLevure>();
 
-		result = sessionFactory.getCurrentSession().createQuery("from SimpleLevure group by ing_desc").list();
+		result = em.createQuery("from SimpleLevure group by ing_desc").getResultList();
 
 		return result;
 	}
@@ -50,14 +46,14 @@ public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 	public List<SimpleLevure> getAllElements() {
 
 		List<SimpleLevure> result = new ArrayList<SimpleLevure>();
-		result = (List<SimpleLevure>) sessionFactory.getCurrentSession().createQuery("from SimpleLevure").list();
+		result = (List<SimpleLevure>) em.createQuery("from SimpleLevure").getResultList();
 
 		return result;
 	}
 
 	@Override
 	public SimpleLevure getElementById(long arg0) {
-		SimpleLevure lev = (SimpleLevure) sessionFactory.getCurrentSession().get(SimpleLevure.class, arg0);
+		SimpleLevure lev = (SimpleLevure) em.find(SimpleLevure.class, arg0);
 
 		return lev;
 	}
@@ -68,16 +64,15 @@ public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 		SimpleLevure result = new SimpleLevure();
 		try {
 
-			long resultId = (long) sessionFactory.getCurrentSession().save(arg0);
-			result = (SimpleLevure) sessionFactory.getCurrentSession().get(SimpleLevure.class, resultId);
-
+			em.persist(arg0);
+			
 		} catch (HibernateException e) {
 			e.printStackTrace();
 
 		} finally {
 
 		}
-		return result;
+		return arg0;
 	}
 
 	@Override
@@ -87,7 +82,7 @@ public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 
 		if (arg0.getStb_id() != 0) {
 			try {
-				sessionFactory.getCurrentSession().update(arg0);
+				em.persist(arg0);
 
 				result = arg0;
 
@@ -114,8 +109,8 @@ public class SimpleYeastDAOImpl implements IGenericDao<SimpleLevure> {
 	@Override
 	public SimpleLevure getElementByName(String name) {
 
-		SimpleLevure result = (SimpleLevure) sessionFactory.getCurrentSession()
-				.createQuery("from SimpleLevure where ing_desc = '" + name + "'").uniqueResult();
+		SimpleLevure result = (SimpleLevure) em
+				.createQuery("from SimpleLevure where ing_desc = '" + name + "'").getSingleResult();
 
 		return result;
 	}

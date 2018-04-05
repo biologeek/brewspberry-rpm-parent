@@ -3,36 +3,33 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
 import net.brewspberry.main.business.exceptions.DAOException;
-import net.brewspberry.main.util.HibernateUtil;
 
 @Repository
 public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 
 	@Override
 	public void deleteElement(long arg0) {
 
-		sessionFactory.getCurrentSession().delete((SimpleHoublon) sessionFactory.getCurrentSession().get(SimpleHoublon.class, arg0));
+		em.remove((SimpleHoublon) em.find(SimpleHoublon.class, arg0));
 		
 	}
 
 	@Override
 	public void deleteElement(SimpleHoublon arg0) {
-		sessionFactory.getCurrentSession().delete(arg0);
+		em.remove(arg0);
 		
 	}
 
@@ -42,8 +39,8 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 
 		List<SimpleHoublon> result = new ArrayList<SimpleHoublon>();
 
-		result = sessionFactory.getCurrentSession().createQuery("from SimpleHoublon group by ing_desc")
-				.list();
+		result = em.createQuery("from SimpleHoublon group by ing_desc")
+				.getResultList();
 		
 		return result;
 	}
@@ -51,8 +48,8 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<SimpleHoublon> getAllElements() {
-		List<SimpleHoublon> result = (List<SimpleHoublon>) sessionFactory.getCurrentSession().createQuery("from SimpleHoublon")
-				.list();
+		List<SimpleHoublon> result = (List<SimpleHoublon>) em.createQuery("from SimpleHoublon")
+				.getResultList();
 		
 		return result;
 	}
@@ -60,7 +57,7 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 	@Override
 	public SimpleHoublon getElementById(long arg0) {
 		SimpleHoublon result = new SimpleHoublon();
-		result = (SimpleHoublon) sessionFactory.getCurrentSession().get(SimpleHoublon.class, arg0);
+		result = (SimpleHoublon) em.find(SimpleHoublon.class, arg0);
 		
 		return result;
 	}
@@ -71,8 +68,8 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 		SimpleHoublon result = new SimpleHoublon();
 		try {
 
-			long resultId = (long) sessionFactory.getCurrentSession().save(arg0);
-			result = (SimpleHoublon) sessionFactory.getCurrentSession().get(SimpleHoublon.class, resultId);
+			em.persist(arg0);
+			result = (SimpleHoublon) em.find(SimpleHoublon.class, arg0.getStb_id());
 			
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -91,7 +88,7 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 
 		if (arg0.getStb_id() != 0) {
 			try {
-				sessionFactory.getCurrentSession().update(arg0);
+				em.persist(arg0);
 				
 				result = arg0;
 
@@ -118,9 +115,9 @@ public class SimpleHopDaoImpl implements IGenericDao<SimpleHoublon> {
 	@Override
 	public SimpleHoublon getElementByName(String name) {
 
-		SimpleHoublon result = (SimpleHoublon) sessionFactory.getCurrentSession().createQuery(
+		SimpleHoublon result = (SimpleHoublon) em.createQuery(
 				"from SimpleHoublon where ing_desc = '" + name + "'")
-				.uniqueResult();
+				.getSingleResult();
 
 		
 		return result;

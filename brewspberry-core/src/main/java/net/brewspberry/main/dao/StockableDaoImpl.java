@@ -2,9 +2,8 @@ package net.brewspberry.main.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.EntityManager;
+
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,7 +16,7 @@ import net.brewspberry.main.business.exceptions.DAOException;
 public class StockableDaoImpl implements IGenericDao<Stockable> {
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 	
 	@Override
 	public Stockable save(Stockable arg0) throws DAOException {
@@ -34,7 +33,7 @@ public class StockableDaoImpl implements IGenericDao<Stockable> {
 	@Override
 	public Stockable getElementById(long id) {
 		
-		return (Stockable) sessionFactory.getCurrentSession().get(Stockable.class, id);
+		return (Stockable) em.find(Stockable.class, id);
 		
 	}
 
@@ -50,7 +49,7 @@ public class StockableDaoImpl implements IGenericDao<Stockable> {
 	@Override
 	public List<Stockable> getAllElements() {
 		
-		return (List<Stockable>) sessionFactory.getCurrentSession().createQuery("from Stockable").list();
+		return (List<Stockable>) em.createQuery("from Stockable").getResultList();
 	}
 
 	@Override

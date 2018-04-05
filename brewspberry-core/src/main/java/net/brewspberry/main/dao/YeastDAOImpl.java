@@ -23,13 +23,13 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 
 
 	@Override
 	public void deleteElement(long arg0) {
 
-		sessionFactory.getCurrentSession().delete((Levure) sessionFactory.getCurrentSession().get(Levure.class, arg0));
+		em.delete((Levure) em.get(Levure.class, arg0));
 
 		
 
@@ -37,7 +37,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 	@Override
 	public void deleteElement(Levure arg0) {
-		sessionFactory.getCurrentSession().delete(arg0);
+		em.delete(arg0);
 
 		
 
@@ -49,7 +49,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 		List<Levure> result = new ArrayList<Levure>();
 
-		result = sessionFactory.getCurrentSession().createQuery("from Levure group by ing_desc").list();
+		result = em.createQuery("from Levure group by ing_desc").list();
 
 		
 		return result;
@@ -64,7 +64,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 		List<Levure> result = new ArrayList<Levure>();
 		try {
 
-			result = (List<Levure>) sessionFactory.getCurrentSession().createQuery("from Levure").list();
+			result = (List<Levure>) em.createQuery("from Levure").list();
 
 			
 
@@ -79,7 +79,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 	@Override
 	public Levure getElementById(long arg0) {
-		Levure lev = (Levure) sessionFactory.getCurrentSession().get(Levure.class, arg0);
+		Levure lev = (Levure) em.get(Levure.class, arg0);
 
 		
 		return lev;
@@ -91,8 +91,8 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 		Levure result = new Levure();
 		try {
 
-			long resultId = (long) sessionFactory.getCurrentSession().save(arg0);
-			result = (Levure) sessionFactory.getCurrentSession().get(Levure.class, resultId);
+			long resultId = (long) em.persist(arg0);
+			result = (Levure) em.get(Levure.class, resultId);
 			
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -111,7 +111,7 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 		if (arg0.getStb_id() != 0) {
 			try {
-				sessionFactory.getCurrentSession().update(arg0);
+				em.update(arg0);
 				
 				result = arg0;
 

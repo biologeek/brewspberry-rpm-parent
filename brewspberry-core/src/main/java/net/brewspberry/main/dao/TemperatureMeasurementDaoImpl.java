@@ -41,13 +41,13 @@ public class TemperatureMeasurementDaoImpl
 	Logger logger = LogManager.getInstance(TemperatureMeasurementDaoImpl.class.getName());
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(Brassin brassin) {
 
-		List<ConcreteTemperatureMeasurement> result = sessionFactory.getCurrentSession()
+		List<ConcreteTemperatureMeasurement> result = em
 				.createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("tmes_brassin", brassin))
 				.list();
 
@@ -72,7 +72,7 @@ public class TemperatureMeasurementDaoImpl
 		if (uuid != null) {
 
 			if (uuid != "") {
-				Criteria cr = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+				Criteria cr = em.createCriteria(ConcreteTemperatureMeasurement.class);
 
 				cr.add(Restrictions.eq("tmes_probeUI", uuid));
 				cr.addOrder(Order.desc("tmes_date"));
@@ -111,7 +111,7 @@ public class TemperatureMeasurementDaoImpl
 				 * but it's ok if you do only 1 brew or step at a time
 				 */
 
-				Query request = sessionFactory.getCurrentSession().createQuery(sqlQuery).setMaxResults(1);
+				Query request = em.createQuery(sqlQuery).setMaxResults(1);
 
 				result = (ConcreteTemperatureMeasurement) request.uniqueResult();
 
@@ -154,7 +154,7 @@ public class TemperatureMeasurementDaoImpl
 		ConcreteTemperatureMeasurement result = null;
 		try {
 
-			long id = (long) sessionFactory.getCurrentSession().save(arg0);
+			long id = (long) em.persist(arg0);
 
 			result = this.getElementById(id);
 
@@ -174,7 +174,7 @@ public class TemperatureMeasurementDaoImpl
 		ConcreteTemperatureMeasurement result = null;
 
 		try {
-			sessionFactory.getCurrentSession().update(arg0);
+			em.update(arg0);
 
 		} catch (HibernateException e) {
 
@@ -188,7 +188,7 @@ public class TemperatureMeasurementDaoImpl
 	@Override
 	public ConcreteTemperatureMeasurement getElementById(long id) {
 
-		return (ConcreteTemperatureMeasurement) sessionFactory.getCurrentSession()
+		return (ConcreteTemperatureMeasurement) em
 				.get(ConcreteTemperatureMeasurement.class, id);
 	}
 
@@ -203,7 +203,7 @@ public class TemperatureMeasurementDaoImpl
 
 		List<ConcreteTemperatureMeasurement> result = null;
 
-		result = sessionFactory.getCurrentSession().createQuery("from TemperatureMeasurement").list();
+		result = em.createQuery("from TemperatureMeasurement").list();
 		return result;
 	}
 
@@ -215,7 +215,7 @@ public class TemperatureMeasurementDaoImpl
 			ConcreteTemperatureMeasurement toDel = this.getElementById(id);
 			if (toDel != null) {
 
-				sessionFactory.getCurrentSession().delete(toDel);
+				em.delete(toDel);
 
 			} else {
 
@@ -236,7 +236,7 @@ public class TemperatureMeasurementDaoImpl
 
 			if (arg0 != null) {
 
-				sessionFactory.getCurrentSession().delete(arg0);
+				em.delete(arg0);
 
 			} else {
 
@@ -255,7 +255,7 @@ public class TemperatureMeasurementDaoImpl
 	public List<ConcreteTemperatureMeasurement> getAllDistinctElements() {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
-		result = sessionFactory.getCurrentSession().createQuery("from TemperatureMeasurement group by tmes_probe_name")
+		result = em.createQuery("from TemperatureMeasurement group by tmes_probe_name")
 				.list();
 
 		return result;
@@ -277,7 +277,7 @@ public class TemperatureMeasurementDaoImpl
 		if (etape != null) {
 			if (tmesID > 0) {
 
-				query = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class)
+				query = em.createCriteria(ConcreteTemperatureMeasurement.class)
 						.add(Restrictions.gt("tmes_id", tmesID)).add(Restrictions.eq("tmes_etape", etape))
 						.add(Restrictions.gt("tmes_date", cal.getTime()));
 				// .add(Restrictions.sqlRestriction("tmes_id mod "
@@ -304,7 +304,7 @@ public class TemperatureMeasurementDaoImpl
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+		Criteria crit = em.createCriteria(ConcreteTemperatureMeasurement.class);
 		crit.add(Restrictions.eq("tmes_etape", stepID));
 		crit.add(Restrictions.eq("tmes_probeUI", uuid));
 		crit.addOrder(Order.desc("tmes_date"));
@@ -323,7 +323,7 @@ public class TemperatureMeasurementDaoImpl
 	public List<ConcreteTemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
 			Etape etapeID, String uuid, int numberOfPoints, float delay) throws Exception {
 
-		Criteria tmesCriteria = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+		Criteria tmesCriteria = em.createCriteria(ConcreteTemperatureMeasurement.class);
 
 		tmesCriteria.add(Restrictions.eq("tmes_etape", etapeID));
 
@@ -347,7 +347,7 @@ public class TemperatureMeasurementDaoImpl
 	public List<ConcreteTemperatureMeasurement> getTemperaturesByStepAndUUID(Etape stepID, String uuid, Long lastID) {
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+		Criteria crit = em.createCriteria(ConcreteTemperatureMeasurement.class);
 		crit.add(Restrictions.eq("tmes_etape", stepID));
 		crit.add(Restrictions.eq("tmes_probeUI", uuid));
 		if (lastID != null && lastID.longValue() > 0) {
@@ -365,7 +365,7 @@ public class TemperatureMeasurementDaoImpl
 
 	@Override
 	public List<ConcreteTemperatureMeasurement> getTemperaturesForActionners(List<Actioner> actionners) {
-		Criteria crit = sessionFactory.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class);
+		Criteria crit = em.createCriteria(ConcreteTemperatureMeasurement.class);
 		for (Actioner act : actionners){
 			crit.add(Restrictions.or(Restrictions.eq("tmes_actioner", act)));
 		}

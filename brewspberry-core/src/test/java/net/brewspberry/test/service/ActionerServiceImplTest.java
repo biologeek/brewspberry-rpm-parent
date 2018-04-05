@@ -1,27 +1,13 @@
 package net.brewspberry.test.service;
 
-import static org.junit.Assert.*;
-
-import java.util.Date;
-
-import net.brewspberry.main.business.beans.monitoring.Actioner;
-import net.brewspberry.main.business.exceptions.DAOException;
-import net.brewspberry.main.business.service.ActionerServiceImpl;
-import net.brewspberry.main.util.Constants;
-import net.brewspberry.main.util.HibernateUtil;
-import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.pi4j.io.gpio.RaspiPin;
+import net.brewspberry.main.business.beans.monitoring.Actioner;
+import net.brewspberry.main.business.service.ActionerServiceImpl;
+import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)

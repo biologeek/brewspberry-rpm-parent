@@ -2,7 +2,8 @@ package net.brewspberry.main.dao;
 
 import java.util.List;
 
-import org.hibernate.SessionFactory;
+import javax.persistence.EntityManager;
+
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,46 +16,45 @@ import net.brewspberry.main.business.exceptions.DAOException;
 public class GenericActionnerDaoImpl implements IGenericDao<GenericActionner> {
 
 	@Autowired
-	SessionFactory sessionFactory;
+	EntityManager em;
 	
 	@Override
 	public GenericActionner save(GenericActionner arg0) throws DAOException {
 
-		Long id = (Long) sessionFactory.getCurrentSession().save(arg0);
-		return this.getElementById(id);
+		em.persist(arg0);
+		return arg0;
 	}
 
 	@Override
 	public GenericActionner update(GenericActionner arg0) {
-		sessionFactory.getCurrentSession().update(arg0);
-		return this.getElementById(arg0.getGact_id());
+		em.persist(arg0);
+		return arg0;
 	}
 
 	@Override
 	public GenericActionner getElementById(long id) {
-		return (GenericActionner) sessionFactory.getCurrentSession().get(GenericActionner.class, id);
+		return (GenericActionner) em.find(GenericActionner.class, id);
 	}
 
 	@Override
 	public GenericActionner getElementByName(String name) {
-		return (GenericActionner) sessionFactory.getCurrentSession().createCriteria(GenericActionner.class)
-				.add(Restrictions.eq("act_name", name)).uniqueResult();
+		return (GenericActionner) em.createQuery("from GenericActionner where act_name = "+name).getSingleResult();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<GenericActionner> getAllElements() {
-		return sessionFactory.getCurrentSession().createCriteria(GenericActionner.class).list();
+		return em.createQuery("from GenericActionner").getResultList();
 	}
 
 	@Override
 	public void deleteElement(long id) {
-		sessionFactory.getCurrentSession().delete(this.getElementById(id));
+		em.remove(this.getElementById(id));
 	}
 
 	@Override
 	public void deleteElement(GenericActionner arg0) {
-		sessionFactory.getCurrentSession().delete(arg0);
+		em.remove(arg0);
 	}
 
 	@Override
