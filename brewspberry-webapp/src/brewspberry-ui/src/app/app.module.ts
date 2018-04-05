@@ -16,6 +16,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import {NgxToggleModule} from 'ngx-toggle';
+import { MashingComponent } from './brew/steps/mashing/mashing.component';
+import { LauteringComponent } from './brew/steps/lautering/lautering.component';
+import { BoilingComponent } from './brew/steps/boiling/boiling.component';
+import { FermentationComponent } from './brew/steps/fermentation/fermentation.component';
+import { SecondFermentationComponent } from './brew/steps/second-fermentation/second-fermentation.component';
+import { ConditioningComponent } from './brew/steps/conditioning/conditioning.component';
+import { InputsComponent } from './brew/steps/inputs/inputs.component';
 
 
 
@@ -24,6 +31,7 @@ export const router: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'devices/manage', component: ManageComponent },
     { path: 'brew/list', component: ListComponent },
+    { path: 'brew/create', component: CreateComponent },
     { path: 'params', component: ParamsComponent },
     { path: 'dashboard', component: DashboardComponent }
 
@@ -39,7 +47,14 @@ export const router: Routes = [
     CreateComponent,
     ParamsComponent,
     SidebarComponent,
-    DashboardComponent
+    DashboardComponent,
+    MashingComponent,
+    LauteringComponent,
+    BoilingComponent,
+    FermentationComponent,
+    SecondFermentationComponent,
+    ConditioningComponent,
+    InputsComponent
   ],
   imports: [
     BrowserModule,

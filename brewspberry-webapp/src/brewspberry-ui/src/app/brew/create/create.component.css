@@ -1,3 +1,18 @@
 .brew-creation-container{
-	width: 100%;
+	width: 85%;
+	margin: 10px auto;
+}
+
+
+.brew-timeline-header{
+	border-radius: 5px;
+	background-color: white;
+	margin: 0 auto;
+	position: relative;	
+	padding: 5px;
+}
+
+.col-sm-1{
+	text-align: center;
+	margin: 0 auto;
 }
