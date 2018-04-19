@@ -92,7 +92,7 @@ public class StockServiceImpl implements ISpecificStockService, IGenericService<
 	}
 
 	@Override
-	public StockCounter update(StockCounter arg0) {
+	public StockCounter update(StockCounter arg0) throws DAOException {
 
 		return genericDAO.update(arg0);
 	}

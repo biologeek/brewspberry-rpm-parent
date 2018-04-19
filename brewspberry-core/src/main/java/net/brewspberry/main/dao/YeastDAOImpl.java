@@ -3,43 +3,32 @@ package net.brewspberry.main.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Criteria;
+import javax.persistence.EntityManager;
+
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.beans.brewing.Levure;
-import net.brewspberry.main.business.beans.brewing.Malt;
 import net.brewspberry.main.business.exceptions.DAOException;
-import net.brewspberry.main.util.HibernateUtil;
 
 @Repository
 public class YeastDAOImpl implements IGenericDao<Levure> {
 
-
 	@Autowired
 	EntityManager em;
-
 
 	@Override
 	public void deleteElement(long arg0) {
 
-		em.delete((Levure) em.get(Levure.class, arg0));
-
-		
+		em.remove((Levure) em.find(Levure.class, arg0));
 
 	}
 
 	@Override
 	public void deleteElement(Levure arg0) {
-		em.delete(arg0);
-
-		
+		em.remove(arg0);
 
 	}
 
@@ -49,95 +38,66 @@ public class YeastDAOImpl implements IGenericDao<Levure> {
 
 		List<Levure> result = new ArrayList<Levure>();
 
-		result = em.createQuery("from Levure group by ing_desc").list();
+		result = em.createQuery("from Levure group by ing_desc").getResultList();
 
-		
 		return result;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Levure> getAllElements() {
-		
 
 		long resultId;
 		List<Levure> result = new ArrayList<Levure>();
 		try {
 
-			result = (List<Levure>) em.createQuery("from Levure").list();
-
-			
+			result = (List<Levure>) em.createQuery("from Levure").getResultList();
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			
+
 		} finally {
-			
+
 		}
 		return result;
 	}
 
 	@Override
 	public Levure getElementById(long arg0) {
-		Levure lev = (Levure) em.get(Levure.class, arg0);
+		Levure lev = (Levure) em.find(Levure.class, arg0);
 
-		
 		return lev;
 	}
 
 	@Override
 	public Levure save(Levure arg0) throws DAOException {
-		
-		Levure result = new Levure();
+
 		try {
 
-			long resultId = (long) em.persist(arg0);
-			result = (Levure) em.get(Levure.class, resultId);
-			
+			em.persist(arg0);
 		} catch (HibernateException e) {
 			e.printStackTrace();
-			
+
 		} finally {
-			
+
 		}
-		return result;
+		return arg0;
 	}
 
 	@Override
 	public Levure update(Levure arg0) {
-		
 
-		Levure result = new Levure();
-
-		if (arg0.getStb_id() != 0) {
-			try {
-				em.update(arg0);
-				
-				result = arg0;
-
-			} catch (HibernateException e) {
-				e.printStackTrace();
-				
-			} finally {
-				
-			}
-		} else {
-
-			try {
-				result = this.save(arg0);
-			} catch (HibernateException | DAOException e) {
-				e.printStackTrace();
-				
-			} finally {
-				
-			}
+		try {
+			em.persist(arg0);
+		} catch (HibernateException e) {
+			e.printStackTrace();
 		}
-		return result;
+		return arg0;
 	}
 
 	@Override
 	public Levure getElementByName(String name) {
-		
+
 		return null;
 	}
 

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +14,9 @@ import net.brewspberry.main.business.ISpecificBrassinService;
 import net.brewspberry.main.business.beans.brewing.Biere;
 import net.brewspberry.main.business.beans.brewing.Brassin;
 import net.brewspberry.main.business.beans.brewing.BrewStatus;
+import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
-import net.brewspberry.main.dao.BrassinDaoImpl;
 import net.brewspberry.main.data.ISpecificBrassinDAO;
-import net.brewspberry.main.util.HibernateUtil;
 
 @Service
 @Transactional
@@ -39,7 +36,7 @@ public class BrassinServiceImpl implements IGenericService<Brassin>, ISpecificBr
 	}
 
 	@Override
-	public Brassin update(Brassin arg0) {
+	public Brassin update(Brassin arg0) throws DAOException {
 		arg0.setBra_date_maj(new Date());
 
 		return brassinDAO.update(arg0);

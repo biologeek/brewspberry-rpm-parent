@@ -26,11 +26,8 @@ public class MaltDAOImpl implements IGenericDao<Malt> {
 			return arg0;
 		} catch (HibernateException e) {
 			e.printStackTrace();
-
-		} finally {
-
+			throw new DAOException();
 		}
-		throw new DAOException();
 	}
 
 	@Override

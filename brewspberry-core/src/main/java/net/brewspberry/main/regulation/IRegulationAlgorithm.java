@@ -2,7 +2,7 @@ package net.brewspberry.main.regulation;
 
 import java.util.List;
 
-import net.brewspberry.main.business.beans.regulation.AbstractAlgorithmData;
+import net.brewspberry.monitoring.model.AbstractAlgorithmData;
 
 public interface IRegulationAlgorithm<K extends AbstractAlgorithmData> {
 

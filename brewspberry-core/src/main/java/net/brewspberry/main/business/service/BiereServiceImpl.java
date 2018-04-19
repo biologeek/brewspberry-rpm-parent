@@ -27,7 +27,7 @@ public class BiereServiceImpl implements IGenericDao<Biere>, ISpecificBiereDAO{
 	}
 
 	@Override
-	public Biere update(Biere arg0) {
+	public Biere update(Biere arg0) throws DAOException {
 		
 		return biereDAO.update(arg0);
 	}

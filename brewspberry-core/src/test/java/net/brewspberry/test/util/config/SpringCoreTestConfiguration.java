@@ -2,7 +2,11 @@ package net.brewspberry.test.util.config;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import net.brewspberry.main.util.config.SpringCoreConfiguration;
@@ -38,13 +45,19 @@ public class SpringCoreTestConfiguration {
 	private Environment environment;
 
 	@Bean
-	public LocalSessionFactoryBean sessionFactory() {
-		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+	public LocalContainerEntityManagerFactoryBean emf() {
+		LocalContainerEntityManagerFactoryBean sessionFactory = new LocalContainerEntityManagerFactoryBean();
 		sessionFactory.setDataSource(dataSource());
 		sessionFactory
 				.setPackagesToScan(new String[] {"net.brewspberry"});
-		sessionFactory.setHibernateProperties(hibernateProperties());
+		sessionFactory.setJpaProperties(hibernateProperties());
+		sessionFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		return sessionFactory;
+	}
+	
+	@Bean
+	public EntityManager em(EntityManagerFactory emf) {
+		return emf.createEntityManager();
 	}
 
 	@Bean(name = "dataSource")
@@ -75,9 +88,9 @@ public class SpringCoreTestConfiguration {
 
 	@Bean
 	@Autowired
-	public HibernateTransactionManager transactionManager(SessionFactory s) {
-		HibernateTransactionManager txManager = new HibernateTransactionManager();
-		txManager.setSessionFactory(s);
+	public JpaTransactionManager transactionManager(EntityManagerFactory s) {
+		JpaTransactionManager txManager = new JpaTransactionManager();
+		txManager.setEntityManagerFactory(s);
 		return txManager;
 	}
 }

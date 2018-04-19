@@ -2,6 +2,7 @@ package net.brewspberry.main.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -115,17 +116,17 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 		Query crit;
 		String query = "";
 		if (arg0 instanceof AbstractFinishedProduct) {
-			query = "from FinishedProductCounter";
+			query = "from FinishedProductCounter ";
 		} else if (arg0 instanceof AbstractIngredient) {
 
-			query = "from RawMaterialCounter";
+			query = "from RawMaterialCounter ";
 
 		} else {
 			throw new DAOException("This type of stockable is not usable !");
 		}
 
 		query += "where cpt_product = " + arg0.getStb_id();
-		query += "and cpt_counter_type = " + arg1;
+		query += " and cpt_counter_type = " + arg1.getCty_id();
 
 		crit = em.createQuery(query);
 		return (StockCounter) crit.getSingleResult();
@@ -134,8 +135,10 @@ public class StockDAOImpl implements IGenericDao<StockCounter>, ISpecificStockDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<StockCounter> getStockCountersByTypes(List<CounterType> ar0) {
-
-		Query crit = em.createQuery("from StockCounter where cpt_counter_type in (" + ar0.toArray() + ")");
+		
+		
+		Query crit = em.createQuery("from StockCounter where cpt_counter_type in :ar0");
+		crit.setParameter("ar0", ar0);
 
 		return (List<StockCounter>) crit.getResultList();
 	}

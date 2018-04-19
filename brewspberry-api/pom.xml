@@ -14,11 +14,6 @@
 	<name>brewspberry-api</name>
 	<description>API and Webservices</description>
 
-	<properties>
-		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
-		<tomcat.version>8.0.30</tomcat.version>
-	</properties>
-
 
 
 	<dependencies>
@@ -27,8 +22,51 @@
 		<dependency>
 			<groupId>net.brewspberry</groupId>
 			<artifactId>brewspberry-core</artifactId>
-			<version>0.1.0-SNAPSHOT</version>
-			<scope>compile</scope>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>monitoring-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>monitoring-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>brewery-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>brewery-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>regulation-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>regulation-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.brewspberry</groupId>
+			<artifactId>brewspberry-core</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>

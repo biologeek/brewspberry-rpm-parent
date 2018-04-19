@@ -7,14 +7,6 @@
 	<name>brewspberry-core</name>
 	<description>Core of BrewspberryPi project</description>
 	<!-- Shared version number properties -->
-	<properties>
-		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
-		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
-
-		<hsqldb.version>2.3.2</hsqldb.version>
-		<dbh2.version>1.4.187</dbh2.version>
-
-	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.hibernate</groupId>

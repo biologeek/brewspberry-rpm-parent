@@ -13,6 +13,7 @@ import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificIngredientService;
 import net.brewspberry.main.business.beans.brewing.SimpleMalt;
+import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.dao.SimpleMaltDAOImpl;
 
@@ -33,7 +34,7 @@ public class SimpleMaltServiceImpl implements IGenericService<SimpleMalt>,
 	}
 
 	@Override
-	public SimpleMalt update(SimpleMalt arg0) {
+	public SimpleMalt update(SimpleMalt arg0) throws DAOException {
 		
 		return maltDAO.update(arg0);
 	}

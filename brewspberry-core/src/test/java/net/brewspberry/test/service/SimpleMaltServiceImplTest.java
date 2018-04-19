@@ -50,8 +50,6 @@ public class SimpleMaltServiceImplTest extends AbstractTest {
 		
 		SimpleMalt result = null;
 		try {
-			
-			
 			result = sMalService.save(sm);
 		} catch (Exception e) {
 			

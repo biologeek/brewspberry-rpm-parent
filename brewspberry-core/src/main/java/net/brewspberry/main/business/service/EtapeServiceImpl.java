@@ -22,6 +22,7 @@ import net.brewspberry.main.business.beans.stock.RawMaterialCounter;
 import net.brewspberry.main.business.beans.stock.RawMaterialStockMotion;
 import net.brewspberry.main.business.beans.stock.StockCounter;
 import net.brewspberry.main.business.exceptions.BusinessException;
+import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.business.parser.Parser;
 import net.brewspberry.main.util.ConfigLoader;
@@ -83,7 +84,7 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 	}
 
 	@Override
-	public Etape update(Etape arg0) {
+	public Etape update(Etape arg0) throws DAOException {
 
 		return etapeDao.update(arg0);
 	}
@@ -123,7 +124,12 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 
 		}
 
-		this.update(etape);
+		try {
+			this.update(etape);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return etape;
 	}
 
@@ -166,7 +172,12 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 			// Updating date and persisting
 			oldStepInDatabase.setEtp_update_date(new Date());
 
-			etapeDao.update(oldStepInDatabase);
+			try {
+				etapeDao.update(oldStepInDatabase);
+			} catch (DAOException e) {
+				e.printStackTrace();
+				throw new BusinessException(e.getMessage());
+			}
 		} else {
 			throw new BusinessException("Step is already started");
 		}
@@ -209,7 +220,7 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 	 * 
 	 * @return step after update
 	 */
-	public Etape stopStepForReal(Etape step) {
+	public Etape stopStepForReal(Etape step) throws BusinessException {
 
 		if (step != null && step.isEtp_active()) {
 
@@ -225,7 +236,11 @@ public class EtapeServiceImpl implements IGenericService<Etape>, ISpecificEtapeS
 
 			step.setEtp_update_date(new Date());
 
-			etapeDao.update(step);
+			try {
+				etapeDao.update(step);
+			} catch (DAOException e) {
+				throw new BusinessException(e.getMessage());
+			}
 		}
 		return step;
 	}

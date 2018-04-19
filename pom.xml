@@ -14,6 +14,14 @@
 		<rpm.install.config>${rpm.install).basedir}/lib</rpm.install.config>
 		<project.build.sourceEncoding>Cp1252</project.build.sourceEncoding>
 		<project.build.group>Internet</project.build.group>
+		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
+		<org.springframework.boot.version>2.0.0.RELEASE</org.springframework.boot.version>
+		<org.springframework.data.version>2.0.0.RELEASE</org.springframework.data.version>
+		<tomcat.version>8.0.30</tomcat.version>
+		<jackson.version>2.9.4</jackson.version>
+		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
+		<hsqldb.version>2.3.2</hsqldb.version>
+		<dbh2.version>1.4.187</dbh2.version>
 	</properties>
 
 	<modules>
@@ -21,6 +29,12 @@
 		<module>brewspberry-core</module>
 		<module>brewspberry-jbatches</module>
 		<module>brewspberry-webapp</module>
+		<module>brewspberry-monitoring</module>
+		<module>brewspberry-regulation</module>
+		<module>brewspberry-brewery-management</module>
+		<module>monitoring-api</module>
+		<module>regulation-api</module>
+		<module>brewery-api</module>
 	</modules>
 	<profiles>
 		<profile>

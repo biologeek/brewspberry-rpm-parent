@@ -15,6 +15,7 @@ import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificIngredientService;
 import net.brewspberry.main.business.beans.brewing.Houblon;
 import net.brewspberry.main.business.beans.brewing.SimpleHoublon;
+import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.dao.SimpleHopDaoImpl;
 import net.brewspberry.main.util.LogManager;
@@ -43,7 +44,7 @@ public class SimpleHopServiceImpl implements IGenericService<SimpleHoublon>, ISp
 	}
 
 	@Override
-	public SimpleHoublon update(SimpleHoublon arg0) {
+	public SimpleHoublon update(SimpleHoublon arg0) throws DAOException {
 		
 			return sHopDao.update(arg0);	
 	}

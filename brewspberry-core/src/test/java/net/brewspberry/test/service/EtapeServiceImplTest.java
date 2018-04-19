@@ -147,7 +147,7 @@ public class EtapeServiceImplTest {
 	}
 
 	@Test
-	public void shouldStopStepForReal() {
+	public void shouldStopStepForReal() throws BusinessException {
 		list = getList();
 
 		ISpecificEtapeService stepServiceSpy = (ISpecificEtapeService) PowerMockito.spy(sut);

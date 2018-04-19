@@ -1,18 +1,15 @@
 package net.brewspberry.test;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import javax.persistence.EntityManagerFactory;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -21,7 +18,7 @@ import net.brewspberry.test.util.config.SpringCoreTestConfiguration;
 public abstract class AbstractTest {
 
 	@Autowired
-	SessionFactory sessFact;
+	EntityManagerFactory sessFact;
 	// @Autowired
 	// private EntityManagerFactory entmanFact;
 

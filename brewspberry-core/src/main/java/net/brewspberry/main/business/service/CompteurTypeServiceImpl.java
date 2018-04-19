@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.brewspberry.main.business.IGenericDao;
 import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.beans.stock.CounterType;
+import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 
 @Service("compteurTypeServiceImpl")
@@ -28,7 +29,7 @@ public class CompteurTypeServiceImpl implements IGenericService<CounterType> {
 	}
 
 	@Override
-	public CounterType update(CounterType arg0) {
+	public CounterType update(CounterType arg0) throws DAOException {
 		
 		return genericDao.update(arg0);
 	}

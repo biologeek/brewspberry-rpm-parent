@@ -14,6 +14,7 @@ import net.brewspberry.main.business.IGenericService;
 import net.brewspberry.main.business.ISpecificIngredientService;
 import net.brewspberry.main.business.beans.brewing.Malt;
 import net.brewspberry.main.business.beans.brewing.SimpleMalt;
+import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.business.exceptions.ServiceException;
 import net.brewspberry.main.dao.MaltDAOImpl;
 import net.brewspberry.main.dao.SimpleMaltDAOImpl;
@@ -38,7 +39,7 @@ public class MaltServiceImpl implements IGenericService<Malt>,
 	}
 
 	@Override
-	public Malt update(Malt arg0) {
+	public Malt update(Malt arg0) throws DAOException {
 		
 		return maltDAO.update(arg0);
 	}

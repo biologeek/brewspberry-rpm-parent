@@ -45,4 +45,4 @@ INSERT INTO StockCounter (cpt_discriminator, cpt_id, cpt_cty_id, cpt_stb_id, cpt
 INSERT INTO Brassin (bra_id, bra_date_maj, bra_debut, bra_fin, bra_nom, bra_quantiteEnLitres, bra_statut, bra_type) VALUES (1, NOW(), NOW(), NOW(), 'testBrew', 50, 1, 'blonde');
 
 --INSERT INTO PalierType (plt_id, plt_libelle, plt_temperature, plt_temperature_max, plt_temperature_min) VALUES (1, 'testPalier', 64, 65, 60);
-INSERT INTO Etape (etp_id, etp_nom, etp_numero, etp_remarque, etp_temperature_theorique, etp_bra_id, etp_etape_type, etp_palier_type, etp_active) VALUES (1, 'test1', 0, 'blabla', 64, 1, 'PALIER', 'SACCHARIFICATION', true);
+INSERT INTO Etape (etp_id, etp_nom, etp_numero, etp_remarque, etp_temperature_theorique, etp_bra_id, etp_etape_type, etp_palier_type, etp_active, etp_duration) VALUES (1, 'test1', 0, 'blabla', 64, 1, 'PALIER', 'SACCHARIFICATION', true, 0);

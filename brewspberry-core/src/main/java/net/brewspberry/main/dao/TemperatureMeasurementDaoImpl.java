@@ -6,17 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.print.attribute.standard.PrinterLocation;
+import javax.persistence.Query;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,7 +21,6 @@ import net.brewspberry.main.business.beans.brewing.Brassin;
 import net.brewspberry.main.business.beans.brewing.Etape;
 import net.brewspberry.main.business.beans.monitoring.Actioner;
 import net.brewspberry.main.business.beans.monitoring.ConcreteTemperatureMeasurement;
-import net.brewspberry.main.business.beans.monitoring.MultiActionnerTemperatures;
 import net.brewspberry.main.business.exceptions.DAOException;
 import net.brewspberry.main.data.ISpecificTemperatureMeasurementDao;
 import net.brewspberry.main.util.ConfigLoader;
@@ -48,8 +42,7 @@ public class TemperatureMeasurementDaoImpl
 	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByBrassin(Brassin brassin) {
 
 		List<ConcreteTemperatureMeasurement> result = em
-				.createCriteria(ConcreteTemperatureMeasurement.class).add(Restrictions.eq("tmes_brassin", brassin))
-				.list();
+				.createQuery("from ConcreteTemperatureMeasurement where tmes_brassin = " + brassin).getResultList();
 
 		return result;
 	}
@@ -57,9 +50,9 @@ public class TemperatureMeasurementDaoImpl
 	@Override
 	public List<ConcreteTemperatureMeasurement> getTemperatureMeasurementByEtape(Etape etape) {
 		@SuppressWarnings("unchecked")
-		List<ConcreteTemperatureMeasurement> result = (List<ConcreteTemperatureMeasurement>) sessionFactory
-				.getCurrentSession().createCriteria(ConcreteTemperatureMeasurement.class)
-				.add(Restrictions.eq("tmes_etape", etape)).list();
+		List<ConcreteTemperatureMeasurement> result = (List<ConcreteTemperatureMeasurement>) em
+				.createQuery("from ConcreteTemperatureMeasurement where tmes_etape = " + etape.getEtp_id())
+				.getResultList();
 
 		return result;
 	}
@@ -72,12 +65,10 @@ public class TemperatureMeasurementDaoImpl
 		if (uuid != null) {
 
 			if (uuid != "") {
-				Criteria cr = em.createCriteria(ConcreteTemperatureMeasurement.class);
+				Query cr = em.createQuery(
+						"from ConcreteTemperatureMeasurement where tmes_probeUI = " + uuid + " order by tmes_date");
 
-				cr.add(Restrictions.eq("tmes_probeUI", uuid));
-				cr.addOrder(Order.desc("tmes_date"));
-
-				result = ((List<ConcreteTemperatureMeasurement>) cr.list()).get(0);
+				result = ((List<ConcreteTemperatureMeasurement>) cr.getResultList()).get(0);
 
 			}
 		} else {
@@ -102,18 +93,17 @@ public class TemperatureMeasurementDaoImpl
 			if (name != "") {
 
 				/*
-				 * Beware, if multiple brews at the same time, there may be
-				 * conflict :
+				 * Beware, if multiple brews at the same time, there may be conflict :
 				 * 
-				 * should add as parameter and criterias Brassin and Etape
-				 * objects to better filter
+				 * should add as parameter and criterias Brassin and Etape objects to better
+				 * filter
 				 * 
 				 * but it's ok if you do only 1 brew or step at a time
 				 */
 
 				Query request = em.createQuery(sqlQuery).setMaxResults(1);
 
-				result = (ConcreteTemperatureMeasurement) request.uniqueResult();
+				result = (ConcreteTemperatureMeasurement) request.getSingleResult();
 
 			} else {
 				throw new Exception("Empty string is not permitted !!");
@@ -154,11 +144,8 @@ public class TemperatureMeasurementDaoImpl
 		ConcreteTemperatureMeasurement result = null;
 		try {
 
-			long id = (long) em.persist(arg0);
-
-			result = this.getElementById(id);
-
-			logger.fine("Saved TemperatureMeasurement with id " + id);
+			em.persist(arg0);
+			logger.fine("Saved TemperatureMeasurement with id " + arg0.getTmes_id());
 
 		} catch (HibernateException e) {
 			e.printStackTrace();
@@ -174,7 +161,7 @@ public class TemperatureMeasurementDaoImpl
 		ConcreteTemperatureMeasurement result = null;
 
 		try {
-			em.update(arg0);
+			em.persist(arg0);
 
 		} catch (HibernateException e) {
 
@@ -188,8 +175,7 @@ public class TemperatureMeasurementDaoImpl
 	@Override
 	public ConcreteTemperatureMeasurement getElementById(long id) {
 
-		return (ConcreteTemperatureMeasurement) em
-				.get(ConcreteTemperatureMeasurement.class, id);
+		return (ConcreteTemperatureMeasurement) em.find(ConcreteTemperatureMeasurement.class, id);
 	}
 
 	@Override
@@ -203,7 +189,7 @@ public class TemperatureMeasurementDaoImpl
 
 		List<ConcreteTemperatureMeasurement> result = null;
 
-		result = em.createQuery("from TemperatureMeasurement").list();
+		result = em.createQuery("from TemperatureMeasurement").getResultList();
 		return result;
 	}
 
@@ -215,7 +201,7 @@ public class TemperatureMeasurementDaoImpl
 			ConcreteTemperatureMeasurement toDel = this.getElementById(id);
 			if (toDel != null) {
 
-				em.delete(toDel);
+				em.remove(toDel);
 
 			} else {
 
@@ -236,7 +222,7 @@ public class TemperatureMeasurementDaoImpl
 
 			if (arg0 != null) {
 
-				em.delete(arg0);
+				em.remove(arg0);
 
 			} else {
 
@@ -255,8 +241,7 @@ public class TemperatureMeasurementDaoImpl
 	public List<ConcreteTemperatureMeasurement> getAllDistinctElements() {
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
-		result = em.createQuery("from TemperatureMeasurement group by tmes_probe_name")
-				.list();
+		result = em.createQuery("from TemperatureMeasurement group by tmes_probe_name").getResultList();
 
 		return result;
 	}
@@ -268,7 +253,7 @@ public class TemperatureMeasurementDaoImpl
 
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
 		logger.fine("Restrictions : " + etape.getEtp_id() + " uuid : " + uuid + " ID : " + tmesID);
-		Criteria query;
+		Query query;
 
 		Calendar cal = Calendar.getInstance();
 
@@ -276,21 +261,19 @@ public class TemperatureMeasurementDaoImpl
 				.parseInt(ConfigLoader.getConfigByKey(Constants.CONFIG_PROPERTIES, "param.chart.timeLengthInMinutes")));
 		if (etape != null) {
 			if (tmesID > 0) {
-
-				query = em.createCriteria(ConcreteTemperatureMeasurement.class)
-						.add(Restrictions.gt("tmes_id", tmesID)).add(Restrictions.eq("tmes_etape", etape))
-						.add(Restrictions.gt("tmes_date", cal.getTime()));
+				String str = "from ConcreteTemperatureMeasurement where tmes_id > " + tmesID
+				+ " tmes_etape = " + etape + " and tmes_date>" + cal.getTime();
 				// .add(Restrictions.sqlRestriction("tmes_id mod "
 				// + modulo + " = 0"));
 
 				if (uuid != null && !uuid.equals("all")) {
 
-					query.add(Restrictions.eq("tmes_probeUI", uuid));
+					str += " and tmes_probeUI"+ uuid;
 
 				}
 
-				query.addOrder(Order.asc("tmes_date"));
-				result = (List<ConcreteTemperatureMeasurement>) query.list();
+				str += "order by tmes_date";
+				result = (List<ConcreteTemperatureMeasurement>) em.createQuery(str).getResultList();
 			}
 		}
 
@@ -302,75 +285,60 @@ public class TemperatureMeasurementDaoImpl
 	@Override
 	public List<ConcreteTemperatureMeasurement> getLastTemperatureByStepAndUUID(Etape stepID, String uuid) {
 
-		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
+		String str = "from ConcreteTemperatureMeasurement where tmes_etape = " + stepID;
 
-		Criteria crit = em.createCriteria(ConcreteTemperatureMeasurement.class);
-		crit.add(Restrictions.eq("tmes_etape", stepID));
-		crit.add(Restrictions.eq("tmes_probeUI", uuid));
-		crit.addOrder(Order.desc("tmes_date"));
+		if (uuid != null && "all".equalsIgnoreCase(uuid))
+			str += "and tmes_probeUI = " + uuid;
 
-		if (!uuid.equals("") || !uuid.equalsIgnoreCase("all")) {
-
-			crit.setMaxResults(1);
-
-		}
-
-		return result;
+		str += " order by tmes_date";
+		
+		return em.createQuery(str).getResultList();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConcreteTemperatureMeasurement> getLastTemperatureMeasurementByStepUUIDNumberOfPointsAndDelay(
 			Etape etapeID, String uuid, int numberOfPoints, float delay) throws Exception {
-
-		Criteria tmesCriteria = em.createCriteria(ConcreteTemperatureMeasurement.class);
-
-		tmesCriteria.add(Restrictions.eq("tmes_etape", etapeID));
+		String query = "from ConcreteTemperatureMeasurement where tmes_etape.etp_id = " + etapeID;
 
 		if (!uuid.equals("all")) {
 
-			tmesCriteria.add(Restrictions.eq("tmes_probeUI", uuid));
+			query += "tmes_probeUI = " + uuid;
 
 		}
 
-		tmesCriteria.addOrder(Order.desc("tmes_id"));
+		query += "order by tmes_id desc";
 
-		tmesCriteria.setMaxResults(numberOfPoints);
+		query += " limit " + numberOfPoints;
 
-		tmesCriteria.add(Restrictions.le("tmes_date",
-				DateManipulator.getInstance().getDateFromDateAndDelay(new Date(), (float) -delay, "SECONDS")));
-
-		return (List<ConcreteTemperatureMeasurement>) tmesCriteria.list();
+		query += "and tmes_date = "
+				+ DateManipulator.getInstance().getDateFromDateAndDelay(new Date(), (float) -delay, "SECONDS");
+		Query tmesQuery = em.createQuery(query);
+		return (List<ConcreteTemperatureMeasurement>) tmesQuery.getResultList();
 	}
 
 	@Override
 	public List<ConcreteTemperatureMeasurement> getTemperaturesByStepAndUUID(Etape stepID, String uuid, Long lastID) {
 		List<ConcreteTemperatureMeasurement> result = new ArrayList<ConcreteTemperatureMeasurement>();
-
-		Criteria crit = em.createCriteria(ConcreteTemperatureMeasurement.class);
-		crit.add(Restrictions.eq("tmes_etape", stepID));
-		crit.add(Restrictions.eq("tmes_probeUI", uuid));
+		String query = "from ConcreteTemperatureMeasurement where tmes_etape = " + stepID + " and tmes_probeUI= " + uuid;
+		
 		if (lastID != null && lastID.longValue() > 0) {
-	
-			crit.add(Restrictions.gt("tmes_id", lastID));
-			
+
+			query += " and tmes_id > "+ lastID;
+
 		}
 
-		crit.addOrder(Order.desc("tmes_date"));
+		query += " order by tmes_date desc";
+		Query crit = em.createQuery(query);
+		result = crit.getResultList();
 
-		result = crit.list();
-		
 		return result;
 	}
 
 	@Override
 	public List<ConcreteTemperatureMeasurement> getTemperaturesForActionners(List<Actioner> actionners) {
-		Criteria crit = em.createCriteria(ConcreteTemperatureMeasurement.class);
-		for (Actioner act : actionners){
-			crit.add(Restrictions.or(Restrictions.eq("tmes_actioner", act)));
-		}
-		
-		return crit.list();
+		Query crit = em.createQuery("from ConcreteTemperatureMeasurement where tmes_actioner in ("+actionners.toArray()+")");
+		return crit.getResultList();
 	}
 
 }

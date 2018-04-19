@@ -9,5 +9,5 @@ public interface ISpecificEtapeService {
 	public Etape terminateStep (Etape etape);
 	
 	public Etape startStepForReal(Etape step) throws BusinessException;
-	public Etape stopStepForReal(Etape step);
+	public Etape stopStepForReal(Etape step) throws BusinessException;
 }
