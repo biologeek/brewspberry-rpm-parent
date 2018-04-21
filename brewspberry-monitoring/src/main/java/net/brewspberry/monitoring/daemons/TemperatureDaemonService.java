@@ -40,6 +40,10 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 	private W1Master oneWireMaster;
 
 	@Override
+	/**
+	 * Periodic polling of sensor temperature using passed parameters (at least
+	 * duration, polling frequency and list of sensors)
+	 */
 	public void run() {
 
 		Assert.notNull(jmsService, "JmsService is null !");
@@ -54,12 +58,11 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 
 		endCal.add(Calendar.MILLISECOND, (int) ((Duration) parameters.get(TemperatureSensor.DURATION)).toMillis());
 		while (new Date().before(endCal.getTime())) {
-
 			try {
 				List<TemperatureMeasurement> measured = pollSensors(
 						(List<TemperatureSensor>) parameters.get(TemperatureSensor.DEVICE_LIST),
 						(float) parameters.get(TemperatureSensor.FREQUENCY));
-				
+
 				sendJms(measured);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -70,9 +73,22 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 	}
 
 	public void sendJms(List<TemperatureMeasurement> measured) {
-		jmsService.send(measured);
+		if (measured == null || measured.isEmpty())
+			return;
+		else {
+			jmsService.send(measured);
+		}
 	}
 
+
+	@Override
+	public void sendJms(TemperatureMeasurement measured) {
+		if (measured == null)
+			return;
+		else {
+			jmsService.send(measured);
+		}
+	}
 	/**
 	 * Determines which devices to poll and poll them
 	 * 
@@ -84,16 +100,10 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 	 */
 	private List<TemperatureMeasurement> pollSensors(List<TemperatureSensor> sensors, float frequency)
 			throws IOException {
-		Set<W1Device> devices = new HashSet<>(0);
 
 		List<TemperatureMeasurement> measurements = new ArrayList<>(0);
-		if (sensors == null || sensors.isEmpty()) {
-			devices = new HashSet<>(oneWireMaster.getDevices());
-		} else {
-			List<String> sensorsIds = sensors.stream().map(TemperatureSensor::getUuid).collect(Collectors.toList());
-			devices = oneWireMaster.getDevices().stream().filter(t -> sensorsIds.contains(t.getId()))
-					.collect(Collectors.toSet());
-		}
+
+		Set<W1Device> devices = getSensorsToPoll(sensors);
 
 		for (W1Device device : devices) {
 
@@ -120,6 +130,25 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 		return measurements;
 	}
 
+	/**
+	 * Determines which sensors will be polled. To poll all sensors, set parameter
+	 * to null or empty list
+	 * 
+	 * @param sensors
+	 * @return
+	 */
+	private Set<W1Device> getSensorsToPoll(List<TemperatureSensor> sensors) {
+		Set<W1Device> devices;
+		if (sensors == null || sensors.isEmpty()) {
+			devices = new HashSet<>(oneWireMaster.getDevices());
+		} else {
+			List<String> sensorsIds = sensors.stream().map(TemperatureSensor::getUuid).collect(Collectors.toList());
+			devices = oneWireMaster.getDevices().stream().filter(t -> sensorsIds.contains(t.getId()))
+					.collect(Collectors.toSet());
+		}
+		return devices;
+	}
+
 	public Map<String, Object> getParameters() {
 		return parameters;
 	}
@@ -142,12 +171,6 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 
 	public void setJmsService(TemperatureMeasurementJmsService jmsService) {
 		this.jmsService = jmsService;
-	}
-
-	@Override
-	public void sendJms(TemperatureMeasurement object) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public W1Master getOneWireMaster() {

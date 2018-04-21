@@ -2,7 +2,7 @@ package net.brewspberry.monitoring.api;
 
 
 
-import net.brewspberry.monitoring.api.ActionnerDto.ActionerType;
+import net.brewspberry.monitoring.api.DeviceDto.ActionerType;
 
 public class GenericActionnerDto {
 

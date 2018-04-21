@@ -7,7 +7,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.jms.ConnectionFactory;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -81,16 +80,22 @@ public class MonitoringConfig {
 	 */
 	public GpioController piController() throws IOException {
 
-		// FIXME ? Is it really the best solution ?
-		Process p = Runtime.getRuntime().exec("whoami");
-		String user = new BufferedReader(new InputStreamReader(p.getInputStream())).readLine();
-		
-		if (GpioUtil.isPrivilegedAccessRequired() && !"root".equals(user)) {
-			logger.severe("Privileged Access Required to access pins");
-			throw new BeanCreationException("Privileged Access Required to access pins");
-		}
+		String raspbianVmArg = System.getProperty("raspbian");
+		boolean os = raspbianVmArg != null && raspbianVmArg.equalsIgnoreCase("true");
 
-		return GpioFactory.getInstance();
+		if (os) {
+			// FIXME ? Is it really the best solution ?
+			Process p = Runtime.getRuntime().exec("whoami");
+			String user = new BufferedReader(new InputStreamReader(p.getInputStream())).readLine();
+
+			if (GpioUtil.isPrivilegedAccessRequired() && !"root".equals(user)) {
+				logger.severe("Privileged Access Required to access pins");
+				throw new BeanCreationException("Privileged Access Required to access pins");
+			}
+
+			return GpioFactory.getInstance();
+		}
+		return null;
 	}
 
 	@Bean
@@ -139,7 +144,7 @@ public class MonitoringConfig {
 		return tpl;
 	}
 
-	@Bean
+	@Bean(name="connectionFactory")
 	public ConnectionFactory springConnectionFactory() {
 		SingleConnectionFactory factory = new SingleConnectionFactory();
 		factory.setTargetConnectionFactory(amqConnectionFactory());

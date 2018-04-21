@@ -8,19 +8,22 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractDevice {
 
 	@Id
 	@GeneratedValue
-	private Long id;
-	private String uuid;
-	private DeviceType type;
-	private String pin;
-	private int pinAddress;
+	protected Long id;
+	protected String uuid;
+	protected DeviceType type;
+	protected String pin;
+	protected int pinAddress;
 	@Enumerated(EnumType.STRING)
-	private SwitchStatus pinState;
-	private Date lastStateChangeDate;
+	protected SwitchStatus pinState;
+	protected Date lastStateChangeDate;
 
 	public Date getLastStateChangeDate() {
 		return lastStateChangeDate;

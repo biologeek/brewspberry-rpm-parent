@@ -10,6 +10,12 @@ import net.brewspberry.monitoring.model.TemperatureMeasurement;
  */
 public interface JmsDaemon<T> {
 	
+	/**
+	 * Send a single-object JMS
+	 */
 	public void sendJms(T object);
-	public void sendJms(List<TemperatureMeasurement> measured);
+	/**
+	 * Sends multiple objects into 1 JMS
+	 */
+	public void sendJms(List<T> measured);
 }

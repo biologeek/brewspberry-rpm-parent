@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.brewspberry.monitoring.api.ActionnerDto;
-import net.brewspberry.monitoring.converter.Converter;
+import net.brewspberry.monitoring.api.DeviceDto;
+import net.brewspberry.monitoring.converter.DeviceConverter;
 import net.brewspberry.monitoring.model.SwitchStatus;
 import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.services.DeviceService;
@@ -22,17 +22,17 @@ public class TemperatureSensorController {
 	@Autowired
 	private DeviceService<TemperatureSensor> deviceService;
 
-	public ResponseEntity<Set<ActionnerDto>> listDevices() {
+	public ResponseEntity<Set<DeviceDto>> listDevices() {
 		Set<TemperatureSensor> sensors = deviceService.listPluggedDevices();
 
 		if (sensors == null || sensors.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-		return new ResponseEntity<>(new Converter().toActionerApi(sensors), HttpStatus.OK);
+		return new ResponseEntity<>(new DeviceConverter().toApi(sensors), HttpStatus.OK);
 	}
 	
 	@RequestMapping(path="/{action}/{id}", method=RequestMethod.PUT)
-	public ResponseEntity<ActionnerDto> lightOnOrOffDevice(@PathVariable("action") SwitchStatus action, @PathVariable("id") Long id){
+	public ResponseEntity<DeviceDto> lightOnOrOffDevice(@PathVariable("action") SwitchStatus action, @PathVariable("id") Long id){
 		TemperatureSensor result = null;
 		
 		if (action == SwitchStatus.UP)
@@ -41,7 +41,7 @@ public class TemperatureSensorController {
 			result = deviceService.switchOffDevice(id);
 		else 
 			return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-		return new ResponseEntity<>(new Converter().toActionerApi(result), HttpStatus.OK);
+		return new ResponseEntity<>(new DeviceConverter().toApi(result), HttpStatus.OK);
 	}
 	
 }

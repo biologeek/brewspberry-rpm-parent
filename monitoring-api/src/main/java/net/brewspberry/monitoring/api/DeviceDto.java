@@ -2,7 +2,7 @@ package net.brewspberry.monitoring.api;
 
 import java.util.List;
 
-public class ActionnerDto {
+public class DeviceDto {
 
 	private long genericId;
 	private long id;
@@ -149,17 +149,17 @@ public class ActionnerDto {
 		this.brewId = brewId;
 	}
 
-	public ActionnerDto uuid(String uuid2) {
+	public DeviceDto uuid(String uuid2) {
 		this.uuid = uuid2;
 		return this;
 	}
 
-	public ActionnerDto id(Long id2) {
+	public DeviceDto id(Long id2) {
 		this.id= id2;
 		return this;
 	}
 
-	public ActionnerDto pin(String pin2) {
+	public DeviceDto pin(String pin2) {
 		this.pin = pin2;
 		return this;
 	}
