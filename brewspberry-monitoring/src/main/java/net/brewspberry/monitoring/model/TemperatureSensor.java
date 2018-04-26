@@ -9,6 +9,8 @@ public class TemperatureSensor extends AbstractDevice {
 	 */
 	public static final String DURATION = "duration";
 	public static final String DEVICE_LIST = "deviceList";
+	public static final String EXTERNAL_ID = "externalId";
+	public static final String THREAD_DUMP_FOLDER = "threadDumpFolder";
 	/**
 	 * Polling frequency in Hz-1
 	 */

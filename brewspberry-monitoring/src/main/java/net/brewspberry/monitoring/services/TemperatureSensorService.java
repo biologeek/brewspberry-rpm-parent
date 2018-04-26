@@ -35,12 +35,28 @@ public interface TemperatureSensorService extends DeviceService<TemperatureSenso
 	 * As its name suggests, this method will run periodic measuremnts depending on
 	 * passed parameters. <br>
 	 * <br>
-	 * Significant parameters keys and value types :
-	 * - frequency : {@link Duration}
+	 * Significant parameters keys and value types : <br>
+	 * - frequency : {@link Duration} <br>
 	 * - duration : {@link Duration}
 	 * 
 	 * @param parameters
 	 */
 	public void runRegularTemperatureMeasurement(List<TemperatureSensor> sensors, Map<String, Object> parameters);
+
+	/**
+	 * As its name suggests, this method will run periodic measuremnts depending on
+	 * passed parameters. <br>
+	 * <br>
+	 * Contrary to
+	 * {@link TemperatureSensorService}.{@link #runRegularTemperatureMeasurement(List, Map)},
+	 * devices will be retrieved using given UUIDs<br>
+	 * <br>
+	 * Significant parameters keys and value types : <br>
+	 * - frequency : {@link Duration} <br>
+	 * - duration : {@link Duration}
+	 * 
+	 * @param parameters
+	 */
+	public void runRegularTemperatureMeasurementStr(List<String> devices, Map<String, Object> bodyToParameters);
 
 }

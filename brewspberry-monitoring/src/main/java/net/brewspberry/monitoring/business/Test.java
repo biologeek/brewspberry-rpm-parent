@@ -1,16 +1,18 @@
 package net.brewspberry.monitoring.business;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Test {
 
-	public static void main(String[] args) throws IOException {
-		Process p = Runtime.getRuntime().exec("whoami");
-		String user = new BufferedReader(new InputStreamReader(p.getInputStream())).readLine();
+	public static void main(String[] args) throws IOException, URISyntaxException {
+		Path p = Paths.get(new URI("file:///home/xavier/exploit.py"));
 		
-		System.out.println(user);
+		System.out.println(p.getFileName().toString());
+		
 	}
 
 }

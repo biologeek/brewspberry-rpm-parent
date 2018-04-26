@@ -20,6 +20,7 @@ public class TemperatureMeasurement {
 	@JoinColumn(name="sensor_id")
 	private TemperatureSensor sensor;
 	private Float temperature;
+	private String externalId;
 
 	public Long getId() {
 		return id;
@@ -53,6 +54,14 @@ public class TemperatureMeasurement {
 		this.temperature = temperature;
 	}
 
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
+	}
+
 	public TemperatureMeasurement date(Date date2) {
 		setDate(date2);
 		return this;
@@ -65,6 +74,11 @@ public class TemperatureMeasurement {
 
 	public TemperatureMeasurement temperature(Float temp) {
 		setTemperature(temp);
+		return this;
+	}
+
+	public TemperatureMeasurement externalId(String extId) {
+		setExternalId(extId);
 		return this;
 	}
 
