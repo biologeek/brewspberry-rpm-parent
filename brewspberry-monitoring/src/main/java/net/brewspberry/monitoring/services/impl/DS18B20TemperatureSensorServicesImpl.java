@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
@@ -28,7 +29,9 @@ import net.brewspberry.monitoring.services.TemperatureSensorService;
 import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
 @Service
-public class TemperatureSensorServicesImpl implements TemperatureSensorService {
+public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorService {
+
+	private static final int DS18B20_CONSTANT = 0x28;
 
 	@Autowired
 	private TemperatureSensorRepository repository;
@@ -73,7 +76,6 @@ public class TemperatureSensorServicesImpl implements TemperatureSensorService {
 
 	@Override
 	public TemperatureSensor switchOffDevice(String uuid) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -95,7 +97,7 @@ public class TemperatureSensorServicesImpl implements TemperatureSensorService {
 		W1Device foundDevice = null;
 		TemperatureMeasurement measurement = null;
 		try {
-			foundDevice = oneWireMaster.getDevices(0x28)// Take only DS18B20
+			foundDevice = oneWireMaster.getDevices(DS18B20_CONSTANT)// Take only DS18B20
 					.stream()//
 					.filter(t -> t.getId().equals(sensor.getUuid()))//
 					.findFirst()//

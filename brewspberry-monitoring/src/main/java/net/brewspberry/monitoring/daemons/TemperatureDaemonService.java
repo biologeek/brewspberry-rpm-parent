@@ -31,7 +31,7 @@ import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
 import net.brewspberry.monitoring.services.JmsDaemon;
 import net.brewspberry.monitoring.services.ThreadStateServices;
-import net.brewspberry.monitoring.services.impl.TemperatureSensorServicesImpl;
+import net.brewspberry.monitoring.services.impl.DS18B20TemperatureSensorServicesImpl;
 import net.brewspberry.monitoring.services.impl.ThreadStateServicesImpl;
 import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
@@ -168,7 +168,7 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 			measurements.add(new TemperatureMeasurement()//
 					.date(new Date())//
 					.sensor(currentSensor)//
-					.temperature(TemperatureSensorServicesImpl.convertRawTemperature(device.getValue()))//
+					.temperature(DS18B20TemperatureSensorServicesImpl.convertRawTemperature(device.getValue()))//
 			);//
 		}
 		return measurements;

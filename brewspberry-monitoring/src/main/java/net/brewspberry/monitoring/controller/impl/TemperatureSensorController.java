@@ -39,6 +39,16 @@ public class TemperatureSensorController {
 	}
 
 	@RequestMapping(path = "/sensor/{id}/{action}", method = RequestMethod.PUT)
+	/**
+	 * Will "activate" given device. This function must be used as a kind of
+	 * pre-measuring step. Does not actually measure anything
+	 * 
+	 * @param action
+	 *            if UP, activates device, if DOWN, deactivates it
+	 * @param id
+	 *            technical ID of the deviceT
+	 * @return
+	 */
 	public ResponseEntity<DeviceDto> lightOnOrOffDevice(@PathVariable("action") SwitchStatus action,
 			@PathVariable("id") Long id) {
 		TemperatureSensor result = null;
@@ -52,6 +62,22 @@ public class TemperatureSensorController {
 		return new ResponseEntity<>(new DeviceConverter().toApi(result), HttpStatus.OK);
 	}
 
+	/**
+	 * Runs a temperature measurements batch <br>
+	 * <br>
+	 * Parameters to give :<br>
+	 * - <b>duration</b> in ms<br>
+	 * - <b>frequency</b> in ms<br>
+	 * - <b>devices</b> : if list is null or empty, all devices are monitored. Else only
+	 * devices with given UUIDs will be measured<br>
+	 * - <b>externalId</b> : eventually the object to which temperature measurements are
+	 * related to. It may be a brew or a step of a brew for example
+	 * 
+	 * @param body
+	 *            contains batch parameters. Some are mandatory such as frequency
+	 *            and duration and given in milliseconds
+	 * @return
+	 */
 	@RequestMapping(path = "/run")
 	public ResponseEntity<Void> launchTemperatureMeasurement(@RequestBody TemperatureBatchRunRequestBody body) {
 		deviceService.runRegularTemperatureMeasurementStr(body.getDevices(), bodyToParameters(body));
