@@ -35,7 +35,7 @@ public class TemperatureSensorController {
 		if (sensors == null || sensors.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-		return new ResponseEntity<>(new DeviceConverter().toApi(sensors), HttpStatus.OK);
+		return new ResponseEntity<>(new DeviceConverter().toApiFromSensors(sensors), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/sensor/{id}/{action}", method = RequestMethod.PUT)

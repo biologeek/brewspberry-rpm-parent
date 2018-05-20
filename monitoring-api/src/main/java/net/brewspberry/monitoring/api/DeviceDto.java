@@ -13,11 +13,11 @@ public class DeviceDto {
 	private long brewId;
 
 	public enum ActionerType {
-		DS18B20, ENGINE_RELAY, PUMP_RELAY
+		DS18B20, ENGINE_RELAY, VALVE;
 	}
 
 	public enum ActionerStatus {
-		STOPPED, STARTED, PAUSED, IDLE
+		STOPPED, STARTED, PAUSED, IDLE, UP, DOWN;
 	}
 
 	private String picture;
@@ -161,6 +161,16 @@ public class DeviceDto {
 
 	public DeviceDto pin(String pin2) {
 		this.pin = pin2;
+		return this;
+	}
+
+	public DeviceDto state(ActionerStatus pin2) {
+		this.state = pin2;
+		return this;
+	}
+
+	public DeviceDto name(String name2) {
+		this.name = name2;
 		return this;
 	}
 }

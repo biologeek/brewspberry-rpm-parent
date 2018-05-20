@@ -74,7 +74,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	 * @return
 	 */
 	private BinarySwitch changeState(BinarySwitch device, SwitchStatus state) {
-		device.setPinState(state);
+		device.setSwitchStatus(state);
 		device.setLastStateChangeDate(new Date());
 		
 		return repository.save(device);

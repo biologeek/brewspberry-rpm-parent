@@ -6,4 +6,16 @@ package net.brewspberry.monitoring.model;
  */
 public class BinarySwitch extends AbstractDevice {
 
+	private SwitchStatus switchStatus;
+
+	public SwitchStatus getSwitchStatus() {
+		return switchStatus;
+	}
+
+	public void setSwitchStatus(SwitchStatus switchStatus) {
+		this.switchStatus = switchStatus;
+	}
+	
+	
+	
 }

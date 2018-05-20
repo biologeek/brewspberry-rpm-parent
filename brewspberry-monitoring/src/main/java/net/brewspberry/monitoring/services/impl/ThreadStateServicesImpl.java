@@ -1,126 +1,91 @@
 package net.brewspberry.monitoring.services.impl;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import net.brewspberry.monitoring.exceptions.TechnicalException;
-import net.brewspberry.monitoring.model.DaemonThreadState;
+import net.brewspberry.monitoring.model.ThreadState;
+import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.services.ThreadStateServices;
+import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
+import net.brewspberry.monitoring.services.ThreadWitnessServices;
 
-public class ThreadStateServicesImpl implements ThreadStateServices {
+@Service
+public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitnessServices, ThreadWitnessCheckServices {
 
-	private static final String THREAD_RETURN_CODE_FILE_SUFFIX = "pid";
-	private String folder;
-	private BufferedReader returnCodeInputStream;
-	private BufferedOutputStream returnCodeOutputStream;
+	private EntityManager em;
 
-	/**
-	 * Default constructor with mandatory folder path
-	 * 
-	 * @param folderName
-	 * @throws FileNotFoundException
-	 */
+	public ThreadStateServicesImpl(EntityManager em) {
+		this.em = em;
+	}
+	
 
-	public ThreadStateServicesImpl(String folderName) {
-		this.folder = folderName;
+	public ThreadStateServicesImpl() {
+		super();
+	}
+
+
+	@Override
+	public ThreadState readState(String sensorUuid) throws TechnicalException {
+		return em.find(ThreadState.class, sensorUuid);
 	}
 
 	@Override
-	public DaemonThreadState readState(String sensorUuid) throws TechnicalException {
+	public List<ThreadState> readStates() throws TechnicalException {
+		return em.createQuery("from ThreadState").getResultList();
+	}
+
+	@Override
+	public void writeState(ThreadState state) throws TechnicalException {
+		Assert.notNull(state, "ThreadState is null");
+		em.persist(state);
+	}
+
+	@Override
+	public void cleanState(String uuid) throws TechnicalException {
+		ThreadState entity = readState(uuid);
+		if (entity == null)
+			throw new TechnicalException("No thread running for " + uuid);
+		em.remove(entity);
+	}
+
+	@Override
+	public void cleanState(List<String> collect) throws TechnicalException {
 		try {
-			File file = new File(folder + "/" + sensorUuid + "."+ THREAD_RETURN_CODE_FILE_SUFFIX);
-			if (!file.exists())
-				file.createNewFile();
-			if (!file.isFile())
-				throw new IOException();
-
-			returnCodeInputStream = new BufferedReader(new FileReader(file));
-
-			String returnCode = returnCodeInputStream.readLine();
-			if (returnCode == null || "0".equals(returnCode) || returnCode.isEmpty())
-				return DaemonThreadState.noError(sensorUuid);
-			else
-				return DaemonThreadState.xErrors(Integer.valueOf(returnCode), sensorUuid);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new TechnicalException(e.getMessage());
-		} finally {
-			try {
-				returnCodeInputStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new TechnicalException("error.close");
+			for (String t : collect) {
+				cleanState(t);
 			}
-		}
-	}
-
-	@Override
-	public List<DaemonThreadState> readStates() throws TechnicalException {
-		Assert.notNull(folder, "Folder is null");
-		try {
-			return Files//
-					.list(Paths.get(folder))//
-					.filter(new Predicate<Path>() {
-						@Override
-						public boolean test(Path t) {
-							return t.getFileName().toString().endsWith(THREAD_RETURN_CODE_FILE_SUFFIX);
-						}
-					})//
-					.map(t -> t.getFileName().toString().split("\\.")[0])//
-					.map(t -> {
-						try {
-							return readState(t);
-						} catch (TechnicalException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						return null;
-					}).collect(Collectors.toList());
-		} catch (IOException e) {
+		} catch (TechnicalException e) {
 			throw new TechnicalException(e.getMessage());
 		}
 	}
 
 	@Override
-	public void writeState(DaemonThreadState state) {
-
-	}
-
-	public String getFolder() {
-		return folder;
-	}
-
-	public void setFolder(String folder) {
-		this.folder = folder;
+	public ThreadWitness checkWitness(String uuid) {
+		return em.find(ThreadWitness.class, uuid);
 	}
 
 	@Override
-	public void cleanState(String uuid) {
-		Assert.notNull(folder, "Folder is null !");
-
-		File file = new File(folder + "/" + uuid + "." + THREAD_RETURN_CODE_FILE_SUFFIX);
-		if (file.exists() && file.isFile())
-			file.delete();
-
+	public void witnessThreadStart(String uuid) throws TechnicalException {
+		ThreadWitness witness = em.find(ThreadWitness.class, uuid);
+		if (witness == null) {
+			ThreadWitness wit = new ThreadWitness()//
+					.uuid(uuid)//
+					.date(new Date());
+			em.persist(wit);
+		} else {
+			throw new TechnicalException("thread.started");
+		}
 	}
 
 	@Override
-	public void cleanState(List<String> collect) {
-		collect.stream().forEach(t -> cleanState(t));
+	public void witnessThreadinterrupt(String uuid) {
+		ThreadWitness entity = em.find(ThreadWitness.class, uuid);
+		em.remove(entity);
 	}
 }

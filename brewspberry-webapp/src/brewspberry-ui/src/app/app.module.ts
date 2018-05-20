@@ -1,7 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -14,8 +15,13 @@ import { SidebarComponent } from './common/sidebar/sidebar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 
+import { DeviceService } from './services/device.service';
+
+
+
+import { ToastrModule } from 'ngx-toastr';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import {NgxToggleModule} from 'ngx-toggle';
+import { NgxToggleModule } from 'ngx-toggle';
 import { MashingComponent } from './brew/steps/mashing/mashing.component';
 import { LauteringComponent } from './brew/steps/lautering/lautering.component';
 import { BoilingComponent } from './brew/steps/boiling/boiling.component';
@@ -58,11 +64,14 @@ export const router: Routes = [
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot(router),
     TooltipModule.forRoot(),
-    NgxToggleModule
+    NgxToggleModule,
+    HttpClientModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [DeviceService],
   exports: [RouterModule],
   bootstrap: [AppComponent]
 })

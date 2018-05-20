@@ -8,8 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,13 +22,15 @@ import org.springframework.util.Assert;
 import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
 
-import net.brewspberry.monitoring.daemons.TemperatureDaemonService;
+import net.brewspberry.monitoring.daemons.TemperatureDaemonThread;
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.TemperatureSensorRepository;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
+import net.brewspberry.monitoring.services.ThreadStateServices;
+import net.brewspberry.monitoring.services.ThreadWitnessServices;
 import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
 @Service
@@ -46,6 +51,17 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Autowired
 	private TemperatureMeasurementJmsService jmsService;
+
+	@Autowired
+	private ThreadStateServices threadStateService;
+	@Autowired
+	private ThreadWitnessServices threadWitnessService;
+
+	@Autowired
+	/**
+	 * Used only for injection purposes
+	 */
+	EntityManager em;
 
 	@Override
 	public TemperatureSensor getDeviceById(Long id) {
@@ -76,19 +92,17 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Override
 	public TemperatureSensor switchOffDevice(String uuid) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public TemperatureSensor switchOffDevice(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public TemperatureSensor switchOffDevice(TemperatureSensor sensor) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -138,21 +152,23 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Override
 	public void runRegularTemperatureMeasurement(List<TemperatureSensor> sensors, Map<String, Object> parameters) {
-
-		addTechnicalParameters(parameters);
-		
-		logger.info("Starting regular polling with parameters : " + parameters);
-		TemperatureDaemonService target = new TemperatureDaemonService();
+		String threadUUID = UUID.randomUUID().toString();
+		TemperatureDaemonThread target = new TemperatureDaemonThread();
 		target.setJmsService(jmsService);
 		target.setOneWireMaster(oneWireMaster);
 		target.setParameters(parameters);
-		Thread t = new Thread(new TemperatureDaemonService(), "tempThread");
+		target.setEm(em);
+		target.setThreadServices(threadStateService);
+		logger.info("Starting regular polling with UUID=" + threadUUID + " parameters : " + parameters);
 
-		t.start();
-	}
-	
-	private void addTechnicalParameters(Map<String, Object> parameters) {
-		parameters.put(TemperatureSensor.THREAD_DUMP_FOLDER, threadDumpFolder);
+		try {
+			threadWitnessService.witnessThreadStart(threadUUID);
+			Thread t = new Thread(target, target.getUuid());
+			t.start();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -177,6 +193,11 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	public void setThreadDumpFolder(String threadDumpFolder) {
 		this.threadDumpFolder = threadDumpFolder;
+	}
+
+	@Override
+	public Set<TemperatureSensor> listAllDevices() {
+		return new HashSet<>((List<TemperatureSensor>) repository.findAll());
 	}
 
 }

@@ -1,18 +1,25 @@
 package net.brewspberry.monitoring.model;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * Technical class that will help follow state of a thread
  */
-public class DaemonThreadState implements Serializable {
+@Entity
+public class ThreadState implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -273031448620946979L;
 	private int errorOccurence;
 	private String errorMessage;
+	@Id
 	private String uuid;
-	private StackTraceElement[] exceptionTrace;
 	private Date stateDate;
 
 	public String getUuid() {
@@ -38,15 +45,7 @@ public class DaemonThreadState implements Serializable {
 	public void setErrorOccurence(int errorOccurence) {
 		this.errorOccurence = errorOccurence;
 	}
-
-	public StackTraceElement[] getExceptionTrace() {
-		return exceptionTrace;
-	}
-
-	public void setExceptionTrace(StackTraceElement[] stackTraceElements) {
-		this.exceptionTrace = stackTraceElements;
-	}
-
+	
 	public Date getStateDate() {
 		return stateDate;
 	}
@@ -58,7 +57,7 @@ public class DaemonThreadState implements Serializable {
 	@Override
 	public String toString() {
 		return "DaemonThreadState [errorOccurence=" + errorOccurence + ", errorMessage=" + errorMessage
-				+ ", exceptionTrace=" + Arrays.toString(exceptionTrace) + ", stateDate=" + stateDate + "]";
+				+ ", stateDate=" + stateDate + "]";
 	}
 
 	/**
@@ -66,76 +65,33 @@ public class DaemonThreadState implements Serializable {
 	 * 
 	 * @return
 	 */
-	public static DaemonThreadState noError(String uuid) {
-		return new DaemonThreadState()//
+	public static ThreadState noError(String uuid) {
+		return new ThreadState()//
 				.errorOccurence(0)//
 				.uuid(uuid)//
 				.stateDate(new Date());
 	}
 
-	private DaemonThreadState uuid(String uuid2) {
+	private ThreadState uuid(String uuid2) {
 		this.uuid = uuid2;
 		return this;
 	}
 
-	private DaemonThreadState errorOccurence(int i) {
+	private ThreadState errorOccurence(int i) {
 		errorOccurence = i;
 		return this;
 	}
 
-	private DaemonThreadState stateDate(Date object) {
+	private ThreadState stateDate(Date object) {
 		stateDate = object;
 		return this;
 	}
 
-	public static DaemonThreadState xErrors(Integer i, String uuid) {
-		return new DaemonThreadState()//
+	public static ThreadState xErrors(Integer i, String uuid) {
+		return new ThreadState()//
 				.uuid(uuid)//
 				.stateDate(new Date())//
 				.errorOccurence(i);
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((errorMessage == null) ? 0 : errorMessage.hashCode());
-		result = prime * result + errorOccurence;
-		result = prime * result + Arrays.hashCode(exceptionTrace);
-		result = prime * result + ((stateDate == null) ? 0 : stateDate.hashCode());
-		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DaemonThreadState other = (DaemonThreadState) obj;
-		if (errorMessage == null) {
-			if (other.errorMessage != null)
-				return false;
-		} else if (!errorMessage.equals(other.errorMessage))
-			return false;
-		if (errorOccurence != other.errorOccurence)
-			return false;
-		if (!Arrays.equals(exceptionTrace, other.exceptionTrace))
-			return false;
-		if (stateDate == null) {
-			if (other.stateDate != null)
-				return false;
-		} else if (!stateDate.equals(other.stateDate))
-			return false;
-		if (uuid == null) {
-			if (other.uuid != null)
-				return false;
-		} else if (!uuid.equals(other.uuid))
-			return false;
-		return true;
 	}
 
 }

@@ -22,8 +22,18 @@ public abstract class AbstractDevice {
 	protected String pin;
 	protected int pinAddress;
 	@Enumerated(EnumType.STRING)
-	protected SwitchStatus pinState;
+	protected DeviceStatus pinState;
 	protected Date lastStateChangeDate;
+	protected String name;
+	
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Date getLastStateChangeDate() {
 		return lastStateChangeDate;
@@ -33,11 +43,11 @@ public abstract class AbstractDevice {
 		this.lastStateChangeDate = lastStateChangeDate;
 	}
 
-	public SwitchStatus getPinState() {
+	public DeviceStatus getPinState() {
 		return pinState;
 	}
 
-	public void setPinState(SwitchStatus pinState) {
+	public void setPinState(DeviceStatus pinState) {
 		this.pinState = pinState;
 	}
 

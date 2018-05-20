@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiHostMonitoring: "http://localhost:8080/devices"
 };

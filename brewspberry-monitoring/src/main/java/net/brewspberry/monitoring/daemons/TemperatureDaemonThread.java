@@ -18,6 +18,8 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.util.Assert;
 
 import com.pi4j.io.w1.W1Device;
@@ -25,12 +27,14 @@ import com.pi4j.io.w1.W1Master;
 
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
-import net.brewspberry.monitoring.model.DaemonThreadState;
+import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
 import net.brewspberry.monitoring.services.JmsDaemon;
 import net.brewspberry.monitoring.services.ThreadStateServices;
+import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
+import net.brewspberry.monitoring.services.ThreadWitnessServices;
 import net.brewspberry.monitoring.services.impl.DS18B20TemperatureSensorServicesImpl;
 import net.brewspberry.monitoring.services.impl.ThreadStateServicesImpl;
 import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
@@ -41,7 +45,7 @@ import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService
  * @author xavier
  *
  */
-public class TemperatureDaemonService implements Runnable, JmsDaemon<TemperatureMeasurement> {
+public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureMeasurement> {
 
 	private volatile TemperatureMeasurementRepository repository;
 
@@ -49,18 +53,14 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 	private volatile Map<String, Object> parameters;
 	private volatile W1Master oneWireMaster;
 	private volatile ThreadStateServices threadServices;
+	private volatile ThreadWitnessCheckServices witnessServices;
+	private String uuid = UUID.randomUUID().toString();
 
-	private Logger logger = Logger.getLogger(TemperatureDaemonService.class.getName());
-	private Thread t;
+	private EntityManager em;
 
-	public TemperatureDaemonService(String name) {
-		t = new Thread(this, name);
-		threadServices = new ThreadStateServicesImpl((String) parameters.get(TemperatureSensor.THREAD_DUMP_FOLDER));
-	}
+	private Logger logger = Logger.getLogger(TemperatureDaemonThread.class.getName());
 
-	public TemperatureDaemonService() {
-		t = new Thread(this, UUID.randomUUID().toString());
-		threadServices = new ThreadStateServicesImpl((String) parameters.get(TemperatureSensor.THREAD_DUMP_FOLDER));
+	public TemperatureDaemonThread() {
 	}
 
 	@Override
@@ -69,30 +69,25 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 	 * duration, polling frequency and list of sensors)
 	 */
 	public void run() {
-
-		Assert.notNull(jmsService, "JmsService is null !");
-		Assert.notNull(repository, "temperatureMeasurementRepository is null !");
-		Assert.notNull(oneWireMaster, "1-Wire masters is null !");
-		Assert.notEmpty(parameters, "No parameters provided !");
-		for (String prm : TemperatureSensor.MANDATORY_REGULAR_POLL_PARAMETERS) {
-			Assert.notNull(parameters.get(prm), prm + " is null !");
-		}
+		
+		checkParams();
 		Date begin = new Date();
 		Calendar endCal = Calendar.getInstance();
 
 		endCal.add(Calendar.MILLISECOND, (int) ((Duration) parameters.get(TemperatureSensor.DURATION)).toMillis());
 		List<TemperatureSensor> sensorsList = (List<TemperatureSensor>) parameters.get(TemperatureSensor.DEVICE_LIST);
 		while (new Date().before(endCal.getTime())) {
+			prePolling();
 			try {
 				List<TemperatureMeasurement> measured = pollSensors(sensorsList);
 
 				saveMeasurements(measured);
-				// sendJms(measured);
+				threadServices.writeState(ThreadState.noError(uuid));
 				Thread.sleep((long) parameters.get(TemperatureSensor.FREQUENCY));
-			} catch (IOException e) {
+			} catch (IOException | TechnicalException e) {
 				e.printStackTrace();
 				try {
-					threadServices.writeState(DaemonThreadState
+					threadServices.writeState(ThreadState
 							.xErrors(threadServices.readState(e.getMessage()).getErrorOccurence(), e.getMessage()));
 				} catch (TechnicalException e1) {
 					e1.printStackTrace();
@@ -103,6 +98,21 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 				logger.severe("Thread sleep interrupted !!");
 			}
 		}
+
+		finalizeThread(sensorsList);
+	}
+	/**
+	 * Operations to execute before polling
+	 */
+	private void prePolling() {
+		witnessServices.checkWitness(this.uuid);
+	}
+
+	/**
+	 * Called at the end of thread execution, this method releases file locks
+	 * @param sensorsList
+	 */
+	private void finalizeThread(List<TemperatureSensor> sensorsList) {
 		try {
 			threadServices.cleanState(sensorsList//
 					.stream()//
@@ -110,6 +120,17 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 					.collect(Collectors.toList()));
 		} catch (TechnicalException e) {
 			e.printStackTrace();
+		}
+	}
+
+	private void checkParams() {
+		Assert.notNull(jmsService, "JmsService is null !");
+		Assert.notNull(repository, "temperatureMeasurementRepository is null !");
+		Assert.notNull(oneWireMaster, "1-Wire masters is null !");
+		Assert.notNull(threadServices, "ThreadStateService is null !");
+		Assert.notEmpty(parameters, "No parameters provided !");
+		for (String prm : TemperatureSensor.MANDATORY_REGULAR_POLL_PARAMETERS) {
+			Assert.notNull(parameters.get(prm), prm + " is null !");
 		}
 	}
 
@@ -191,7 +212,7 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 					.collect(Collectors.toList());
 			devices = oneWireMaster.getDevices()//
 					.stream()//
-					.filter(t -> sensorsIds.contains(t.getId()))//
+					.filter(t -> sensorsIds != null && sensorsIds.contains(t.getId()))//
 					.collect(Collectors.toSet());
 		}
 		return devices;
@@ -227,6 +248,38 @@ public class TemperatureDaemonService implements Runnable, JmsDaemon<Temperature
 
 	public void setOneWireMaster(W1Master oneWireMaster) {
 		this.oneWireMaster = oneWireMaster;
+	}
+
+	public ThreadStateServices getThreadServices() {
+		return threadServices;
+	}
+
+	public void setThreadServices(ThreadStateServices threadServices) {
+		this.threadServices = threadServices;
+	}
+
+	public EntityManager getEm() {
+		return em;
+	}
+
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public ThreadWitnessCheckServices getWitnessServices() {
+		return witnessServices;
+	}
+
+	public void setWitnessServices(ThreadWitnessCheckServices witnessServices) {
+		this.witnessServices = witnessServices;
 	}
 
 }

@@ -2,6 +2,7 @@
 ****				SIDE MENU					****
 ***************************************************/
 
+@import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
 
 .top-bar{
 	height : 50px; 
@@ -18,7 +19,6 @@
 }
 
 
-@import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
 .fa-2x {
 	font-size: 2em;
 }

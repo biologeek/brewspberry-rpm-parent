@@ -2,7 +2,7 @@
 
 
 .devices-container{
-	max-height: 800px;
+	height : 100%;
 	min-height: 200px;
 	position: relative;
 	margin: 10% auto;
@@ -19,16 +19,50 @@
 	font-weight: bold;
 	margin-bottom: 5px; 
 }
-
-.row{
+.middle-high-row{
+	height : 100px;
+}
+.high-row{
 	margin-right: 0px;
 	margin-left: 0px;
 	border-radius: 5px;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 	vertical-align: middle;
-	height: 50px;
+	height: 140px;
+
+}
+.col-container{
+	border :1px dashed black;
+	vertical-align: middle;
+	padding: 5px;
+	border-radius: 10px;
+	height: 100%;
+}
+.device-picture {
+	float : left;
+	width: 70px;
+	height: 70px;
+	margin : 5px;
+}
+.temperature-value{
+	font-size: 29px;
+	text-align: left;
+	height : 60%;
+	width: 50%;
+	font-weight: bold;
+	float: right;
+	vertical-align: middle;
 }
 
+.active-device {
+	color: green;
+}
+.idle-device {
+	color: grey;
+}
+.stopped-device {
+	color: red;
+}
 
 @media screen and (max-width: 500px) {
 
@@ -49,7 +83,7 @@
 		margin-left: 80px;
 	}
 	.devices-container{
-		width: 70%;
+		width: 90%;
 
 	}
 }
