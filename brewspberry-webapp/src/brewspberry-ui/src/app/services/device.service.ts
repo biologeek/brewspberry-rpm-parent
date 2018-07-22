@@ -13,4 +13,8 @@ export class DeviceService {
   	return <Observable<Device[]>> this.http.get(environment.apiHostMonitoring+'/');
   }
 
+  public getAvailableUuids(): Observable<string[]> {
+  	return <Observable<string[]>> this.http.get(environment.apiHostMonitoring + '/uuid/available');
+  }
+
 }

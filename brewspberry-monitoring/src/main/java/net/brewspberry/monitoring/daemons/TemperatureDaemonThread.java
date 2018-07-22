@@ -27,7 +27,9 @@ import com.pi4j.io.w1.W1Master;
 
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
+import net.brewspberry.monitoring.exceptions.ThreadToInterruptException;
 import net.brewspberry.monitoring.model.ThreadState;
+import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
@@ -77,8 +79,9 @@ public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureM
 		endCal.add(Calendar.MILLISECOND, (int) ((Duration) parameters.get(TemperatureSensor.DURATION)).toMillis());
 		List<TemperatureSensor> sensorsList = (List<TemperatureSensor>) parameters.get(TemperatureSensor.DEVICE_LIST);
 		while (new Date().before(endCal.getTime())) {
-			prePolling();
 			try {
+				prePolling();
+
 				List<TemperatureMeasurement> measured = pollSensors(sensorsList);
 
 				saveMeasurements(measured);
@@ -101,11 +104,15 @@ public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureM
 
 		finalizeThread(sensorsList);
 	}
+	
 	/**
-	 * Operations to execute before polling
+	 * Operations to execute before polling. 
+	 * In this case if witness is no more present, interrupt the thread.
 	 */
 	private void prePolling() {
-		witnessServices.checkWitness(this.uuid);
+		ThreadWitness witness = witnessServices.checkWitness(this.uuid);
+		if (witness != null)
+			Thread.currentThread().interrupt();
 	}
 
 	/**

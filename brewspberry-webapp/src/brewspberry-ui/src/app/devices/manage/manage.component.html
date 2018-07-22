@@ -8,23 +8,25 @@
 				<div *ngIf="device !== null && device != 'LAST'" class="col-container">
 					<div class="row middle-high-row">
 						<div class="col-sm-12">
-							<i *ngIf="device.type === 'DS18B20'" class="fa fa-thermometer device-picture" tooltip="Lancer la mesure" 
-							style=" font-size: 5em;" [ngClass]="{'active-device' : device.state == 'STARTED', 'idle-device' :  device.state == 'IDLE'}"></i>
-							<img *ngIf="device.type === 'VALVE'" tooltip="Lancer la mesure" src="assets/pictures/valve-{{device.state}}.png" class="device-picture" [ngClass]="{'active-device' : device.state == 'STARTED', 'idle-device' :  device.state == 'IDLE'}" />
-							<img *ngIf="device.type === 'ENGINE_RELAY'" tooltip="Lancer la mesure" class="device-picture" src="assets/pictures/engine-{{device.state}}.png" [ngClass]="{'active-device' : device.state == 'STARTED', 'idle-device' :  device.state == 'IDLE'}" style="font-size: 5em;" />
-							<span class="temperature-value">{{device.temperature}}°C</span></div>
+							<img *ngIf="device.type === 'DS18B20'" tooltip="Lancer la mesure" src="assets/pictures/thermometer-{{device.state}}.png" class="device-picture" />
+							<img class="center-align-picture" *ngIf="device.type === 'VALVE'" tooltip="Lancer la mesure" src="assets/pictures/valve-{{device.state}}.png" class="device-picture" />
+							<img class="center-align-picture" *ngIf="device.type === 'ENGINE_RELAY'" tooltip="Lancer la mesure" src="assets/pictures/engine-{{device.state}}.png" class="device-picture" style="font-size: 5em;" />
+							<span class="temperature-value"  *ngIf="device.type === 'DS18B20'">{{device.temperature}}°C</span></div>
 						</div>
-						<div class="row">
-							<div class="col-sm-8">{{device.name}}</div>
-							<div class="col-sm-2"><i class="fa fa-pencil"></i></div>
-							<div class="col-sm-2"><i class="fa fa-trash stopped-device"></i></div>
+						<div class="row no-margin">
+							<div class="col-sm-8 no-margin no-padding">{{device.name}}</div>
+							<div class="col-sm-2 no-margin no-padding"><i class="fa fa-pencil"></i></div>
+							<div class="col-sm-2 no-margin no-padding"><i class="fa fa-trash stopped-device"></i></div>
 						</div>
 						<div *ngIf="device == 'LAST'" class="col-container" style="vertical-align: middle; padding: 15%;">
 							<i class="fa fa-plus" style="color : green; font-size : 40px; text-align: center;"></i>
 						</div>
 					</div>
-
-
+					<a href="/devices/create">
+						<div *ngIf="device == 'LAST'"  class="col-container" style="vertical-align: middle; padding: 15%;">
+							<i class="fa fa-plus" style="color : green; font-size : 40px; text-align: center;"></i>
+						</div>
+					</a>
 				</div>
 
 			</div>

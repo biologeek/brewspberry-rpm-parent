@@ -1,6 +1,6 @@
 package net.brewspberry.monitoring.api;
 
-import java.util.List;
+import java.util.Map;
 
 public class DeviceDto {
 
@@ -9,9 +9,8 @@ public class DeviceDto {
 	private String name;
 	private String uuid;
 	private ActionerType type;
-	private long stepId;
-	private long brewId;
-
+	Map<String, String> externalIds;
+	
 	public enum ActionerType {
 		DS18B20, ENGINE_RELAY, VALVE;
 	}
@@ -20,14 +19,11 @@ public class DeviceDto {
 		STOPPED, STARTED, PAUSED, IDLE, UP, DOWN;
 	}
 
-	private String picture;
-	private List<ChartDto> chart;
 	private String pin;
 	private boolean isActive;
 	private ActionerStatus state;
-	private boolean used;
-	private long begin;
-	private long end;
+	private boolean plugged;
+	
 
 	public long getId() {
 		return id;
@@ -35,6 +31,10 @@ public class DeviceDto {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public boolean isPlugged() {
+		return plugged;
 	}
 
 	public String getName() {
@@ -61,21 +61,6 @@ public class DeviceDto {
 		this.type = string;
 	}
 
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		this.picture = picture;
-	}
-
-	public List<ChartDto> getChart() {
-		return chart;
-	}
-
-	public void setChart(List<ChartDto> chart) {
-		this.chart = chart;
-	}
 
 	public String getPin() {
 		return pin;
@@ -85,12 +70,13 @@ public class DeviceDto {
 		this.pin = pin;
 	}
 
-	public boolean isActive() {
-		return isActive;
+	public DeviceDto isPlugged(boolean b) {
+		this.plugged = b;
+		return this;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
+	public void setPlugged(boolean plugged) {
+		this.plugged = plugged;
 	}
 
 	public ActionerStatus getState() {
@@ -101,30 +87,6 @@ public class DeviceDto {
 		this.state = state;
 	}
 
-	public boolean isUsed() {
-		return used;
-	}
-
-	public void setUsed(boolean used) {
-		this.used = used;
-	}
-
-	public long getBegin() {
-		return begin;
-	}
-
-	public void setBegin(long begin) {
-		this.begin = begin;
-	}
-
-	public long getEnd() {
-		return end;
-	}
-
-	public void setEnd(long end) {
-		this.end = end;
-	}
-
 	public long getGenericId() {
 		return genericId;
 	}
@@ -132,23 +94,7 @@ public class DeviceDto {
 	public void setGenericId(long genericId) {
 		this.genericId = genericId;
 	}
-
-	public long getStepId() {
-		return stepId;
-	}
-
-	public void setStepId(long stepId) {
-		this.stepId = stepId;
-	}
-
-	public long getBrewId() {
-		return brewId;
-	}
-
-	public void setBrewId(long brewId) {
-		this.brewId = brewId;
-	}
-
+	
 	public DeviceDto uuid(String uuid2) {
 		this.uuid = uuid2;
 		return this;

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -16,6 +17,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 import { DeviceService } from './services/device.service';
+import { TemperatureService } from './services/temperature.service';
 
 
 
@@ -36,6 +38,7 @@ export const router: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full'},
     { path: 'login', component: LoginComponent },
     { path: 'devices/manage', component: ManageComponent },
+    { path: 'devices/create', component: CreationFormComponent },
     { path: 'brew/list', component: ListComponent },
     { path: 'brew/create', component: CreateComponent },
     { path: 'params', component: ParamsComponent },
@@ -64,6 +67,7 @@ export const router: Routes = [
   ],
   imports: [
     BrowserModule,
+    FormsModule
     BrowserAnimationsModule,
     RouterModule.forRoot(router),
     TooltipModule.forRoot(),
@@ -71,7 +75,7 @@ export const router: Routes = [
     HttpClientModule,
     ToastrModule.forRoot()
   ],
-  providers: [DeviceService],
+  providers: [DeviceService, TemperatureService],
   exports: [RouterModule],
   bootstrap: [AppComponent]
 })

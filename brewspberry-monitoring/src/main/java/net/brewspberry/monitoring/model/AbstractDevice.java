@@ -25,7 +25,16 @@ public abstract class AbstractDevice {
 	protected DeviceStatus pinState;
 	protected Date lastStateChangeDate;
 	protected String name;
+	protected boolean isPlugged;
 	
+
+	public boolean isPlugged() {
+		return isPlugged;
+	}
+
+	public void setPlugged(boolean isPlugged) {
+		this.isPlugged = isPlugged;
+	}
 
 	public String getName() {
 		return name;
@@ -91,4 +100,13 @@ public abstract class AbstractDevice {
 		this.type = type;
 	}
 
+	
+	public AbstractDevice uuid(String t) {
+		this.uuid = t;
+		return this;
+	}
+	public AbstractDevice type(DeviceType temperatureSensor) {
+		this.type = temperatureSensor;
+		return this;
+	}
 }

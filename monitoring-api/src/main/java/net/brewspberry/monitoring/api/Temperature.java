@@ -4,15 +4,15 @@ import java.util.Date;
 
 public class Temperature {
 
-	private DeviceDto sensor;
+	private Long sensor;
 	private Date date;
 	private Float temperature;
 
-	public DeviceDto getSensor() {
+	public Long getSensor() {
 		return sensor;
 	}
 
-	public void setSensor(DeviceDto sensor) {
+	public void setSensor(Long sensor) {
 		this.sensor = sensor;
 	}
 
@@ -32,7 +32,7 @@ public class Temperature {
 		this.temperature = temperature;
 	}
 
-	public Temperature sensor(DeviceDto api) {
+	public Temperature sensor(Long api) {
 		this.sensor = api;
 		return this;
 	}

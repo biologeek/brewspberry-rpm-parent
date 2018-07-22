@@ -1,18 +1,19 @@
+
+/**
+ * 
+ * 
+ */
 export class Device {
 
-	private genericId: number = null;
-	private id: number;
-	private name: string;
-	private uuid: string;
-	private type: string;
-	private stepId: number;
-	private brewId: number;
-	private picture: string;
-	private chart;
-	private pin: string;
-	private isActive: boolean;
-	private state: string;
-	private used: boolean;
-	private begin: number;
-	private end: number;
+	public genericId?: number = null;
+	public id: number;
+	public name?: string;
+	public uuid?: string;
+	public type?: string;
+	public externalIds?: Map<string, string>;
+	public pin?: string;
+	public isActive?: boolean;
+	public state?: string;
+	public plugged?: boolean;
+	public temperature?: string;
 }

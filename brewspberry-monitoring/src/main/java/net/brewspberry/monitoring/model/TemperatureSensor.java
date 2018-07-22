@@ -16,4 +16,6 @@ public class TemperatureSensor extends AbstractDevice {
 	 */
 	public static final String FREQUENCY = "frequency";
 	public static final String[] MANDATORY_REGULAR_POLL_PARAMETERS = new String[] { DEVICE_LIST, DURATION, FREQUENCY };
+	
+	
 }

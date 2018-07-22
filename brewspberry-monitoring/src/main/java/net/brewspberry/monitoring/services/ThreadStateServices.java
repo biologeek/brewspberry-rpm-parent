@@ -32,6 +32,11 @@ public interface ThreadStateServices {
 	 */
 	public void cleanState(String uuid) throws TechnicalException;
 
+	/**
+	 * Removes states for sensors
+	 * @param uuid sensor's UUID
+	 * @throws TechnicalException
+	 */
 	public void cleanState(List<String> collect) throws TechnicalException;
 
 }

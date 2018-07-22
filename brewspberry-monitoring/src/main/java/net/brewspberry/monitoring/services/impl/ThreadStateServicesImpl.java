@@ -23,12 +23,10 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 	public ThreadStateServicesImpl(EntityManager em) {
 		this.em = em;
 	}
-	
 
 	public ThreadStateServicesImpl() {
 		super();
 	}
-
 
 	@Override
 	public ThreadState readState(String sensorUuid) throws TechnicalException {
@@ -56,12 +54,8 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 
 	@Override
 	public void cleanState(List<String> collect) throws TechnicalException {
-		try {
-			for (String t : collect) {
-				cleanState(t);
-			}
-		} catch (TechnicalException e) {
-			throw new TechnicalException(e.getMessage());
+		for (String t : collect) {
+			cleanState(t);
 		}
 	}
 

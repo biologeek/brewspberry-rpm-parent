@@ -31,15 +31,26 @@
 	height: 140px;
 
 }
+.no-margin {
+	margin-left: 0px;
+	margin-right: 0px;
+}
+.no-padding {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+.center-align-picture {
+	margin: auto;
+}
 .col-container{
 	border :1px dashed black;
 	vertical-align: middle;
 	padding: 5px;
+	width: 200px;
 	border-radius: 10px;
 	height: 100%;
 }
 .device-picture {
-	float : left;
 	width: 70px;
 	height: 70px;
 	margin : 5px;

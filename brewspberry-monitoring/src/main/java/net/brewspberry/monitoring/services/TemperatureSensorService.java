@@ -59,4 +59,6 @@ public interface TemperatureSensorService extends DeviceService<TemperatureSenso
 	 */
 	public void runRegularTemperatureMeasurementStr(List<String> devices, Map<String, Object> bodyToParameters);
 
+	public List<TemperatureMeasurement> getTemperatureForDevices(List<Long> deviceIds);
+
 }

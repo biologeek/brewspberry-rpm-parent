@@ -18,6 +18,11 @@ import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
 import net.brewspberry.monitoring.services.BinarySwitchService;
 
 @Service
+/**
+ * Service that handles operations on binary switches
+ * @author xavier
+ *
+ */
 public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	@Autowired

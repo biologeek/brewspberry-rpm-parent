@@ -6,6 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
+/**
+ * Witnesses that thread is running. 
+ * - Created at thread start and kept while thread runs.
+ * - If witness is removed, thread stops.
+ *  
+ * @author xavier
+ *
+ */
 public class ThreadWitness {
 
 	@Id
