@@ -11,6 +11,9 @@
 	padding : 10px;
 	border-radius: 5px;
 }
+h1 {
+	float: left;
+}
 
 .header-row{
 	background-color: #444444;
