@@ -9,10 +9,8 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.4.2.RELEASE</version>
 	</parent>
-	<artifactId>brewspberry-api</artifactId>
+	<artifactId>brewspberry-webapp</artifactId>
 	<packaging>jar</packaging>
-	<name>brewspberry-api</name>
-	<description>API and Webservices</description>
 
 
 
@@ -225,7 +223,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>brewspberry-api</finalName>
+		<finalName>brewspberry-webapp</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>

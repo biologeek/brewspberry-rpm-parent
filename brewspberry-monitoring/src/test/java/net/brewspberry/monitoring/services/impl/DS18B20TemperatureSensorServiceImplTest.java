@@ -30,6 +30,7 @@ import net.brewspberry.monitoring.model.DeviceStatus;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.TemperatureSensorRepository;
+import net.brewspberry.monitoring.services.ThreadWitnessServices;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DS18B20TemperatureSensorServiceImplTest {
@@ -41,16 +42,18 @@ public class DS18B20TemperatureSensorServiceImplTest {
 	TemperatureSensorRepository sensorRepo;
 
 	@Spy
-	ThreadStateServicesImpl threadStateServices; 
+	ThreadStateServicesImpl threadStateServices;
+	@Mock
+	ThreadWitnessServices threadWitnessServices;
 	
 	@InjectMocks
 	DS18B20TemperatureSensorServicesImpl sut;
 
 	public void init() {
-		sut = new DS18B20TemperatureSensorServicesImpl();
-		threadStateServices = new ThreadStateServicesImpl();
+		sut = new DS18B20TemperatureSensorServicesImpl();		
 		sut.setOneWireMaster(w1Master);
 		sut.threadWitnessService = threadStateServices;
+		sut.threadStateService = threadStateServices;
 	}
 
 	@Test

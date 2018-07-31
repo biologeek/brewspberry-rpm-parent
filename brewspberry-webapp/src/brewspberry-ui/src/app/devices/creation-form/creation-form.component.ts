@@ -16,7 +16,7 @@ export class CreationFormComponent implements OnInit {
   constructor(private deviceService: DeviceService) { }
 
   ngOnInit() {
-
+  	// Gets plugged & available devices
   	this.deviceService.getAvailableUuids().subscribe(data => {
   		this.availableUuids = data;
   	}, error => {

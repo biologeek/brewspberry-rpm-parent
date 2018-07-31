@@ -119,4 +119,12 @@ public class DeviceDto {
 		this.name = name2;
 		return this;
 	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 }

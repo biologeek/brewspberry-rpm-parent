@@ -19,7 +19,7 @@ public class TemperatureConverter {
 	}
 	public Temperature toApi(TemperatureMeasurement measured) {
 		return new Temperature()//
-				.sensor(new DeviceConverter().toApi(measured.getSensor()))//
+				.sensor(measured.getSensor().getId())//
 				.date(measured.getDate())//
 				.temperature(measured.getTemperature());
 	}

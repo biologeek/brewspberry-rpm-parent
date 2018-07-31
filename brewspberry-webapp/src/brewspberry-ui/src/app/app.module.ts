@@ -67,7 +67,7 @@ export const router: Routes = [
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(router),
     TooltipModule.forRoot(),

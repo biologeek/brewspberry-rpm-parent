@@ -1,4 +1,4 @@
-package net.brewspberry.monitoring.model;
+package net.brewspberry.regulation.model;
 
 import org.springframework.stereotype.Component;
 

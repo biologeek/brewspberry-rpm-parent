@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.mockito.Mockito;
 
-@RunWith(BlockJUnit4ClassRunner.class)
+//@RunWith(BlockJUnit4ClassRunner.class)
 public class ThreadStateServicesImplTest {
 
 	ThreadStateServicesImpl sut;

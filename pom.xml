@@ -19,15 +19,15 @@
 		<org.springframework.data.version>2.0.0.RELEASE</org.springframework.data.version>
 		<tomcat.version>8.0.30</tomcat.version>
 		<jackson.version>2.8.5</jackson.version>
-		<org.hibernate.version>5.0.11.Final</org.hibernate.version>
+		<org.hibernate.version>5.2.13.Final</org.hibernate.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
 		<dbh2.version>1.4.187</dbh2.version>
 	</properties>
 
 	<modules>
-		<module>brewspberry-api</module>
+		<!-- <module>brewspberry-api</module>
 		<module>brewspberry-core</module>
-		<module>brewspberry-jbatches</module>
+		<module>brewspberry-jbatches</module> -->
 		<module>brewspberry-webapp</module>
 		<module>brewspberry-monitoring</module>
 		<module>brewspberry-regulation</module>
