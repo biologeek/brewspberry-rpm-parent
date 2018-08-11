@@ -61,4 +61,6 @@ public interface TemperatureSensorService extends DeviceService<TemperatureSenso
 
 	public List<TemperatureMeasurement> getTemperatureForDevices(List<Long> deviceIds);
 
+	public List<TemperatureMeasurement> getTemperatureForDevicesUuids(List<String> deviceUuids, boolean toSave);
+
 }

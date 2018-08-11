@@ -29,6 +29,7 @@ import net.brewspberry.monitoring.services.TemperatureSensorService;
 public class TemperatureSensorController {
 
 	private static final String SENSOR_IDS_SEPARATOR = ".";
+	private static final String SENSOR_UUIDS_SEPARATOR = ";";
 	@Autowired
 	private TemperatureSensorService temperatureSensorService;
 
@@ -54,13 +55,29 @@ public class TemperatureSensorController {
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
 
-	@RequestMapping(path = "/sensors", method = RequestMethod.GET)
+	@RequestMapping(path = "/sensors/{sensors}", method = RequestMethod.GET)
 	public ResponseEntity<List<Temperature>> getTemperaturesForSensors(@PathVariable("sensors") String sensors) {
 		List<Long> deviceIds = processSensors(sensors);
 		List<TemperatureMeasurement> measurements = temperatureSensorService.getTemperatureForDevices(deviceIds);
 		return new ResponseEntity<List<Temperature>>(new TemperatureConverter().toApi(measurements), HttpStatus.OK);
 	}
-	
+
+	@RequestMapping(path = "/sensors/uuid/{sensors}", method = RequestMethod.GET)
+	public ResponseEntity<List<Temperature>> getTemperaturesForSensorsUuid(@PathVariable("sensors") String sensors) {
+		List<String> deviceUuids = processSensorsUuids(sensors);
+		List<TemperatureMeasurement> measurements = temperatureSensorService.getTemperatureForDevicesUuids(deviceUuids,
+				true);
+		return new ResponseEntity<List<Temperature>>(new TemperatureConverter().toApi(measurements), HttpStatus.OK);
+	}
+
+	/*
+	 * Helper methods
+	 */
+
+	private List<String> processSensorsUuids(String sensors) {
+		return Arrays.asList(sensors.split(SENSOR_UUIDS_SEPARATOR)).stream().collect(Collectors.toList());
+	}
+
 	private Map<String, Object> bodyToParameters(TemperatureBatchRunRequestBody body) {
 		Map<String, Object> params = new HashMap<>();
 		params.put(TemperatureSensor.DURATION, Duration.ofMillis(body.getDuration()));
@@ -69,8 +86,9 @@ public class TemperatureSensorController {
 		return params;
 	}
 
-	/**		
+	/**
 	 * Translates sensor IDs into Longs. Default seperator is "."
+	 * 
 	 * @param sensors
 	 * @return
 	 */

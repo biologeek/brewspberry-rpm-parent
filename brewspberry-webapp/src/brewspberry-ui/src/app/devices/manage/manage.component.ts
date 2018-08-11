@@ -58,7 +58,7 @@ export class ManageComponent implements OnInit {
   private processTemperature(): void {
     for (let dvcArr of this.devices){
       for(let dvc of dvcArr){
-        let dvcCast :Device = <Device> dvc;
+        let dvcCast: Device = <Device> dvc;
         var tpr: Temperature[] = this.temperatures.filter(a => a.sensor == dvcCast.id);
         dvcCast.temperature = tpr ? tpr[0].temperature : "N/A";
       }
@@ -97,6 +97,16 @@ export class ManageComponent implements OnInit {
      } else {
        this.devices.push(["LAST"]);
      }
+  }
+
+
+
+  private deleteDevice(deviceUUID: string){
+      this.deviceService.deleteDevice(deviceUUID).subscribe(data => {
+        this.toast.info("Device removed");
+      }, error => {
+        this.toast.warning("Error when deleting device")
+      });
   }
 
 

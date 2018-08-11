@@ -17,4 +17,9 @@ export class DeviceService {
   	return <Observable<string[]>> this.http.get(environment.apiHostMonitoring + '/uuid/available');
   }
 
+
+  public deleteDevice(uuid: string): Observable<string[]> { // TODO
+  	return <Observable<string[]>> this.http.delete(environment.apiHostMonitoring + '/uuid/'+uuid);
+  }
+
 }

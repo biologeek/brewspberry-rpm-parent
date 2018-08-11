@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
@@ -29,6 +30,7 @@ import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.DeviceType;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
+import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
 import net.brewspberry.monitoring.repositories.TemperatureSensorRepository;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
 import net.brewspberry.monitoring.services.ThreadStateServices;
@@ -46,6 +48,9 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Autowired
 	TemperatureSensorRepository repository;
+	
+	@Autowired
+	TemperatureMeasurementRepository temperatureRepository;
 
 	@Autowired
 	W1Master oneWireMaster;
@@ -271,6 +276,40 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	 */
 	private List<TemperatureSensor> findDevicesByIds(List<Long> deviceIds) {
 		return (List<TemperatureSensor>) repository.findAllById(deviceIds);
+	}
+
+	@Override
+	public List<TemperatureMeasurement> getTemperatureForDevicesUuids(List<String> deviceUuids, boolean saveMeasurements) {
+		List<TemperatureSensor> sensors = findDevicesByUuids(deviceUuids);
+		List<TemperatureMeasurement> measurements = findDeviceTemperatureByDeviceUUIDs(sensors);
+		if (saveMeasurements) {
+			this.temperatureRepository.saveAll(measurements);
+		}
+		return measurements;
+	}
+
+	private List<TemperatureSensor> findDevicesByUuids(List<String> deviceUuids) {
+		return (List<TemperatureSensor>) repository.findAllByUuids(deviceUuids);
+	}
+
+	@Override
+	public void saveDevice(TemperatureSensor sensor) throws ServiceException {
+		Assert.notNull(sensor, "sensor.null");
+		checkUuid(sensor.getUuid());
+		TemperatureSensor res = this.repository.save(sensor);
+		if (res == null || res.getId() == null)
+			throw new ServiceException("sensor.save.error");
+	}
+
+	@Override
+	public TemperatureSensor getDeviceByUUID(String uuid) {
+		checkUuid(uuid);
+		return this.repository.findByUuid(uuid);
+	}
+
+	private void checkUuid(String uuid) {
+		Assert.notNull(uuid, "device.uuid.null");
+		Assert.isTrue(uuid.startsWith(String.valueOf(DS18B20_CONSTANT)), "device.uuid.invalid");
 	}
 
 }

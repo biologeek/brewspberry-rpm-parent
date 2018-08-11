@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.brewspberry.monitoring.model.AbstractDevice;
+import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.AbstractDeviceRepository;
 import net.brewspberry.monitoring.services.DeviceService;
 
@@ -65,6 +66,18 @@ public class AbstractDeviceServices implements DeviceService<AbstractDevice> {
 
 	@Override
 	public AbstractDevice switchOffDevice(AbstractDevice sensor) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveDevice(String uuid) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public TemperatureSensor getDeviceByUUID(String uuid) {
 		// TODO Auto-generated method stub
 		return null;
 	}

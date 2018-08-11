@@ -31,6 +31,7 @@ import { FermentationComponent } from './brew/steps/fermentation/fermentation.co
 import { SecondFermentationComponent } from './brew/steps/second-fermentation/second-fermentation.component';
 import { ConditioningComponent } from './brew/steps/conditioning/conditioning.component';
 import { InputsComponent } from './brew/steps/inputs/inputs.component';
+import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 
 
 
@@ -39,8 +40,10 @@ export const router: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'devices/manage', component: ManageComponent },
     { path: 'devices/create', component: CreationFormComponent },
+    { path: 'devices/edit/{id}', component: CreationFormComponent },
     { path: 'brew/list', component: ListComponent },
     { path: 'brew/create', component: CreateComponent },
+    { path: 'brew/create/inputs', component: InputsComponent },
     { path: 'params', component: ParamsComponent },
     { path: 'dashboard', component: DashboardComponent }
 
@@ -63,7 +66,8 @@ export const router: Routes = [
     FermentationComponent,
     SecondFermentationComponent,
     ConditioningComponent,
-    InputsComponent
+    InputsComponent,
+    FilteringComponent
   ],
   imports: [
     BrowserModule,

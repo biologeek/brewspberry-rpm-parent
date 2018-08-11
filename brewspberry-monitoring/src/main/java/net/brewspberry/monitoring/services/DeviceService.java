@@ -2,6 +2,9 @@ package net.brewspberry.monitoring.services;
 
 import java.util.Set;
 
+import net.brewspberry.monitoring.exceptions.ServiceException;
+import net.brewspberry.monitoring.model.TemperatureSensor;
+
 /**
  * Defines common behaviour for devices such as device registration, setup,
  * retrieving, ...
@@ -15,6 +18,7 @@ public interface DeviceService<T> {
 
 	public Set<T> listPluggedDevices();
 	public Set<T> listAllDevices();
+	public void saveDevice(T device) throws ServiceException;
 
 	/**
 	 * @see DeviceService#switchOnDevice(Object)
@@ -47,5 +51,7 @@ public interface DeviceService<T> {
 	public T switchOffDevice(Long id);
 
 	public T switchOffDevice(T sensor);
+
+	public TemperatureSensor getDeviceByUUID(String uuid);
 
 }
