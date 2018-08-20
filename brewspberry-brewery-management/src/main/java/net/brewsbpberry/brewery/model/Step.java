@@ -67,8 +67,8 @@ public class Step {
 		this.updateDate = updateDate;
 	}
 
-	public class StepType {
-
+	public enum StepType {
+		GRINDING, MASHING, LAUTERING, BOILING, WHIRLPOOL, HOPBACK, COOLING, FERMENTATION, COOL_FERMENTATION, CONDITIONNING, BOTTLE_FERMENTATION;
 	}
 
 }

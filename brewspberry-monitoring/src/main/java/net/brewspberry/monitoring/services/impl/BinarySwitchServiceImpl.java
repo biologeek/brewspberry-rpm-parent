@@ -1,19 +1,23 @@
 package net.brewspberry.monitoring.services.impl;
 
 import java.util.Date;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 
+import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.SwitchStatus;
+import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
 import net.brewspberry.monitoring.services.BinarySwitchService;
 
@@ -25,11 +29,14 @@ import net.brewspberry.monitoring.services.BinarySwitchService;
  */
 public class BinarySwitchServiceImpl implements BinarySwitchService {
 
-	@Autowired
 	private GpioController controller;
 	private Logger logger = Logger.getLogger(BinarySwitchServiceImpl.class.getName());
 	@Autowired
 	private BinarySwitchRepository repository;
+	
+	public BinarySwitchServiceImpl() {
+		controller = GpioFactory.getInstance();
+	}
 
 	@Override
 	public BinarySwitch setSwitchUp(BinarySwitch device) throws StateChangeException {
@@ -110,6 +117,35 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	public void setRepository(BinarySwitchRepository repository) {
 		this.repository = repository;
+	}
+
+	@Override
+	public BinarySwitch getDeviceById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<BinarySwitch> listPluggedDevices() {
+		
+		return null;
+	}
+
+	@Override
+	public Set<BinarySwitch> listAllDevices() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void saveDevice(BinarySwitch device) throws ServiceException {
+		
+	}
+
+	@Override
+	public TemperatureSensor getDeviceByUUID(String uuid) {
+		// TODO Auto-generated method stub
+		return null;
 	}
  
 }

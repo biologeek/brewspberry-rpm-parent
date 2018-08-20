@@ -28,8 +28,8 @@ public class DeviceConverter {
 	 * @param sensors
 	 * @return
 	 */
-	public DeviceDto toApi(TemperatureSensor result) {
-		return new DeviceDto()//
+	public DeviceDto toApi(TemperatureSensor result, DeviceDto converted) {
+		return converted//
 				.state(DeviceStatusConverter.toApi(result.getPinState()));
 	}
 
@@ -38,8 +38,8 @@ public class DeviceConverter {
 	 * @param sensors
 	 * @return
 	 */
-	public DeviceDto toApi(BinarySwitch result) {
-		return new DeviceDto()//
+	public DeviceDto toApi(BinarySwitch result, DeviceDto converted) {
+		return converted//
 				.state(DeviceStatusConverter.toApi(result.getSwitchStatus()));
 	}
 
@@ -50,19 +50,19 @@ public class DeviceConverter {
 	 * @return
 	 */
 	public DeviceDto toApi(AbstractDevice result) {
-		DeviceDto converted = null;
-		if (result instanceof TemperatureSensor)
-			converted = toApi((TemperatureSensor) result);
-		else if (result instanceof BinarySwitch)
-			converted = toApi((BinarySwitch) result);
-		else
-			throw new IllegalStateException();
-		return converted//
+		DeviceDto converted = new DeviceDto()//
 				.uuid(result.getUuid())//
 				.id(result.getId())//
 				.pin(result.getPin())//
 				.name(result.getName())//
 				.isPlugged(result.isPlugged());
+		if (result instanceof TemperatureSensor)
+			converted = toApi((TemperatureSensor) result, converted);
+		else if (result instanceof BinarySwitch)
+			converted = toApi((BinarySwitch) result, converted);
+		else
+			throw new IllegalStateException();
+		return converted;
 	}
 
 	public static class DeviceStatusConverter {

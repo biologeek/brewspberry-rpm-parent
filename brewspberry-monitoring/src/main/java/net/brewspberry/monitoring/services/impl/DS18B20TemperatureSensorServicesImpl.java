@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -69,6 +70,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	ThreadWitnessServices threadWitnessService;
 
 	@Autowired
+	@Qualifier("entityManager")
 	/**
 	 * Used only for injection purposes
 	 */
@@ -80,13 +82,13 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	/**
-	 * Lists plugged devices and compares with those parametered. Plugged devices
+	 * Lists plugged devices (only DS18B20 and compares with those parametered. Plugged devices
 	 * are automatically saved as new devices
 	 */
 	@Override
 	public Set<TemperatureSensor> listPluggedDevices() {
 
-		List<W1Device> pluggedDevices = oneWireMaster.getDevices();
+		List<W1Device> pluggedDevices = oneWireMaster.getDevices(DS18B20_CONSTANT);
 
 		List<TemperatureSensor> savedSensors = (List<TemperatureSensor>) repository.findAll();
 		Set<TemperatureSensor> pluggedAndSaved = new HashSet<>(0);
@@ -115,38 +117,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 				});
 
 		return pluggedAndSaved;
-	}
-
-	@Override
-	public TemperatureSensor switchOnDevice(String uuid) {
-		TemperatureSensor sensor = repository.findByUuid(uuid);
-		return switchOnDevice(sensor);
-	}
-
-	@Override
-	public TemperatureSensor switchOnDevice(Long id) {
-		return switchOnDevice(getDeviceById(id));
-	}
-
-	@Override
-	public TemperatureSensor switchOnDevice(TemperatureSensor sensor) {
-		logger.info("Useless");
-		return sensor;
-	}
-
-	@Override
-	public TemperatureSensor switchOffDevice(String uuid) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public TemperatureSensor switchOffDevice(Long id) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public TemperatureSensor switchOffDevice(TemperatureSensor sensor) {
-		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -289,7 +259,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	private List<TemperatureSensor> findDevicesByUuids(List<String> deviceUuids) {
-		return (List<TemperatureSensor>) repository.findAllByUuids(deviceUuids);
+		return (List<TemperatureSensor>) repository.findAllByUuid(deviceUuids);
 	}
 
 	@Override

@@ -7,12 +7,13 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.jms.ConnectionFactory;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
-import org.hibernate.dialect.MySQL57InnoDBDialect;
+import org.hibernate.dialect.MySQL55Dialect;
+import org.hibernate.dialect.MySQL57Dialect;
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.mariadb.jdbc.Driver;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -31,15 +32,16 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.mysql.jdbc.Driver;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.w1.W1Master;
 import com.pi4j.wiringpi.GpioUtil;
 import com.zaxxer.hikari.HikariDataSource;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages="net.brewspberry.monitoring")
 @EnableJms
-@EnableJpaRepositories
+@EnableJpaRepositories (basePackages="net.brewspberry.monitoring.repositories")
 @EnableWebMvc
 @PropertySources(value = { @PropertySource("${app.parameters}monitoring.properties") })
 public class MonitoringConfig {
@@ -78,7 +80,7 @@ public class MonitoringConfig {
 	 * @throws BeanCreationException
 	 *             in case root privileges are required to manage pins
 	 */
-	public GpioController piController() throws IOException {
+	public GpioController gpioController() throws IOException {
 
 		String raspbianVmArg = System.getProperty("raspbian");
 		boolean os = raspbianVmArg != null && raspbianVmArg.equalsIgnoreCase("true");
@@ -99,7 +101,7 @@ public class MonitoringConfig {
 	}
 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean emf() {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
 		bean.setJpaDialect(new HibernateJpaDialect());
 		bean.setPersistenceUnitName("monitoringPersistence");
@@ -108,6 +110,12 @@ public class MonitoringConfig {
 		bean.setPackagesToScan("net.brewspberry.monitoring.model");
 		bean.setPersistenceProvider(new HibernatePersistenceProvider());
 		return bean;
+	}
+	
+	
+	@Bean
+	public EntityManager entityManager() {
+		return entityManagerFactory().getNativeEntityManagerFactory().createEntityManager();
 	}
 
 	@Bean
@@ -122,7 +130,7 @@ public class MonitoringConfig {
 	private Properties jpaProperties() {
 		Properties props = new Properties();
 		props.setProperty("hibernate.connection.driver_class", Driver.class.getName());
-		props.setProperty("hibernate.dialect", MySQL57InnoDBDialect.class.getName());
+		props.setProperty("hibernate.dialect", MySQL55Dialect.class.getName());
 		props.setProperty("hibernate.hbm2ddl.auto", "update");
 		return props;
 	}

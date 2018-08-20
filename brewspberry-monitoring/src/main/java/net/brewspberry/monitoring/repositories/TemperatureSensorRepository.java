@@ -12,6 +12,6 @@ public interface TemperatureSensorRepository extends CrudRepository<TemperatureS
 
 	public TemperatureSensor findByUuid(String uuid);
 
-	public List<TemperatureSensor> findAllByUuids(List<String> deviceUuids);
+	public List<TemperatureSensor> findAllByUuid(List<String> deviceUuids);
 
 }
