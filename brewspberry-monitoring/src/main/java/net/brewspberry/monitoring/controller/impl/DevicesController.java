@@ -3,10 +3,13 @@ package net.brewspberry.monitoring.controller.impl;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,13 +66,38 @@ public class DevicesController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@RequestMapping(path = "/temperature/{uuid}", method = RequestMethod.PUT)
+	public ResponseEntity<DeviceDto> updateTemperatureSensor(@PathVariable("uuid") String uuid, @RequestBody DeviceDto dto) throws ServiceException {
+		if (!uuid.equals(dto.getUuid())) {
+			throw new ValidationException("uuid.mismatch");
+		}
+		
+		TemperatureSensor sensorToUpdate = new DeviceConverter().toModel(dto);
+		
+		TemperatureSensor sensorModel = temperatureSensorServices.getDeviceByUUID(uuid);
+
+		if (sensorToUpdate == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		else if ( sensorModel == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		temperatureSensorServices.updateDevice(sensorToUpdate, sensorModel);
+				
+		return new ResponseEntity<>(null, HttpStatus.OK);
+	}
+
 	/**
 	 * Technical method used to get all plugged devices on the Pi using Pi4J library
 	 */
 	private Set<AbstractDevice> retrieveAllDeviceTypesFromServices() {
 		Set<AbstractDevice> response = new HashSet<>(0);
-		response.addAll(temperatureSensorServices.listPluggedDevices());
-		response.addAll(binarySwitchServices.listPluggedDevices());
+		
+		Set<TemperatureSensor> tempResponse = temperatureSensorServices.listPluggedDevices();
+		if (tempResponse != null)
+			response.addAll(tempResponse);
+		Set<BinarySwitch> switchResponse = binarySwitchServices.listPluggedDevices();
+		if (switchResponse != null)
+			response.addAll(switchResponse);
 		//TODO : Add new service call if new device type.
 		return response;
 	}

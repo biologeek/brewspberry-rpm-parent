@@ -35,6 +35,7 @@
 		<module>monitoring-api</module>
 		<module>regulation-api</module>
 		<module>brewery-api</module>
+		<module>test-project</module>
 	</modules>
 	<profiles>
 		<profile>

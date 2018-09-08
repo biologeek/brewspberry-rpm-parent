@@ -40,10 +40,10 @@ export const router: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'devices/manage', component: ManageComponent },
     { path: 'devices/create', component: CreationFormComponent },
-    { path: 'devices/edit/{id}', component: CreationFormComponent },
+    { path: 'devices/edit/:id', component: CreationFormComponent },
     { path: 'brew/list', component: ListComponent },
     { path: 'brew/create', component: CreateComponent },
-    { path: 'brew/create/inputs', component: InputsComponent },
+    { path: 'brew/create/:selectedStep', component: CreateComponent },
     { path: 'params', component: ParamsComponent },
     { path: 'dashboard', component: DashboardComponent }
 
@@ -81,6 +81,15 @@ export const router: Routes = [
   ],
   providers: [DeviceService, TemperatureService],
   exports: [RouterModule],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [MashingComponent,
+    LauteringComponent,
+    BoilingComponent,
+    FermentationComponent,
+    SecondFermentationComponent,
+    ConditioningComponent,
+    InputsComponent,
+    FilteringComponent
+  ]
 })
 export class AppModule { }

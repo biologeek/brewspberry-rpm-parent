@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'app-boiling',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BoilingComponent implements OnInit {
 
-  constructor() { }
+  constructor(viewContainerRef: ViewContainerRef) { }
 
   ngOnInit() {
   }

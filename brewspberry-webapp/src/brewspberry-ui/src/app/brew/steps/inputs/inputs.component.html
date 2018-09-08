@@ -3,7 +3,7 @@
 		<legend>Ingredients</legend>
 
 		<h3>Malts</h3>
-		<div class="row form-group">
+		<div class="row form-group" *ngFor="let malt of currentBrew.malts">
 			<div class="col-sm-6">
 				<select class="form-control">
 					<option value="bla">bla</option>

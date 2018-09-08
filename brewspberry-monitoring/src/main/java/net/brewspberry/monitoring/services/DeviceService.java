@@ -19,7 +19,8 @@ public interface DeviceService<T> {
 	public Set<T> listPluggedDevices();
 	public Set<T> listAllDevices();
 	public void saveDevice(T device) throws ServiceException;
+	public T updateDevice(T toSave, T saved) throws ServiceException;
 
-	public TemperatureSensor getDeviceByUUID(String uuid);
+	public T getDeviceByUUID(String uuid);
 
 }

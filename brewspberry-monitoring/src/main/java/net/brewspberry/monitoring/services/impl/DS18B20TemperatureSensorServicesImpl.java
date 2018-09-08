@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -49,7 +50,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Autowired
 	TemperatureSensorRepository repository;
-	
+
 	@Autowired
 	TemperatureMeasurementRepository temperatureRepository;
 
@@ -82,8 +83,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	/**
-	 * Lists plugged devices (only DS18B20 and compares with those parametered. Plugged devices
-	 * are automatically saved as new devices
+	 * Lists plugged devices (only DS18B20 and compares with those parametered.
+	 * Plugged devices are automatically saved as new devices
 	 */
 	@Override
 	public Set<TemperatureSensor> listPluggedDevices() {
@@ -108,7 +109,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 							// if not, add it as a new device
 							TemperatureSensor toSave = (TemperatureSensor) new TemperatureSensor()//
 									.uuid(t.getId())//
-									.type(DeviceType.TEMPERATURE_SENSOR);
+									.type(DeviceType.TEMPERATURE_SENSOR).plugged(true);
 
 							repository.save(toSave);
 							pluggedAndSaved.add(toSave);
@@ -154,7 +155,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-	
+
 				}
 			});
 		}
@@ -249,7 +250,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	@Override
-	public List<TemperatureMeasurement> getTemperatureForDevicesUuids(List<String> deviceUuids, boolean saveMeasurements) {
+	public List<TemperatureMeasurement> getTemperatureForDevicesUuids(List<String> deviceUuids,
+			boolean saveMeasurements) {
 		List<TemperatureSensor> sensors = findDevicesByUuids(deviceUuids);
 		List<TemperatureMeasurement> measurements = findDeviceTemperatureByDeviceUUIDs(sensors);
 		if (saveMeasurements) {
@@ -280,6 +282,49 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	private void checkUuid(String uuid) {
 		Assert.notNull(uuid, "device.uuid.null");
 		Assert.isTrue(uuid.startsWith(String.valueOf(DS18B20_CONSTANT)), "device.uuid.invalid");
+	}
+
+	@Override
+	public TemperatureSensor updateDevice(TemperatureSensor toSave, TemperatureSensor saved) throws ServiceException {
+		if (toSave == null)
+			return saved;
+
+		if (!saved.getId().equals(toSave.getId()))
+			throw new ServiceException("id.different");
+
+		validateSensor(toSave);
+
+		mergeSensor(toSave, saved);
+
+		return repository.save(saved);
+	}
+
+	/**
+	 * Method in charge of merging to-save sensor and saved one. Handles specific
+	 * cases where additional operations are necesary
+	 * 
+	 * @param toSave
+	 * @param saved
+	 */
+	void mergeSensor(TemperatureSensor toSave, TemperatureSensor saved) {
+
+		saved.setLastStateChangeDate(toSave.getLastStateChangeDate());
+		saved.setName(toSave.getName());
+		saved.setPin(toSave.getPin());
+		saved.setPinAddress(toSave.getPinAddress());
+		saved.setPlugged(toSave.isPlugged());
+		saved.setPinState(toSave.getPinState());
+		saved.setUpdateDate(new Date());
+	}
+
+	void validateSensor(TemperatureSensor sensor) {
+		if (sensor.getUuid() != null) {
+			sensor.getUuid().matches(TemperatureSensor.DS18B20_UUID_REGEX);
+		}
+
+		if (new Date().before(sensor.getCreationDate())) {
+			throw new ValidationException("creation.date.future");
+		}
 	}
 
 }

@@ -24,7 +24,8 @@ public class DeviceConverter {
 	}
 
 	/**
-	 * Converts specifics for {@link TemperatureSensor} 
+	 * Converts specifics for {@link TemperatureSensor}
+	 * 
 	 * @param sensors
 	 * @return
 	 */
@@ -34,7 +35,8 @@ public class DeviceConverter {
 	}
 
 	/**
-	 * Converts specifics for {@link BinarySwitch} 
+	 * Converts specifics for {@link BinarySwitch}
+	 * 
 	 * @param sensors
 	 * @return
 	 */
@@ -43,9 +45,9 @@ public class DeviceConverter {
 				.state(DeviceStatusConverter.toApi(result.getSwitchStatus()));
 	}
 
-
 	/**
-	 * Converts non-specific properties of devices 
+	 * Converts non-specific properties of devices
+	 * 
 	 * @param sensors
 	 * @return
 	 */
@@ -67,15 +69,17 @@ public class DeviceConverter {
 
 	public static class DeviceStatusConverter {
 		public static ActionerStatus toApi(DeviceStatus status) {
-			switch (status) {
-			case PLUGGED:
-				return ActionerStatus.IDLE;
-			case UP:
-				return ActionerStatus.STARTED;
-			case PENDING:
-				return ActionerStatus.PAUSED;
-			case UNPLUGGED:
-				return ActionerStatus.STOPPED;
+			if (status != null) {
+				switch (status) {
+				case PLUGGED:
+					return ActionerStatus.IDLE;
+				case UP:
+					return ActionerStatus.STARTED;
+				case PENDING:
+					return ActionerStatus.PAUSED;
+				case UNPLUGGED:
+					return ActionerStatus.STOPPED;
+				}
 			}
 			return null;
 		}
@@ -91,5 +95,16 @@ public class DeviceConverter {
 			}
 			return null;
 		}
+	}
+
+	public TemperatureSensor toModel(DeviceDto dto) {
+		return (TemperatureSensor) new TemperatureSensor()//
+				.creationDate(dto.getCreation())//
+				.lastChangedDate(dto.getLastChange())//
+				.id(dto.getId())//
+				.name(dto.getName())//
+				.pin(dto.getPin())//
+				.pinAddress(dto.getPinAddress())//
+				.uuid(dto.getUuid());
 	}
 }

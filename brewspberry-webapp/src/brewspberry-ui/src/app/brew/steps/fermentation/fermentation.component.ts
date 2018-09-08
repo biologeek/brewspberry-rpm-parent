@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 
 @Component({
   selector: 'app-fermentation',
@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FermentationComponent implements OnInit {
 
-  constructor() { }
+  constructor(viewContainerRef: ViewContainerRef) { }
 
   ngOnInit() {
   }

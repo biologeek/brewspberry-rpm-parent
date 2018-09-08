@@ -55,6 +55,19 @@ export class ManageComponent implements OnInit {
     ); 
   }
 
+
+  public toggleDevice(device: Device): void {
+    let toToggle: Device[] = this.rawDevices.filter(o => o.id === device.id);
+   // if (toToggle && toToggle.length == 1){
+   //   toToggle[0].state = toToggle[0].state == 'UP' ? 'DOWN' : 'UP';
+   //   }
+    this.deviceService.update(toToggle[0]).subscribe(response => {
+      toToggle[0] = response
+    }, error => {
+      this.toast.error("Could not update device "+toToggle[0].uuid);
+    })
+  }
+
   private processTemperature(): void {
     for (let dvcArr of this.devices){
       for(let dvc of dvcArr){
@@ -141,16 +154,16 @@ export class ManageComponent implements OnInit {
       "uuid" : "1A2B3C3D5E",
       "pin" : "GPIO03",
       "isActive": true,
-      "state": "PAUSED"
+      "state": "DOWN"
     };
     let dev4 : Device = {
       "id" : 2,
       "type" : "ENGINE_RELAY",
-      "name": "DS18-004",
+      "name": "ENG-004",
       "uuid" : "1A2B3C4D5F",
       "pin" : "GPIO05",
       "isActive": true,
-      "state": "STOPPED"
+      "state": "DOWN"
     };
     let dev5 : Device = {
       "id" : 3,

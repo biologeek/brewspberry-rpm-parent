@@ -23,10 +23,26 @@ public abstract class AbstractDevice {
 	protected int pinAddress;
 	@Enumerated(EnumType.STRING)
 	protected DeviceStatus pinState;
-	protected Date lastStateChangeDate;
+	protected Date lastStateChangeDate, creationDate, updateDate;
 	protected String name;
 	protected boolean isPlugged;
 	
+
+	public Date getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(Date creationDate) {
+		this.creationDate = creationDate;
+	}
+
+	public Date getUpdateDate() {
+		return updateDate;
+	}
+
+	public void setUpdateDate(Date updateDate) {
+		this.updateDate = updateDate;
+	}
 
 	public boolean isPlugged() {
 		return isPlugged;
@@ -107,6 +123,11 @@ public abstract class AbstractDevice {
 	}
 	public AbstractDevice type(DeviceType temperatureSensor) {
 		this.type = temperatureSensor;
+		return this;
+	}
+
+	public AbstractDevice plugged(boolean b) {
+		this.isPlugged = b;
 		return this;
 	}
 }

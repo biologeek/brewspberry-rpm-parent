@@ -1,28 +1,24 @@
 <div class="brew-creation-container">
 	
 		<div class="row brew-timeline-header"> 
-			<div class="col-large">Ingredients</div>
+			<div class="col-large" [ngClass]="selectedStep == 'inputs' ? 'selected-step' : ''"><a (click)="routeToView('inputs')">Ingredients</a></div>
 			<div class="col-straight">></div>
-			<div class="col-large">Mashing</div>
+			<div class="col-large" [ngClass]="selectedStep == 'mashing' ? 'selected-step' : ''"><a (click)="routeToView('mashing')">Mashing</a></div>
 			<div class="col-straight">></div>
-			<div class="col-large">Filtering</div>
+			<div class="col-large" [ngClass]="selectedStep == 'filter' ? 'selected-step' : ''"><a (click)="routeToView('filtering')">Filtering</a></div>
 			<div class="col-straight">></div>
-			<div class="col-large">Boiling</div>
+			<div class="col-large" [ngClass]="selectedStep == 'boiling' ? 'selected-step' : ''"><a (click)="routeToView('boiling')">Boiling</a></div>
 			<div class="col-straight">></div>
-			<div class="col-large">Lautering</div>
+			<div class="col-large" [ngClass]="selectedStep == 'fermentation' ? 'selected-step' : ''"><a (click)="routeToView('fermentation')">Fermentation</a></div>
 			<div class="col-straight">></div>
-			<div class="col-large">Fermentation</div>
+			<div class="col-large" [ngClass]="selectedStep == 'second-fermentation' ? 'selected-step' : ''"><a (click)="routeToView('second-fermentation')">Second fermentation</a></div>
 			<div class="col-straight">></div>
-			<div class="col-large">Second fermentation</div>
-			<div class="col-straight">></div>
-			<div class="col-large">Conditioning</div>
+			<div class="col-large" [ngClass]="selectedStep == 'conditioning' ? 'selected-step' : ''"><a (click)="routeToView('conditioning')">Conditioning</a></div>
 		</div>
 
 
-		<div class="step-container">
-			
-a
-
+		<div id="selectedStep" class="step-container">
+			<div #target></div>
 		</div>
 	
 </div>

@@ -19,7 +19,11 @@ export class DeviceService {
 
 
   public deleteDevice(uuid: string): Observable<string[]> { // TODO
-  	return <Observable<string[]>> this.http.delete(environment.apiHostMonitoring + '/uuid/'+uuid);
+    return <Observable<string[]>> this.http.delete(environment.apiHostMonitoring + '/uuid/'+uuid);
+  }
+
+  public update(device: Device): Observable<Device> { // TODO
+    return <Observable<Device>> this.http.put(environment.apiHostMonitoring + '/temperature/'+device.uuid, device);
   }
 
 }

@@ -1,5 +1,6 @@
 package net.brewspberry.monitoring.api;
 
+import java.util.Date;
 import java.util.Map;
 
 public class DeviceDto {
@@ -10,7 +11,14 @@ public class DeviceDto {
 	private String uuid;
 	private ActionerType type;
 	Map<String, String> externalIds;
-	
+	private Date creation, update, lastChange;
+
+	private String pin;
+	private int pinAddress;
+	private boolean isActive;
+	private ActionerStatus state;
+	private boolean plugged;
+
 	public enum ActionerType {
 		DS18B20, ENGINE_RELAY, VALVE;
 	}
@@ -19,11 +27,45 @@ public class DeviceDto {
 		STOPPED, STARTED, PAUSED, IDLE, UP, DOWN;
 	}
 
-	private String pin;
-	private boolean isActive;
-	private ActionerStatus state;
-	private boolean plugged;
-	
+	public Date getUpdate() {
+		return update;
+	}
+
+	public void setUpdate(Date update) {
+		this.update = update;
+	}
+
+	public int getPinAddress() {
+		return pinAddress;
+	}
+
+	public void setPinAddress(int pinAddress) {
+		this.pinAddress = pinAddress;
+	}
+
+	public Map<String, String> getExternalIds() {
+		return externalIds;
+	}
+
+	public void setExternalIds(Map<String, String> externalIds) {
+		this.externalIds = externalIds;
+	}
+
+	public Date getCreation() {
+		return creation;
+	}
+
+	public void setCreation(Date creation) {
+		this.creation = creation;
+	}
+
+	public Date getLastChange() {
+		return lastChange;
+	}
+
+	public void setLastChange(Date lastChange) {
+		this.lastChange = lastChange;
+	}
 
 	public long getId() {
 		return id;
@@ -61,7 +103,6 @@ public class DeviceDto {
 		this.type = string;
 	}
 
-
 	public String getPin() {
 		return pin;
 	}
@@ -94,14 +135,14 @@ public class DeviceDto {
 	public void setGenericId(long genericId) {
 		this.genericId = genericId;
 	}
-	
+
 	public DeviceDto uuid(String uuid2) {
 		this.uuid = uuid2;
 		return this;
 	}
 
 	public DeviceDto id(Long id2) {
-		this.id= id2;
+		this.id = id2;
 		return this;
 	}
 

@@ -16,7 +16,6 @@
 }
 
 .devices-container{
-	background-color: white;
 	border-radius: 10px;
 	margin : auto;
 	position: relative;
@@ -48,6 +47,7 @@ h1 {
 }
 .middle-high-row{
 	height : 100px;
+	margin-left : 0px !important;
 }
 .high-row{
 	margin-right: 0px;
@@ -58,6 +58,9 @@ h1 {
 	vertical-align: middle;
 	height: 140px;
 
+}
+.separated-row{
+	margin-bottom: 20px;
 }
 .no-margin {
 	margin-left: 0px;
@@ -70,42 +73,75 @@ h1 {
 	margin: auto;
 }
 .col-container{
+		background-color: white;
 	margin: auto;
-	border :1px dashed black;
+	border :1px solid black;
 	vertical-align: middle;
-	padding: 5px;
-	border-radius: 10px;
+}
+
+.device-header {
+	margin-left : -2px !important;
+	margin-right: -2px !important;
+	padding : 10px;
+	background-color: black;
+	color: white;
 }
 .device-picture {
 	width: 70px;
 	height: 70px;
 	margin : 5px;
+	margin-left : 10px;
 }
 .temperature-value{
-	font-size: 39px;
+	font-size: 50px;
 	text-align: center;
 	font-weight: bold;
 	text-align: center;
 	vertical-align: middle;
+	height: 100%;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.vertical-aligned {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.aligned-right{
+	text-align: right;
 }
 
 .clickable {
 	cursor: pointer;
 }
 .active-device {
-	color: green;
+	color: green !important;
 }
 .idle-device {
-	color: grey;
+	color: grey !important;
 }
 .stopped-device {
 	color: red;
+}
+
+.state-value {
+	font-size: 50px !important;
+	display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media screen and (max-width: 500px) {
 
 	.devices-container{
 		width: 95%;
+	}
+	.col-container {
+		height : 200px;
+	}
+	.temperature-value {
+		size: 20px !important;
 	}
 	.col-xs-5{
 		width: 40%;

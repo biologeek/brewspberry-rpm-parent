@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import javax.validation.ValidationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -143,9 +145,47 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	}
 
 	@Override
-	public TemperatureSensor getDeviceByUUID(String uuid) {
-		// TODO Auto-generated method stub
+	public BinarySwitch getDeviceByUUID(String uuid) {
 		return null;
+	}
+
+	@Override
+	public BinarySwitch updateDevice(BinarySwitch toSave, BinarySwitch saved) throws ServiceException {
+		if (toSave == null)
+			return saved;
+
+		if (!saved.getId().equals(toSave.getId()))
+			throw new ServiceException("id.different");
+
+		validateSensor(toSave);
+
+		mergeSensor(toSave, saved);
+
+		return repository.save(saved);
+	}
+
+	/**
+	 * Method in charge of merging to-save sensor and saved one. Handles specific
+	 * cases where additional operations are necesary
+	 * 
+	 * @param toSave
+	 * @param saved
+	 */
+	private void mergeSensor(BinarySwitch toSave, BinarySwitch saved) {
+
+		saved.setLastStateChangeDate(toSave.getLastStateChangeDate());
+		saved.setName(toSave.getName());
+		saved.setPin(toSave.getPin());
+		saved.setPinAddress(toSave.getPinAddress());
+		saved.setPlugged(toSave.isPlugged());
+		saved.setPinState(toSave.getPinState());
+		saved.setUpdateDate(new Date());
+	}
+
+	private void validateSensor(BinarySwitch sensor) {
+		if (new Date().before(sensor.getCreationDate())) {
+			throw new ValidationException("creation.date.future");
+		}
 	}
  
 }

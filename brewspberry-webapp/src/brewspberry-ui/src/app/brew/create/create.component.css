@@ -12,20 +12,29 @@
 	position: relative;	
 }
 .brew-timeline-header{
-	border-radius: 5px;
-	background-color: white;
 	margin: 0 auto;
 	position: relative;	
-	padding: 5px;
 }
 
 .col-straight{
 	text-align: center;
-	margin: 0 auto;
-
+	margin: 0 0;
+	background-color: transparent;
+	padding : 2px;
 }
 .col-large{
 	text-align: center;
+	padding : 5px 10px;
+	color: black;
 	margin: 0 auto;
+	background-color: white;
+	border-radius: 5px;
+}
+
+.selected-step{
+	background-color: grey;
+}
+.col-large a{
+	color : black;
 }
 

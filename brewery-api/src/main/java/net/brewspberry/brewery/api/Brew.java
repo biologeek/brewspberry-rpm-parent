@@ -71,4 +71,12 @@ public class Brew {
 		this.totalExpected = totalExpected;
 	}
 
+	public List<AbstractIngredient> getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(List<AbstractIngredient> ingredients) {
+		this.ingredients = ingredients;
+	}
+
 }

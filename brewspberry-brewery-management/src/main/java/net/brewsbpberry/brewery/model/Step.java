@@ -71,4 +71,12 @@ public class Step {
 		GRINDING, MASHING, LAUTERING, BOILING, WHIRLPOOL, HOPBACK, COOLING, FERMENTATION, COOL_FERMENTATION, CONDITIONNING, BOTTLE_FERMENTATION;
 	}
 
+	public List<StepIngredient> getStepIngredients() {
+		return stepIngredients;
+	}
+
+	public void setStepIngredients(List<StepIngredient> stepIngredients) {
+		this.stepIngredients = stepIngredients;
+	}
+
 }
