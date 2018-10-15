@@ -21,7 +21,7 @@ public abstract class AbstractIngredient {
 	private String brand;
 
 	@OneToMany(fetch = FetchType.LAZY)
-	private List<StepIngredient> stepIngredients;
+	private List<QuantifiedIngredient> stepIngredients;
 
 	public Long getId() {
 		return id;
@@ -39,11 +39,11 @@ public abstract class AbstractIngredient {
 		this.brand = brand;
 	}
 
-	public List<StepIngredient> getStepIngredients() {
+	public List<QuantifiedIngredient> getStepIngredients() {
 		return stepIngredients;
 	}
 
-	public void setStepIngredients(List<StepIngredient> stepIngredients) {
+	public void setStepIngredients(List<QuantifiedIngredient> stepIngredients) {
 		this.stepIngredients = stepIngredients;
 	}
 

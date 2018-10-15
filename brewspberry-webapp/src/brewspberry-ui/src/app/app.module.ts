@@ -18,11 +18,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { DeviceService } from './services/device.service';
 import { TemperatureService } from './services/temperature.service';
+import { IngredientService } from './services/ingredient.service';
 
 
 
 import { ToastrModule } from 'ngx-toastr';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { NgxToggleModule } from 'ngx-toggle';
 import { MashingComponent } from './brew/steps/mashing/mashing.component';
 import { LauteringComponent } from './brew/steps/lautering/lautering.component';
@@ -32,6 +34,8 @@ import { SecondFermentationComponent } from './brew/steps/second-fermentation/se
 import { ConditioningComponent } from './brew/steps/conditioning/conditioning.component';
 import { InputsComponent } from './brew/steps/inputs/inputs.component';
 import { FilteringComponent } from './brew/steps/filtering/filtering.component';
+import { StepService } from './services/step.service';
+import { Ng5SliderModule } from 'ng5-slider';
 
 
 
@@ -75,11 +79,13 @@ export const router: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(router),
     TooltipModule.forRoot(),
+    TypeaheadModule.forRoot(),
     NgxToggleModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    Ng5SliderModule
   ],
-  providers: [DeviceService, TemperatureService],
+  providers: [DeviceService, TemperatureService, IngredientService, StepService],
   exports: [RouterModule],
   bootstrap: [AppComponent],
   entryComponents: [MashingComponent,

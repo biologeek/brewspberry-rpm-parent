@@ -8,6 +8,7 @@
 	min-height: 500px;
 	margin: 10px auto;
 	border-radius: 5px;
+	padding: 10px;
 	background-color: white;
 	position: relative;	
 }
@@ -32,9 +33,37 @@
 }
 
 .selected-step{
-	background-color: grey;
+	background-color: #a2c5ff;
 }
 .col-large a{
 	color : black;
 }
 
+.navigation-bar{
+	cursor: pointer;
+	height: 100%;
+	min-height:500px;
+}
+.navigation-bar i {
+	font-size: 30px;
+	vertical-align: middle;
+}
+
+.navigation-bar :hover{
+	background-color: #cccccc;
+}
+
+.left {
+	float: left;
+}
+.right {
+	float: right;
+}
+.vert-center-div {
+	display: flex;
+	align-items: center;
+}
+
+.clickable {
+	cursor: pointer;
+}

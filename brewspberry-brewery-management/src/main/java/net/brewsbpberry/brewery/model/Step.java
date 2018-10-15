@@ -9,7 +9,8 @@ public class Step {
 	private StepType stepType;
 	private String label;
 	private Date beginning, end, creationDate, updateDate;
-	private List<StepIngredient> stepIngredients;
+	private List<QuantifiedIngredient> stepIngredients;
+	private List<TemperatureStageOperation> temperatureStages;
 
 	public Long getId() {
 		return id;
@@ -71,12 +72,20 @@ public class Step {
 		GRINDING, MASHING, LAUTERING, BOILING, WHIRLPOOL, HOPBACK, COOLING, FERMENTATION, COOL_FERMENTATION, CONDITIONNING, BOTTLE_FERMENTATION;
 	}
 
-	public List<StepIngredient> getStepIngredients() {
+	public List<QuantifiedIngredient> getStepIngredients() {
 		return stepIngredients;
 	}
 
-	public void setStepIngredients(List<StepIngredient> stepIngredients) {
+	public void setStepIngredients(List<QuantifiedIngredient> stepIngredients) {
 		this.stepIngredients = stepIngredients;
+	}
+
+	public List<TemperatureStageOperation> getTemperatureStages() {
+		return temperatureStages;
+	}
+
+	public void setTemperatureStages(List<TemperatureStageOperation> temperatureStages) {
+		this.temperatureStages = temperatureStages;
 	}
 
 }

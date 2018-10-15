@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 		@Type(value=Spice.class, name="S")})
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "type")
 public abstract class AbstractIngredient {
-
-	protected String type;
+	protected Long id;
+	protected String type, brand, model;
 
 	public String getType() {
 		return type;

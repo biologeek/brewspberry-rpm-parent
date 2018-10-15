@@ -13,7 +13,10 @@ public class Brew {
 	private Date beginning, end;
 	private Quantity totalProduced, totalExpected;
 	private List<StepFull> steps;
-	private List<AbstractIngredient> ingredients;
+	private List<Malt> malts;
+	private List<Hop> hops;
+	private List<Yeast> yeasts;
+	private List<Spice> spices;
 
 	public Long getId() {
 		return id;
@@ -71,12 +74,36 @@ public class Brew {
 		this.totalExpected = totalExpected;
 	}
 
-	public List<AbstractIngredient> getIngredients() {
-		return ingredients;
+	public List<Malt> getMalts() {
+		return malts;
 	}
 
-	public void setIngredients(List<AbstractIngredient> ingredients) {
-		this.ingredients = ingredients;
+	public void setMalts(List<Malt> malts) {
+		this.malts = malts;
+	}
+
+	public List<Hop> getHops() {
+		return hops;
+	}
+
+	public void setHops(List<Hop> hops) {
+		this.hops = hops;
+	}
+
+	public List<Spice> getSpices() {
+		return spices;
+	}
+
+	public void setSpices(List<Spice> spices) {
+		this.spices = spices;
+	}
+
+	public List<Yeast> getYeasts() {
+		return yeasts;
+	}
+
+	public void setYeasts(List<Yeast> yeasts) {
+		this.yeasts = yeasts;
 	}
 
 }

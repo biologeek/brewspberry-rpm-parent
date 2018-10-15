@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
  *
  */
 @Entity
-public class StepIngredient {
+public class QuantifiedIngredient {
 
 	@ManyToOne
 	@JoinColumn(name = "ing_id")

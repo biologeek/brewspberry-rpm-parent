@@ -1,14 +1,10 @@
 .inputs-container{
 	background-color: white;
-	width: 85%;
+	width: 95%;
 	margin: 0 auto;
-}
-
-fieldset {
-	width : 60%;
-	margin: 0 auto;	
+	padding: 10px;
 }
 
 .row {
-	margin-top : ;
+	margin-top: 10px !important;
 }

@@ -4,13 +4,13 @@ import java.util.List;
 
 public class StepFull extends StepLight {
 
-	protected List<StepIngredient> stepIngredients;
+	protected List<QuantifiedIngredient> stepIngredients;
 
-	public List<StepIngredient> getStepIngredients() {
+	public List<QuantifiedIngredient> getStepIngredients() {
 		return stepIngredients;
 	}
 
-	public void setStepIngredients(List<StepIngredient> stepIngredients) {
+	public void setStepIngredients(List<QuantifiedIngredient> stepIngredients) {
 		this.stepIngredients = stepIngredients;
 	}
 

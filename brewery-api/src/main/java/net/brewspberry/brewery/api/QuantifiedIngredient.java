@@ -1,8 +1,8 @@
 package net.brewspberry.brewery.api;
 
-public class StepIngredient {
+public class QuantifiedIngredient {
 	
-	private Long ingredientId;
+	private Long ingredient;
 	private Quantity additionTime, quantityAdded;
 	
 }

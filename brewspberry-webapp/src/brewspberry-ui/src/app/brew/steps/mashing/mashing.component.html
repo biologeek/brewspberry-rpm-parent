@@ -1,3 +1,66 @@
-<p>
-  mashing works!
-</p>
+<div class="container">
+  <div class="card">
+    <div class="card-header">Paliers</div>
+    <div class="card-body">
+      <div class="row form-group">
+        <div class="col-sm-3">
+          
+          <input type="text"  [(ngModel)]="currentOp.label"
+          placeholder="Label"
+          class="form-control">
+        </div>
+        <div class="col-sm-3">
+          <select [(ngModel)]="currentOp.type" class="form-control">
+            <option value="" disabled selected="true">Type</option>
+            <option value="CONSTANT">Constant</option>
+            <option value="LINEAR">Gradient linéaire</option>
+          </select>
+        </div>
+        <div class="col-sm-1">
+          <label for="duration">Durée</label>
+        </div>
+        <div class="col-sm-3">
+          <ng5-slider name="duration" class="form-control" [(value)]="currentOp.beginTime" [(highValue)]="currentOp.endTime" ></ng5-slider>
+        </div>
+        
+        <div class="col-sm-2">
+          <i class="btn btn-primary fa fa-save form-control" (click)="pushNewStage()"></i>
+        </div>
+      </div>
+      
+      
+      <div class="row form-group" *ngFor="let op of currentStep.stages">
+        <div class="col-sm-4">
+          
+          <input type="text"  [(ngModel)]="op.label"
+          placeholder="Label"
+          class="form-control">
+        </div>
+        <div class="col-sm-4">
+          <select [(ngModel)]="op.type" class="form-control">
+            <option value="CONSTANT" [selected]="op.stageType === 'CONSTANT'">Constant</option>
+            <option value="LINEAR" [selected]="op.stageType === 'LINEAR'">Gradient linéaire</option>
+          </select>
+        </div>
+        <div class="col-sm-2">
+          <div class="form-check form-check-inline">
+            + &nbsp;
+            <input type="number"  [(ngModel)]="op.duration"
+            style="width: 5rem"
+            placeholder="Label"
+            class="form-control">
+            &nbsp;min
+          </div>
+          
+        </div>
+        <div class="col-sm-2">
+          <i class="btn btn-secondary fa fa-arrow-down form-control" style="width: 3rem;" (click)="pushNewStage()"></i>
+          <i class="btn btn-secondary fa fa-arrow-up form-control" style="width: 3rem;" (click)="pushNewStage()"></i>
+          
+          <i class="btn btn-danger fa fa-trash form-control" style="width: 3rem;" (click)="deleteStage(op)"></i>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
