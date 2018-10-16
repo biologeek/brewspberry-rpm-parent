@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, ViewChild, ComponentRef, ViewContainerRef, Input,
 	ComponentFactoryResolver, ComponentFactory, Output, EventEmitter } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InputsComponent } from '../steps/inputs/inputs.component';
 import { MashingComponent } from '../steps/mashing/mashing.component';
 import { FilteringComponent } from '../steps/filtering/filtering.component';
@@ -22,7 +22,7 @@ export class CreateComponent implements OnInit, OnChanges {
 	dynamicView: ViewContainerRef;
 	@Input()
 	private dynamicViewCmpRef: ComponentRef<any>;
-	selectedStep: string;effectiveDuration
+	selectedStep: string;
 	private availableViews = ['inputs', 'mashing', 'filtering', 'boiling', 'fermentation', 'second-fermentation', 'conditioning'];
 	
 	inputsComponent: InputsComponent;
@@ -36,7 +36,7 @@ export class CreateComponent implements OnInit, OnChanges {
 	private currentBrew: Brew = {};
 	private availableMalts = [{name: 'Marris Otter'}, {name: 'Carapils'}];
 	
-	constructor(private route: ActivatedRoute, private resolver: ComponentFactoryResolver) { }
+	constructor(private route: ActivatedRoute, private router: Router, private resolver: ComponentFactoryResolver) { }
 	
 	ngOnInit() {
 		this.currentBrew = {id: 1};
@@ -50,7 +50,7 @@ export class CreateComponent implements OnInit, OnChanges {
 	
 	
 	routeToView(subViewForStep: string){
-		
+		this.router.navigate([`brew/create/${subViewForStep}`]);
 		console.log(this.availableViews[this.availableViews.indexOf(this.selectedStep)-1]);
 		this.dynamicView ? this.dynamicView.clear() : '';
 		let factory = null;

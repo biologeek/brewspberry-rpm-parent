@@ -4,7 +4,6 @@
     <div class="card-body">
       <div class="row form-group">
         <div class="col-sm-3">
-          
           <input type="text"  [(ngModel)]="currentOp.label"
           placeholder="Label"
           class="form-control">
@@ -21,14 +20,11 @@
         </div>
         <div class="col-sm-3">
           <ng5-slider name="duration" class="form-control" [(value)]="currentOp.beginTime" [(highValue)]="currentOp.endTime" ></ng5-slider>
-        </div>
-        
+        </div>        
         <div class="col-sm-2">
           <i class="btn btn-primary fa fa-save form-control" (click)="pushNewStage()"></i>
         </div>
       </div>
-      
-      
       <div class="row form-group" *ngFor="let op of currentStep.stages">
         <div class="col-sm-4">
           
