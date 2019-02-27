@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Brew } from 'src/app/beans/brew';
 
 @Component({
   selector: 'app-list',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
+
+  brewList: Brew[];
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+
+  deleteBrew(id: number) {
+
   }
 
 }

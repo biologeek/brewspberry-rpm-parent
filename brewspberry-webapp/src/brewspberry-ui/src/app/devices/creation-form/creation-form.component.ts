@@ -10,8 +10,9 @@ import {Device} from '../../beans/device';
 export class CreationFormComponent implements OnInit {
 
 
-  private availableUuids: string[] = [];
-  private device: Device = new Device();
+  availableUuids: string[] = [];
+	device: Device = new Device();
+	types: string[];
 
   constructor(private deviceService: DeviceService) { }
 
@@ -23,7 +24,7 @@ export class CreationFormComponent implements OnInit {
   		this.availableUuids = this.mockUUIDs();
   	})
   }
-  private mockUUIDs(): string[]{
+  mockUUIDs(): string[]{
   	return [
   	  '818ce4d8-8dc1-11e8-9eb6-529269fb1459'
   	, '818ce78a-8dc1-11e8-9eb6-529269fb1459'

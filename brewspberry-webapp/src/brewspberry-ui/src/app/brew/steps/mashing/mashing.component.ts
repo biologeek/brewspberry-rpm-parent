@@ -3,7 +3,6 @@ import { StepService } from '../../../services/step.service';
 import { Observable } from 'rxjs';
 import { StepStage } from '../../../beans/step-stage';
 import { Step } from '../../../beans/step';
-import { Options } from 'ng5-slider';
 
 @Component({
   selector: 'app-mashing',
@@ -18,7 +17,6 @@ export class MashingComponent implements OnInit {
   currentStep: Step;
   currentOp: StepStage;
   
-  sliderOptions: Options = {};
   
   constructor(private stepService: StepService) {
     this.currentOp = new StepStage();
@@ -26,11 +24,6 @@ export class MashingComponent implements OnInit {
     this.currentOp.endTime = 120;
     this.currentStep = {plannedDuration: {quantity: 15, unit: 'MINUTES'}, stages: []};
     
-    this.sliderOptions = {
-      floor: 0,
-      ceil: this.currentStep.plannedDuration.quantity,
-      step: 1
-    };
   }
   
   ngOnInit() {

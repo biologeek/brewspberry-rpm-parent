@@ -35,7 +35,6 @@ import { ConditioningComponent } from './brew/steps/conditioning/conditioning.co
 import { InputsComponent } from './brew/steps/inputs/inputs.component';
 import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
-import { Ng5SliderModule } from 'ng5-slider';
 
 
 
@@ -82,8 +81,7 @@ export const router: Routes = [
     TypeaheadModule.forRoot(),
     NgxToggleModule,
     HttpClientModule,
-    ToastrModule.forRoot(),
-    Ng5SliderModule
+    ToastrModule.forRoot()
   ],
   providers: [DeviceService, TemperatureService, IngredientService, StepService],
   exports: [RouterModule],

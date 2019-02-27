@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Ingredient } from 'app/beans/ingredient';
+import { Ingredient } from '../beans/ingredient';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { StepStage } from '../beans/step-stage';
-import { of } from 'rxjs/observable/of';
 import { Step } from '../beans/step';
 
 
