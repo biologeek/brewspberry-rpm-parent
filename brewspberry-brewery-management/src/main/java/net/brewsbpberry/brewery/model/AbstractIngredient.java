@@ -19,6 +19,8 @@ public abstract class AbstractIngredient {
 	private Long id;
 
 	private String brand;
+	
+	private String model;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<QuantifiedIngredient> stepIngredients;
@@ -29,6 +31,14 @@ public abstract class AbstractIngredient {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public String getBrand() {

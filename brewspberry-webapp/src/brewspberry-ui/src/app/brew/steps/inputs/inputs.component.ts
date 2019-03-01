@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Brew } from '../../../beans/brew';
+import { Brew } from '../../../beans/brewery/brew';
 import { Ingredient } from '../../../beans/ingredient';
 import { IngredientService } from '../../../services/ingredient.service';
 import * as _ from 'lodash';

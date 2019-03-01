@@ -2,29 +2,38 @@
 	<div class="title">
 		<h4>Liste des brassins</h4>
 	</div>
-	<div class="brew-list-container table-responsive">
-		<table mat-table [dataSource]="brewList" class="table table-striped table-light table-hover">
-			<ng-container matColumnDef="position">
-				<th mat-header-cell scope="col">Date</th>
-				<td mat-cell *matCellDef="let element"> {{element.date}}</td>
-			</ng-container>
-			<ng-container matColumnDef="position">
-				<th mat-header-cell scope="col">Etat</th>
-				<td mat-cell *matCellDef="let element"> {{element.date}}</td>
-			</ng-container>
-
-			<ng-container matColumnDef="position">
-				<th mat-header-cell scope="col" class="equivalent-col-5">Bière</th>
-				<td mat-cell *matCellDef="let element"> {{element.date}}</td>
-			</ng-container>
-			<ng-container matColumnDef="position">
-				<th mat-header-cell scope="col">Stock</th>
-				<td mat-cell *matCellDef="let element"> {{element.date}}</td>
-			</ng-container>
-			<ng-container matColumnDef="position">
-				<th mat-header-cell scope="col" class="equivalent-col-5">Actions</th>
-				<td mat-cell *matCellDef="let element"> {{element.date}}</td>
-			</ng-container>
-		</table>
+	<div class="brew-list-container">
+			<table mat-table [dataSource]="brewList" class="mat-elevation-z8">
+		
+					<!-- Position Column -->
+					<ng-container matColumnDef="date">
+					  <th mat-header-cell *matHeaderCellDef> Date </th>
+					  <td mat-cell *matCellDef="let element"> {{element.beginning | date: 'dd/MM/yyyy'}} </td>
+					</ng-container>
+				  
+					<!-- Name Column -->
+					<ng-container matColumnDef="state">
+					  <th mat-header-cell *matHeaderCellDef> Etat </th>
+					  <td mat-cell *matCellDef="let element"> {{element.state}} </td>
+					</ng-container>
+				  
+					<!-- Weight Column -->
+					<ng-container matColumnDef="title">
+					  <th mat-header-cell *matHeaderCellDef> Titre </th>
+					  <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+					</ng-container>
+				  
+					<!-- Symbol Column -->
+					<ng-container matColumnDef="actions">
+					  <th mat-header-cell *matHeaderCellDef> Actions </th>
+					  <td mat-cell *matCellDef="let element"> <input type="checkbox" /> </td>
+					</ng-container>
+				  
+					<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+					<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+				  </table>
+		
 	</div>
+
+
 </div>

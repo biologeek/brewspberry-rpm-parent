@@ -1,5 +1,5 @@
 package net.brewsbpberry.brewery.model;
 
-public class Hop {
+public class Hop extends AbstractIngredient {
 
 }

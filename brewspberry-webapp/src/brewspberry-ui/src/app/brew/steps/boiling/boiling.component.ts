@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { Brew } from '../../../beans/brew';
+import { Brew } from '../../../beans/brewery/brew';
 
 @Component({
   selector: 'app-boiling',

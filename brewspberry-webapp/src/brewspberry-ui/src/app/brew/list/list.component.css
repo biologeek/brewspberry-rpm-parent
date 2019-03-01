@@ -32,18 +32,16 @@
 	margin: 20px 0;
 }
 
-table{
-	width: 100%;
-}
-
-thead {
-	width: 100% !important;
-}
-
-
 .brew-list-container{
 	background-color: white;
 	border-radius: 10px;
 	margin : auto;
 	position: relative;
+	padding: 10px;
+}
+
+
+table {
+	width: 80%;
+	margin: auto;
 }

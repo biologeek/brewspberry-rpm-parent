@@ -36,6 +36,8 @@ import { InputsComponent } from './brew/steps/inputs/inputs.component';
 import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
 
+import { MatTableModule } from '@angular/material';
+
 
 
 export const router: Routes = [
@@ -71,7 +73,7 @@ export const router: Routes = [
     ConditioningComponent,
     InputsComponent,
     FilteringComponent
-  ],
+    ],
   imports: [
     BrowserModule,
     FormsModule,
@@ -81,12 +83,14 @@ export const router: Routes = [
     TypeaheadModule.forRoot(),
     NgxToggleModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatTableModule
   ],
   providers: [DeviceService, TemperatureService, IngredientService, StepService],
   exports: [RouterModule],
   bootstrap: [AppComponent],
-  entryComponents: [MashingComponent,
+  entryComponents: [
+    MashingComponent,
     LauteringComponent,
     BoilingComponent,
     FermentationComponent,
