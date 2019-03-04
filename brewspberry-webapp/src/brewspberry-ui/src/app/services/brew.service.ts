@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { Brew } from 'src/app/beans/brew';
+import { Brew } from 'src/app/beans/brewery/brew';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Temperature } from '../beans/temperature';
-import { BatchRequest } from '../beans/batch-request';
+import { Temperature } from '../beans/monitoring/temperature';
+import { BatchRequest } from '../beans/monitoring/batch-request';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -12,11 +12,11 @@ export class TemperatureService {
 
 
   public getTemperaturesForSensors(ids: Array<number>): Observable<Array<Temperature>> {
-  	var sensors: string = ids.join(".");
-  	return <Observable<Array<Temperature>>> this.http.get(environment.apiTemperatureMonitoring + '/sensors/' + sensors);
+    const sensors: string = ids.join('.');
+    return this.http.get(environment.apiTemperatureMonitoring + '/sensors/' + sensors) as Observable<Array<Temperature>>;
   }
   public launchTemperatureMeasurement(req: BatchRequest): Observable<void> {
-  	return <Observable<any>> this.http.post(environment.apiTemperatureMonitoring + '/run', req);
+    return this.http.post(environment.apiTemperatureMonitoring + '/run', req) as Observable<any>;
   }
 
 }

@@ -1,5 +1,5 @@
 import { StepStage } from "./step-stage";
-import { Quantity } from "./quantity";
+import { Quantity } from "../quantity";
 
 export class Step {
     public id?;

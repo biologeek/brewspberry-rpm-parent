@@ -1,8 +1,14 @@
 package net.brewsbpberry.brewery.model;
 
+import javax.measure.Quantity;
+import javax.measure.Unit;
+import javax.measure.quantity.Mass;
+import javax.measure.quantity.Volume;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+
+import tec.units.ri.quantity.Quantities;
 
 /**
  * A production report is the qualitative and quantitative result of a brewing
@@ -31,20 +37,20 @@ public class ProductionReport {
 		this.product = product;
 	}
 
-	public CustomQuantity getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(CustomQuantity quantity) {
-		this.quantity = quantity;
-	}
-
 	public String getComment() {
 		return comment;
 	}
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public CustomQuantity getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(CustomQuantity quantity) {
+		this.quantity = quantity;
 	}
 
 }

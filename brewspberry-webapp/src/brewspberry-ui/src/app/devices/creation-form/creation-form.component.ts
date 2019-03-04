@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceService } from '../../services/device.service';
-import {Device} from '../../beans/device';
+import {Device} from '../../beans/monitoring/device';
 
 @Component({
   selector: 'app-creation-form',

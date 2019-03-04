@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { StepService } from '../../../services/step.service';
 import { Observable } from 'rxjs';
-import { StepStage } from '../../../beans/step-stage';
-import { Step } from '../../../beans/step';
+import { StepStage } from '../../../beans/brewery/step-stage';
+import { Step } from '../../../beans/brewery/step';
 
 @Component({
   selector: 'app-mashing',

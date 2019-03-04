@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Brew } from 'src/app/beans/brew';
+import { Brew } from 'src/app/beans/brewery/brew';
 
 @Component({
   selector: 'app-list',
