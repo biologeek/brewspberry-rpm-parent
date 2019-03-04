@@ -3,16 +3,52 @@ package net.brewsbpberry.brewery.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+/**
+ * Represents a brew, meaning a session of brewing operated by a brewer. <br>
+ * <br>
+ * It is composed of a set of ingredients referenced in configuration, a set of
+ * steps (the recipe). <br>
+ * <br>
+ * Each brew can be named and, to locate in time each brew, beginning and end
+ * dates. <br>
+ * <br>
+ * As a brew can be planned before it starts, a creation date and update date
+ * are set automatically at creation or at each update. <br>
+ * <br>
+ * 
+ * At the end of brewing, and to be able to keep trace of production, brew is
+ * also composed of a production object
+ * 
+ * @author xavier
+ *
+ */
+@Entity
 public class Brew {
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String title;
+	@OneToMany(mappedBy = "brew")
 	private List<Step> steps;
+	@OneToMany(mappedBy = "brew")
 	private List<Hop> hops;
+	@OneToMany(mappedBy = "brew")
 	private List<Malt> malts;
+	@OneToMany(mappedBy = "brew")
 	private List<Yeast> yeasts;
+	@OneToMany(mappedBy = "brew")
 	private List<Spice> spices;
 	private Date beginning, end, creationDate, updateDate;
+
+	@OneToOne
+	private ProductionReport production;
 
 	public Long getId() {
 		return id;

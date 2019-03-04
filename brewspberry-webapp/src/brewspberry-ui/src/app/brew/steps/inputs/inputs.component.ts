@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Brew } from '../../../beans/brewery/brew';
-import { Ingredient } from '../../../beans/ingredient';
-import { IngredientService } from '../../../services/ingredient.service';
 import * as _ from 'lodash';
+import { Brew } from 'src/app/beans/brew';
+import { Ingredient } from 'src/app/beans/ingredient';
+import { IngredientService } from 'src/app/services/ingredient.service';
 
 @Component({
 	selector: 'app-inputs',

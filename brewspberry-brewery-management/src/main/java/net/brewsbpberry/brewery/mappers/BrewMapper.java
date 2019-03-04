@@ -30,7 +30,9 @@ public class BrewMapper {
 		res.setEnd(model.getEnd());
 		res.setTitle(model.getTitle());
 		res.setHops(this.hopMapper.toDto(model.getHops()));
-		return null;
+		res.setMalts(this.maltMapper.toDto(model.getMalts()));
+		res.setYeasts(yeastMapper.toDto(model.getYeasts()));
+		return res;
 	}
 
 }

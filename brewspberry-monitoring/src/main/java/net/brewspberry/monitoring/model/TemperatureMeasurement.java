@@ -16,10 +16,16 @@ public class TemperatureMeasurement {
 	@GeneratedValue
 	private Long id;
 	private Date date;
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="sensor_id")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "sensor_id")
 	private TemperatureSensor sensor;
 	private Float temperature;
+	/**
+	 * The external ID of the operation (step, brew, whatever...) that this
+	 * measurement is linked to. <br>
+	 * <br>
+	 * The caller knows what data references this external ID.
+	 */
 	private String externalId;
 
 	public Long getId() {

@@ -205,9 +205,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Override
 	public void runRegularTemperatureMeasurementStr(List<String> devices, Map<String, Object> parameters) {
-		List<TemperatureSensor> sensors = devices.stream()//
-				.map(str -> this.repository.findByUuid(str))//
-				.collect(Collectors.toList());
+		List<TemperatureSensor> sensors = this.repository.findAllByUuid(devices);
 		runRegularTemperatureMeasurement(sensors, parameters);
 	}
 

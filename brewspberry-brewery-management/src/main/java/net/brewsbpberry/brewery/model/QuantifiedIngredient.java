@@ -19,10 +19,16 @@ public class QuantifiedIngredient {
 	@JoinColumn(name = "ing_id")
 	private AbstractIngredient ingredient;
 
+	/**
+	 * The date ingredient was added
+	 */
 	private Date additionTime;
 
 	@Embedded
-	private Quantity quantity;
+	private CustomQuantity quantity;
+	
+	@ManyToOne
+	private Step step;
 
 	public AbstractIngredient getIngredient() {
 		return ingredient;
@@ -40,11 +46,11 @@ public class QuantifiedIngredient {
 		this.additionTime = additionTime;
 	}
 
-	public Quantity getQuantity() {
+	public CustomQuantity getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Quantity quantity) {
+	public void setQuantity(CustomQuantity quantity) {
 		this.quantity = quantity;
 	}
 

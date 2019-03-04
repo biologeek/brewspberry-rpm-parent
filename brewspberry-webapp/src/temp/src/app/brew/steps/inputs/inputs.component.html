@@ -1,0 +1,195 @@
+	<h3>Ingredients</h3>
+	
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-header">Malts</div>
+				<div class="card-body">
+					<div class="row form-group" *ngFor="let malt of currentBrew.malts;let i = index">
+						<div class="col-sm-6">
+							<input type="text"  *ngIf="!currentlyModifiedMalt || currentlyModifiedMalt.id != malt.id"
+							value="{{malt.model}}"
+							[readonly]="true"
+							class="form-control">
+							
+							<input type="text" *ngIf="currentlyModifiedMalt && currentlyModifiedMalt.id == malt.id"
+							[(ngModel)]="currentlyModifiedMalt.model"
+							[typeahead]="availableMalts"
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4">
+							<input type="number" 
+							class="form-control" 
+							value="{{malt.quantity}}"
+							*ngIf="!currentlyModifiedMalt || currentlyModifiedMalt.id != malt.id"
+							[readonly]="true">
+							<input type="number" 
+							*ngIf="currentlyModifiedMalt && currentlyModifiedMalt.id == malt.id"
+							class="form-control" 
+							[(ngModel)]="currentlyModifiedMalt.quantity"
+							[readonly]="false">
+						</div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-pencil form-control" (click)="editMalt(malt)"></i></div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-save form-control" (click)="update(malt)"></i></div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-6">
+							<input type="text" [(ngModel)]="nextMalt.model"
+							[typeahead]="availableMalts"
+							placeholder="Malt" 
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4"><input type="number" class="form-control" placeholder="Quantité" [(ngModel)]="nextMalt.quantity"></div>
+						<div class="col-sm-2"><i class="btn btn-primary fa fa-save form-control" (click)="appendToList()"></i></div>
+					</div>	
+				</div>	
+			</div>	
+		</div>
+		<div class="col-sm-6">
+			
+			<div class="card">
+				<div class="card-header">Houblons</div>
+				
+				<div class="card-body">
+					<div class="row form-group" *ngFor="let hop of currentBrew.hops;let i = index">
+						<div class="col-sm-6">
+							<input type="text"  *ngIf="!currentlyModifiedHop || currentlyModifiedHop.id != hop.id"
+							value="{{hop.model}}"
+							[readonly]="true"
+							class="form-control">
+							
+							<input type="text" *ngIf="currentlyModifiedHop && currentlyModifiedHop.id == hop.id"
+							[(ngModel)]="currentlyModifiedHop.model"
+							[typeahead]="availableHops"
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4">
+							<input type="number" 
+							class="form-control" 
+							value="{{hop.quantity}}"
+							*ngIf="!currentlyModifiedHop || currentlyModifiedHop.id != hop.id"
+							[readonly]="true">
+							<input type="number" 
+							*ngIf="currentlyModifiedHop && currentlyModifiedHop.id == hop.id"
+							class="form-control" 
+							[(ngModel)]="currentlyModifiedHop.quantity"
+							[readonly]="false">
+						</div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-pencil form-control" (click)="editHop(hop)"></i></div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-save form-control" (click)="update(hop)"></i></div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-6">
+							<input type="text" [(ngModel)]="nextHop.model"
+							[typeahead]="availableHops"
+							placeholder="Houblon" 
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4"><input type="number" class="form-control" placeholder="Quantité" [(ngModel)]="nextHop.quantity"></div>
+						<div class="col-sm-2"><i class="btn btn-primary fa fa-save form-control" (click)="appendToList()"></i></div>
+					</div>	
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			
+			<div class="card">
+				<div class="card-header">Levures</div>
+				
+				<div class="card-body">
+					<div class="row form-group" *ngFor="let yeast of currentBrew.yeasts;let i = index">
+						<div class="col-sm-6">
+							<input type="text"  *ngIf="!currentlyModifiedYeast || currentlyModifiedYeast.id != yeast.id"
+							value="{{yeast.model}}"
+							[readonly]="true"
+							class="form-control">
+							
+							<input type="text" *ngIf="currentlyModifiedYeast && currentlyModifiedYeast.id == yeast.id"
+							[(ngModel)]="currentlyModifiedYeast.model"
+							[typeahead]="availableYeasts"
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4">
+							<input type="number" 
+							class="form-control" 
+							value="{{yeast.quantity}}"
+							*ngIf="!currentlyModifiedYeast || currentlyModifiedYeast.id != yeast.id"
+							[readonly]="true">
+							<input type="number" 
+							*ngIf="currentlyModifiedYeast && currentlyModifiedYeast.id == yeast.id"
+							class="form-control" 
+							[(ngModel)]="currentlyModifiedYeast.quantity"
+							[readonly]="false">
+						</div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-pencil form-control" (click)="editYeast(yeast)"></i></div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-save form-control" (click)="update(yeast)"></i></div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-6">
+							<input type="text" [(ngModel)]="nextYeast.model"
+							[typeahead]="availableYeasts"
+							placeholder="Levure" 
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4"><input type="number" class="form-control" placeholder="Quantité" [(ngModel)]="nextYeast.quantity"></div>
+						<div class="col-sm-2"><i class="btn btn-primary fa fa-save form-control" (click)="appendToList()"></i></div>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			
+			<div class="card">
+				<div class="card-header">Autres</div>
+				
+				<div class="card-body">
+					<div class="row form-group" *ngFor="let spice of currentBrew.spices;let i = index">
+						<div class="col-sm-6">
+							<input type="text"  *ngIf="!currentlyModifiedSpice || currentlyModifiedSpice.id != spice.id"
+							value="{{spice.model}}"
+							[readonly]="true"
+							class="form-control">
+							
+							<input type="text" *ngIf="currentlyModifiedSpice && currentlyModifiedSpice.id == spice.id"
+							[(ngModel)]="currentlyModifiedSpice.model"
+							[typeahead]="availableSpices"
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4">
+							<input type="number" 
+							class="form-control" 
+							value="{{spice.quantity}}"
+							*ngIf="!currentlyModifiedSpice || currentlyModifiedSpice.id != spice.id"
+							[readonly]="true">
+							<input type="number" 
+							*ngIf="currentlyModifiedSpice && currentlyModifiedSpice.id == spice.id"
+							class="form-control" 
+							[(ngModel)]="currentlyModifiedSpice.quantity"
+							[readonly]="false">
+						</div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-pencil form-control" (click)="editSpice(spice)"></i></div>
+						<div class="col-sm-1"><i class="btn btn-primary fa fa-save form-control" (click)="update(spice)"></i></div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-6">
+							<input type="text" [(ngModel)]="nextSpice.model"
+							[typeahead]="availableSpices"
+							placeholder="Levure" 
+							typeaheadOptionField="model"
+							class="form-control">
+						</div>
+						<div class="col-sm-4"><input type="number" class="form-control" placeholder="Quantité" [(ngModel)]="nextSpice.quantity"></div>
+						<div class="col-sm-2"><i class="btn btn-primary fa fa-save form-control" (click)="appendToList()"></i></div>
+					</div>	
+				</div>
+			</div>
+		</div>

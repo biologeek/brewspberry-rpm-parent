@@ -1,0 +1,163 @@
+
+@media screen and (min-width: 500px) {
+	.devices-manager-container{
+		margin-left: 80px; 
+		margin-right: 20px;
+		width: 90%;
+	}
+
+	.devices-container{
+		width: 90%;
+	}
+	.equivalent-col-5{
+		width: 20%;
+		text-align: center;
+	}
+}
+
+.devices-container{
+	border-radius: 10px;
+	margin : auto;
+	position: relative;
+	padding: 10px;
+}
+.centered-col {
+	text-align: center;
+}
+
+
+.title{
+	background-color: white;
+	border-radius: 10px;
+	padding: 10px;
+	width: 90%;
+	margin: 20px auto;
+}
+
+h1 {
+	float: left;
+}
+
+.header-row{
+	background-color: #444444;
+	border-radius: 5px;
+	color: white;
+	font-weight: bold;
+	margin-bottom: 5px; 
+}
+.middle-high-row{
+	height : 100px;
+	margin-left : 0px !important;
+}
+.high-row{
+	margin-right: 0px;
+	margin-left: 0px;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	padding: 10px;
+	vertical-align: middle;
+	height: 140px;
+
+}
+.separated-row{
+	margin-bottom: 20px;
+}
+.no-margin {
+	margin-left: 0px;
+}
+.no-padding {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+.center-align-picture {
+	margin: auto;
+}
+.col-container{
+		background-color: white;
+	margin: auto;
+	border :1px solid black;
+	vertical-align: middle;
+}
+
+.device-header {
+	margin-left : -2px !important;
+	margin-right: -2px !important;
+	padding : 10px;
+	background-color: black;
+	color: white;
+}
+.device-picture {
+	width: 70px;
+	height: 70px;
+	margin : 5px;
+	margin-left : 10px;
+}
+.temperature-value{
+	font-size: 50px;
+	text-align: center;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	height: 100%;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.vertical-aligned {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.aligned-right{
+	text-align: right;
+}
+
+.clickable {
+	cursor: pointer;
+}
+.active-device {
+	color: green !important;
+}
+.idle-device {
+	color: grey !important;
+}
+.stopped-device {
+	color: red;
+}
+
+.state-value {
+	font-size: 50px !important;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 500px) {
+
+	.devices-container{
+		width: 95%;
+	}
+	.col-container {
+		height : 200px;
+	}
+	.temperature-value {
+		size: 20px !important;
+	}
+	.col-xs-5{
+		width: 40%;
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+	.col-xs-2{
+		width: 20%;
+	}
+}
+@media screen and (min-width: 500px) {
+	.devices-manager-container{
+		margin-left: 80px;
+	}
+	.devices-container{
+		width: 90%;
+
+	}
+}

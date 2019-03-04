@@ -11,6 +11,7 @@ import org.springframework.util.Assert;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
 import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.ThreadWitness;
+import net.brewspberry.monitoring.repositories.ThreadWitnessRepository;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
 import net.brewspberry.monitoring.services.ThreadWitnessServices;
@@ -18,12 +19,9 @@ import net.brewspberry.monitoring.services.ThreadWitnessServices;
 @Service
 public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitnessServices, ThreadWitnessCheckServices {
 
-	private EntityManager em;
+	private ThreadWitnessRepository threadWitnessRepository;
 
-	public ThreadStateServicesImpl(EntityManager em) {
-		this.em = em;
-	}
-
+	
 	public ThreadStateServicesImpl() {
 		super();
 	}

@@ -4,20 +4,32 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+/**
+ * A range of whatever quantifiable
+ *
+ */
 @Embeddable
-public class Quantity {
+public class Range {
 
-	private Float quantity;
-
+	private Double low;
+	private Double high;
 	@Enumerated(EnumType.STRING)
 	private Unit unit;
 
-	public Float getQuantity() {
-		return quantity;
+	public Double getLow() {
+		return low;
 	}
 
-	public void setQuantity(Float quantity) {
-		this.quantity = quantity;
+	public void setLow(Double low) {
+		this.low = low;
+	}
+
+	public Double getHigh() {
+		return high;
+	}
+
+	public void setHigh(Double high) {
+		this.high = high;
 	}
 
 	public Unit getUnit() {
@@ -26,10 +38,6 @@ public class Quantity {
 
 	public void setUnit(Unit unit) {
 		this.unit = unit;
-	}
-
-	public enum Unit {
-		MILLILITER, CENTILITER, LITER, MILLIMETER, CENTIMETER, METER, KILOMETER, MILLIGRAM, GRAM, KILOGRAM;
 	}
 
 }

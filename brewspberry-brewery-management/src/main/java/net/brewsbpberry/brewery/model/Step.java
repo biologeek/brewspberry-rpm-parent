@@ -1,17 +1,54 @@
 package net.brewsbpberry.brewery.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+/**
+ * A Step is a consistent part of the brewing process. <br>
+ * <br>
+ * <br>
+ * Steps have a type that is among common brewing steps and dating
+ * attributes<br>
+ * <br>
+ * It is composed of a set of {@link QuantifiedIngredient}s and a set of
+ * {@link TemperatureStageOperation}
+ * 
+ * @author xavier
+ *
+ */
+@Entity
 public class Step {
 
+	@Id
+	@GeneratedValue
 	private Long id;
+
+	@Enumerated(EnumType.STRING)
 	private StepType stepType;
+
 	private String label;
-	private Date beginning, end, creationDate, updateDate;
+
+	private LocalDateTime beginning, end, creationDate, updateDate;
+
+	@OneToMany(mappedBy = "step")
 	private List<QuantifiedIngredient> stepIngredients;
+
+	@OneToMany(mappedBy = "step")
 	private List<TemperatureStageOperation> temperatureStages;
 
+	/**
+	 * Allows to pause
+	 *
+	 * private List<StepState> states;
+	 */
 	public Long getId() {
 		return id;
 	}
@@ -36,35 +73,35 @@ public class Step {
 		this.label = label;
 	}
 
-	public Date getBeginning() {
+	public LocalDateTime getBeginning() {
 		return beginning;
 	}
 
-	public void setBeginning(Date beginning) {
+	public void setBeginning(LocalDateTime beginning) {
 		this.beginning = beginning;
 	}
 
-	public Date getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
 
-	public void setEnd(Date end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public Date getUpdateDate() {
+	public LocalDateTime getUpdateDate() {
 		return updateDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
 	}
 

@@ -10,7 +10,8 @@ import { BoilingComponent } from '../steps/boiling/boiling.component';
 import { FermentationComponent } from '../steps/fermentation/fermentation.component';
 import { SecondFermentationComponent } from '../steps/second-fermentation/second-fermentation.component';
 import { ConditioningComponent } from '../steps/conditioning/conditioning.component';
-import { Brew } from '../../beans/brewery/brew';
+import { Brew } from 'src/app/beans/brew';
+
 
 @Component({
 	selector: 'app-create',

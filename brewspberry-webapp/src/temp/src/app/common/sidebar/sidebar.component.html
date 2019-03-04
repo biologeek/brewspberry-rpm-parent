@@ -1,0 +1,56 @@
+ <div class="top-bar">
+    <span *ngIf="!sidebarHidden" style="position: relative; background-color: transparent;" (click)="toggleSidebar()">
+    <i class="fa fa-bars fa-2x" style=" margin: 10px;height : 50px !important; background-color: transparent;"></i>
+</span>
+</div>
+<div class="area"></div>
+
+    <nav class="main-menu" *ngIf="sidebarHidden">
+    <ul>
+        <li>
+            <a (click)="toggleSidebar()">
+                <i class="fa fa-times fa-2x"></i>
+                <span class="nav-text">
+                    Close
+                </span>
+            </a>
+
+        </li><br>
+        <li>
+            <a href="dashboard">
+                <i class="fa fa-home fa-2x"></i>
+                <span class="nav-text">
+                    Dashboard
+                </span>
+            </a>
+
+        </li><br>
+        <li class="has-subnav">
+            <a href="brew/list">
+               <i class="fa fa-list fa-2x"></i>
+               <span class="nav-text">
+                Brassins
+            </span>
+        </a>
+
+    </li>
+    <br>
+    <li class="has-subnav">
+        <a href="devices/manage">
+           <i class="fa fa-wrench fa-2x"></i>
+           <span class="nav-text">
+            Périphériques
+        </span>
+    </a>
+
+</li><br>
+<li>
+    <a href="params">
+        <i class="fa fa-cogs fa-2x"></i>
+        <span class="nav-text">
+            Paramètres
+        </span>
+    </a>
+</li>  
+</ul>
+</nav>

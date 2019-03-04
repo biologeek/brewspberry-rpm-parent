@@ -2,16 +2,20 @@ package net.brewsbpberry.brewery.model;
 
 import java.util.List;
 
+import javax.measure.quantity.Mass;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
 /**
- * Stores common data for an ingredient such as brand, variety, ... Data related
- * to conditioning, ... are stored in separate module
+ * Stores common data for an ingredient such as brand, variety, ... <br>
+ * <br>
+ * Data related to conditioning, stocks, ... are stored in separate module.
  *
  */
+@MappedSuperclass
 public abstract class AbstractIngredient {
 
 	@Id
@@ -19,8 +23,10 @@ public abstract class AbstractIngredient {
 	private Long id;
 
 	private String brand;
-	
+
 	private String model;
+
+	private Mass packaging;
 
 	@OneToMany(fetch = FetchType.LAZY)
 	private List<QuantifiedIngredient> stepIngredients;
@@ -31,6 +37,14 @@ public abstract class AbstractIngredient {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Mass getPackaging() {
+		return packaging;
+	}
+
+	public void setPackaging(Mass packaging) {
+		this.packaging = packaging;
 	}
 
 	public String getModel() {

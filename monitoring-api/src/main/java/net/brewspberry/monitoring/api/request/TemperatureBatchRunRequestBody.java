@@ -5,6 +5,9 @@ import java.util.List;
 public class TemperatureBatchRunRequestBody {
 
 	private List<String> devices;
+	/**
+	 * The external identifier of step/brew/other element related to this batch
+	 */
 	private String externalId;
 	private Long frequency;
 	private Long duration;
