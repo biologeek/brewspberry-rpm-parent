@@ -24,7 +24,7 @@
             ],
             "styles": [
               "src/styles.css",
-              ".src/assets/fonts/material-icons/material-icons.css"
+              "src/assets/fonts/material-icons/material-icons.css"
             ],
             "scripts": [],
             "es5BrowserSupport": true
