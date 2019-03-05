@@ -1,8 +1,7 @@
 
 @media screen and (min-width: 500px) {
 	.devices-manager-container{
-		margin-left: 80px; 
-		margin-right: 20px;
+		margin: auto;
 		width: 90%;
 	}
 
@@ -154,10 +153,9 @@ h1 {
 }
 @media screen and (min-width: 500px) {
 	.devices-manager-container{
-		margin-left: 80px;
+		margin: auto;
 	}
 	.devices-container{
 		width: 90%;
-
 	}
 }

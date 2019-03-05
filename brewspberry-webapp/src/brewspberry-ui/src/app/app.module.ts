@@ -36,7 +36,7 @@ import { InputsComponent } from './brew/steps/inputs/inputs.component';
 import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
 
-import { MatTableModule, MatCardModule, MatGridList, MatGridListModule } from '@angular/material';
+import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 
@@ -88,7 +88,8 @@ export const router: Routes = [
     FlexLayoutModule,
     MatTableModule,
     MatGridListModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [DeviceService, TemperatureService, IngredientService, StepService],
   exports: [RouterModule],

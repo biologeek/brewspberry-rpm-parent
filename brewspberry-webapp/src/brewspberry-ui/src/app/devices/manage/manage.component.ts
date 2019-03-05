@@ -23,6 +23,10 @@ export class ManageComponent implements OnInit {
     value: false
   };
 
+  breakpoint: number;
+
+  BREAKPOINT_SIZE = 600;
+
   private MAX_DEVICE_PER_COLUMN = 3;
   private devices$: Observable<Device[]>;
   private rawDevices: Device[];
@@ -33,8 +37,19 @@ export class ManageComponent implements OnInit {
   ngOnInit() {
     // Get all devices, then last temperature for each device
     this.devices$ = this.deviceService.getAllDevices();
+    this.onResize();
   }
-
+  onResize() {
+    if (window.innerWidth > 1400) {
+      this.breakpoint = 4;
+    } else if (window.innerWidth > 900) {
+      this.breakpoint = 3;
+    } else if (window.innerWidth > 600) {
+      this.breakpoint = 2;
+    } else if (window.innerWidth <= 600) {
+      this.breakpoint = 1;
+    }
+  }
 
   public toggleDevice(device: Device): void {
     const toToggle: Device[] = this.rawDevices.filter(o => o.id === device.id);
@@ -54,54 +69,8 @@ export class ManageComponent implements OnInit {
     this.deviceService.deleteDevice(deviceUUID).subscribe(data => {
       this.toast.info('Device removed');
     }, error => {
-      this.toast.warning('Error when deleting device')
+      this.toast.warning('Error when deleting device');
     });
-  }
-
-
-  /***************
-   ** TEST DATA **
-   **************/
-
-
-  public mockDevices(): Device[] {
-    const dev1: Device = {
-      id: 1,
-      name: 'DS18-001',
-      uuid: '1A2B3C4D5E',
-      pin: 'GPIO04',
-      type: 'DS18B20',
-      isActive: false,
-      state: 'STOPPED'
-    };
-    const dev2: Device = {
-      id: 2,
-      name: 'DS18-002',
-      uuid: '1A2B3C4D5F',
-      pin: 'GPIO05',
-      type: 'DS18B20',
-      isActive: true,
-      state: 'STARTED'
-    };
-    const dev3: Device = {
-      id: 3,
-      name: 'DS18-003',
-      type: 'VALVE',
-      uuid: '1A2B3C3D5E',
-      pin: 'GPIO03',
-      isActive: true,
-      state: 'DOWN'
-    };
-    const dev4: Device = {
-      id: 4,
-      name: 'ENGINE_RELAY',
-      type: 'ENG-004',
-      uuid: '1A2B3C4D5F',
-      pin: 'GPIO05',
-      isActive: true,
-      state: 'DOWN'
-    };
-    return [dev1, dev2, dev3, dev4];
   }
 
 }

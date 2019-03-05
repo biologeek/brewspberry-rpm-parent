@@ -22,6 +22,22 @@ export class DeviceService {
       sensor: 3,
       name: 'Device 3',
       temperature: 93.0
+    }, {
+      id: 4,
+      name: 'Device 2',
+      type: 'ENG-004',
+      uuid: '1A2B3C4D5F',
+      pin: 'GPIO05',
+      isActive: true,
+      state: 'DOWN'
+    }, {
+      id: 4,
+      name: 'Device 2',
+      type: 'ENG-004',
+      uuid: '1A2B3C4D5F',
+      pin: 'GPIO05',
+      isActive: true,
+      state: 'DOWN'
     }]);
     // return <Observable<Device[]>> this.http.get(environment.apiHostMonitoring+'/');
   }
