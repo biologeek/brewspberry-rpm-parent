@@ -10,7 +10,8 @@
 						<span>{{device.name}}</span>
 					</mat-card-title>
 					<mat-card-content>
-						18°C
+						<span class="temperature-value">18</span> <span class="temperature-unit">°C</span>
+						<img src="assets/pictures/{{device.type}}-{{device.state}}.png" class="device-picture" />
 					</mat-card-content>
 					<mat-card-actions>
 							<button mat-button>

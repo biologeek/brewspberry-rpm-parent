@@ -13,23 +13,29 @@ export class DeviceService {
     return of([{
       sensor: 1,
       name: 'Device 1',
-      temperature: 25.0
+      type: 'thermometer',
+      temperature: 25.0,
+      state: 'STARTED'
     }, {
       sensor: 2,
       name: 'Device 2',
-      temperature: 21.0
+      type: 'thermometer',
+      temperature: 21.0,
+      state: 'PAUSED'
     }, {
       sensor: 3,
       name: 'Device 3',
-      temperature: 93.0
+      type: 'thermometer',
+      temperature: 93.0,
+      state: 'STOPPED'
     }, {
       id: 4,
-      name: 'Device 2',
-      type: 'ENG-004',
+      name: 'ENG-004',
+      type: 'engine',
       uuid: '1A2B3C4D5F',
       pin: 'GPIO05',
       isActive: true,
-      state: 'DOWN'
+      state: 'STOPPED'
     }, {
       id: 4,
       name: 'Device 2',
