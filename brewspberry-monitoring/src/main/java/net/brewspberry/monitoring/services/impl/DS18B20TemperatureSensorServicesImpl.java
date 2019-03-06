@@ -123,7 +123,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	@Override
 	public TemperatureMeasurement getTemperatureForDevice(TemperatureSensor sensor)
 			throws DeviceNotFoundException, ServiceException {
-		W1Device foundDevice = null;
 		TemperatureMeasurement measurement = null;
 		try {
 			measurement = findDeviceTemperatureByDeviceUUIDs(Arrays.asList(sensor)).get(0);
@@ -191,15 +190,14 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		target.setParameters(parameters);
 		target.setEm(em);
 		target.setThreadServices(threadStateService);
-		logger.info("Starting regular polling with UUID=" + threadUUID + " parameters : " + parameters);
+		logger.info(String.format("Starting regular polling with UUID={} parameters : {}", threadUUID, parameters));
 
 		try {
 			threadWitnessService.witnessThreadStart(threadUUID);
 			Thread t = new Thread(target, target.getUuid());
 			t.start();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.severe(e.getMessage());
 		}
 	}
 

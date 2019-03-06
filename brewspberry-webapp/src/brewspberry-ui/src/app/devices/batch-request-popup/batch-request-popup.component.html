@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Batch</h1>
+<div mat-dialog-content>
+  <div class="block">
+    <mat-form-field>
+      <input matInput class="half-width" placeholder="Frequency" [(ngModel)]="formData.frequency" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select class="half-width" placeholder="Unit" [(ngModel)]="formData.frequencyUnit">
+        <mat-option *ngFor="let unit of units" [value]="unit.multiplicator">{{unit.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="block">
+    <mat-form-field>
+      <input matInput class="half-width" placeholder="Duration" [(ngModel)]="formData.duration" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-select placeholder="Unit" class="half-width" [(ngModel)]="formData.durationUnit">
+        <mat-option *ngFor="let unit of units" [value]="unit.multiplicator">{{unit.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSubmit()" cdkFocusInitial>Ok</button>
+</div>

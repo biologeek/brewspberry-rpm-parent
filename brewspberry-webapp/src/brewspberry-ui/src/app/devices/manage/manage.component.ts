@@ -5,6 +5,8 @@ import { Device } from '../../beans/monitoring/device';
 import { Temperature } from '../../beans/monitoring/temperature';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { BatchRequestPopupComponent } from '../batch-request-popup/batch-request-popup.component';
 
 @Component({
   selector: 'app-manage',
@@ -31,8 +33,13 @@ export class ManageComponent implements OnInit {
   private devices$: Observable<Device[]>;
   private rawDevices: Device[];
   private temperatures: Temperature[];
+  private currentBatchDialogRef; 
 
-  constructor(private deviceService: DeviceService, private toast: ToastrService, private temperatureService: TemperatureService) { }
+  constructor(//
+    private deviceService: DeviceService, //
+    private toast: ToastrService, //
+    private temperatureService: TemperatureService,
+    public batchRequestDialog: MatDialog) { }
 
   ngOnInit() {
     // Get all devices, then last temperature for each device
@@ -60,7 +67,7 @@ export class ManageComponent implements OnInit {
       toToggle[0] = response;
     }, error => {
       this.toast.error('Could not update device ' + toToggle[0].uuid);
-    })
+    });
   }
 
 
@@ -70,6 +77,20 @@ export class ManageComponent implements OnInit {
       this.toast.info('Device removed');
     }, error => {
       this.toast.warning('Error when deleting device');
+    });
+  }
+
+  openBatchRequestPopup(device: Device) {
+    this.currentBatchDialogRef = this.batchRequestDialog.open(BatchRequestPopupComponent, {
+      width: '1000px',
+      data: {
+        devices: [device.uuid]
+      }/*,
+      height: '500px'*/
+    });
+    this.currentBatchDialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      this.temperatureService.launchTemperatureMeasurement(result);
     });
   }
 

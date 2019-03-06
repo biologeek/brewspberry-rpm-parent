@@ -4,11 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import net.brewspberry.monitoring.model.ThreadState;
-import net.brewspberry.monitoring.model.ThreadWitness;
 
 @Repository
-public interface ThreadWitnessRepository extends JpaRepository<ThreadWitness, Long>{
+public interface ThreadStateRepository extends JpaRepository<ThreadState, Long>{
 
-	ThreadWitness findByUuid(String sensorUuid);
+	ThreadState findByUuid(String uuid);
 
 }

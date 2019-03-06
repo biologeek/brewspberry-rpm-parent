@@ -125,11 +125,19 @@ h1 {
 	color: red;
 }
 
+.up-device {
+	color : #ffcc00;
+}
+
 .state-value {
 	font-size: 50px !important;
 	display: flex;
     align-items: center;
     justify-content: center;
+}
+
+mat-card {
+	width: 70%;
 }
 
 @media screen and (max-width: 500px) {

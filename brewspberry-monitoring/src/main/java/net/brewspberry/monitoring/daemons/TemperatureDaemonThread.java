@@ -1,9 +1,5 @@
 package net.brewspberry.monitoring.daemons;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -27,18 +23,15 @@ import com.pi4j.io.w1.W1Master;
 
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
-import net.brewspberry.monitoring.exceptions.ThreadToInterruptException;
-import net.brewspberry.monitoring.model.ThreadState;
-import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
+import net.brewspberry.monitoring.model.ThreadState;
+import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
 import net.brewspberry.monitoring.services.JmsDaemon;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
-import net.brewspberry.monitoring.services.ThreadWitnessServices;
 import net.brewspberry.monitoring.services.impl.DS18B20TemperatureSensorServicesImpl;
-import net.brewspberry.monitoring.services.impl.ThreadStateServicesImpl;
 import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
 /**

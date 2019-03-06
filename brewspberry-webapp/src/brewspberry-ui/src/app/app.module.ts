@@ -36,8 +36,9 @@ import { InputsComponent } from './brew/steps/inputs/inputs.component';
 import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
 
-import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule } from '@angular/material';
+import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule, MatDialogModule, MatSelectModule, MatInputModule, MatSlideToggleModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { BatchRequestPopupComponent } from './devices/batch-request-popup/batch-request-popup.component';
 
 
 
@@ -73,7 +74,8 @@ export const router: Routes = [
     SecondFermentationComponent,
     ConditioningComponent,
     InputsComponent,
-    FilteringComponent
+    FilteringComponent,
+    BatchRequestPopupComponent
     ],
   imports: [
     BrowserModule,
@@ -89,7 +91,11 @@ export const router: Routes = [
     MatTableModule,
     MatGridListModule,
     MatCardModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatInputModule,
+    MatSlideToggleModule
   ],
   providers: [DeviceService, TemperatureService, IngredientService, StepService],
   exports: [RouterModule],
@@ -102,7 +108,8 @@ export const router: Routes = [
     SecondFermentationComponent,
     ConditioningComponent,
     InputsComponent,
-    FilteringComponent
+    FilteringComponent,
+    BatchRequestPopupComponent
   ]
 })
 export class AppModule { }

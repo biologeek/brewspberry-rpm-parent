@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.brewspberry.monitoring.api.Temperature;
-import net.brewspberry.monitoring.api.request.TemperatureBatchRunRequestBody;
+import net.brewspberry.monitoring.api.request.TemperatureBatchRunRequestBodyDto;
 import net.brewspberry.monitoring.converter.TemperatureConverter;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
@@ -50,7 +50,7 @@ public class TemperatureSensorController {
 	 * @return
 	 */
 	@RequestMapping(path = "/run")
-	public ResponseEntity<Void> launchTemperatureMeasurement(@RequestBody TemperatureBatchRunRequestBody body) {
+	public ResponseEntity<Void> launchTemperatureMeasurement(@RequestBody TemperatureBatchRunRequestBodyDto body) {
 		temperatureSensorService.runRegularTemperatureMeasurementStr(body.getDevices(), bodyToParameters(body));
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
@@ -78,7 +78,7 @@ public class TemperatureSensorController {
 		return Arrays.asList(sensors.split(SENSOR_UUIDS_SEPARATOR)).stream().collect(Collectors.toList());
 	}
 
-	private Map<String, Object> bodyToParameters(TemperatureBatchRunRequestBody body) {
+	private Map<String, Object> bodyToParameters(TemperatureBatchRunRequestBodyDto body) {
 		Map<String, Object> params = new HashMap<>();
 		params.put(TemperatureSensor.DURATION, Duration.ofMillis(body.getDuration()));
 		params.put(TemperatureSensor.EXTERNAL_ID, body.getExternalId());

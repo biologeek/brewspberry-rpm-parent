@@ -3,8 +3,6 @@ package net.brewspberry.monitoring.converter;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.web.servlet.view.AbstractTemplateView;
-
 import net.brewspberry.monitoring.api.DeviceDto;
 import net.brewspberry.monitoring.api.DeviceDto.ActionerStatus;
 import net.brewspberry.monitoring.model.AbstractDevice;
@@ -74,11 +72,17 @@ public class DeviceConverter {
 				case PLUGGED:
 					return ActionerStatus.IDLE;
 				case UP:
-					return ActionerStatus.STARTED;
-				case PENDING:
+					return ActionerStatus.UP;
+				case PAUSED:
 					return ActionerStatus.PAUSED;
-				case UNPLUGGED:
+				case STOPPED:
 					return ActionerStatus.STOPPED;
+				case UNPLUGGED:
+					return ActionerStatus.DOWN;
+				case RUNNING:
+					return ActionerStatus.STARTED;
+				default:
+					break;
 				}
 			}
 			return null;

@@ -3,14 +3,15 @@ package net.brewspberry.monitoring.services.impl;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import net.brewspberry.monitoring.exceptions.TechnicalException;
 import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.ThreadWitness;
+import net.brewspberry.monitoring.repositories.ThreadStateRepository;
 import net.brewspberry.monitoring.repositories.ThreadWitnessRepository;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
@@ -19,7 +20,10 @@ import net.brewspberry.monitoring.services.ThreadWitnessServices;
 @Service
 public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitnessServices, ThreadWitnessCheckServices {
 
+	@Autowired
 	private ThreadWitnessRepository threadWitnessRepository;
+	@Autowired
+	private ThreadStateRepository threadStateRepository;
 
 	
 	public ThreadStateServicesImpl() {
@@ -28,18 +32,18 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 
 	@Override
 	public ThreadState readState(String sensorUuid) throws TechnicalException {
-		return em.find(ThreadState.class, sensorUuid);
+		return threadStateRepository.findByUuid(sensorUuid);
 	}
 
 	@Override
 	public List<ThreadState> readStates() throws TechnicalException {
-		return em.createQuery("from ThreadState").getResultList();
+		return threadStateRepository.findAll();
 	}
 
 	@Override
 	public void writeState(ThreadState state) throws TechnicalException {
 		Assert.notNull(state, "ThreadState is null");
-		em.persist(state);
+		threadStateRepository.save(state);
 	}
 
 	@Override
@@ -47,7 +51,7 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 		ThreadState entity = readState(uuid);
 		if (entity == null)
 			throw new TechnicalException("No thread running for " + uuid);
-		em.remove(entity);
+		threadStateRepository.delete(entity);
 	}
 
 	@Override
@@ -59,25 +63,28 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 
 	@Override
 	public ThreadWitness checkWitness(String uuid) {
-		return em.find(ThreadWitness.class, uuid);
+		return threadWitnessRepository.findByUuid(uuid);
 	}
 
 	@Override
 	public void witnessThreadStart(String uuid) throws TechnicalException {
-		ThreadWitness witness = em.find(ThreadWitness.class, uuid);
+		ThreadWitness witness = threadWitnessRepository.findByUuid(uuid);
 		if (witness == null) {
 			ThreadWitness wit = new ThreadWitness()//
 					.uuid(uuid)//
 					.date(new Date());
-			em.persist(wit);
-		} else {
-			throw new TechnicalException("thread.started");
+			try {
+				threadWitnessRepository.save(wit);
+			} catch (NestedRuntimeException e) {
+				e.printStackTrace();
+				throw new TechnicalException("thread.db_exception");
+			}
 		}
 	}
 
 	@Override
-	public void witnessThreadinterrupt(String uuid) {
-		ThreadWitness entity = em.find(ThreadWitness.class, uuid);
-		em.remove(entity);
+	public void witnessThreadInterrupt(String uuid) {
+		ThreadWitness entity = threadWitnessRepository.findByUuid(uuid);
+		threadWitnessRepository.delete(entity);
 	}
 }
