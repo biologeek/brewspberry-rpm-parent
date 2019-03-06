@@ -5,8 +5,9 @@ import { Device } from '../../beans/monitoring/device';
 import { Temperature } from '../../beans/monitoring/temperature';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef, MatSnackBarRef, MatSnackBar } from '@angular/material';
 import { BatchRequestPopupComponent } from '../batch-request-popup/batch-request-popup.component';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-manage',
@@ -33,11 +34,12 @@ export class ManageComponent implements OnInit {
   private devices$: Observable<Device[]>;
   private rawDevices: Device[];
   private temperatures: Temperature[];
-  private currentBatchDialogRef; 
+  private currentBatchDialogRef;
 
   constructor(//
     private deviceService: DeviceService, //
     private toast: ToastrService, //
+    private snackBar: MatSnackBar,
     private temperatureService: TemperatureService,
     public batchRequestDialog: MatDialog) { }
 
@@ -81,17 +83,28 @@ export class ManageComponent implements OnInit {
   }
 
   openBatchRequestPopup(device: Device) {
-    this.currentBatchDialogRef = this.batchRequestDialog.open(BatchRequestPopupComponent, {
-      width: '1000px',
-      data: {
-        devices: [device.uuid]
-      }/*,
+
+    if (device.type === 'thermometer') {
+      this.currentBatchDialogRef = this.batchRequestDialog.open(BatchRequestPopupComponent, {
+        width: '1000px',
+        data: {
+          devices: [device.uuid]
+        }/*,
       height: '500px'*/
-    });
-    this.currentBatchDialogRef.afterClosed().subscribe(result => {
-      console.log(result);
-      this.temperatureService.launchTemperatureMeasurement(result);
-    });
+      });
+      this.currentBatchDialogRef.afterClosed().subscribe(result => {
+        console.log(result);
+        this.temperatureService.launchTemperatureMeasurement(result).subscribe((ok: HttpResponse<void>) => {
+          this.snackBar.open('Device started !', null, {
+            duration: 3000
+          })
+        }, (error: HttpErrorResponse) => {
+          this.snackBar.open('Could not start device ! Error ' + error.statusText);
+        });
+      });
+    } else {
+      this.deviceService.startDevice(device.uuid);
+    }
   }
 
 }

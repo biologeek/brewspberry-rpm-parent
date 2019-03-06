@@ -72,4 +72,8 @@ export class DeviceService {
     return <Observable<Device>>this.http.put(environment.apiHostMonitoring + '/temperature/' + device.uuid, device);
   }
 
+  public startDevice(device: Device): Observable<Device> {
+    return this.http.put(`${environment.apiHostMonitoring}/device/${device.id}/start`, null) as Observable<Device>;
+  }
+
 }

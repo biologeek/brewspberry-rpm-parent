@@ -39,11 +39,13 @@ import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessServices;
 import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
-@Service
+
 /**
  * Service that handles operations around DS18B20 temperature sensors
  *
  */
+@Service
+@Qualifier("temperatureSensorServiceImpl")
 public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorService {
 
 	private static final int DS18B20_CONSTANT = 0x28;
@@ -321,6 +323,13 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		if (new Date().before(sensor.getCreationDate())) {
 			throw new ValidationException("creation.date.future");
 		}
+	}
+
+
+	@Override
+	public TemperatureSensor startDevice(Long id, Float duration, Integer frequencyInSeconds) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

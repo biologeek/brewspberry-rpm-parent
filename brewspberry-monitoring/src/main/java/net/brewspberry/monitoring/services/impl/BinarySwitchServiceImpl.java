@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.pi4j.io.gpio.GpioController;
@@ -19,16 +20,18 @@ import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.SwitchStatus;
-import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
 import net.brewspberry.monitoring.services.BinarySwitchService;
 
-@Service
+
 /**
  * Service that handles operations on binary switches
  * @author xavier
  *
  */
+
+@Service
+@Qualifier("binarySwitchServiceImpl")
 public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	private GpioController controller;
@@ -186,6 +189,12 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		if (new Date().before(sensor.getCreationDate())) {
 			throw new ValidationException("creation.date.future");
 		}
+	}
+
+	@Override
+	public BinarySwitch startDevice(Long id, Float duration, Integer frequencyInSeconds) {
+		// TODO Auto-generated method stub
+		return null;
 	}
  
 }
