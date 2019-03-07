@@ -3,7 +3,7 @@ package net.brewspberry.monitoring.services;
 import java.util.Set;
 
 import net.brewspberry.monitoring.exceptions.ServiceException;
-import net.brewspberry.monitoring.model.TemperatureSensor;
+import net.brewspberry.monitoring.model.AbstractDevice;
 
 /**
  * Defines common behaviour for devices such as device registration, setup,
@@ -12,7 +12,7 @@ import net.brewspberry.monitoring.model.TemperatureSensor;
  * @param <T>
  *            Device type
  */
-public interface DeviceService<T> {
+public interface DeviceService<T extends AbstractDevice> {
 
 	public T getDeviceById(Long id);
 
@@ -30,6 +30,8 @@ public interface DeviceService<T> {
 	 * @param frequencyInSeconds frequency of measurement
 	 * @return the updated device
 	 */
-	public T startDevice(Long id, Float duration, Integer frequencyInSeconds);
+	public T startDevice(T device, Float duration, Integer frequencyInSeconds);
+
+	public T stopDevice(T device);
 
 }

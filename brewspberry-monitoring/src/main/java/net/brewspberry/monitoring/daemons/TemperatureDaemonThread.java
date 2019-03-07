@@ -28,11 +28,9 @@ import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
-import net.brewspberry.monitoring.services.JmsDaemon;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
 import net.brewspberry.monitoring.services.impl.DS18B20TemperatureSensorServicesImpl;
-import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
 /**
  * Daemon thread that will regularly poll sensor to get temperature
@@ -40,11 +38,10 @@ import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService
  * @author xavier
  *
  */
-public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureMeasurement> {
+public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<TemperatureMeasurement>*/ {
 
 	private volatile TemperatureMeasurementRepository repository;
 
-	private volatile TemperatureMeasurementJmsService jmsService;
 	private volatile Map<String, Object> parameters;
 	private volatile W1Master oneWireMaster;
 	private volatile ThreadStateServices threadServices;
@@ -124,7 +121,6 @@ public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureM
 	}
 
 	private void checkParams() {
-		Assert.notNull(jmsService, "JmsService is null !");
 		Assert.notNull(repository, "temperatureMeasurementRepository is null !");
 		Assert.notNull(oneWireMaster, "1-Wire masters is null !");
 		Assert.notNull(threadServices, "ThreadStateService is null !");
@@ -138,22 +134,6 @@ public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureM
 		repository.saveAll(measured);
 	}
 
-	public void sendJms(List<TemperatureMeasurement> measured) {
-		if (measured == null || measured.isEmpty())
-			return;
-		else {
-			jmsService.send(measured);
-		}
-	}
-
-	@Override
-	public void sendJms(TemperatureMeasurement measured) {
-		if (measured == null)
-			return;
-		else {
-			jmsService.send(measured);
-		}
-	}
 
 	/**
 	 * Determines which devices to poll and poll them
@@ -232,14 +212,6 @@ public class TemperatureDaemonThread implements Runnable, JmsDaemon<TemperatureM
 
 	public void setRepository(TemperatureMeasurementRepository repository) {
 		this.repository = repository;
-	}
-
-	public TemperatureMeasurementJmsService getJmsService() {
-		return jmsService;
-	}
-
-	public void setJmsService(TemperatureMeasurementJmsService jmsService) {
-		this.jmsService = jmsService;
 	}
 
 	public W1Master getOneWireMaster() {

@@ -140,6 +140,16 @@ mat-card {
 	width: 70%;
 }
 
+.mat-snack-bar-error {
+	background-color: #ff6049 !important;
+	color: black !important;
+}
+
+.mat-snack-bar-ok {
+	background-color: #39c134 !important;
+	color: black !important;
+}
+
 @media screen and (max-width: 500px) {
 
 	.devices-container{

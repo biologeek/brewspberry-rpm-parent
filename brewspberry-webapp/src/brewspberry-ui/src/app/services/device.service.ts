@@ -3,6 +3,7 @@ import { Device } from '../beans/monitoring/device';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { BatchRequest } from '../beans/monitoring/batch-request';
 
 @Injectable()
 export class DeviceService {
@@ -60,20 +61,23 @@ export class DeviceService {
   }
 
   public getAvailableUuids(): Observable<string[]> {
-    return <Observable<string[]>>this.http.get(environment.apiHostMonitoring + '/uuid/available');
+    return this.http.get(environment.apiHostMonitoring + '/uuid/available') as Observable<string[]>;
   }
 
 
   public deleteDevice(uuid: string): Observable<string[]> { // TODO
-    return <Observable<string[]>>this.http.delete(environment.apiHostMonitoring + '/uuid/' + uuid);
+    return this.http.delete(environment.apiHostMonitoring + '/uuid/' + uuid) as Observable<string[]>;
   }
 
   public update(device: Device): Observable<Device> { // TODO
-    return <Observable<Device>>this.http.put(environment.apiHostMonitoring + '/temperature/' + device.uuid, device);
+    return this.http.put(environment.apiHostMonitoring + '/temperature/' + device.uuid, device) as Observable<Device>;
   }
 
-  public startDevice(device: Device): Observable<Device> {
+  public startDevice(device: Device, batch: BatchRequest): Observable<Device> {
     return this.http.put(`${environment.apiHostMonitoring}/device/${device.id}/start`, null) as Observable<Device>;
   }
 
+  public stopDevice(device: Device): Observable<Device> {
+    return this.http.put(`${environment.apiHostMonitoring}/device/${device.id}/stop`, null) as Observable<Device>;
+  }
 }

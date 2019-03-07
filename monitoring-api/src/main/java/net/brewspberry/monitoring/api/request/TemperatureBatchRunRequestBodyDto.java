@@ -1,31 +1,31 @@
 package net.brewspberry.monitoring.api.request;
 
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 /**
- * DTO used to launch a new batch of 
+ * DTO used to launch a new batch of
+ * 
  * @author caron-x
  *
  */
 @JsonAutoDetect
 public class TemperatureBatchRunRequestBodyDto {
 
-	private List<String> devices;
+	private String device;
 	/**
-	 * The external identifier of step/brew/other element related to this batch, optional
+	 * The external identifier of step/brew/other element related to this batch,
+	 * optional
 	 */
 	private String externalId;
-	private Long frequency;
-	private Long duration;
+	private Integer frequency;
+	private Float duration;
 
-	public List<String> getDevices() {
-		return devices;
+	public String getDevice() {
+		return device;
 	}
 
-	public void setDevices(List<String> devices) {
-		this.devices = devices;
+	public void setDevice(String device) {
+		this.device = device;
 	}
 
 	public String getExternalId() {
@@ -36,19 +36,19 @@ public class TemperatureBatchRunRequestBodyDto {
 		this.externalId = externalId;
 	}
 
-	public Long getFrequency() {
+	public Integer getFrequency() {
 		return frequency;
 	}
 
-	public void setFrequency(Long frequency) {
+	public void setFrequency(Integer frequency) {
 		this.frequency = frequency;
 	}
 
-	public Long getDuration() {
+	public Float getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Long duration) {
+	public void setDuration(Float duration) {
 		this.duration = duration;
 	}
 

@@ -1,9 +1,11 @@
 package net.brewspberry.monitoring.services.impl;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ import org.springframework.util.Assert;
 import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
 
+import net.brewspberry.monitoring.api.request.TemperatureBatchRunRequestBodyDto;
 import net.brewspberry.monitoring.daemons.TemperatureDaemonThread;
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
@@ -37,7 +40,6 @@ import net.brewspberry.monitoring.repositories.TemperatureSensorRepository;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessServices;
-import net.brewspberry.monitoring.services.tech.TemperatureMeasurementJmsService;
 
 
 /**
@@ -64,8 +66,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	@Value("${thread.dump.folder}")
 	String threadDumpFolder;
 
-	@Autowired
-	TemperatureMeasurementJmsService jmsService;
 
 	@Autowired
 	ThreadStateServices threadStateService;
@@ -187,7 +187,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	public void runRegularTemperatureMeasurement(List<TemperatureSensor> sensors, Map<String, Object> parameters) {
 		String threadUUID = UUID.randomUUID().toString();
 		TemperatureDaemonThread target = new TemperatureDaemonThread();
-		target.setJmsService(jmsService);
 		target.setOneWireMaster(oneWireMaster);
 		target.setParameters(parameters);
 		target.setEm(em);
@@ -204,9 +203,9 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	@Override
-	public void runRegularTemperatureMeasurementStr(List<String> devices, Map<String, Object> parameters) {
-		List<TemperatureSensor> sensors = this.repository.findAllByUuid(devices);
-		runRegularTemperatureMeasurement(sensors, parameters);
+	public void runRegularTemperatureMeasurementStr(String device, Map<String, Object> parameters) {
+		TemperatureSensor sensors = this.repository.findByUuid(device);
+		runRegularTemperatureMeasurement(Arrays.asList(sensors), parameters);
 	}
 
 	public Logger getLogger() {
@@ -327,9 +326,26 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 
 	@Override
-	public TemperatureSensor startDevice(Long id, Float duration, Integer frequencyInSeconds) {
+	public TemperatureSensor startDevice(TemperatureSensor sensor, Float duration, Integer frequencyInSeconds) {		
+		runRegularTemperatureMeasurement(Arrays.asList(sensor), bodyToParameters(duration, frequencyInSeconds, null));
+		return null;
+	}
+
+	@Override
+	public TemperatureSensor stopDevice(TemperatureSensor deviceId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	
+	
+
+	private Map<String, Object> bodyToParameters(Float duration, Integer frequency, Long externalId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put(TemperatureSensor.DURATION, duration * 1000);
+		params.put(TemperatureSensor.EXTERNAL_ID, externalId);
+		params.put(TemperatureSensor.FREQUENCY, Duration.ofSeconds(frequency));
+		return params;
 	}
 
 }

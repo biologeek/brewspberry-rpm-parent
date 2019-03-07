@@ -1,7 +1,6 @@
 package net.brewspberry.monitoring.services;
 
 import java.time.Duration;
-import java.time.Period;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +56,7 @@ public interface TemperatureSensorService extends DeviceService<TemperatureSenso
 	 * 
 	 * @param parameters
 	 */
-	public void runRegularTemperatureMeasurementStr(List<String> devices, Map<String, Object> bodyToParameters);
+	public void runRegularTemperatureMeasurementStr(String device, Map<String, Object> bodyToParameters);
 
 	public List<TemperatureMeasurement> getTemperatureForDevices(List<Long> deviceIds);
 

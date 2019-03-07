@@ -192,7 +192,13 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	}
 
 	@Override
-	public BinarySwitch startDevice(Long id, Float duration, Integer frequencyInSeconds) {
+	public BinarySwitch startDevice(BinarySwitch device, Float duration, Integer frequencyInSeconds) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public BinarySwitch stopDevice(BinarySwitch device) {
 		// TODO Auto-generated method stub
 		return null;
 	}

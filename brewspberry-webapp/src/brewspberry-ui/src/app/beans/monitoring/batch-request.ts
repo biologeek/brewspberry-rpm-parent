@@ -1,5 +1,5 @@
 export interface BatchRequest {
-    devices?: Array<string>;
+    device?: string;
     externalId?: string;
     frequency?: number;
     duration?: number;

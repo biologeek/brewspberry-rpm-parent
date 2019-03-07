@@ -16,11 +16,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.brewspberry.monitoring.api.DeviceDto;
+import net.brewspberry.monitoring.api.request.TemperatureBatchRunRequestBodyDto;
 import net.brewspberry.monitoring.converter.DeviceConverter;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.TemperatureSensor;
+import net.brewspberry.monitoring.services.CommonDeviceService;
 import net.brewspberry.monitoring.services.DeviceService;
 
 @RequestMapping("/devices")
@@ -28,19 +30,19 @@ import net.brewspberry.monitoring.services.DeviceService;
 public class DevicesController {
 
 	@Autowired
-	private DeviceService<AbstractDevice> deviceServices;
+	private CommonDeviceService deviceServices;
 	@Autowired
 	private DeviceService<TemperatureSensor> temperatureSensorServices;
 	@Autowired
 	private DeviceService<BinarySwitch> binarySwitchServices;
 
-	@RequestMapping(path="/", method=RequestMethod.GET)
-	public Set<DeviceDto> getAllDevices(){
+	@RequestMapping(path = "/", method = RequestMethod.GET)
+	public Set<DeviceDto> getAllDevices() {
 		return new DeviceConverter().toApi(deviceServices.listAllDevices());
 	}
 
-	@RequestMapping(path="/plugged", method=RequestMethod.GET)
-	public Set<DeviceDto> getAllPluggedDevices(){
+	@RequestMapping(path = "/plugged", method = RequestMethod.GET)
+	public Set<DeviceDto> getAllPluggedDevices() {
 		Set<AbstractDevice> devices = retrieveAllDeviceTypesFromServices();
 		return new DeviceConverter().toApi(devices);
 	}
@@ -61,35 +63,44 @@ public class DevicesController {
 
 		if (sensor == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
+
 		temperatureSensorServices.saveDevice(sensor);
-				
+
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/temperature/{uuid}", method = RequestMethod.PUT)
-	public ResponseEntity<DeviceDto> updateTemperatureSensor(@PathVariable("uuid") String uuid, @RequestBody DeviceDto dto) throws ServiceException {
+	public ResponseEntity<DeviceDto> updateTemperatureSensor(@PathVariable("uuid") String uuid,
+			@RequestBody DeviceDto dto) throws ServiceException {
 		if (!uuid.equals(dto.getUuid())) {
 			throw new ValidationException("uuid.mismatch");
 		}
-		
+
 		TemperatureSensor sensorToUpdate = new DeviceConverter().toModel(dto);
-		
+
 		TemperatureSensor sensorModel = temperatureSensorServices.getDeviceByUUID(uuid);
 
 		if (sensorToUpdate == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		else if ( sensorModel == null)
+		else if (sensorModel == null)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		
+
 		temperatureSensorServices.updateDevice(sensorToUpdate, sensorModel);
-				
+
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/{device}/start")
-	public ResponseEntity<DeviceDto> startDevice(@PathVariable("device") Long deviceId){
-		this.deviceServices
+	public ResponseEntity<DeviceDto> startDevice(@PathVariable("device") Long deviceId,
+			@RequestBody TemperatureBatchRunRequestBodyDto body) {
+		AbstractDevice device = this.deviceServices.startDevice(deviceId, body.getDuration(), body.getFrequency());
+		return new ResponseEntity<>(new DeviceConverter().toApi(device), HttpStatus.OK);
+	}
+
+	@PutMapping("/{device}/stop")
+	public ResponseEntity<DeviceDto> stopDevice(@PathVariable("device") Long deviceId) {
+		AbstractDevice device = this.deviceServices.stopDevice(deviceId);
+		return new ResponseEntity<>(new DeviceConverter().toApi(device), HttpStatus.OK);
 	}
 
 	/**
@@ -97,14 +108,14 @@ public class DevicesController {
 	 */
 	private Set<AbstractDevice> retrieveAllDeviceTypesFromServices() {
 		Set<AbstractDevice> response = new HashSet<>(0);
-		
+
 		Set<TemperatureSensor> tempResponse = temperatureSensorServices.listPluggedDevices();
 		if (tempResponse != null)
 			response.addAll(tempResponse);
 		Set<BinarySwitch> switchResponse = binarySwitchServices.listPluggedDevices();
 		if (switchResponse != null)
 			response.addAll(switchResponse);
-		//TODO : Add new service call if new device type.
+		// TODO : Add new service call if new device type.
 		return response;
 	}
 }

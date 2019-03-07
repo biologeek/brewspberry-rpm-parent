@@ -1,6 +1,8 @@
 <h1 mat-dialog-title>Batch</h1>
 <div mat-dialog-content>
-  <div class="block">
+  <br>
+  <br>
+  <div *ngIf="dialogInputData.device.type === 'thermometer'" class="block">
     <mat-form-field>
       <input matInput class="half-width" placeholder="Frequency" [(ngModel)]="formData.frequency" />
     </mat-form-field>
@@ -22,6 +24,6 @@
   </div>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onSubmit()" cdkFocusInitial>Ok</button>
+  <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancel</button>
+  <button mat-button (click)="onSubmit()">Ok</button>
 </div>
