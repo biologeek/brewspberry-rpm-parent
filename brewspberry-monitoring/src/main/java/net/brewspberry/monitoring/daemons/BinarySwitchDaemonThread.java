@@ -10,11 +10,16 @@ import java.util.Map;
 
 import org.junit.Assert;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.w1.W1Master;
 
+import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.DeviceStatus;
 import net.brewspberry.monitoring.model.SwitchStatus;
+import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
 import net.brewspberry.monitoring.services.ThreadStateServices;
@@ -32,17 +37,17 @@ public class BinarySwitchDaemonThread implements Runnable {
 	public static final int LONG_CHECK_TIMEOUT = 12;
 	public static final int SHORT_CHECK_TIMEOUT = 1;
 	private BinarySwitchRepository binarySwitchRepository;
-	private W1Master oneWireMaster;
+	private GpioController gpioController;
 	private ThreadStateServices threadServices;
 	private ThreadWitnessCheckServices witnessServices;
 	private Map<String, Object> parameters;
 
 	public BinarySwitchDaemonThread(BinarySwitchRepository repository, //
-			W1Master oneWireMaster, //
+			GpioController gpioController, //
 			ThreadStateServices threadServices, //
 			ThreadWitnessCheckServices witnessServices) {
 		this.binarySwitchRepository = repository;
-		this.oneWireMaster = oneWireMaster;
+		this.gpioController = gpioController;
 		this.threadServices = threadServices;
 		this.witnessServices = witnessServices;
 	}
@@ -62,11 +67,23 @@ public class BinarySwitchDaemonThread implements Runnable {
 	public void run() {
 
 		checkParameters();
+		BinarySwitch device = this.binarySwitchRepository.findByUuid((String) this.parameters.get(UUID_PRM));
 
 		LocalDateTime endLocalDate = LocalDateTime.now().plus(Duration.ofSeconds((long) parameters.get(DURATION_PRM)));
 
 		int sleepTime = 10000;
 		while (LocalDateTime.now().isBefore(endLocalDate)) {
+			GpioPinDigitalOutput outputPin = gpioController
+					.provisionDigitalOutputPin(AbstractDevice.BREW_GPIO.get(device.getPin()));
+			
+			if (outputPin.getState() == PinState.HIGH)
+				outputPin.setState(PinState.LOW);
+			ThreadState state = this.threadServices.readState(UUID_PRM);
+			
+			
+			if (state == null)
+				interruptCurrentRun();
+
 			sleepTime = getSleepTime(endLocalDate);
 			try {
 				Thread.sleep(sleepTime);
@@ -76,9 +93,13 @@ public class BinarySwitchDaemonThread implements Runnable {
 		}
 
 		postRun();
-		
-		Thread.currentThread().interrupt();
 
+		interruptCurrentRun();
+
+	}
+
+	private void interruptCurrentRun() {
+		Thread.currentThread().interrupt();
 	}
 
 	/**
@@ -87,12 +108,12 @@ public class BinarySwitchDaemonThread implements Runnable {
 	 */
 	private void postRun() {
 		BinarySwitch device = this.binarySwitchRepository.findByUuid((String) this.parameters.get(UUID_PRM));
-		
+
 		device.setSwitchStatus(SwitchStatus.DOWN);
 		device.setPinState(DeviceStatus.STOPPED);
 		device.setLastStateChangeDate(new Date());
 		binarySwitchRepository.save(device);
-		
+
 		threadServices.cleanState((String) parameters.get(UUID_PRM));
 	}
 

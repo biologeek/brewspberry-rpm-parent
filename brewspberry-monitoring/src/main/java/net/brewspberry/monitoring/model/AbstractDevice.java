@@ -1,6 +1,8 @@
 package net.brewspberry.monitoring.model;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,10 +12,35 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.pi4j.io.gpio.Pin;
+import com.pi4j.io.gpio.RaspiPin;
+
 @Entity
 @Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractDevice {
 
+	
+
+	public static final Map<String, Pin> BREW_GPIO = new HashMap<String, Pin>();
+
+	static {
+		BREW_GPIO.put("11", RaspiPin.GPIO_00);
+		BREW_GPIO.put("12", RaspiPin.GPIO_01);
+		BREW_GPIO.put("13", RaspiPin.GPIO_02);
+		BREW_GPIO.put("15", RaspiPin.GPIO_03);
+		BREW_GPIO.put("16", RaspiPin.GPIO_04);
+		BREW_GPIO.put("18", RaspiPin.GPIO_05);
+		BREW_GPIO.put("22", RaspiPin.GPIO_06);
+		BREW_GPIO.put("07", RaspiPin.GPIO_07);
+		BREW_GPIO.put("03", RaspiPin.GPIO_08);
+		BREW_GPIO.put("05", RaspiPin.GPIO_09);
+		BREW_GPIO.put("24", RaspiPin.GPIO_10);
+		BREW_GPIO.put("26", RaspiPin.GPIO_11);
+		BREW_GPIO.put("19", RaspiPin.GPIO_12);
+		BREW_GPIO.put("21", RaspiPin.GPIO_13);
+		BREW_GPIO.put("23", RaspiPin.GPIO_14);
+	};
+	
 	@Id
 	@GeneratedValue
 	protected Long id;
