@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -22,6 +21,7 @@ import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
 
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
+import net.brewspberry.monitoring.exceptions.MonitoringException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
@@ -35,10 +35,8 @@ import net.brewspberry.monitoring.services.impl.DS18B20TemperatureSensorServices
 /**
  * Daemon thread that will regularly poll sensor to get temperature
  * 
- * @author xavier
- *
  */
-public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<TemperatureMeasurement>*/ {
+public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<TemperatureMeasurement> */ {
 
 	private volatile TemperatureMeasurementRepository repository;
 
@@ -55,15 +53,25 @@ public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<Temperatur
 	public TemperatureDaemonThread() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	/**
 	 * Periodic polling of sensor temperature using passed parameters (at least
-	 * duration, polling frequency and list of sensors)
+	 * duration, polling frequency and list of sensors)<br>
+	 * <br>
+	 * In case thread params are not complete or invalid, thread is interrupted.
+	 * <br>
+	 * <br>
+	 * If a thread already exists for device, it does not start.
+	 * 
 	 */
 	public void run() {
-		
-		checkParams();
-		Date begin = new Date();
+		try {
+			checkParams();
+		} catch (Exception e) {
+			Thread.currentThread().interrupt();
+		}
+
 		Calendar endCal = Calendar.getInstance();
 
 		endCal.add(Calendar.MILLISECOND, (int) ((Duration) parameters.get(TemperatureSensor.DURATION)).toMillis());
@@ -77,26 +85,27 @@ public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<Temperatur
 				saveMeasurements(measured);
 				threadServices.writeState(ThreadState.noError(uuid));
 				Thread.sleep((long) parameters.get(TemperatureSensor.FREQUENCY));
-			} catch (IOException | TechnicalException e) {
+			} catch (MonitoringException e) {
 				e.printStackTrace();
-				try {
+					ThreadState threadState = threadServices.readState(e.getMessage());
 					threadServices.writeState(ThreadState
-							.xErrors(threadServices.readState(e.getMessage()).getErrorOccurence(), e.getMessage()));
-				} catch (TechnicalException e1) {
-					e1.printStackTrace();
-				}
+							.xErrors(threadState.getErrorOccurence(), e.getDeviceUuid(), e.getMessage()));
+				
 				continue;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				logger.severe("Thread sleep interrupted !!");
+			} catch (TechnicalException e1) {
+				continue;
 			}
 		}
 
 		finalizeThread(sensorsList);
 	}
-	
+
 	/**
-	 * Operations to execute before polling. 
+	 * Operations to execute before polling. <br>
+	 * <br>
 	 * In this case if witness is no more present, interrupt the thread.
 	 */
 	private void prePolling() {
@@ -107,6 +116,7 @@ public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<Temperatur
 
 	/**
 	 * Called at the end of thread execution, this method releases file locks
+	 * 
 	 * @param sensorsList
 	 */
 	private void finalizeThread(List<TemperatureSensor> sensorsList) {
@@ -122,7 +132,7 @@ public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<Temperatur
 
 	private void checkParams() {
 		Assert.notNull(repository, "temperatureMeasurementRepository is null !");
-		Assert.notNull(oneWireMaster, "1-Wire masters is null !");
+		Assert.notNull(oneWireMaster, "1-Wire master is null !");
 		Assert.notNull(threadServices, "ThreadStateService is null !");
 		Assert.notEmpty(parameters, "No parameters provided !");
 		for (String prm : TemperatureSensor.MANDATORY_REGULAR_POLL_PARAMETERS) {
@@ -134,17 +144,17 @@ public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<Temperatur
 		repository.saveAll(measured);
 	}
 
-
 	/**
 	 * Determines which devices to poll and poll them
 	 * 
 	 * @param sensors
 	 * @param frequency
 	 * @return
+	 * @throws MonitoringException 
 	 * @throws DeviceNotFoundException
 	 * @throws IOException
 	 */
-	private List<TemperatureMeasurement> pollSensors(List<TemperatureSensor> sensors) throws IOException {
+	private List<TemperatureMeasurement> pollSensors(List<TemperatureSensor> sensors) throws MonitoringException {
 
 		List<TemperatureMeasurement> measurements = new ArrayList<>(0);
 
@@ -152,25 +162,24 @@ public class TemperatureDaemonThread implements Runnable/*, JmsDaemon<Temperatur
 
 		for (W1Device device : devices) {
 
-			TemperatureSensor currentSensor;
+			TemperatureSensor currentSensor = null;
 			try {
 				currentSensor = sensors//
 						.stream()//
 						.filter(t -> t.getUuid().equals(device.getId())).findFirst()//
-						.orElseThrow(new Supplier<DeviceNotFoundException>() {
-							public DeviceNotFoundException get() {
-								return new DeviceNotFoundException(device.getId());
-							}
-						});
+						.orElseThrow(() -> new DeviceNotFoundException(device.getId()));
+				
+				measurements.add(new TemperatureMeasurement()//
+						.date(new Date())//
+						.sensor(currentSensor)//
+						.temperature(DS18B20TemperatureSensorServicesImpl.convertRawTemperature(device.getValue()))//
+				);
 			} catch (DeviceNotFoundException e) {
 				e.printStackTrace();
 				continue;
-			}
-			measurements.add(new TemperatureMeasurement()//
-					.date(new Date())//
-					.sensor(currentSensor)//
-					.temperature(DS18B20TemperatureSensorServicesImpl.convertRawTemperature(device.getValue()))//
-			);//
+			} catch (IOException e) {
+				throw new MonitoringException(currentSensor.getUuid(), e);
+			}//
 		}
 		return measurements;
 	}

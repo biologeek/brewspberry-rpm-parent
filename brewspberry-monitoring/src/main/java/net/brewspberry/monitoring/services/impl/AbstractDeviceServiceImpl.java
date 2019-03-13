@@ -21,6 +21,12 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 	@Autowired
 	private AbstractDeviceRepository abstractDeviceRepository;
 
+	/**
+	 * Factory that injects concrete device service using its Spring qualifier
+	 * @param device
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
 	private <T extends AbstractDevice> DeviceService<T> getSubService(AbstractDevice device) {
 		String clazz = device.getClass().getName();
 		return (DeviceService<T>) ctx

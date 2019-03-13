@@ -8,4 +8,6 @@ import net.brewspberry.monitoring.model.BinarySwitch;
 @Repository
 public interface BinarySwitchRepository extends CrudRepository<BinarySwitch, Long>{
 
+	BinarySwitch findByUuid(String object);
+
 }

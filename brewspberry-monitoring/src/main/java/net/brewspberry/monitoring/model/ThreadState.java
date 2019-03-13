@@ -86,12 +86,18 @@ public class ThreadState implements Serializable {
 		stateDate = object;
 		return this;
 	}
-
-	public static ThreadState xErrors(Integer i, String uuid) {
+	/**
+	 * Builds a {@link ThreadState} with errors for device
+	 * @param occurence number of errors
+	 * @param uuid UUID if device
+	 * @param errorMessage TODO
+	 * @return a ThreadState object
+	 */
+	public static ThreadState xErrors(Integer occurence, String uuid, String errorMessage) {
 		return new ThreadState()//
 				.uuid(uuid)//
 				.stateDate(new Date())//
-				.errorOccurence(i);
+				.errorOccurence(occurence);
 	}
 
 }

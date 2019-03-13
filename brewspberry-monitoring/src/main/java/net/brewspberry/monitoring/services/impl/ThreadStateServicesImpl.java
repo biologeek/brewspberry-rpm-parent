@@ -55,8 +55,8 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 	}
 
 	@Override
-	public void cleanState(List<String> collect) throws TechnicalException {
-		for (String t : collect) {
+	public void cleanState(List<String> uuids) throws TechnicalException {
+		for (String t : uuids) {
 			cleanState(t);
 		}
 	}
@@ -79,6 +79,8 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 				e.printStackTrace();
 				throw new TechnicalException("thread.db_exception");
 			}
+		} else {
+			throw new IllegalAccessError("thread.already_executing");
 		}
 	}
 

@@ -28,10 +28,11 @@ import org.springframework.util.Assert;
 import com.pi4j.io.w1.W1Device;
 import com.pi4j.io.w1.W1Master;
 
-import net.brewspberry.monitoring.api.request.TemperatureBatchRunRequestBodyDto;
 import net.brewspberry.monitoring.daemons.TemperatureDaemonThread;
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
+import net.brewspberry.monitoring.exceptions.TechnicalException;
+import net.brewspberry.monitoring.model.DeviceStatus;
 import net.brewspberry.monitoring.model.DeviceType;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
 import net.brewspberry.monitoring.model.TemperatureSensor;
@@ -40,7 +41,6 @@ import net.brewspberry.monitoring.repositories.TemperatureSensorRepository;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessServices;
-
 
 /**
  * Service that handles operations around DS18B20 temperature sensors
@@ -65,7 +65,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Value("${thread.dump.folder}")
 	String threadDumpFolder;
-
 
 	@Autowired
 	ThreadStateServices threadStateService;
@@ -143,6 +142,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 			foundDevices = oneWireMaster.getDevices(DS18B20_CONSTANT)// Take only DS18B20
 					.stream()//
 					.filter(t -> ids.contains(t.getId())).collect(Collectors.toList());
+
 			sensor.stream().forEach(new Consumer<TemperatureSensor>() {
 				@Override
 				public void accept(TemperatureSensor temp) {
@@ -197,7 +197,10 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 			threadWitnessService.witnessThreadStart(threadUUID);
 			Thread t = new Thread(target, target.getUuid());
 			t.start();
-		} catch (Exception e) {
+		} catch (IllegalAccessException e) {
+			// thrown in case device is already started
+			logger.warning("device already started");
+		} catch (TechnicalException e) {
 			logger.severe(e.getMessage());
 		}
 	}
@@ -324,21 +327,21 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		}
 	}
 
-
 	@Override
-	public TemperatureSensor startDevice(TemperatureSensor sensor, Float duration, Integer frequencyInSeconds) {		
+	public TemperatureSensor startDevice(TemperatureSensor sensor, Float duration, Integer frequencyInSeconds) {
 		runRegularTemperatureMeasurement(Arrays.asList(sensor), bodyToParameters(duration, frequencyInSeconds, null));
-		return null;
+		sensor.setPinState(DeviceStatus.RUNNING);
+		sensor.setLastStateChangeDate(new Date());
+		return repository.save(sensor);
 	}
 
 	@Override
-	public TemperatureSensor stopDevice(TemperatureSensor deviceId) {
-		// TODO Auto-generated method stub
-		return null;
+	public TemperatureSensor stopDevice(TemperatureSensor device) {
+		this.threadStateService.cleanState(device.getUuid());
+		device.setPinState(DeviceStatus.STOPPED);
+		device.setLastStateChangeDate(new Date());
+		return this.repository.save(device);
 	}
-	
-	
-	
 
 	private Map<String, Object> bodyToParameters(Float duration, Integer frequency, Long externalId) {
 		Map<String, Object> params = new HashMap<>();

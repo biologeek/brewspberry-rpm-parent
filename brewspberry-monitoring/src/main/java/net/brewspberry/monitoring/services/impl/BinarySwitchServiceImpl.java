@@ -23,10 +23,13 @@ import net.brewspberry.monitoring.model.SwitchStatus;
 import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
 import net.brewspberry.monitoring.services.BinarySwitchService;
 
-
 /**
- * Service that handles operations on binary switches
- * @author xavier
+ * Service that handles operations on binary switches.
+ * 
+ * <br>
+ * <br>
+ * For Raspberry Pi, pin state = PinState.LOW means relay is closed (device is
+ * UP)
  *
  */
 
@@ -38,7 +41,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	private Logger logger = Logger.getLogger(BinarySwitchServiceImpl.class.getName());
 	@Autowired
 	private BinarySwitchRepository repository;
-	
+
 	public BinarySwitchServiceImpl() {
 		controller = GpioFactory.getInstance();
 	}
@@ -68,7 +71,8 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(RaspiPin.getPinByName(device.getPin()));
 		if (pinOutput.getState() == PinState.HIGH) {
-			logger.warning("Pin state already HIGH for " + device.getUuid() + " at pin " + pinOutput.getPin().getName());
+			logger.warning(
+					"Pin state already HIGH for " + device.getUuid() + " at pin " + pinOutput.getPin().getName());
 			return device;
 		} else {
 			try {
@@ -93,7 +97,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	private BinarySwitch changeState(BinarySwitch device, SwitchStatus state) {
 		device.setSwitchStatus(state);
 		device.setLastStateChangeDate(new Date());
-		
+
 		return repository.save(device);
 	}
 
@@ -132,7 +136,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	@Override
 	public Set<BinarySwitch> listPluggedDevices() {
-		
+
 		return null;
 	}
 
@@ -144,7 +148,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	@Override
 	public void saveDevice(BinarySwitch device) throws ServiceException {
-		
+
 	}
 
 	@Override
@@ -193,7 +197,20 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	@Override
 	public BinarySwitch startDevice(BinarySwitch device, Float duration, Integer frequencyInSeconds) {
-		// TODO Auto-generated method stub
+		if (duration == null) {
+			return startDeviceForUndefinedPeriod(device);
+		} else {
+			return startDeviceForPeriod(device, duration);
+		}
+	}
+
+	private BinarySwitch startDeviceForPeriod(BinarySwitch device, Float duration) {
+		
+		return null;
+	}
+
+	private BinarySwitch startDeviceForUndefinedPeriod(BinarySwitch device) {
+
 		return null;
 	}
 
@@ -202,5 +219,5 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		// TODO Auto-generated method stub
 		return null;
 	}
- 
+
 }
