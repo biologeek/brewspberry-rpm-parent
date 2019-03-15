@@ -1,8 +1,11 @@
 <div class="devices-manager-container">
 	<div class="title">
-		<h4>Available devices : </h4>
+		<h4>Available devices</h4>
 	</div>
 	<div class="devices-container">
+
+			<button mat-raised-button (click)="openAddDevice()"> <span class="material-icons">add</span> Add new device</button>
+			<br><br>
 		<mat-grid-list [cols]="breakpoint" rowHeight="150px">
 			<mat-grid-tile *ngFor="let device of devices$ | async" (window:resize)="onResize($event)">
 				<mat-card class="card-picture">

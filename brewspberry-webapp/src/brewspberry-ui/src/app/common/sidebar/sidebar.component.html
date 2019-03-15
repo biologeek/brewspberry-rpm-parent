@@ -1,6 +1,6 @@
  <div class="top-bar">
     <span *ngIf="!sidebarHidden" style="position: relative; background-color: transparent;" (click)="toggleSidebar()">
-    <i class="fas fa-bars fa-2x" style=" margin: 10px;height : 50px !important; background-color: transparent;"></i>
+    <i class="material-icons" style=" margin: 10px;height : 50px !important; background-color: transparent;">menu</i>
 </span>
 </div>
 <div class="area"></div>
@@ -9,7 +9,9 @@
     <ul>
         <li>
             <a (click)="toggleSidebar()">
-                <i class="fa fa-times fa-2x"></i>
+                    <i class="material-icons">
+                            close
+                        </i>
                 <span class="nav-text">
                     Close
                 </span>
@@ -18,7 +20,9 @@
         </li><br>
         <li>
             <a routerLink="/dashboard">
-                <i class="fa fa-home fa-2x"></i>
+                <i class="material-icons">
+                        home
+                    </i>
                 <span class="nav-text">
                     Dashboard
                 </span>
@@ -27,7 +31,9 @@
         </li><br>
         <li class="has-subnav">
             <a routerLink="brew/list">
-               <i class="fa fa-list fa-2x"></i>
+                <i class="material-icons">
+                        list
+                    </i>
                <span class="nav-text">
                 Brassins
             </span>
@@ -37,7 +43,9 @@
     <br>
     <li class="has-subnav">
         <a routerLink="devices/manage">
-           <i class="fa fa-wrench fa-2x"></i>
+            <i class="material-icons">
+                    devices
+                </i>
            <span class="nav-text">
             Périphériques
         </span>
@@ -46,7 +54,9 @@
 </li><br>
 <li>
     <a routerLink="params">
-        <i class="fa fa-cogs fa-2x"></i>
+            <i class="material-icons">
+                    settings
+                </i>
         <span class="nav-text">
             Paramètres
         </span>

@@ -88,7 +88,7 @@ public class DS18B20TemperatureSensorServiceImplTest {
 		when(w1Master.getDevices(0x28)).thenReturn(aListOf2Devices);
 		sut.runRegularTemperatureMeasurement(aListOf1Sensor("28-1111111111"), map);
 		
-		verify(threadStateServices).witnessThreadStart(Mockito.anyString());
+		verify(threadWitnessServices).witnessThreadStart(Mockito.anyString());
 		
 	}
 	

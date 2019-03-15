@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { MatDialog, MatDialogRef, MatSnackBarRef, MatSnackBar } from '@angular/material';
 import { BatchRequestPopupComponent } from '../batch-request-popup/batch-request-popup.component';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { AddDevicePopupComponent } from '../add-device-popup/add-device-popup.component';
 
 @Component({
   selector: 'app-manage',
@@ -34,6 +35,7 @@ export class ManageComponent implements OnInit {
   private rawDevices: Device[];
   private temperatures: Temperature[];
   private currentBatchDialogRef;
+  private addDeviceDialogRef;
 
   SNACKBAR_POP_DURATION = 2000;
 
@@ -41,7 +43,8 @@ export class ManageComponent implements OnInit {
     private deviceService: DeviceService, //
     private snackBar: MatSnackBar,
     private temperatureService: TemperatureService,
-    public batchRequestDialog: MatDialog) { }
+    public batchRequestDialog: MatDialog,
+    public addDeviceDialog: MatDialog) { }
 
   ngOnInit() {
     // Get all devices, then last temperature for each device
@@ -101,7 +104,11 @@ export class ManageComponent implements OnInit {
       }/*,
       height: '500px'*/
     });
-
   }
 
+  openAddDevice() {
+    this.addDeviceDialogRef = this.addDeviceDialog.open(AddDevicePopupComponent, {
+      width: '50%',
+    });
+  }
 }
