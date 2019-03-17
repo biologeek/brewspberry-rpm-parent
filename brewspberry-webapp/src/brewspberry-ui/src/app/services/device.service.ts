@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { BatchRequest } from '../beans/monitoring/batch-request';
+import { DeviceTypes } from '../beans/monitoring/device-type';
 
 @Injectable()
 export class DeviceService {
@@ -37,7 +38,9 @@ export class DeviceService {
       name: 'ENG-004',
       type: 'engine',
       uuid: '1A2B3C4D5F',
-      pin: 'GPIO05',
+      pin: {
+        name: 'GPIO05'
+      },
       isActive: true,
       state: 'UP'
     }, {
@@ -45,7 +48,9 @@ export class DeviceService {
       name: 'PMP-005',
       type: 'pump',
       uuid: '1A2B3C4D5F',
-      pin: 'GPIO05',
+      pin: {
+        name: 'GPIO05'
+      },
       isActive: true,
       state: 'DOWN'
     }, {
@@ -53,7 +58,9 @@ export class DeviceService {
       name: 'PMP-006',
       type: 'pump',
       uuid: '1A2B3C4D5F',
-      pin: 'GPIO05',
+      pin: {
+        name: 'GPIO05'
+      },
       isActive: true,
       state: 'UP'
     }]);
@@ -79,5 +86,13 @@ export class DeviceService {
 
   public stopDevice(device: Device): Observable<Device> {
     return this.http.put(`${environment.apiHostMonitoring}/device/${device.id}/stop`, null) as Observable<Device>;
+  }
+
+  public getDeviceTypes(): Observable<DeviceTypes> {
+    return this.http.get(`${environment.apiHostMonitoring}/device/types`) as Observable<DeviceTypes>;
+  }
+
+  public saveDevice(device: Device): Observable<Device> {
+    return this.http.post(`${environment.apiHostMonitoring}/device`, device) as Observable<Device>;
   }
 }

@@ -13,7 +13,7 @@ public class DeviceDto {
 	Map<String, String> externalIds;
 	private Date creation, update, lastChange;
 
-	private String pin;
+	private RaspberryPinDto pin;
 	private int pinAddress;
 	private boolean isActive;
 	private ActionerStatus state;
@@ -103,11 +103,11 @@ public class DeviceDto {
 		this.type = string;
 	}
 
-	public String getPin() {
+	public RaspberryPinDto getPin() {
 		return pin;
 	}
 
-	public void setPin(String pin) {
+	public void setPin(RaspberryPinDto pin) {
 		this.pin = pin;
 	}
 
@@ -146,7 +146,7 @@ public class DeviceDto {
 		return this;
 	}
 
-	public DeviceDto pin(String pin2) {
+	public DeviceDto pin(RaspberryPinDto pin2) {
 		this.pin = pin2;
 		return this;
 	}

@@ -35,16 +35,19 @@ public class DevicesController {
 	private DeviceService<TemperatureSensor> temperatureSensorServices;
 	@Autowired
 	private DeviceService<BinarySwitch> binarySwitchServices;
+	
+	@Autowired
+	private DeviceConverter deviceConverter;
 
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public Set<DeviceDto> getAllDevices() {
-		return new DeviceConverter().toApi(deviceServices.listAllDevices());
+		return deviceConverter.toApi(deviceServices.listAllDevices());
 	}
 
 	@RequestMapping(path = "/plugged", method = RequestMethod.GET)
 	public Set<DeviceDto> getAllPluggedDevices() {
 		Set<AbstractDevice> devices = retrieveAllDeviceTypesFromServices();
-		return new DeviceConverter().toApi(devices);
+		return deviceConverter.toApi(devices);
 	}
 
 	@RequestMapping(path = "/temperature", method = RequestMethod.GET)
@@ -54,7 +57,7 @@ public class DevicesController {
 		if (sensors == null || sensors.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-		return new ResponseEntity<>(new DeviceConverter().toApiFromSensors(sensors), HttpStatus.OK);
+		return new ResponseEntity<>(deviceConverter.toApiFromSensors(sensors), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/temperature/{uuid}", method = RequestMethod.POST)
@@ -68,6 +71,11 @@ public class DevicesController {
 
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
+	
+	
+	public ResponseEntity<DeviceDto> saveDevice(@RequestBody DeviceDto device) {
+		return new ResponseEntity<>(deviceConverter.toApi(deviceServices.saveDevice(deviceConverter.toModelTemperatureSensor(device))), HttpStatus.CREATED);
+	}
 
 	@RequestMapping(path = "/temperature/{uuid}", method = RequestMethod.PUT)
 	public ResponseEntity<DeviceDto> updateTemperatureSensor(@PathVariable("uuid") String uuid,
@@ -76,7 +84,7 @@ public class DevicesController {
 			throw new ValidationException("uuid.mismatch");
 		}
 
-		TemperatureSensor sensorToUpdate = new DeviceConverter().toModel(dto);
+		TemperatureSensor sensorToUpdate = deviceConverter.toModelTemperatureSensor(dto);
 
 		TemperatureSensor sensorModel = temperatureSensorServices.getDeviceByUUID(uuid);
 
@@ -94,13 +102,13 @@ public class DevicesController {
 	public ResponseEntity<DeviceDto> startDevice(@PathVariable("device") Long deviceId,
 			@RequestBody TemperatureBatchRunRequestBodyDto body) {
 		AbstractDevice device = this.deviceServices.startDevice(deviceId, body.getDuration(), body.getFrequency());
-		return new ResponseEntity<>(new DeviceConverter().toApi(device), HttpStatus.OK);
+		return new ResponseEntity<>(deviceConverter.toApi(device), HttpStatus.OK);
 	}
 
 	@PutMapping("/{device}/stop")
 	public ResponseEntity<DeviceDto> stopDevice(@PathVariable("device") Long deviceId) {
 		AbstractDevice device = this.deviceServices.stopDevice(deviceId);
-		return new ResponseEntity<>(new DeviceConverter().toApi(device), HttpStatus.OK);
+		return new ResponseEntity<>(deviceConverter.toApi(device), HttpStatus.OK);
 	}
 
 	/**

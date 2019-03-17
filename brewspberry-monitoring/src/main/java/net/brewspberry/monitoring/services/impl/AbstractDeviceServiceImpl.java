@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.repositories.AbstractDeviceRepository;
@@ -47,8 +48,14 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 
 	@Override
 	public Set<AbstractDevice> listAllDevices() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public AbstractDevice saveDevice(AbstractDevice device) {
+		Assert.notNull(device.getPin(), "Device pin is null");
+		Assert.notNull(device.getUuid(), "UUID is null");
+		return this.abstractDeviceRepository.save(device);
 	}
 
 }

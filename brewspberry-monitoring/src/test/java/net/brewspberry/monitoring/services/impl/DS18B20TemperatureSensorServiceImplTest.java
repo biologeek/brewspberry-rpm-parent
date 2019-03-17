@@ -116,7 +116,6 @@ public class DS18B20TemperatureSensorServiceImplTest {
 		TemperatureSensor dev1 = new TemperatureSensor();
 		dev1.setUuid(string[0]);
 		dev1.setId(1L);
-		dev1.setPin("1");
 		dev1.setPinState(DeviceStatus.PLUGGED);
 		return Arrays.asList(dev1);
 	}

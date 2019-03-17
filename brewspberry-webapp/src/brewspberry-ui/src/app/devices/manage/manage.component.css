@@ -122,6 +122,13 @@ h1 {
 	color : #ffcc00;
 }
 
+.mat-card-actions .mat-button {
+	margin: 0 0 !important;
+}
+.mat-card {
+	margin-bottom: 10px !important;
+}
+
 .state-value {
 	font-size: 50px !important;
 	display: flex;

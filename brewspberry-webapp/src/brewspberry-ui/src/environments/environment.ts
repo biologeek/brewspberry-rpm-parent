@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiHostMonitoring: 'http://localhost:8080/devices',
-  apiTemperatureMonitoring: 'http://localhost:8080/temperature',
-  apiBreweryManagement: 'http://localhost:8080/brewery'
+  apiHostMonitoring: 'http://192.168.1.44:8090/monitoring',
+  apiTemperatureMonitoring: 'http://192.168.1.44:8090/temperature',
+  apiBreweryManagement: 'http://192.168.1.44:8090/brewery'
 };

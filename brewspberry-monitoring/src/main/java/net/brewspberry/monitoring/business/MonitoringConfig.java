@@ -43,7 +43,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJms
 @EnableJpaRepositories (basePackages="net.brewspberry.monitoring.repositories")
 @EnableWebMvc
-@PropertySources(value = { @PropertySource("${app.parameters}monitoring.properties") })
+@PropertySources(value = { @PropertySource("file:${app.parameters}/monitoring.properties") })
 public class MonitoringConfig {
 
 	public static void main(String[] args) {

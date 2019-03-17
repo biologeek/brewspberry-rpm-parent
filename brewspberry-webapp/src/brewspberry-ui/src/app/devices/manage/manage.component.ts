@@ -108,7 +108,7 @@ export class ManageComponent implements OnInit {
 
   openAddDevice() {
     this.addDeviceDialogRef = this.addDeviceDialog.open(AddDevicePopupComponent, {
-      width: '50%',
+      width: '30%',
     });
   }
 }

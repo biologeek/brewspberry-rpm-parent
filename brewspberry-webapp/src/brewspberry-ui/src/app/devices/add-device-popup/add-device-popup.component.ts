@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { RaspberryService } from 'src/app/services/raspberry.service';
+import { Pins } from 'src/app/beans/monitoring/pin';
+import { DeviceTypes } from 'src/app/beans/monitoring/device-type';
+import { Observable } from 'rxjs';
+import { DeviceService } from 'src/app/services/device.service';
+import { Device } from 'src/app/beans/monitoring/device';
 
 @Component({
   selector: 'app-add-device-popup',
@@ -7,9 +14,52 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddDevicePopupComponent implements OnInit {
 
-  constructor() { }
+  pinPictureShown: boolean;
+
+  pins$: Observable<Pins>;
+  types$: Observable<DeviceTypes>;
+
+  device: Device;
+
+  constructor(private raspberryService: RaspberryService
+    , private deviceService: DeviceService
+    , private dialogRef: MatDialogRef<AddDevicePopupComponent>
+    , private snackbar: MatSnackBar) { }
 
   ngOnInit() {
+    this.device = {};
+    this.types$ = this.deviceService.getDeviceTypes();
+    this.pins$ = this.raspberryService.getAllPins();
+  }
+
+  showPinPicture() {
+    this.pinPictureShown = true;
+  }
+
+  hidePinPicture() {
+    this.pinPictureShown = false;
+  }
+
+
+  cancel() {
+    this.dialogRef.close();
+  }
+
+  onSubmit() {
+    this.deviceService.saveDevice(this.device).subscribe(response => {
+      this.snackbar.open("Device saved !", null, {
+        duration: 3000,
+        panelClass: ['mat-snack-bar-ok']
+      });
+      this.dialogRef.close(response);
+    }, error => {
+      this.snackbar.open("Could not save device !", null, {
+        duration: 3000,
+        panelClass: ['mat-snack-bar-error']
+      });
+      this.dialogRef.close();
+    });
+
   }
 
 }

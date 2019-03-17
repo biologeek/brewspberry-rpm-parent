@@ -2,6 +2,7 @@ package net.brewspberry.monitoring.services;
 
 import java.util.Set;
 
+import net.brewspberry.monitoring.api.DeviceDto;
 import net.brewspberry.monitoring.model.AbstractDevice;
 
 /**
@@ -23,5 +24,7 @@ public interface CommonDeviceService {
 	public AbstractDevice stopDevice(Long deviceId);
 
 	public Set<AbstractDevice> listAllDevices();
+
+	public AbstractDevice saveDevice(AbstractDevice device);
 
 }

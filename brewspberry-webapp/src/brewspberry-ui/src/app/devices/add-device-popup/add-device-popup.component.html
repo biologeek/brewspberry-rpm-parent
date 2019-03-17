@@ -1,3 +1,42 @@
-<p>
-  add-device-popup works!
-</p>
+<h1 mat-dialog-title>Device</h1>
+<br>
+<br>
+<br>
+<img src="assets/pictures/raspberrypi-3b.png" *ngIf="pinPictureShown"
+  style="border: 1px solid black; position: absolute; z-index: 1; top: 0%; left: 50%;">
+<div mat-dialog-content>
+  <div class="block">
+    <mat-form-field>
+      <input matInput placeholder="Name" [(ngModel)]="device.name">
+    </mat-form-field>
+  </div>
+  <div class="block">
+    <mat-form-field>
+      <input matInput placeholder="UUID" [(ngModel)]="device.uuid">
+    </mat-form-field>
+  </div>
+  <div class="block">
+    <mat-form-field>
+      <mat-select placeholder="Type">
+        <mat-option *ngFor="let type of types$ | async" [(ngModel)]="device.type" [value]="type">{{type.name}}</mat-option>  
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="block">
+    <mat-form-field>        
+      <mat-select placeholder="Pin">
+        <mat-option *ngFor="let pin of pins$ | async" [(ngModel)]="device.pin" [value]="pin">
+          {{pin.name}}
+        </mat-option>
+      </mat-select>
+      </mat-form-field>
+      <img height="32px" src="assets/pictures/raspberrypi-3b.png" style="border: 1px solid black;"
+        (mouseover)="showPinPicture()" (mouseout)="hidePinPicture()">
+  </div>
+
+
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button (click)="onSubmit()" cdkFocusInitial>Create</button>
+</div>

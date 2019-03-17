@@ -311,7 +311,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		saved.setLastStateChangeDate(toSave.getLastStateChangeDate());
 		saved.setName(toSave.getName());
 		saved.setPin(toSave.getPin());
-		saved.setPinAddress(toSave.getPinAddress());
 		saved.setPlugged(toSave.isPlugged());
 		saved.setPinState(toSave.getPinState());
 		saved.setUpdateDate(new Date());

@@ -49,7 +49,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	@Override
 	public BinarySwitch setSwitchUp(BinarySwitch device) throws StateChangeException {
 
-		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(RaspiPin.getPinByName(device.getPin()));
+		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(device.getPin().getPin());
 		if (pinOutput.getState() == PinState.LOW) {
 			logger.warning("Pin state already LOW for " + device.getUuid() + " at pin " + pinOutput.getPin().getName());
 			return device;
@@ -69,7 +69,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	@Override
 	public BinarySwitch setSwitchDown(BinarySwitch device) throws StateChangeException {
 
-		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(RaspiPin.getPinByName(device.getPin()));
+		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(device.getPin().getPin());
 		if (pinOutput.getState() == PinState.HIGH) {
 			logger.warning(
 					"Pin state already HIGH for " + device.getUuid() + " at pin " + pinOutput.getPin().getName());
@@ -104,7 +104,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	@Override
 	public SwitchStatus getDeviceStatus(BinarySwitch device) {
 
-		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(RaspiPin.getPinByName(device.getPin()));
+		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(device.getPin().getPin());
 
 		if (pinOutput.getState() == PinState.HIGH)
 			return SwitchStatus.DOWN;
@@ -183,7 +183,6 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		saved.setLastStateChangeDate(toSave.getLastStateChangeDate());
 		saved.setName(toSave.getName());
 		saved.setPin(toSave.getPin());
-		saved.setPinAddress(toSave.getPinAddress());
 		saved.setPlugged(toSave.isPlugged());
 		saved.setPinState(toSave.getPinState());
 		saved.setUpdateDate(new Date());

@@ -74,7 +74,7 @@ public class BinarySwitchDaemonThread implements Runnable {
 		int sleepTime = 10000;
 		while (LocalDateTime.now().isBefore(endLocalDate)) {
 			GpioPinDigitalOutput outputPin = gpioController
-					.provisionDigitalOutputPin(AbstractDevice.BREW_GPIO.get(device.getPin()));
+					.provisionDigitalOutputPin(device.getPin().getPin());
 			
 			if (outputPin.getState() == PinState.HIGH)
 				outputPin.setState(PinState.LOW);
