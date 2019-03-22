@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef, MatSnackBarRef, MatSnackBar } from '@angular/m
 import { BatchRequestPopupComponent } from '../batch-request-popup/batch-request-popup.component';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AddDevicePopupComponent } from '../add-device-popup/add-device-popup.component';
+import { ActivityChartPopupComponent } from '../activity-chart-popup/activity-chart-popup.component';
 
 @Component({
   selector: 'app-manage',
@@ -34,8 +35,9 @@ export class ManageComponent implements OnInit {
   private devices$: Observable<Device[]>;
   private rawDevices: Device[];
   private temperatures: Temperature[];
-  private currentBatchDialogRef;
-  private addDeviceDialogRef;
+  private currentBatchDialogRef: MatDialogRef<any, any>;
+  private addDeviceDialogRef: MatDialogRef<any, any>;
+  private chartDialogRef: MatDialogRef<any, any>;
 
   SNACKBAR_POP_DURATION = 2000;
 
@@ -44,6 +46,7 @@ export class ManageComponent implements OnInit {
     private snackBar: MatSnackBar,
     private temperatureService: TemperatureService,
     public batchRequestDialog: MatDialog,
+    public chartDialog: MatDialog,
     public addDeviceDialog: MatDialog) { }
 
   ngOnInit() {
@@ -108,7 +111,17 @@ export class ManageComponent implements OnInit {
 
   openAddDevice() {
     this.addDeviceDialogRef = this.addDeviceDialog.open(AddDevicePopupComponent, {
-      width: '30%',
+      width: '30%'
+    });
+  }
+
+  openChartPopup(deviceToOpen: Device) {
+    this.chartDialogRef = this.chartDialog.open(ActivityChartPopupComponent, {
+      width: '90%',
+      height: '90%',
+      data: {
+        device: deviceToOpen
+      }
     });
   }
 }

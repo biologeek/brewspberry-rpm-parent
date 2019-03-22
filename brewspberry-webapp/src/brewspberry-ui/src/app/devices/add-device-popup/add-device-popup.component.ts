@@ -21,7 +21,8 @@ export class AddDevicePopupComponent implements OnInit {
 
   device: Device;
 
-  constructor(private raspberryService: RaspberryService
+  constructor(
+      private raspberryService: RaspberryService
     , private deviceService: DeviceService
     , private dialogRef: MatDialogRef<AddDevicePopupComponent>
     , private snackbar: MatSnackBar) { }
