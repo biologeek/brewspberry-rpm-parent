@@ -36,10 +36,12 @@ import { InputsComponent } from './brew/steps/inputs/inputs.component';
 import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
 
-import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule, MatDialogModule, MatSelectModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule } from '@angular/material';
+import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule, MatDialogModule,
+  MatSelectModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BatchRequestPopupComponent } from './devices/batch-request-popup/batch-request-popup.component';
 import { AddDevicePopupComponent } from './devices/add-device-popup/add-device-popup.component';
+import { ActivityChartPopupComponent } from './devices/activity-chart-popup/activity-chart-popup.component';
 
 
 
@@ -77,7 +79,8 @@ export const router: Routes = [
     InputsComponent,
     FilteringComponent,
     BatchRequestPopupComponent,
-    AddDevicePopupComponent
+    AddDevicePopupComponent,
+    ActivityChartPopupComponent
     ],
   imports: [
     BrowserModule,
@@ -113,7 +116,8 @@ export const router: Routes = [
     InputsComponent,
     FilteringComponent,
     BatchRequestPopupComponent,
-    AddDevicePopupComponent
+    AddDevicePopupComponent,
+    ActivityChartPopupComponent
   ]
 })
 export class AppModule { }
