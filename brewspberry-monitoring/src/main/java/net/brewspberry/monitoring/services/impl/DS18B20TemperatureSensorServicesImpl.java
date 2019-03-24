@@ -102,15 +102,17 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 						// If device is already saved, add it
 						TemperatureSensor isSaved = savedSensors.stream()//
 								.filter(u -> u.getUuid().equals(t.getId()))//
-								.findFirst().orElse(null);
+								.findFirst()//
+								.orElse(null);
 
 						if (isSaved != null) {
 							pluggedAndSaved.add(isSaved);
 						} else if (isSaved == null && t.getFamilyId() == 0x28) {
 							// if not, add it as a new device
 							TemperatureSensor toSave = (TemperatureSensor) new TemperatureSensor()//
-									.uuid(t.getId())//
-									.type(DeviceType.TEMPERATURE_SENSOR).plugged(true);
+									.uuid(t.getId().substring(0, t.getId().length() - 2))//
+									.type(DeviceType.TEMPERATURE_SENSOR)//
+									.plugged(true);
 
 							repository.save(toSave);
 							pluggedAndSaved.add(toSave);

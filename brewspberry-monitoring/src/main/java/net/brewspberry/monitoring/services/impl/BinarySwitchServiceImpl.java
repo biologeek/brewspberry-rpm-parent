@@ -136,7 +136,6 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	@Override
 	public Set<BinarySwitch> listPluggedDevices() {
-
 		return null;
 	}
 

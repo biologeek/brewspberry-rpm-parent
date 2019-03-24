@@ -48,7 +48,7 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 
 	@Override
 	public Set<AbstractDevice> listAllDevices() {
-		return null;
+		return (Set<AbstractDevice>) this.abstractDeviceRepository.findAll();
 	}
 
 	@Override
