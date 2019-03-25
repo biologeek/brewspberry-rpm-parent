@@ -93,6 +93,10 @@ export class DeviceService {
   }
 
   public saveDevice(device: Device): Observable<Device> {
+    if (device.id){
+      return this.http.put(`${environment.apiHostMonitoring}/device/${device.id}`, device) as Observable<Device>;
+    } else {
     return this.http.post(`${environment.apiHostMonitoring}/device`, device) as Observable<Device>;
+    }
   }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { RaspberryService } from 'src/app/services/raspberry.service';
 import { Pins } from 'src/app/beans/monitoring/pin';
 import { DeviceTypes } from 'src/app/beans/monitoring/device-type';
@@ -25,10 +25,15 @@ export class AddDevicePopupComponent implements OnInit {
       private raspberryService: RaspberryService
     , private deviceService: DeviceService
     , private dialogRef: MatDialogRef<AddDevicePopupComponent>
-    , private snackbar: MatSnackBar) { }
+    , private snackbar: MatSnackBar
+    , @Inject(MAT_DIALOG_DATA) public dialogInputData: any) { }
 
   ngOnInit() {
-    this.device = {};
+    if (this.dialogInputData.device){
+      this.device = this.dialogInputData.device;
+    } else {
+      this.device = new Device();
+    }
     this.types$ = this.deviceService.getDeviceTypes();
     this.pins$ = this.raspberryService.getAllPins();
   }

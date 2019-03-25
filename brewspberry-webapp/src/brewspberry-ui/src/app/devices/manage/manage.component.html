@@ -18,6 +18,9 @@
 							<span class="temperature-value">18</span>
 							<span class="temperature-unit">°C</span>
 						</span>
+						<span *ngIf="device.type !== 'thermometer'">
+							<br>
+						</span>
 					</mat-card-content>
 					<mat-card-actions>
 						<button mat-button (click)="openBatchRequestPopup(device)"
@@ -35,6 +38,11 @@
 						<button mat-button (click)="openChartPopup(device)">
 							<i class="material-icons">
 								show_chart
+							</i>
+						</button>
+						<button mat-button (click)="editDevice(device)">
+							<i class="material-icons">
+								edit
 							</i>
 						</button>
 						<button mat-button (click)="deleteDevice(device.uuid)">
