@@ -61,16 +61,6 @@ public class RaspberryPin {
 		return BREW_GPIO.get(pinNumber);
 	}
 
-	public void setPin(Pin pin) {
-		this.pin = pin;
-		for (Entry<Integer, Pin> entry : BREW_GPIO.entrySet()) {
-			if (entry.getValue().equals(pin)) {
-				this.pinNumber = entry.getKey();
-				this.pinName = entry.getValue().getName();
-			}
-		}
-	}
-
 	public Integer getPinNumber() {
 		return pinNumber;
 	}
@@ -94,6 +84,12 @@ public class RaspberryPin {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	@Override
+	public String toString() {
+		return "RaspberryPin [id=" + id + ", pin=" + pin + ", pinNumber=" + pinNumber + ", pinName=" + pinName
+				+ ", BREW_GPIO=" + BREW_GPIO + "]";
 	}
 
 }

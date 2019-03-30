@@ -46,8 +46,6 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 	private volatile ThreadWitnessCheckServices witnessServices;
 	private String uuid = UUID.randomUUID().toString();
 
-	private EntityManager em;
-
 	private Logger logger = Logger.getLogger(TemperatureDaemonThread.class.getName());
 
 	public TemperatureDaemonThread() {
@@ -237,14 +235,6 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 
 	public void setThreadServices(ThreadStateServices threadServices) {
 		this.threadServices = threadServices;
-	}
-
-	public EntityManager getEm() {
-		return em;
-	}
-
-	public void setEm(EntityManager em) {
-		this.em = em;
 	}
 
 	public String getUuid() {

@@ -16,7 +16,6 @@ import java.util.function.Consumer;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityManager;
 import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,14 +70,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	@Autowired
 	ThreadWitnessServices threadWitnessService;
 
-	@Autowired
-	@Qualifier("entityManager")
-	/**
-	 * Used only for injection purposes
-	 */
-	EntityManager em;
 
-	@Override // TODO Auto-generated method stub
+	@Override 
 	public TemperatureSensor getDeviceById(Long id) {
 		return repository.findById(id).get();
 	}
@@ -191,7 +184,6 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		TemperatureDaemonThread target = new TemperatureDaemonThread();
 		target.setOneWireMaster(oneWireMaster);
 		target.setParameters(parameters);
-		target.setEm(em);
 		target.setThreadServices(threadStateService);
 		logger.info(String.format("Starting regular polling with UUID={} parameters : {}", threadUUID, parameters));
 
@@ -272,7 +264,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		checkUuid(sensor.getUuid());
 		TemperatureSensor res = this.repository.save(sensor);
 		if (res == null || res.getId() == null)
-			throw new ServiceException("sensor.save.error");
+			throw new ServiceException("Failed to save sensor", "sensor.save.error");
 	}
 
 	@Override
@@ -292,7 +284,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 			return saved;
 
 		if (!saved.getId().equals(toSave.getId()))
-			throw new ServiceException("id.different");
+			throw new ServiceException("Failed to update sensor", "id.different");
 
 		validateSensor(toSave);
 

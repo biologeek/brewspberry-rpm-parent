@@ -3,6 +3,8 @@ package net.brewspberry.monitoring.services;
 import java.util.Set;
 
 import net.brewspberry.monitoring.api.DeviceDto;
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
+import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 
 /**
@@ -26,5 +28,7 @@ public interface CommonDeviceService {
 	public Set<AbstractDevice> listAllDevices();
 
 	public AbstractDevice saveDevice(AbstractDevice device);
+
+	public void saveDevice(AbstractDevice model, Long id) throws ElementNotFoundException, ServiceException;
 
 }

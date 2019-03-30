@@ -14,7 +14,6 @@ import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
-import com.pi4j.io.gpio.RaspiPin;
 
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.exceptions.StateChangeException;
@@ -161,7 +160,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 			return saved;
 
 		if (!saved.getId().equals(toSave.getId()))
-			throw new ServiceException("id.different");
+			throw new ServiceException("Failed to update sensor", "id.different");
 
 		validateSensor(toSave);
 

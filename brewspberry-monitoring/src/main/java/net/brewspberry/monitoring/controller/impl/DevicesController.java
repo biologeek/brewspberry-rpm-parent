@@ -1,6 +1,9 @@
 package net.brewspberry.monitoring.controller.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.ValidationException;
@@ -8,6 +11,7 @@ import javax.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +19,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Lists;
+
 import net.brewspberry.monitoring.api.DeviceDto;
+import net.brewspberry.monitoring.api.DeviceDto.ActionerType;
 import net.brewspberry.monitoring.api.request.TemperatureBatchRunRequestBodyDto;
 import net.brewspberry.monitoring.converter.DeviceConverter;
+import net.brewspberry.monitoring.exceptions.DefaultRuntimeException;
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
+import net.brewspberry.monitoring.exceptions.ElementNotFoundRuntimeException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.BinarySwitch;
@@ -35,7 +45,7 @@ public class DevicesController {
 	private DeviceService<TemperatureSensor> temperatureSensorServices;
 	@Autowired
 	private DeviceService<BinarySwitch> binarySwitchServices;
-	
+
 	@Autowired
 	private DeviceConverter deviceConverter;
 
@@ -71,10 +81,11 @@ public class DevicesController {
 
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
-	
-	
+
 	public ResponseEntity<DeviceDto> saveDevice(@RequestBody DeviceDto device) {
-		return new ResponseEntity<>(deviceConverter.toApi(deviceServices.saveDevice(deviceConverter.toModelTemperatureSensor(device))), HttpStatus.CREATED);
+		return new ResponseEntity<>(
+				deviceConverter.toApi(deviceServices.saveDevice(deviceConverter.toModelTemperatureSensor(device))),
+				HttpStatus.CREATED);
 	}
 
 	@RequestMapping(path = "/temperature/{uuid}", method = RequestMethod.PUT)
@@ -98,6 +109,26 @@ public class DevicesController {
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 
+	@PutMapping(path = "/{id}")
+	public ResponseEntity<Void> updateDevice(@PathVariable("id") Long id, @RequestBody DeviceDto device) {
+		try {
+			
+			this.deviceServices.saveDevice(deviceConverter.toModel(device), id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (ServiceException e) {
+			throw new DefaultRuntimeException(e.getMessage(), e.getCode());
+		} catch (ElementNotFoundException e) {
+			throw new ElementNotFoundRuntimeException();
+		}
+	}
+
+	@GetMapping("/types")
+	public ResponseEntity<List<ActionerType>> getDeviceTypes() {
+		List<ActionerType> types = Arrays.asList(ActionerType.values());
+		return new ResponseEntity<>(types, HttpStatus.OK);
+
+	}
+	
 	@PutMapping("/{device}/start")
 	public ResponseEntity<DeviceDto> startDevice(@PathVariable("device") Long deviceId,
 			@RequestBody TemperatureBatchRunRequestBodyDto body) {

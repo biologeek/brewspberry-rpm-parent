@@ -12,7 +12,6 @@ import javax.sql.DataSource;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.dialect.MySQL55Dialect;
-import org.hibernate.dialect.MySQL57Dialect;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +29,10 @@ import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.mysql.jdbc.Driver;
 import com.pi4j.io.gpio.GpioController;
@@ -44,7 +46,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @EnableJpaRepositories (basePackages="net.brewspberry.monitoring.repositories")
 @EnableWebMvc
 @PropertySources(value = { @PropertySource("file:${app.parameters}/monitoring.properties") })
-public class MonitoringConfig {
+public class MonitoringConfig implements WebMvcConfigurer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MonitoringConfig.class, args);
@@ -166,4 +168,13 @@ public class MonitoringConfig {
 		conFact.setBrokerURL(brokerURL);
 		return conFact;
 	}
+	
+
+	@Override
+	public void addCorsMappings(CorsRegistry registry) {
+		registry.addMapping("/**")//
+		.allowedMethods("*")//
+		.allowedOrigins("*");
+	}
+	
 }

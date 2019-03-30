@@ -7,25 +7,25 @@
 <div mat-dialog-content>
   <div class="block">
     <mat-form-field>
-      <input matInput placeholder="Name" [(ngModel)]="device.name">
+      <input matInput placeholder="Name" name="name" [(ngModel)]="device.name">
     </mat-form-field>
   </div>
   <div class="block">
     <mat-form-field>
-      <input matInput placeholder="UUID" [(ngModel)]="device.uuid">
+      <input matInput placeholder="UUID" name="uuid" [(ngModel)]="device.uuid">
     </mat-form-field>
   </div>
   <div class="block">
     <mat-form-field>
-      <mat-select placeholder="Type">
-        <mat-option *ngFor="let type of types$ | async" [(ngModel)]="device.type" [value]="type">{{type.name}}</mat-option>  
+      <mat-select placeholder="Type" name="type" [(ngModel)]="device.type">
+        <mat-option *ngFor="let type of types$ | async" [value]="type">{{type.name}}</mat-option>  
       </mat-select>
     </mat-form-field>
   </div>
   <div class="block">
     <mat-form-field>        
-      <mat-select placeholder="Pin">
-        <mat-option *ngFor="let pin of pins$ | async" [(ngModel)]="device.pin" [value]="pin">
+      <mat-select placeholder="Pin" name="pin" [(ngModel)]="device.pin">
+        <mat-option *ngFor="let pin of pins$ | async" [value]="pin">
           {{pin.name}}
         </mat-option>
       </mat-select>
@@ -38,5 +38,5 @@
 </div>
 <div mat-dialog-actions>
     <button mat-button (click)="cancel()">Cancel</button>
-    <button mat-button (click)="onSubmit()" cdkFocusInitial>Create</button>
+    <button mat-button (click)="onSubmit()" cdkFocusInitial>Save</button>
 </div>

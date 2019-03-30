@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import net.brewspberry.monitoring.api.DeviceDto;
 import net.brewspberry.monitoring.api.DeviceDto.ActionerStatus;
+import net.brewspberry.monitoring.api.DeviceDto.ActionerType;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.DeviceStatus;
@@ -37,7 +38,8 @@ public class DeviceConverter {
 	 */
 	public DeviceDto toApi(TemperatureSensor result, DeviceDto converted) {
 		return converted//
-				.state(DeviceStatusConverter.toApi(result.getPinState()));
+				.state(DeviceStatusConverter.toApi(result.getPinState()))
+				.type(ActionerType.THERMOMETER);
 	}
 
 	/**
@@ -48,7 +50,20 @@ public class DeviceConverter {
 	 */
 	public DeviceDto toApi(BinarySwitch result, DeviceDto converted) {
 		return converted//
-				.state(DeviceStatusConverter.toApi(result.getSwitchStatus()));
+				.state(DeviceStatusConverter.toApi(result.getSwitchStatus()))
+				.type(toDtoType(result.getType()));
+	}
+
+	private ActionerType toDtoType(DeviceType type) {
+		switch (type) {
+		case ENGINE_RELAY:
+			return ActionerType.ENGINE;
+		case PUMP :
+			return ActionerType.PUMP;
+		case TEMPERATURE_SENSOR :
+			return ActionerType.THERMOMETER;
+		}
+		return null;
 	}
 
 	/**
@@ -110,11 +125,13 @@ public class DeviceConverter {
 	}
 	
 	public AbstractDevice toModel(DeviceDto dto) {
+		if (dto == null)
+			return null;
 		switch (dto.getType()) {
-		case DS18B20 :
+		case THERMOMETER :
 			return toModelTemperatureSensor(dto);
-		case ENGINE_RELAY:
-		case VALVE :
+		case ENGINE:
+		case PUMP :
 			return toModelSwitch(dto);
 		}
 		return null;
@@ -122,13 +139,25 @@ public class DeviceConverter {
 
 	private AbstractDevice toModelSwitch(DeviceDto dto) {
 		return new BinarySwitch()//
-				.type(DeviceType.RELAY_SWITCH)//
+				.type(toModelType(dto.getType()))//
 				.uuid(dto.getUuid())//
 				.id(dto.getId())
 				.creationDate(dto.getCreation())//
 				.lastChangedDate(dto.getLastChange())//
 				.name(dto.getName())//
 				.plugged(dto.isPlugged());
+	}
+
+	private DeviceType toModelType(ActionerType type) {
+		switch (type) {
+		case ENGINE:
+			return DeviceType.ENGINE_RELAY;
+		case PUMP :
+			return DeviceType.PUMP;
+		case THERMOMETER :
+			return DeviceType.TEMPERATURE_SENSOR;
+		}
+		return null;
 	}
 
 	public TemperatureSensor toModelTemperatureSensor(DeviceDto dto) {

@@ -20,7 +20,7 @@ public class DeviceDto {
 	private boolean plugged;
 
 	public enum ActionerType {
-		DS18B20, ENGINE_RELAY, VALVE;
+		THERMOMETER, ENGINE, PUMP;
 	}
 
 	public enum ActionerStatus {
@@ -167,5 +167,10 @@ public class DeviceDto {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public DeviceDto type(ActionerType typ) {
+		this.type = typ;
+		return this;
 	}
 }

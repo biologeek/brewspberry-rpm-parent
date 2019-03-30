@@ -18,6 +18,9 @@ public class PinConverter {
 	}
 
 	public RaspberryPinDto toDto(RaspberryPin pin) {
+		System.out.println(pin);
+		if (pin == null)
+			return null;
 		RaspberryPinDto dto = new RaspberryPinDto();
 		dto.setId(pin.getId());
 		dto.setName(pin.getPinName());
@@ -26,8 +29,13 @@ public class PinConverter {
 	}
 
 	public RaspberryPin toModel(RaspberryPinDto pin) {
-		// TODO Auto-generated method stub
-		return null;
+		if (pin == null)
+			return null;
+		RaspberryPin model = new RaspberryPin();
+		model.setId(pin.getId());
+		model.setPinName(pin.getName());
+		model.setPinNumber(pin.getNumber());
+		return model;
 	}
 
 }
