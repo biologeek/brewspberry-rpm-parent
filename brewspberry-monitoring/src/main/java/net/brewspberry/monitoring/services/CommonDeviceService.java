@@ -2,7 +2,6 @@ package net.brewspberry.monitoring.services;
 
 import java.util.Set;
 
-import net.brewspberry.monitoring.api.DeviceDto;
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.AbstractDevice;
@@ -21,9 +20,9 @@ public interface CommonDeviceService {
 	 * @param frequencyInSeconds frequency of measurement
 	 * @return the updated device
 	 */
-	public AbstractDevice startDevice(Long id, Float duration, Integer frequencyInSeconds);
+	public AbstractDevice startDevice(Long id, Long duration, Integer frequencyInSeconds);
 
-	public AbstractDevice stopDevice(Long deviceId);
+	public AbstractDevice stopDevice(Long deviceId) throws ElementNotFoundException;
 
 	public Set<AbstractDevice> listAllDevices();
 

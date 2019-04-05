@@ -19,7 +19,6 @@ export class DeviceService {
     return this.http.get(environment.apiHostMonitoring + '/uuid/available') as Observable<string[]>;
   }
 
-
   public deleteDevice(uuid: string): Observable<string[]> { // TODO
     return this.http.delete(environment.apiHostMonitoring + '/uuid/' + uuid) as Observable<string[]>;
   }
@@ -29,7 +28,7 @@ export class DeviceService {
   }
 
   public startDevice(device: Device, batch: BatchRequest): Observable<Device> {
-    return this.http.put(`${environment.apiHostMonitoring}/devices/${device.id}/start`, null) as Observable<Device>;
+    return this.http.put(`${environment.apiHostMonitoring}/devices/${device.id}/start`, batch) as Observable<Device>;
   }
 
   public stopDevice(device: Device): Observable<Device> {

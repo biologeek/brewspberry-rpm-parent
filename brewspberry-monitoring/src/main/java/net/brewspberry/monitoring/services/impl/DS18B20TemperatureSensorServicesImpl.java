@@ -2,6 +2,7 @@ package net.brewspberry.monitoring.services.impl;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -39,13 +40,14 @@ import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
 import net.brewspberry.monitoring.repositories.TemperatureSensorRepository;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
 import net.brewspberry.monitoring.services.ThreadStateServices;
+import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
 import net.brewspberry.monitoring.services.ThreadWitnessServices;
 
 /**
  * Service that handles operations around DS18B20 temperature sensors
  *
  */
-@Service
+@Service(value="temperatureSensorServiceImpl")
 @Qualifier("temperatureSensorServiceImpl")
 public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorService {
 
@@ -69,6 +71,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	ThreadStateServices threadStateService;
 	@Autowired
 	ThreadWitnessServices threadWitnessService;
+	@Autowired
+	ThreadWitnessCheckServices threadWitnessCheckService;
 
 
 	@Override 
@@ -185,6 +189,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		target.setOneWireMaster(oneWireMaster);
 		target.setParameters(parameters);
 		target.setThreadServices(threadStateService);
+		target.setWitnessServices(threadWitnessCheckService);
+		target.setRepository(temperatureRepository);
 		logger.info(String.format("Starting regular polling with UUID={} parameters : {}", threadUUID, parameters));
 
 		try {
@@ -321,8 +327,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	@Override
-	public TemperatureSensor startDevice(TemperatureSensor sensor, Float duration, Integer frequencyInSeconds) {
-		runRegularTemperatureMeasurement(Arrays.asList(sensor), bodyToParameters(duration, frequencyInSeconds, null));
+	public TemperatureSensor startDevice(TemperatureSensor sensor, Long duration, Integer frequencyInSeconds) {
+		runRegularTemperatureMeasurement(Arrays.asList(sensor), bodyToParameters(Arrays.asList(sensor), duration, frequencyInSeconds, null));
 		sensor.setPinState(DeviceStatus.RUNNING);
 		sensor.setLastStateChangeDate(new Date());
 		return repository.save(sensor);
@@ -336,11 +342,12 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		return this.repository.save(device);
 	}
 
-	private Map<String, Object> bodyToParameters(Float duration, Integer frequency, Long externalId) {
+	private Map<String, Object> bodyToParameters(List<TemperatureSensor> sensors, Long duration, Integer frequency, Long externalId) {
 		Map<String, Object> params = new HashMap<>();
-		params.put(TemperatureSensor.DURATION, duration * 1000);
+		params.put(TemperatureSensor.DURATION, Duration.of(duration, ChronoUnit.SECONDS));
 		params.put(TemperatureSensor.EXTERNAL_ID, externalId);
 		params.put(TemperatureSensor.FREQUENCY, Duration.ofSeconds(frequency));
+		params.put(TemperatureSensor.DEVICE_LIST, sensors);
 		return params;
 	}
 

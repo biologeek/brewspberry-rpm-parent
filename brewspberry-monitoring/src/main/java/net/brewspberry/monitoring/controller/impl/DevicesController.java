@@ -138,7 +138,12 @@ public class DevicesController {
 
 	@PutMapping("/{device}/stop")
 	public ResponseEntity<DeviceDto> stopDevice(@PathVariable("device") Long deviceId) {
-		AbstractDevice device = this.deviceServices.stopDevice(deviceId);
+		AbstractDevice device;
+		try {
+			device = this.deviceServices.stopDevice(deviceId);
+		} catch (ElementNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(deviceConverter.toApi(device), HttpStatus.OK);
 	}
 

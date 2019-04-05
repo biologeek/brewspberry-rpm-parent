@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { RaspberryService } from 'src/app/services/raspberry.service';
-import { Pins } from 'src/app/beans/monitoring/pin';
+import { Pins, Pin } from 'src/app/beans/monitoring/pin';
 import { DeviceTypes } from 'src/app/beans/monitoring/device-type';
 import { Observable } from 'rxjs';
 import { DeviceService } from 'src/app/services/device.service';
@@ -51,6 +51,10 @@ export class AddDevicePopupComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onSelectValueChange() {
+    console.log(this.device);
+  }
+
   onSubmit() {
     this.deviceService.saveDevice(this.device).subscribe(response => {
       this.snackbar.open("Device saved !", null, {
@@ -65,7 +69,11 @@ export class AddDevicePopupComponent implements OnInit {
       });
       this.dialogRef.close();
     });
+  }
 
+
+  public pinComparator(pin1: Pin, pin2: Pin){
+    return pin1.id === pin2.id;
   }
 
 }

@@ -18,7 +18,7 @@ public class TemperatureBatchRunRequestBodyDto {
 	 */
 	private String externalId;
 	private Integer frequency;
-	private Float duration;
+	private Long duration;
 
 	public String getDevice() {
 		return device;
@@ -44,11 +44,11 @@ public class TemperatureBatchRunRequestBodyDto {
 		this.frequency = frequency;
 	}
 
-	public Float getDuration() {
+	public Long getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Float duration) {
+	public void setDuration(Long duration) {
 		this.duration = duration;
 	}
 

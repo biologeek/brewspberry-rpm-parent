@@ -18,13 +18,13 @@
   <div class="block">
     <mat-form-field>
       <mat-select placeholder="Type" name="type" [(ngModel)]="device.type">
-        <mat-option *ngFor="let type of types$ | async" [value]="type">{{type.name}}</mat-option>  
+        <mat-option *ngFor="let type of types$ | async" [value]="type">{{type | titlecase}}</mat-option>  
       </mat-select>
     </mat-form-field>
   </div>
   <div class="block">
     <mat-form-field>        
-      <mat-select placeholder="Pin" name="pin" [(ngModel)]="device.pin">
+      <mat-select placeholder="Pin" name="pin" (selectionChange)="onSelectValueChange()" [compareWith]="pinComparator" [(value)]="device.pin">
         <mat-option *ngFor="let pin of pins$ | async" [value]="pin">
           {{pin.name}}
         </mat-option>

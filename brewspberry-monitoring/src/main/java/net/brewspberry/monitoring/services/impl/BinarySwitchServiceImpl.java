@@ -193,7 +193,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	}
 
 	@Override
-	public BinarySwitch startDevice(BinarySwitch device, Float duration, Integer frequencyInSeconds) {
+	public BinarySwitch startDevice(BinarySwitch device, Long duration, Integer frequencyInSeconds) {
 		if (duration == null) {
 			return startDeviceForUndefinedPeriod(device);
 		} else {
@@ -201,7 +201,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		}
 	}
 
-	private BinarySwitch startDeviceForPeriod(BinarySwitch device, Float duration) {
+	private BinarySwitch startDeviceForPeriod(BinarySwitch device, Long duration) {
 		
 		return null;
 	}

@@ -1,5 +1,6 @@
 package net.brewspberry.monitoring.model;
 
+import java.time.Duration;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ public class TemperatureSensor extends AbstractDevice {
 	public static final String EXTERNAL_ID = "externalId";
 	public static final String THREAD_DUMP_FOLDER = "threadDumpFolder";
 	/**
-	 * Polling frequency in Hz-1
+	 * Polling frequency as a {@link Duration}
 	 */
 	public static final String FREQUENCY = "frequency";
 	public static final String[] MANDATORY_REGULAR_POLL_PARAMETERS = new String[] { DEVICE_LIST, DURATION, FREQUENCY };

@@ -23,6 +23,7 @@ public abstract class AbstractDevice {
 	@GeneratedValue
 	protected Long id;
 	protected String uuid;
+	@Enumerated(EnumType.STRING)
 	protected DeviceType type;
 	@ManyToOne
 	protected RaspberryPin pin;

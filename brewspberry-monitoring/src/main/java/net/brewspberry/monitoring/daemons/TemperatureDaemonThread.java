@@ -1,6 +1,7 @@
 package net.brewspberry.monitoring.daemons;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,8 +13,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
 
 import org.springframework.util.Assert;
 
@@ -51,6 +50,16 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 	public TemperatureDaemonThread() {
 	}
 
+	public TemperatureDaemonThread(TemperatureMeasurementRepository repository, Map<String, Object> parameters,
+			W1Master oneWireMaster, ThreadStateServices threadServices, ThreadWitnessCheckServices witnessServices) {
+		super();
+		this.repository = repository;
+		this.parameters = parameters;
+		this.oneWireMaster = oneWireMaster;
+		this.threadServices = threadServices;
+		this.witnessServices = witnessServices;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	/**
@@ -64,6 +73,7 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 	 * 
 	 */
 	public void run() {
+		logger.info("Starting thread with UUID " + uuid);
 		try {
 			checkParams();
 		} catch (Exception e) {
@@ -75,6 +85,12 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 		endCal.add(Calendar.MILLISECOND, (int) ((Duration) parameters.get(TemperatureSensor.DURATION)).toMillis());
 		List<TemperatureSensor> sensorsList = (List<TemperatureSensor>) parameters.get(TemperatureSensor.DEVICE_LIST);
 		while (new Date().before(endCal.getTime())) {
+
+			logger.info("New cycle for " + uuid + " at date "
+					+ new SimpleDateFormat("yyyy-MM-dd HH:MM:ss").format(new Date()));
+			logger.info("Device list : "
+					+ sensorsList.stream().map(t -> t.getUuid()).reduce((p1, p2) -> p1 + "," + p2).get());
+
 			try {
 				prePolling();
 
@@ -82,13 +98,13 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 
 				saveMeasurements(measured);
 				threadServices.writeState(ThreadState.noError(uuid));
-				Thread.sleep((long) parameters.get(TemperatureSensor.FREQUENCY));
+				Thread.sleep(((Duration) parameters.get(TemperatureSensor.FREQUENCY)).getSeconds());
 			} catch (MonitoringException e) {
 				e.printStackTrace();
-					ThreadState threadState = threadServices.readState(e.getMessage());
-					threadServices.writeState(ThreadState
-							.xErrors(threadState.getErrorOccurence(), e.getDeviceUuid(), e.getMessage()));
-				
+				ThreadState threadState = threadServices.readState(e.getMessage());
+				threadServices.writeState(
+						ThreadState.xErrors(threadState.getErrorOccurence(), e.getDeviceUuid(), e.getMessage()));
+
 				continue;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -148,7 +164,7 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 	 * @param sensors
 	 * @param frequency
 	 * @return
-	 * @throws MonitoringException 
+	 * @throws MonitoringException
 	 * @throws DeviceNotFoundException
 	 * @throws IOException
 	 */
@@ -166,7 +182,7 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 						.stream()//
 						.filter(t -> t.getUuid().equals(device.getId())).findFirst()//
 						.orElseThrow(() -> new DeviceNotFoundException(device.getId()));
-				
+
 				measurements.add(new TemperatureMeasurement()//
 						.date(new Date())//
 						.sensor(currentSensor)//
@@ -177,7 +193,7 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 				continue;
 			} catch (IOException e) {
 				throw new MonitoringException(currentSensor.getUuid(), e);
-			}//
+			} //
 		}
 		return measurements;
 	}

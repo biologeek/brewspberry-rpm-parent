@@ -41,7 +41,7 @@ public interface DeviceService<T extends AbstractDevice> {
 	 *            frequency of measurement
 	 * @return the updated device
 	 */
-	public T startDevice(T device, Float duration, Integer frequencyInSeconds);
+	public T startDevice(T device, Long duration, Integer frequencyInSeconds);
 
 	/**
 	 * Stops device and sets its new status to {@link DeviceStatus}.STOPPED
