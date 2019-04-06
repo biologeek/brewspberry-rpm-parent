@@ -95,10 +95,10 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 				prePolling();
 
 				List<TemperatureMeasurement> measured = pollSensors(sensorsList);
-
+				logger.info(measured.stream().map(t -> t.getSensor().getUuid() + " : "+t.getTemperature()+ "°C").reduce((a,p)-> a+", "+ p).orElse("No temperature !!")); 
 				saveMeasurements(measured);
 				threadServices.writeState(ThreadState.noError(uuid));
-				Thread.sleep(((Duration) parameters.get(TemperatureSensor.FREQUENCY)).getSeconds());
+				Thread.sleep(((Duration) parameters.get(TemperatureSensor.FREQUENCY)).toMillis());
 			} catch (MonitoringException e) {
 				e.printStackTrace();
 				ThreadState threadState = threadServices.readState(e.getMessage());
@@ -215,7 +215,11 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 					.collect(Collectors.toList());
 			devices = oneWireMaster.getDevices()//
 					.stream()//
-					.filter(t -> sensorsIds != null && sensorsIds.contains(t.getId()))//
+					.filter(t -> {
+						
+						logger.info("SensorIds : "+sensorsIds+", current : "+t.getId());
+						return sensorsIds != null && sensorsIds.contains(t.getId());//
+					})
 					.collect(Collectors.toSet());
 		}
 		return devices;

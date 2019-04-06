@@ -65,7 +65,7 @@ public class DS18B20TemperatureSensorServiceImplTest {
 		sensor.setUuid("28-123456789");
 		
 		TemperatureMeasurement temperature = sut.getTemperatureForDevice(sensor);
-		Assert.assertEquals(20.0f, temperature.getTemperature(), 0.1);
+		Assert.assertEquals(2.0f, temperature.getTemperature(), 0.1);
 		Assert.assertEquals("28-123456789", temperature.getSensor().getUuid());
 	}
 

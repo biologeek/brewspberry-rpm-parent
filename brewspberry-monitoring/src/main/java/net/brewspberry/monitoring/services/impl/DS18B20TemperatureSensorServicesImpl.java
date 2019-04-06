@@ -47,7 +47,7 @@ import net.brewspberry.monitoring.services.ThreadWitnessServices;
  * Service that handles operations around DS18B20 temperature sensors
  *
  */
-@Service(value="temperatureSensorServiceImpl")
+@Service(value = "temperatureSensorServiceImpl")
 @Qualifier("temperatureSensorServiceImpl")
 public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorService {
 
@@ -74,8 +74,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	@Autowired
 	ThreadWitnessCheckServices threadWitnessCheckService;
 
-
-	@Override 
+	@Override
 	public TemperatureSensor getDeviceById(Long id) {
 		return repository.findById(id).get();
 	}
@@ -163,7 +162,11 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	public static Float convertRawTemperature(String value) {
-		return Float.valueOf(value) / 100;
+		try {
+			return Float.valueOf(value) / 1000;
+		} catch (NumberFormatException e) {
+			return Float.valueOf(value.split("t=")[1]) / 1000;
+		}
 	}
 
 	public TemperatureSensorRepository getRepository() {
@@ -328,7 +331,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 
 	@Override
 	public TemperatureSensor startDevice(TemperatureSensor sensor, Long duration, Integer frequencyInSeconds) {
-		runRegularTemperatureMeasurement(Arrays.asList(sensor), bodyToParameters(Arrays.asList(sensor), duration, frequencyInSeconds, null));
+		runRegularTemperatureMeasurement(Arrays.asList(sensor),
+				bodyToParameters(Arrays.asList(sensor), duration, frequencyInSeconds, null));
 		sensor.setPinState(DeviceStatus.RUNNING);
 		sensor.setLastStateChangeDate(new Date());
 		return repository.save(sensor);
@@ -342,7 +346,8 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		return this.repository.save(device);
 	}
 
-	private Map<String, Object> bodyToParameters(List<TemperatureSensor> sensors, Long duration, Integer frequency, Long externalId) {
+	private Map<String, Object> bodyToParameters(List<TemperatureSensor> sensors, Long duration, Integer frequency,
+			Long externalId) {
 		Map<String, Object> params = new HashMap<>();
 		params.put(TemperatureSensor.DURATION, Duration.of(duration, ChronoUnit.SECONDS));
 		params.put(TemperatureSensor.EXTERNAL_ID, externalId);
