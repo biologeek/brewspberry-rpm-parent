@@ -111,7 +111,7 @@ public class BinarySwitchDaemonThread implements Runnable {
 
 		device.setSwitchStatus(SwitchStatus.DOWN);
 		device.setPinState(DeviceStatus.STOPPED);
-		device.setLastStateChangeDate(new Date());
+		device.setLastStateChangeDate(LocalDateTime.now());
 		binarySwitchRepository.save(device);
 
 		threadServices.cleanState((String) parameters.get(UUID_PRM));

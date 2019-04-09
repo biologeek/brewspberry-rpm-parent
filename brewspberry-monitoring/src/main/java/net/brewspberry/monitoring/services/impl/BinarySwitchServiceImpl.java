@@ -1,6 +1,6 @@
 package net.brewspberry.monitoring.services.impl;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -95,7 +95,7 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	 */
 	private BinarySwitch changeState(BinarySwitch device, SwitchStatus state) {
 		device.setSwitchStatus(state);
-		device.setLastStateChangeDate(new Date());
+		device.setLastStateChangeDate(LocalDateTime.now());
 
 		return repository.save(device);
 	}
@@ -183,11 +183,11 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		saved.setPin(toSave.getPin());
 		saved.setPlugged(toSave.isPlugged());
 		saved.setPinState(toSave.getPinState());
-		saved.setUpdateDate(new Date());
+		saved.setUpdateDate(LocalDateTime.now());
 	}
 
 	private void validateSensor(BinarySwitch sensor) {
-		if (new Date().before(sensor.getCreationDate())) {
+		if (LocalDateTime.now().isBefore(sensor.getCreationDate())) {
 			throw new ValidationException("creation.date.future");
 		}
 	}

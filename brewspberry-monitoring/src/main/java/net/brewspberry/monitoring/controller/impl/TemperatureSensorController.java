@@ -1,5 +1,8 @@
 package net.brewspberry.monitoring.controller.impl;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -8,14 +11,20 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.brewspberry.monitoring.api.Temperature;
 import net.brewspberry.monitoring.converter.TemperatureConverter;
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
+import net.brewspberry.monitoring.services.TemperatureMeasurementService;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
 
 @RestController
@@ -26,7 +35,10 @@ public class TemperatureSensorController {
 	private static final String SENSOR_UUIDS_SEPARATOR = ";";
 	@Autowired
 	private TemperatureSensorService temperatureSensorService;
-
+	@Autowired
+	private TemperatureConverter temperatureConverter;
+	@Autowired
+	private TemperatureMeasurementService temperatureMeasurementService;
 
 	@RequestMapping(path = "/sensors/{sensors}", method = RequestMethod.GET)
 	public ResponseEntity<List<Temperature>> getTemperaturesForSensors(@PathVariable("sensors") String sensors) {
@@ -43,6 +55,26 @@ public class TemperatureSensorController {
 		return new ResponseEntity<List<Temperature>>(new TemperatureConverter().toApi(measurements), HttpStatus.OK);
 	}
 
+	@GetMapping("/sensors/uuid/{uuid}/measurements")
+	public ResponseEntity<List<Temperature>> getTemperaturesForSensorAndPeriod(//
+			@PathVariable("uuid") String uuid//
+			, @RequestParam(value = "begin", required = false) LocalDateTime begin//
+			, @RequestParam(value = "end", required = false) LocalDateTime end) {
+		List<TemperatureMeasurement> measurements = null;
+		try {
+			measurements = this.temperatureMeasurementService.getMeasureMentsForUuidAndPeriod(uuid, begin, end);
+		} catch (ElementNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(temperatureConverter.toApi(measurements), HttpStatus.OK);
+
+	}
+
+	private LocalDateTime convertToLocalDateTime(Long beginLong) {		
+		return beginLong == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(beginLong), ZoneId.systemDefault());
+	}
+
 	/*
 	 * Helper methods
 	 */
@@ -50,7 +82,6 @@ public class TemperatureSensorController {
 	private List<String> processSensorsUuids(String sensors) {
 		return Arrays.asList(sensors.split(SENSOR_UUIDS_SEPARATOR)).stream().collect(Collectors.toList());
 	}
-
 
 	/**
 	 * Translates sensor IDs into Longs. Default seperator is "."
@@ -66,5 +97,5 @@ public class TemperatureSensorController {
 			}
 		}).collect(Collectors.toList());
 	}
-
+	
 }

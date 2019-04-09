@@ -1,7 +1,13 @@
 package net.brewspberry.monitoring.api;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import net.brewspberry.monitoring.api.converters.LocalDateTimeToLongConverter;
+import net.brewspberry.monitoring.api.converters.LongToLocalDateTimeConverter;
 
 public class DeviceDto {
 
@@ -11,7 +17,16 @@ public class DeviceDto {
 	private String uuid;
 	private ActionerType type;
 	Map<String, String> externalIds;
-	private Date creation, update, lastChange;
+
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
+	private LocalDateTime creation;
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
+	private LocalDateTime update;
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
+	private LocalDateTime lastChange;
 
 	private RaspberryPinDto pin;
 	private int pinAddress;
@@ -27,20 +42,12 @@ public class DeviceDto {
 		STOPPED, STARTED, PAUSED, IDLE, UP, DOWN;
 	}
 
-	public Date getUpdate() {
-		return update;
+	public long getId() {
+		return id;
 	}
 
-	public void setUpdate(Date update) {
-		this.update = update;
-	}
-
-	public int getPinAddress() {
-		return pinAddress;
-	}
-
-	public void setPinAddress(int pinAddress) {
-		this.pinAddress = pinAddress;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public Map<String, String> getExternalIds() {
@@ -51,28 +58,36 @@ public class DeviceDto {
 		this.externalIds = externalIds;
 	}
 
-	public Date getCreation() {
+	public LocalDateTime getCreation() {
 		return creation;
 	}
 
-	public void setCreation(Date creation) {
+	public void setCreation(LocalDateTime creation) {
 		this.creation = creation;
 	}
 
-	public Date getLastChange() {
+	public LocalDateTime getUpdate() {
+		return update;
+	}
+
+	public void setUpdate(LocalDateTime update) {
+		this.update = update;
+	}
+
+	public LocalDateTime getLastChange() {
 		return lastChange;
 	}
 
-	public void setLastChange(Date lastChange) {
+	public void setLastChange(LocalDateTime lastChange) {
 		this.lastChange = lastChange;
 	}
 
-	public long getId() {
-		return id;
+	public int getPinAddress() {
+		return pinAddress;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setPinAddress(int pinAddress) {
+		this.pinAddress = pinAddress;
 	}
 
 	public boolean isPlugged() {

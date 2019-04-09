@@ -1,11 +1,19 @@
 package net.brewspberry.monitoring.api;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import net.brewspberry.monitoring.api.converters.LocalDateTimeToLongConverter;
+import net.brewspberry.monitoring.api.converters.LongToLocalDateTimeConverter;
 
 public class Temperature {
 
 	private Long sensor;
-	private Date date;
+	@JsonDeserialize(converter=LocalDateTimeToLongConverter.class)
+	@JsonSerialize(converter=LongToLocalDateTimeConverter.class)
+	private LocalDateTime date;
 	private Float temperature;
 
 	public Long getSensor() {
@@ -16,11 +24,11 @@ public class Temperature {
 		this.sensor = sensor;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -37,7 +45,7 @@ public class Temperature {
 		return this;
 	}
 
-	public Temperature date(Date date) {
+	public Temperature date(LocalDateTime date) {
 		this.date = date;
 		return this;
 	}

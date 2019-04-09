@@ -2,10 +2,10 @@ package net.brewspberry.monitoring.services.impl;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +30,7 @@ import com.pi4j.io.w1.W1Master;
 
 import net.brewspberry.monitoring.daemons.TemperatureDaemonThread;
 import net.brewspberry.monitoring.exceptions.DeviceNotFoundException;
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
 import net.brewspberry.monitoring.model.DeviceStatus;
@@ -52,6 +53,7 @@ import net.brewspberry.monitoring.services.ThreadWitnessServices;
 public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorService {
 
 	private static final int DS18B20_CONSTANT = 0x28;
+	private static final int DS18B20_28_CONSTANT = 28;
 
 	@Autowired
 	TemperatureSensorRepository repository;
@@ -148,7 +150,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 							.findFirst().get();
 					try {
 						measurements.add(new TemperatureMeasurement()//
-								.date(new Date())//
+								.date(LocalDateTime.now())//
 								.temperature(convertRawTemperature(correspondingDevice.getValue()))//
 								.sensor(temp));
 					} catch (IOException e) {
@@ -277,14 +279,19 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	}
 
 	@Override
-	public TemperatureSensor getDeviceByUUID(String uuid) {
+	public TemperatureSensor getDeviceByUUID(String uuid) throws ElementNotFoundException {
 		checkUuid(uuid);
-		return this.repository.findByUuid(uuid);
+		TemperatureSensor found = this.repository.findByUuid(uuid);
+		if (found == null) {
+			logger.fine("Could not find device " + uuid);
+			throw new ElementNotFoundException();
+		}
+		return found;
 	}
 
 	private void checkUuid(String uuid) {
 		Assert.notNull(uuid, "device.uuid.null");
-		Assert.isTrue(uuid.startsWith(String.valueOf(DS18B20_CONSTANT)), "device.uuid.invalid");
+		Assert.isTrue(uuid.startsWith(String.valueOf(DS18B20_28_CONSTANT)), "device.uuid.invalid");
 	}
 
 	@Override
@@ -316,7 +323,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		saved.setPin(toSave.getPin());
 		saved.setPlugged(toSave.isPlugged());
 		saved.setPinState(toSave.getPinState());
-		saved.setUpdateDate(new Date());
+		saved.setUpdateDate(LocalDateTime.now());
 	}
 
 	void validateSensor(TemperatureSensor sensor) {
@@ -324,7 +331,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 			sensor.getUuid().matches(TemperatureSensor.DS18B20_UUID_REGEX);
 		}
 
-		if (new Date().before(sensor.getCreationDate())) {
+		if (LocalDateTime.now().isBefore(sensor.getCreationDate())) {
 			throw new ValidationException("creation.date.future");
 		}
 	}
@@ -334,7 +341,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 		runRegularTemperatureMeasurement(Arrays.asList(sensor),
 				bodyToParameters(Arrays.asList(sensor), duration, frequencyInSeconds, null));
 		sensor.setPinState(DeviceStatus.RUNNING);
-		sensor.setLastStateChangeDate(new Date());
+		sensor.setLastStateChangeDate(LocalDateTime.now());
 		return repository.save(sensor);
 	}
 
@@ -342,7 +349,7 @@ public class DS18B20TemperatureSensorServicesImpl implements TemperatureSensorSe
 	public TemperatureSensor stopDevice(TemperatureSensor device) {
 		this.threadStateService.cleanState(device.getUuid());
 		device.setPinState(DeviceStatus.STOPPED);
-		device.setLastStateChangeDate(new Date());
+		device.setLastStateChangeDate(LocalDateTime.now());
 		return this.repository.save(device);
 	}
 

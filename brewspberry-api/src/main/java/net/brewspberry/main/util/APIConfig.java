@@ -1,9 +1,7 @@
 package net.brewspberry.main.util;
 
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -18,7 +16,9 @@ import net.brewspberry.main.util.config.SpringCoreConfiguration;
 public class APIConfig extends WebMvcConfigurerAdapter {
 
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**");
+		registry.addMapping("/**")
+		.allowedOrigins("*")
+		.allowedMethods("GET", "POST", "PUT", "OPTIONS", "DELETE");
 	}
 
 }

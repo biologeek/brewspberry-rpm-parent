@@ -1,5 +1,6 @@
 package net.brewspberry.monitoring.services.impl;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -81,7 +82,7 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 			saved.setPinState(model.getPinState());
 			saved.setPlugged(model.isPlugged());
 			saved.setType(model.getType());
-			saved.setUpdateDate(new Date());
+			saved.setUpdateDate(LocalDateTime.now());
 			saved.setUuid(model.getUuid());
 			abstractDeviceRepository.save(saved);
 		} else {

@@ -169,6 +169,8 @@ public class MonitoringConfig implements WebMvcConfigurer {
 		return conFact;
 	}
 	
+	
+	
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {

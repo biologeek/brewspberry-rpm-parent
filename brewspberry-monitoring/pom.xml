@@ -13,6 +13,11 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${org.hibernate.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-java8</artifactId>
+			<version>${org.hibernate.version}</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 		<dependency>
 			<groupId>org.mariadb.jdbc</groupId>
@@ -147,30 +152,11 @@
 					</execution>
 				</executions>
 			</plugin>
-		<!-- <plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<archive>
-								<manifest>
-									<mainClass>
-										net.brewspberry.monitoring.business.MonitoringConfig
-									</mainClass>
-								</manifest>
-							</archive>
-							<descriptorRefs>
-								<descriptorRef>jar-with-dependencies</descriptorRef>
-							</descriptorRefs>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin> -->	
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-assembly-plugin</artifactId> 
+				<executions> <execution> <phase>package</phase> <goals> <goal>single</goal> 
+				</goals> <configuration> <archive> <manifest> <mainClass> net.brewspberry.monitoring.business.MonitoringConfig 
+				</mainClass> </manifest> </archive> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> </configuration> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 

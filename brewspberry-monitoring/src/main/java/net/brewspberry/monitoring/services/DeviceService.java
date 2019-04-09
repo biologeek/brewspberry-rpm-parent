@@ -2,6 +2,7 @@ package net.brewspberry.monitoring.services;
 
 import java.util.Set;
 
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.DeviceStatus;
@@ -25,7 +26,7 @@ public interface DeviceService<T extends AbstractDevice> {
 
 	public T updateDevice(T toSave, T saved) throws ServiceException;
 
-	public T getDeviceByUUID(String uuid);
+	public T getDeviceByUUID(String uuid) throws ElementNotFoundException;
 
 	/**
 	 * Starts a device for a certain time and eventually performs measurement at a

@@ -1,7 +1,13 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 import * as d3 from 'd3-selection';
+import * as d3Scale from 'd3-scale';
+import * as d3Axis from 'd3-axis';
+import * as d3Shape from 'd3-shape';
+import { ChartData, Series } from 'src/app/beans/monitoring/chart-data';
+import { TemperatureService } from 'src/app/services/temperature.service';
+import { Temperature } from 'src/app/beans/monitoring/temperature';
 
 @Component({
   selector: 'app-activity-chart-popup',
@@ -11,17 +17,137 @@ import * as d3 from 'd3-selection';
 export class ActivityChartPopupComponent implements OnInit {
 
   private chart;
+  private dateBounds = []
 
-  constructor(@Inject(MAT_DIALOG_DATA) public dialogInputData: any) { }
+  chartData: Temperature[];
+
+  @ViewChild('activityChart')
+  private chartAngularRef: ElementRef;
+
+  effectiveHeight: number;
+  effectiveWidth: number;
+
+  private margins = {
+    top: 10,
+    bottom: 10,
+    left: 10,
+    right: 10
+  }
+
+  constructor(@Inject(MAT_DIALOG_DATA) public dialogInputData: any, private temperatureService: TemperatureService) { }
 
   ngOnInit() {
-    this.initChart();
+
+    // Initiating date to past 1 hour for the chart
+    const past = new Date();
+    past.setHours(past.getHours() - 2);
+    this.dateBounds = [past, new Date()];
+
+    const subscription$ = this.temperatureService
+      .getTemperaturesForDeviceBetweenDates(this.dialogInputData.device.uuid, this.dateBounds)
+      .subscribe(entity => {
+        this.chartData = entity;
+        this.initChart();
+      }, error => {
+
+      });
   }
 
 
   initChart() {
     this.chart = d3.select('#chart');
-    this.chart.append('g');
+    console.log(this.chartAngularRef.nativeElement.clientHeight);
+
+    this.effectiveHeight = this.chartAngularRef.nativeElement.clientHeight - this.margins.top - this.margins.bottom;
+    this.effectiveWidth = this.chartAngularRef.nativeElement.clientWidth - this.margins.left - this.margins.right;
+
+    const mainG = this.chart.append('g')//
+      .attr('height', `${this.effectiveHeight}px`)//
+      .attr('width', `${this.effectiveWidth}px`)
+      .attr('transform', `translate(${(this.margins.left + this.margins.right) / 2}, ${(this.margins.top + this.margins.bottom) / 2})`)
+      .attr('style', 'backgroung-color: red');
+
+    const minAndMax = this.getMinAndMaxFromSeries(this.chartData);
+
+    const x = d3Scale.scaleTime()//
+    .range([0, this.effectiveWidth])
+    .domain(minAndMax.x);
+    
+    const y = d3Scale.scaleLinear()//
+    .range([0, this.effectiveHeight])
+    .domain(minAndMax.y);
+
+    const line = d3Shape//
+      .line()//
+      .x(item => x(item.date))
+      .y(item => y(item.temperature));
+    
+    const xAxis = d3Axis.axisBottom(x);
+
+    const yAxis = d3Axis.axisLeft(y);
+
+
+    /*
+     * Adding elements to SVG
+     */
+
+     mainG.append('g')//
+     .attr('class', 'axis axis-x')
+     .call(xAxis);
+
+     mainG.append('g')//
+     .attr('class', 'axis axis-y')
+     .call(yAxis);
   }
 
+  /**
+   * Returns the min and max values for X and Y among series sharing the same unit
+   * @param series one or more series
+   */
+  private getMinAndMaxFromSeries(series: Temperature[]): any {
+    const result = {
+      x: [new Date(Number.POSITIVE_INFINITY), new Date(0)],
+      y: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
+    };
+
+    for (let temp of series) {
+      if (temp.date.getTime() < result.x[0].getTime()) {
+        result.x[0] = temp.date;
+      } else if (temp.date.getTime() > result.x[1].getTime()) {
+        result.x[1] = temp.date;
+      }
+
+      if (temp.temperature < result.y[0]) {
+        result.y[0] = temp.temperature;
+      } else if (temp.temperature > result.y[1]) {
+        result.y[1] = temp.temperature;
+      }
+    }
+    return result;
+  /*
+
+Following works for series of temperatures. IT SHOULD NOT BE ERASED !!!!
+
+    const result = {
+      x: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
+      y: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
+    };
+
+    for (let serie of series) {
+      for (let xyValue of serie.points) {
+        if (xyValue.x > result.x[1]) {
+          result.x[1] = xyValue.x;
+        } else if (xyValue.x < result.x[0]) {
+          result.x[0] = xyValue.x;
+        }
+        if (xyValue.y > result.y[1]) {
+          result.y[1] = xyValue.y;
+        } else if (xyValue.y < result.y[0]) {
+          result.y[0] = xyValue.y;
+        }
+      }
+    }
+
+    */
+}
 }

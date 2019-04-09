@@ -1,5 +1,6 @@
 package net.brewspberry.monitoring.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -12,13 +13,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 
 @Entity
-@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class AbstractDevice {
 
-	
-
-	
-	
 	@Id
 	@GeneratedValue
 	protected Long id;
@@ -29,25 +26,28 @@ public abstract class AbstractDevice {
 	protected RaspberryPin pin;
 	@Enumerated(EnumType.STRING)
 	protected DeviceStatus pinState;
-	protected Date lastStateChangeDate, creationDate, updateDate;
+	protected LocalDateTime lastStateChangeDate, creationDate, updateDate;
 	protected String name;
 	protected boolean isPlugged;
-	
 
-	public Date getCreationDate() {
+	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
 
-	public void setCreationDate(Date creationDate) {
+	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	public Date getUpdateDate() {
+	public LocalDateTime getUpdateDate() {
 		return updateDate;
 	}
 
-	public void setUpdateDate(Date updateDate) {
+	public void setUpdateDate(LocalDateTime updateDate) {
 		this.updateDate = updateDate;
+	}
+
+	public void setLastStateChangeDate(LocalDateTime lastStateChangeDate) {
+		this.lastStateChangeDate = lastStateChangeDate;
 	}
 
 	public boolean isPlugged() {
@@ -66,12 +66,8 @@ public abstract class AbstractDevice {
 		this.name = name;
 	}
 
-	public Date getLastStateChangeDate() {
+	public LocalDateTime getLastStateChangeDate() {
 		return lastStateChangeDate;
-	}
-
-	public void setLastStateChangeDate(Date lastStateChangeDate) {
-		this.lastStateChangeDate = lastStateChangeDate;
 	}
 
 	public DeviceStatus getPinState() {
@@ -103,6 +99,7 @@ public abstract class AbstractDevice {
 	}
 
 	public void setUuid(String uuid) {
+		uuid.replace("\\n", "");
 		this.uuid = uuid;
 	}
 
@@ -114,40 +111,36 @@ public abstract class AbstractDevice {
 		this.type = type;
 	}
 
-	
-	public AbstractDevice creationDate(Date creation) {
+	public AbstractDevice creationDate(LocalDateTime creation) {
 		this.creationDate = creation;
 		return this;
 	}
 
-
-	public AbstractDevice lastChangedDate(Date lastChange) {
+	public AbstractDevice lastChangedDate(LocalDateTime lastChange) {
 		this.lastStateChangeDate = lastChange;
 		return this;
 	}
-
 
 	public AbstractDevice id(Long id) {
 		this.id = id;
 		return this;
 	}
 
-
 	public AbstractDevice name(String name) {
 		this.name = name;
 		return this;
 	}
 
-
 	public AbstractDevice pin(RaspberryPin pin) {
 		this.pin = pin;
 		return this;
 	}
-	
+
 	public AbstractDevice uuid(String t) {
 		this.uuid = t;
 		return this;
 	}
+
 	public AbstractDevice type(DeviceType temperatureSensor) {
 		this.type = temperatureSensor;
 		return this;

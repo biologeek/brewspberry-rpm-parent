@@ -1,5 +1,6 @@
 package net.brewspberry.monitoring.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ public class TemperatureMeasurement {
 	@Id
 	@GeneratedValue
 	private Long id;
-	private Date date;
+	private LocalDateTime date;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "sensor_id")
 	private TemperatureSensor sensor;
@@ -36,11 +37,11 @@ public class TemperatureMeasurement {
 		this.id = id;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -68,7 +69,7 @@ public class TemperatureMeasurement {
 		this.externalId = externalId;
 	}
 
-	public TemperatureMeasurement date(Date date2) {
+	public TemperatureMeasurement date(LocalDateTime date2) {
 		setDate(date2);
 		return this;
 	}

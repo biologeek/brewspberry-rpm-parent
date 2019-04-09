@@ -1,6 +1,5 @@
 package net.brewspberry.monitoring.controller.impl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.common.collect.Lists;
 
 import net.brewspberry.monitoring.api.DeviceDto;
 import net.brewspberry.monitoring.api.DeviceDto.ActionerType;
@@ -72,10 +69,12 @@ public class DevicesController {
 
 	@RequestMapping(path = "/temperature/{uuid}", method = RequestMethod.POST)
 	public ResponseEntity<Void> savePluggedSensor(@PathVariable("uuid") String uuid) throws ServiceException {
-		TemperatureSensor sensor = temperatureSensorServices.getDeviceByUUID(uuid);
-
-		if (sensor == null)
+		TemperatureSensor sensor;
+		try {
+			sensor = temperatureSensorServices.getDeviceByUUID(uuid);
+		} catch (ElementNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 
 		temperatureSensorServices.saveDevice(sensor);
 
@@ -97,12 +96,16 @@ public class DevicesController {
 
 		TemperatureSensor sensorToUpdate = deviceConverter.toModelTemperatureSensor(dto);
 
-		TemperatureSensor sensorModel = temperatureSensorServices.getDeviceByUUID(uuid);
+		TemperatureSensor sensorModel = null;
+		try {
+			sensorModel = temperatureSensorServices.getDeviceByUUID(uuid);
+		} catch (ElementNotFoundException e) {
+			new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 
 		if (sensorToUpdate == null)
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		else if (sensorModel == null)
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
 
 		temperatureSensorServices.updateDevice(sensorToUpdate, sensorModel);
 

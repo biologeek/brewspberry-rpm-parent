@@ -3,6 +3,7 @@ package net.brewspberry.monitoring.daemons;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -184,7 +185,7 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 						.orElseThrow(() -> new DeviceNotFoundException(device.getId()));
 
 				measurements.add(new TemperatureMeasurement()//
-						.date(new Date())//
+						.date(LocalDateTime.now())//
 						.sensor(currentSensor)//
 						.temperature(DS18B20TemperatureSensorServicesImpl.convertRawTemperature(device.getValue()))//
 				);
