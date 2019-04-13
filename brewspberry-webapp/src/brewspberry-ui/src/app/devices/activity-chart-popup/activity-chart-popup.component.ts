@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 
 import * as d3 from 'd3-selection';
@@ -8,13 +8,14 @@ import * as d3Shape from 'd3-shape';
 import { ChartData, Series } from 'src/app/beans/monitoring/chart-data';
 import { TemperatureService } from 'src/app/services/temperature.service';
 import { Temperature } from 'src/app/beans/monitoring/temperature';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activity-chart-popup',
   templateUrl: './activity-chart-popup.component.html',
   styleUrls: ['./activity-chart-popup.component.css']
 })
-export class ActivityChartPopupComponent implements OnInit {
+export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
   private chart;
   private dateBounds = []
@@ -27,6 +28,11 @@ export class ActivityChartPopupComponent implements OnInit {
   effectiveHeight: number;
   effectiveWidth: number;
 
+  chartReady = true;
+
+
+  subscriptions$: Subscription[];
+
   private margins = {
     top: 10,
     bottom: 10,
@@ -37,20 +43,33 @@ export class ActivityChartPopupComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public dialogInputData: any, private temperatureService: TemperatureService) { }
 
   ngOnInit() {
-
-    // Initiating date to past 1 hour for the chart
+    this.subscriptions$ = [];
+    // Initiating date to past 2 hours for the chart
     const past = new Date();
     past.setHours(past.getHours() - 2);
     this.dateBounds = [past, new Date()];
+  }
 
+  ngOnDestroy() {
+    this.subscriptions$.forEach(s => s.unsubscribe());
+  }
+
+  refreshData() {
+    this.getData();
+  }
+
+  getData() {
     const subscription$ = this.temperatureService
       .getTemperaturesForDeviceBetweenDates(this.dialogInputData.device.uuid, this.dateBounds)
       .subscribe(entity => {
         this.chartData = entity;
+        this.chartReady = true;
         this.initChart();
       }, error => {
 
       });
+
+    this.subscriptions$.push(subscription$);
   }
 
 
@@ -70,18 +89,18 @@ export class ActivityChartPopupComponent implements OnInit {
     const minAndMax = this.getMinAndMaxFromSeries(this.chartData);
 
     const x = d3Scale.scaleTime()//
-    .range([0, this.effectiveWidth])
-    .domain(minAndMax.x);
-    
+      .range([0, this.effectiveWidth])
+      .domain(minAndMax.x);
+
     const y = d3Scale.scaleLinear()//
-    .range([0, this.effectiveHeight])
-    .domain(minAndMax.y);
+      .range([0, this.effectiveHeight])
+      .domain(minAndMax.y);
 
     const line = d3Shape//
       .line()//
       .x(item => x(item.date))
       .y(item => y(item.temperature));
-    
+
     const xAxis = d3Axis.axisBottom(x);
 
     const yAxis = d3Axis.axisLeft(y);
@@ -91,13 +110,13 @@ export class ActivityChartPopupComponent implements OnInit {
      * Adding elements to SVG
      */
 
-     mainG.append('g')//
-     .attr('class', 'axis axis-x')
-     .call(xAxis);
+    mainG.append('g')//
+      .attr('class', 'axis axis-x')
+      .call(xAxis);
 
-     mainG.append('g')//
-     .attr('class', 'axis axis-y')
-     .call(yAxis);
+    mainG.append('g')//
+      .attr('class', 'axis axis-y')
+      .call(yAxis);
   }
 
   /**
@@ -124,30 +143,30 @@ export class ActivityChartPopupComponent implements OnInit {
       }
     }
     return result;
-  /*
-
-Following works for series of temperatures. IT SHOULD NOT BE ERASED !!!!
-
-    const result = {
-      x: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
-      y: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
-    };
-
-    for (let serie of series) {
-      for (let xyValue of serie.points) {
-        if (xyValue.x > result.x[1]) {
-          result.x[1] = xyValue.x;
-        } else if (xyValue.x < result.x[0]) {
-          result.x[0] = xyValue.x;
-        }
-        if (xyValue.y > result.y[1]) {
-          result.y[1] = xyValue.y;
-        } else if (xyValue.y < result.y[0]) {
-          result.y[0] = xyValue.y;
+    /*
+  
+  Following works for series of temperatures. IT SHOULD NOT BE ERASED !!!!
+  
+      const result = {
+        x: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY],
+        y: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
+      };
+  
+      for (let serie of series) {
+        for (let xyValue of serie.points) {
+          if (xyValue.x > result.x[1]) {
+            result.x[1] = xyValue.x;
+          } else if (xyValue.x < result.x[0]) {
+            result.x[0] = xyValue.x;
+          }
+          if (xyValue.y > result.y[1]) {
+            result.y[1] = xyValue.y;
+          } else if (xyValue.y < result.y[0]) {
+            result.y[0] = xyValue.y;
+          }
         }
       }
-    }
-
-    */
-}
+  
+      */
+  }
 }

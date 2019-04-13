@@ -30,7 +30,7 @@ public interface ThreadStateServices {
 	 * @param uuid sensor's UUID
 	 * @throws TechnicalException
 	 */
-	public void cleanState(String uuid) throws TechnicalException;
+	public void cleanState(String uuid);
 
 	/**
 	 * Removes states for sensors

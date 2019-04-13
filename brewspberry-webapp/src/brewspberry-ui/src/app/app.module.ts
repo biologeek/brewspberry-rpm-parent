@@ -42,6 +42,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { BatchRequestPopupComponent } from './devices/batch-request-popup/batch-request-popup.component';
 import { AddDevicePopupComponent } from './devices/add-device-popup/add-device-popup.component';
 import { ActivityChartPopupComponent } from './devices/activity-chart-popup/activity-chart-popup.component';
+import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+
 
 
 
@@ -101,7 +103,9 @@ export const router: Routes = [
     MatSelectModule,
     MatInputModule,
     MatSlideToggleModule,
-    MatSnackBarModule
+    MatSnackBarModule,    
+    OwlDateTimeModule,
+    OwlNativeDateTimeModule,
   ],
   providers: [DeviceService, TemperatureService, IngredientService, StepService],
   exports: [RouterModule],

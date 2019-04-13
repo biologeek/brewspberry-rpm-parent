@@ -24,9 +24,7 @@ export class TemperatureService {
     const prm: HttpParams = new HttpParams();
     prm.append('begin', '' + dateBounds[0].getTime());
     prm.append('end', '' + dateBounds[1].getTime());
-    return this.http.get(`${environment.apiTemperatureMonitoring}/sensors/uuid/${uuid}/measurements`, {
-      params: prm
-    }) as Observable<Temperature[]>;
+    return this.http.get(`${environment.apiTemperatureMonitoring}/sensors/uuid/${uuid}/measurements?begin=${dateBounds[0].getTime()}&end=${dateBounds[1].getTime()}`) as Observable<Temperature[]>;
   }
 
 }

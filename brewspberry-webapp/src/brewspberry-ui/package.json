@@ -25,6 +25,7 @@
     "core-js": "^2.5.4",
     "d3": "^5.9.2",
     "font-awesome": "^4.7.0",
+    "ng-pick-datetime": "^7.0.0",
     "ngx-bootstrap": "^3.2.0",
     "ngx-toastr": "^9.1.2",
     "ngx-toggle": "^2.0.1",

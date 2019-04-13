@@ -47,10 +47,10 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 	}
 
 	@Override
-	public void cleanState(String uuid) throws TechnicalException {
+	public void cleanState(String uuid) {
 		ThreadState entity = readState(uuid);
 		if (entity == null)
-			throw new TechnicalException("No thread running for " + uuid);
+			return ;
 		threadStateRepository.delete(entity);
 	}
 

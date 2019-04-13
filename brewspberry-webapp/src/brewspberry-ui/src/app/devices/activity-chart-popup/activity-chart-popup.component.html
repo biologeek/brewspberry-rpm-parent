@@ -1,2 +1,15 @@
-<svg #activityChart id="chart" width="95%" height="95%">
+<mat-grid-list cols="3" rowHeight="2:1">
+    <mat-grid-tile>
+        <input [owlDateTime]="beginDt" [owlDateTimeTrigger]="beginDt" [(ngModel)]="dateBounds[0]">
+        <owl-date-time #beginDt></owl-date-time>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <input [owlDateTime]="endDt" [owlDateTimeTrigger]="endDt" [(ngModel)]="dateBounds[1]">
+        <owl-date-time #endDt></owl-date-time>
+    </mat-grid-tile>
+    <mat-grid-tile>
+        <button matButton (click)="refreshData()">Refresh</button>
+    </mat-grid-tile>
+</mat-grid-list>
+<svg #activityChart id="chart" width="800" height="400" *ngIf="chartReady">
 </svg>
