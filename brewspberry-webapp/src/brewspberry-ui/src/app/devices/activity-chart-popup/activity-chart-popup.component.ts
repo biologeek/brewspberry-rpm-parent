@@ -35,8 +35,8 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
   private margins = {
     top: 10,
-    bottom: 10,
-    left: 10,
+    bottom: 30,
+    left: 40,
     right: 10
   }
 
@@ -98,7 +98,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
     const line = d3Shape//
       .line()//
-      .x(item => x(item.date))
+      .x(item => x(new Date(item.date)))
       .y(item => y(item.temperature));
 
     const xAxis = d3Axis.axisBottom(x);
@@ -112,6 +112,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
     mainG.append('g')//
       .attr('class', 'axis axis-x')
+      .attr("transform", "translate(0," + this.effectiveHeight + ")")
       .call(xAxis);
 
     mainG.append('g')//
@@ -125,15 +126,15 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
    */
   private getMinAndMaxFromSeries(series: Temperature[]): any {
     const result = {
-      x: [new Date(Number.POSITIVE_INFINITY), new Date(0)],
+      x: [new Date(), new Date(0)],
       y: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
     };
 
     for (let temp of series) {
-      if (temp.date.getTime() < result.x[0].getTime()) {
-        result.x[0] = temp.date;
-      } else if (temp.date.getTime() > result.x[1].getTime()) {
-        result.x[1] = temp.date;
+      if (temp.date < result.x[0].getTime()) {
+        result.x[0] = new Date(temp.date);
+      } else if (temp.date > result.x[1].getTime()) {
+        result.x[1] = new Date(temp.date);
       }
 
       if (temp.temperature < result.y[0]) {

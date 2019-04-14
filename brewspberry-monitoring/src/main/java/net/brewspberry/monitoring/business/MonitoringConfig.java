@@ -21,6 +21,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.SingleConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
@@ -32,7 +33,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.mysql.jdbc.Driver;
 import com.pi4j.io.gpio.GpioController;
@@ -40,6 +40,8 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.w1.W1Master;
 import com.pi4j.wiringpi.GpioUtil;
 import com.zaxxer.hikari.HikariDataSource;
+
+import net.brewspberry.monitoring.controller.impl.LocalDateTimeConverter;
 
 @SpringBootApplication(scanBasePackages="net.brewspberry.monitoring")
 @EnableJms
@@ -169,6 +171,10 @@ public class MonitoringConfig implements WebMvcConfigurer {
 		return conFact;
 	}
 	
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+	    registry.addConverter(new LocalDateTimeConverter());
+	}
 	
 	
 

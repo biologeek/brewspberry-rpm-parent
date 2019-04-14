@@ -13,10 +13,10 @@ export class TemperatureService {
 
   public getTemperaturesForSensors(ids: Array<number>): Observable<Array<Temperature>> {
     const sensors: string = ids.join('.');
-    return this.http.get(environment.apiTemperatureMonitoring + '/sensors/' + sensors) as Observable<Array<Temperature>>;
+    return this.http.get(environment.apiHostMonitoring + '/sensors/' + sensors) as Observable<Array<Temperature>>;
   }
   public launchTemperatureMeasurement(req: BatchRequest): Observable<HttpResponse<void>> {
-    return this.http.post(environment.apiTemperatureMonitoring + '/run', req) as Observable<HttpResponse<void>>;
+    return this.http.post(environment.apiHostMonitoring + '/run', req) as Observable<HttpResponse<void>>;
   }
 
   getTemperaturesForDeviceBetweenDates(uuid: string, dateBounds: Date[]): Observable<Temperature[]> {
@@ -24,7 +24,7 @@ export class TemperatureService {
     const prm: HttpParams = new HttpParams();
     prm.append('begin', '' + dateBounds[0].getTime());
     prm.append('end', '' + dateBounds[1].getTime());
-    return this.http.get(`${environment.apiTemperatureMonitoring}/sensors/uuid/${uuid}/measurements?begin=${dateBounds[0].getTime()}&end=${dateBounds[1].getTime()}`) as Observable<Temperature[]>;
+    return this.http.get(`${environment.apiHostMonitoring}/temperature/sensors/uuid/${uuid}/measurements?begin=${dateBounds[0].getTime()}&end=${dateBounds[1].getTime()}`) as Observable<Temperature[]>;
   }
 
 }

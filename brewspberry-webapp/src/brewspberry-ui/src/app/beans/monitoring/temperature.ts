@@ -5,6 +5,6 @@
 export class Temperature {
 
     sensor?: number;
-    date?: Date;
+    date?: number;
     temperature?: number;
 }

@@ -9,11 +9,10 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +57,7 @@ public class TemperatureSensorController {
 	@GetMapping("/sensors/uuid/{uuid}/measurements")
 	public ResponseEntity<List<Temperature>> getTemperaturesForSensorAndPeriod(//
 			@PathVariable("uuid") String uuid//
-			, @RequestParam(value = "begin", required = false) LocalDateTime begin//
+			, @RequestParam(value = "begin", required = false) @DateTimeFormat LocalDateTime begin//
 			, @RequestParam(value = "end", required = false) LocalDateTime end) {
 		List<TemperatureMeasurement> measurements = null;
 		try {

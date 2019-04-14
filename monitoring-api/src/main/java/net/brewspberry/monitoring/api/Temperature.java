@@ -11,8 +11,8 @@ import net.brewspberry.monitoring.api.converters.LongToLocalDateTimeConverter;
 public class Temperature {
 
 	private Long sensor;
-	@JsonDeserialize(converter=LocalDateTimeToLongConverter.class)
-	@JsonSerialize(converter=LongToLocalDateTimeConverter.class)
+	@JsonDeserialize(converter=LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter=LocalDateTimeToLongConverter.class)
 	private LocalDateTime date;
 	private Float temperature;
 
