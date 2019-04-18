@@ -37,7 +37,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
   private margins = {
     top: 10,
-    bottom: 120,
+    bottom: 150,
     left: 40,
     right: 10
   }
@@ -104,7 +104,8 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
       .y(item => y(item.temperature));
     console.log(d3Time);
     const xAxis = d3Axis.axisBottom(x).ticks(10)
-    .tickFormat(d3Time.timeFormat("%d/%m/%y %H:%M:%S"))
+    .tickFormat(d3Time.timeFormat(`%d/%m/%y 
+     %H:%M:%S`));
    
 
     const yAxis = d3Axis.axisLeft(y);
@@ -114,18 +115,27 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
      * Adding elements to SVG
      */
     console.log(d3Svg.svg);
-     const rotateTranslate = d3Svg.svg.transform().rotate(-45).translate(0,30);
 
     mainG.append('g')//
       .attr('class', 'axis axis-x')
-      .attr("transform", "translate(0," + this.effectiveHeight + ")")
+      .attr('transform', 'translate(0,' + this.effectiveHeight + ')')
       .call(xAxis) 
-      .selectAll("text")
-      .attr('transform', rotateTranslate);
+      .selectAll('text')
+      .attr('transform', 'translate(-10,30)rotate(-45)');
 
     mainG.append('g')//
       .attr('class', 'axis axis-y')
       .call(yAxis);
+
+      mainG.append('path')
+      .datum(this.chartData)
+      .attr('class', 'line')
+      .attr('d', line)
+      .attr('stroke', 'black')
+      .attr('fill', 'white');
+    mainG.append('div')
+    .attr('class', 'legend')
+    .html('<p style="color: black">{{</p>')
   }
 
   /**
@@ -135,7 +145,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
   private getMinAndMaxFromSeries(series: Temperature[]): any {
     const result = {
       x: [new Date(), new Date(0)],
-      y: [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY]
+      y: [Number.NEGATIVE_INFINITY, Number.POSITIVE_INFINITY]
     };
 
     for (let temp of series) {
@@ -145,10 +155,10 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
         result.x[1] = new Date(temp.date);
       }
 
-      if (temp.temperature < result.y[0]) {
-        result.y[0] = temp.temperature;
-      } else if (temp.temperature > result.y[1]) {
+      if (temp.temperature < result.y[1]) {
         result.y[1] = temp.temperature;
+      } else if (temp.temperature > result.y[0]) {
+        result.y[0] = temp.temperature;
       }
     }
     return result;
