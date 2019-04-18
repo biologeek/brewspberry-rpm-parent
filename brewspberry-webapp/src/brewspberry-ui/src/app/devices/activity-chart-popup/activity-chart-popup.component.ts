@@ -5,6 +5,8 @@ import * as d3 from 'd3-selection';
 import * as d3Scale from 'd3-scale';
 import * as d3Axis from 'd3-axis';
 import * as d3Shape from 'd3-shape';
+import * as d3Time from 'd3-time-format';
+import * as d3Svg from 'd3';
 import { ChartData, Series } from 'src/app/beans/monitoring/chart-data';
 import { TemperatureService } from 'src/app/services/temperature.service';
 import { Temperature } from 'src/app/beans/monitoring/temperature';
@@ -35,7 +37,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
   private margins = {
     top: 10,
-    bottom: 30,
+    bottom: 120,
     left: 40,
     right: 10
   }
@@ -46,7 +48,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
     this.subscriptions$ = [];
     // Initiating date to past 2 hours for the chart
     const past = new Date();
-    past.setHours(past.getHours() - 2);
+    past.setMonth(past.getMonth() - 2);
     this.dateBounds = [past, new Date()];
   }
 
@@ -100,8 +102,10 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
       .line()//
       .x(item => x(new Date(item.date)))
       .y(item => y(item.temperature));
-
-    const xAxis = d3Axis.axisBottom(x);
+    console.log(d3Time);
+    const xAxis = d3Axis.axisBottom(x).ticks(10)
+    .tickFormat(d3Time.timeFormat("%d/%m/%y %H:%M:%S"))
+   
 
     const yAxis = d3Axis.axisLeft(y);
 
@@ -109,11 +113,15 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
     /*
      * Adding elements to SVG
      */
+    console.log(d3Svg.svg);
+     const rotateTranslate = d3Svg.svg.transform().rotate(-45).translate(0,30);
 
     mainG.append('g')//
       .attr('class', 'axis axis-x')
       .attr("transform", "translate(0," + this.effectiveHeight + ")")
-      .call(xAxis);
+      .call(xAxis) 
+      .selectAll("text")
+      .attr('transform', rotateTranslate);
 
     mainG.append('g')//
       .attr('class', 'axis axis-y')
