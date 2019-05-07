@@ -4,12 +4,13 @@
         <owl-date-time #beginDt></owl-date-time>
     </mat-grid-tile>
     <mat-grid-tile>
-        <input [owlDateTime]="endDt" [owlDateTimeTrigger]="endDt" [(ngModel)]="dateBounds[1]">
+        <input [owlDateTime]="endDt" [owlDateTimeTrigger]="endDt" [(ngModel)]="dateBounds[1]" [disabled]="now">
         <owl-date-time #endDt></owl-date-time>
+        <input type="checkbox" [(ngModel)]="now" name="now" (ngModelChange)="onCheckNow()"> <label for="now">Now</label>
     </mat-grid-tile>
     <mat-grid-tile>
         <button matButton (click)="refreshData()">Refresh</button>
     </mat-grid-tile>
 </mat-grid-list>
-<svg #activityChart id="chart" width="800" height="400" *ngIf="chartReady">
+<svg #activityChart id="chart" width="1500" height="700" *ngIf="chartReady">
 </svg>

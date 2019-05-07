@@ -22,7 +22,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.connection.SingleConnectionFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
@@ -44,7 +43,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import net.brewspberry.monitoring.controller.impl.LocalDateTimeConverter;
 
 @SpringBootApplication(scanBasePackages="net.brewspberry.monitoring")
-@EnableJms
 @EnableJpaRepositories (basePackages="net.brewspberry.monitoring.repositories")
 @EnableWebMvc
 @PropertySources(value = { @PropertySource("file:${app.parameters}/monitoring.properties") })
@@ -64,9 +62,6 @@ public class MonitoringConfig implements WebMvcConfigurer {
 	private String jdbcPassword;
 
 	private Logger logger = Logger.getLogger(MonitoringConfig.class.getName());
-
-	@Value("${activemq.broker.url}")
-	private String brokerURL;
 
 	@Bean
 	/**
@@ -144,31 +139,6 @@ public class MonitoringConfig implements WebMvcConfigurer {
 		MappingJackson2MessageConverter converter = new MappingJackson2MessageConverter();
 		converter.setTargetType(MessageType.TEXT);
 		return converter;
-	}
-
-	@Bean
-	public JmsTemplate temperatureJmsTemplate() {
-		JmsTemplate tpl = new JmsTemplate();
-		tpl.setConnectionFactory(springConnectionFactory());
-		tpl.setMessageConverter(jmsConverter());
-		tpl.setDefaultDestinationName("V1/Temperatures");
-		tpl.setPubSubDomain(false);
-		return tpl;
-	}
-
-	@Bean(name="connectionFactory")
-	public ConnectionFactory springConnectionFactory() {
-		SingleConnectionFactory factory = new SingleConnectionFactory();
-		factory.setTargetConnectionFactory(amqConnectionFactory());
-		factory.setReconnectOnException(true);
-		return factory;
-	}
-
-	@Bean
-	public ConnectionFactory amqConnectionFactory() {
-		ActiveMQConnectionFactory conFact = new ActiveMQConnectionFactory();
-		conFact.setBrokerURL(brokerURL);
-		return conFact;
 	}
 	
 	@Override

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Brew } from 'src/app/beans/brewery/brew';
 
 @Component({
@@ -10,7 +11,7 @@ export class ListComponent implements OnInit {
 
 
 
-  displayedColumns: string[] = ['date', 'state', 'title', 'actions'];
+  displayedColumns: string[] = ['date', 'title', 'state', 'actions'];
   dataSource: any[] = [
     {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
     {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
@@ -35,12 +36,14 @@ export class ListComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-
+  navigateToBrew(rowId){
+    this.router.navigate([`/brew/${rowId}`])
+  }
   deleteBrew(id: number) {
 
   }

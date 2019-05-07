@@ -11,10 +11,12 @@ export class BrewService {
 
   constructor(private http: HttpClient) { }
 
-
-
   public getCurrentBrews(): Observable<Brew[]> {
     return this.http.get(`${environment.apiBreweryManagement}/brew`) as Observable<Brew[]>;
+  }
+
+  public getBurrentBrew(): Observable<Brew> {
+    return this.http.get(`${environment.apiBreweryManagement}/brew/current`) as Observable<Brew>;
   }
 
 }

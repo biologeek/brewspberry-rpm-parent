@@ -1,8 +1,6 @@
 package net.brewspberry.monitoring.controller.impl;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
@@ -68,10 +66,6 @@ public class TemperatureSensorController {
 
 		return new ResponseEntity<>(temperatureConverter.toApi(measurements), HttpStatus.OK);
 
-	}
-
-	private LocalDateTime convertToLocalDateTime(Long beginLong) {		
-		return beginLong == null ? null : LocalDateTime.ofInstant(Instant.ofEpochMilli(beginLong), ZoneId.systemDefault());
 	}
 
 	/*

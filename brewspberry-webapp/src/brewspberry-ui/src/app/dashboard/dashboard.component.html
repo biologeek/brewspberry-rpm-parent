@@ -1,3 +1,27 @@
-<p>
-  dashboard works!
-</p>
+<div class="dashboard-top-panel">
+  <div class="dashboard-top-title">
+    You are currently brewing {{currentBrew.name}} !
+  </div>
+  <div class="dashboard-top-step">
+    Current step : {{currentStep.name}}
+  </div>
+
+</div>
+<div class="dashboard-left-panel">
+  <ul>
+    <li><span id="days">{{timerDays}}</span>days</li>
+    <li><span id="hours">{{timerHours}}</span>Hours</li>
+    <li><span id="minutes">{{timerMinutes}}</span>Minutes</li>
+    <li><span id="seconds">{{timerSeconds}}</span>Seconds</li>
+  </ul>
+
+    before the end of the step !
+</div>
+<div class="dashboard-right-panel">
+  
+  For next step ({{nextStep.name}}), please prepare :
+  <ul>
+    <li *ngFor="let ing of nextStep.ingredients">{{ing.quantity.quantity}}{{ing.quantity.unit}} of {{ing.name}}</li>
+  </ul>
+
+</div>

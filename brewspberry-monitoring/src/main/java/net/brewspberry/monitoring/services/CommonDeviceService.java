@@ -23,6 +23,7 @@ public interface CommonDeviceService {
 	public AbstractDevice startDevice(Long id, Long duration, Integer frequencyInSeconds);
 
 	public AbstractDevice stopDevice(Long deviceId) throws ElementNotFoundException;
+	public AbstractDevice stopDevice(String deviceUUID) throws ElementNotFoundException;
 
 	public Set<AbstractDevice> listAllDevices();
 

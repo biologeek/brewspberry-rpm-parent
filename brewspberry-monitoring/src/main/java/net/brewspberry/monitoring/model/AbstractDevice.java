@@ -99,7 +99,7 @@ public abstract class AbstractDevice {
 	}
 
 	public void setUuid(String uuid) {
-		uuid.replace("\\n", "");
+		uuid.replace("\n", "");
 		this.uuid = uuid;
 	}
 

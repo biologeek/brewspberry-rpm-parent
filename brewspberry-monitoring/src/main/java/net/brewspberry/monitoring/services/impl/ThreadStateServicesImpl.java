@@ -8,11 +8,13 @@ import org.springframework.core.NestedRuntimeException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
 import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.ThreadWitness;
 import net.brewspberry.monitoring.repositories.ThreadStateRepository;
 import net.brewspberry.monitoring.repositories.ThreadWitnessRepository;
+import net.brewspberry.monitoring.services.CommonDeviceService;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
 import net.brewspberry.monitoring.services.ThreadWitnessServices;
@@ -24,6 +26,8 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 	private ThreadWitnessRepository threadWitnessRepository;
 	@Autowired
 	private ThreadStateRepository threadStateRepository;
+	@Autowired
+	private CommonDeviceService abstractDeviceService;
 
 	
 	public ThreadStateServicesImpl() {
@@ -52,6 +56,12 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 		if (entity == null)
 			return ;
 		threadStateRepository.delete(entity);
+		try {
+			abstractDeviceService.stopDevice(uuid);
+		} catch (ElementNotFoundException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override

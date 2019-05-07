@@ -43,17 +43,21 @@ import { BatchRequestPopupComponent } from './devices/batch-request-popup/batch-
 import { AddDevicePopupComponent } from './devices/add-device-popup/add-device-popup.component';
 import { ActivityChartPopupComponent } from './devices/activity-chart-popup/activity-chart-popup.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
+import { TestComponent } from './test/test.component';
+import { BrewDetailComponent } from './brew/brew-detail/brew-detail.component';
 
 
 
 
 export const router: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full'},
+    { path: 'test', component: TestComponent },
     { path: 'login', component: LoginComponent },
     { path: 'devices/manage', component: ManageComponent },
     { path: 'devices/create', component: CreationFormComponent },
     { path: 'devices/edit/:id', component: CreationFormComponent },
     { path: 'brew/list', component: ListComponent },
+    { path: 'brew/:id', component: BrewDetailComponent },
     { path: 'brew/create', component: CreateComponent },
     { path: 'brew/create/:selectedStep', component: CreateComponent },
     { path: 'params', component: ParamsComponent },
@@ -82,7 +86,9 @@ export const router: Routes = [
     FilteringComponent,
     BatchRequestPopupComponent,
     AddDevicePopupComponent,
-    ActivityChartPopupComponent
+    ActivityChartPopupComponent,
+    TestComponent,
+    BrewDetailComponent
     ],
   imports: [
     BrowserModule,

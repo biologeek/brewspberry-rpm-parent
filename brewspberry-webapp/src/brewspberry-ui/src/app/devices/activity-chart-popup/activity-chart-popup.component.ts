@@ -6,11 +6,13 @@ import * as d3Scale from 'd3-scale';
 import * as d3Axis from 'd3-axis';
 import * as d3Shape from 'd3-shape';
 import * as d3Time from 'd3-time-format';
+import * as d3Format from 'd3-format';
 import * as d3Svg from 'd3';
 import { ChartData, Series } from 'src/app/beans/monitoring/chart-data';
 import { TemperatureService } from 'src/app/services/temperature.service';
 import { Temperature } from 'src/app/beans/monitoring/temperature';
 import { Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-activity-chart-popup',
@@ -20,7 +22,8 @@ import { Subscription } from 'rxjs';
 export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
   private chart;
-  private dateBounds = []
+  private dateBounds = [];
+  private now = true;
 
   chartData: Temperature[];
 
@@ -32,24 +35,38 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
 
   chartReady = true;
 
-
   subscriptions$: Subscription[];
 
   private margins = {
     top: 10,
     bottom: 150,
-    left: 40,
+    left: 70,
     right: 10
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public dialogInputData: any, private temperatureService: TemperatureService) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public dialogInputData: any, private temperatureService: TemperatureService, private http: HttpClient) { }
 
   ngOnInit() {
     this.subscriptions$ = [];
     // Initiating date to past 2 hours for the chart
     const past = new Date();
-    past.setMonth(past.getMonth() - 2);
+    past.setHours(past.getHours() - 2);
     this.dateBounds = [past, new Date()];
+    /*this.http.get('assets/data.json').subscribe((a: Temperature[]) => {
+      this.chartData = a;
+      this.initChart();
+    })*/
+    this.getData();
+    setInterval(() => {
+      if (this.now){
+        this.dateBounds[1] = new Date();
+      }
+
+      if (this.dialogInputData.device.state === 'STARTED'){
+        this.getData();
+      }
+    }, 1000)
+    
   }
 
   ngOnDestroy() {
@@ -74,15 +91,27 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
     this.subscriptions$.push(subscription$);
   }
 
-
+  onCheckNow() {
+    if (this.now){
+      
+    }
+  }
   initChart() {
+    d3.select('.main-g').remove();
     this.chart = d3.select('#chart');
     console.log(this.chartAngularRef.nativeElement.clientHeight);
 
-    this.effectiveHeight = this.chartAngularRef.nativeElement.clientHeight - this.margins.top - this.margins.bottom;
-    this.effectiveWidth = this.chartAngularRef.nativeElement.clientWidth - this.margins.left - this.margins.right;
+    let tempEff = this.chartAngularRef.nativeElement.clientHeight - this.margins.top - this.margins.bottom;
+    if (tempEff > 0) {
+      this.effectiveHeight = tempEff;
+    }
+    tempEff = this.chartAngularRef.nativeElement.clientWidth - this.margins.left - this.margins.right;
+    if (tempEff > 0 ) {
+      this.effectiveWidth = tempEff;
+    }
 
     const mainG = this.chart.append('g')//
+      .attr('class', 'main-g')
       .attr('height', `${this.effectiveHeight}px`)//
       .attr('width', `${this.effectiveWidth}px`)
       .attr('transform', `translate(${(this.margins.left + this.margins.right) / 2}, ${(this.margins.top + this.margins.bottom) / 2})`)
@@ -102,13 +131,16 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
       .line()//
       .x(item => x(new Date(item.date)))
       .y(item => y(item.temperature));
+      
     console.log(d3Time);
     const xAxis = d3Axis.axisBottom(x).ticks(10)
-    .tickFormat(d3Time.timeFormat(`%d/%m/%y 
+      .tickFormat(d3Time.timeFormat(`%d/%m/%y 
      %H:%M:%S`));
-   
 
-    const yAxis = d3Axis.axisLeft(y);
+
+    const yAxis = d3Axis.axisLeft(y)
+      .ticks(10)
+      .tickFormat(d3Format.format(".1f"));
 
 
     /*
@@ -119,7 +151,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
     mainG.append('g')//
       .attr('class', 'axis axis-x')
       .attr('transform', 'translate(0,' + this.effectiveHeight + ')')
-      .call(xAxis) 
+      .call(xAxis)
       .selectAll('text')
       .attr('transform', 'translate(-10,30)rotate(-45)');
 
@@ -131,11 +163,18 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
       .datum(this.chartData)
       .attr('class', 'line')
       .attr('d', line)
-      .attr('stroke', 'black')
-      .attr('fill', 'white');
+      .attr('stroke', 'steelblue')
+      .attr('fill', 'transparent');
+      mainG.selectAll('.dots')
+        .data(this.chartData)
+        .enter().append('circle')
+        .attr('r', '2')
+        .attr('cx', (d, i) => { return x(d.date)})
+        .attr('cy', (d, i) => { return y(d.temperature)})
+        .attr('fill', 'blue');
     mainG.append('div')
-    .attr('class', 'legend')
-    .html('<p style="color: black">{{</p>')
+      .attr('class', 'legend')
+      .html('<p style="color: black">{{</p>')
   }
 
   /**

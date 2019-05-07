@@ -82,6 +82,7 @@ export class ManageComponent implements OnInit {
 
   stopDevice(device) {
     this.deviceService.stopDevice(device).subscribe(data => {
+      this.devices$ = this.deviceService.getAllDevices();
       this.snackBar.open('Device stopped', null, {
         duration: this.SNACKBAR_POP_DURATION,
         panelClass: ['mat-snack-bar-ok']
@@ -106,6 +107,9 @@ export class ManageComponent implements OnInit {
         device: deviceToOpen
       }/*,
       height: '500px'*/
+    });
+    this.currentBatchDialogRef.afterClosed().subscribe(result => {
+      this.devices$ = this.deviceService.getAllDevices();
     });
   }
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.model.TemperatureMeasurement;
-import net.brewspberry.monitoring.model.TemperatureSensor;
 import net.brewspberry.monitoring.repositories.TemperatureMeasurementRepository;
 import net.brewspberry.monitoring.services.TemperatureMeasurementService;
 import net.brewspberry.monitoring.services.TemperatureSensorService;
@@ -27,7 +26,9 @@ public class DefaultTemperatureMeasurementService implements TemperatureMeasurem
 	@Override
 	public List<TemperatureMeasurement> getMeasureMentsForUuidAndPeriod(String uuid, LocalDateTime begin,
 			LocalDateTime end) throws ElementNotFoundException {
-		TemperatureSensor device = this.temperatureSensorService.getDeviceByUUID(uuid);
+		if (this.temperatureSensorService.getDeviceByUUID(uuid) == null){
+			throw new ElementNotFoundException();
+		}
 
 		List<TemperatureMeasurement> measurements = null;
 

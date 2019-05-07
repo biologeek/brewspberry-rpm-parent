@@ -1,7 +1,6 @@
 package net.brewspberry.monitoring.services.impl;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,6 +87,13 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 		} else {
 			throw new ElementNotFoundException();
 		}
+	}
+
+	@Override
+	public AbstractDevice stopDevice(String deviceUUID) throws ElementNotFoundException {
+		AbstractDevice device = this.abstractDeviceRepository.findByUuid(deviceUUID);
+		this.getSubService(device).stopDevice(device);
+		return null;
 	}
 
 }

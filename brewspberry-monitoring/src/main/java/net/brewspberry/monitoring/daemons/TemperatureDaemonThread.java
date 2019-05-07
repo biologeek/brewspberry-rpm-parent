@@ -110,6 +110,7 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				logger.severe("Thread sleep interrupted !!");
+				finalizeThread(sensorsList);
 			} catch (TechnicalException e1) {
 				continue;
 			}
@@ -181,8 +182,8 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 			try {
 				currentSensor = sensors//
 						.stream()//
-						.filter(t -> t.getUuid().equals(device.getId())).findFirst()//
-						.orElseThrow(() -> new DeviceNotFoundException(device.getId()));
+						.filter(t -> t.getUuid().equals(this.sanitizeDeviceUUID(device.getId()))).findFirst()//
+						.orElseThrow(() -> new DeviceNotFoundException(this.sanitizeDeviceUUID(device.getId())));
 
 				measurements.add(new TemperatureMeasurement()//
 						.date(LocalDateTime.now())//
@@ -217,13 +218,17 @@ public class TemperatureDaemonThread implements Runnable/* , JmsDaemon<Temperatu
 			devices = oneWireMaster.getDevices()//
 					.stream()//
 					.filter(t -> {
-						
-						logger.info("SensorIds : "+sensorsIds+", current : "+t.getId());
-						return sensorsIds != null && sensorsIds.contains(t.getId());//
+						logger.info("SensorIds : "+sensorsIds+", current : "+this.sanitizeDeviceUUID(t.getId()));
+						return sensorsIds != null && sensorsIds.contains(this.sanitizeDeviceUUID(t.getId()));//
 					})
 					.collect(Collectors.toSet());
 		}
+		logger.info(devices.size() + " devices found !!");
 		return devices;
+	}
+
+	private String sanitizeDeviceUUID(String id) {
+		return id.replace("\n", "");
 	}
 
 	public Map<String, Object> getParameters() {

@@ -1,11 +1,33 @@
 package net.brewspberry.brewery.api;
 
+import java.time.LocalDateTime;
+
 public class StepLight {
 
 	protected Long id;
 	protected String name;
 	protected String type;
 	protected Quantity plannedDuration, effectiveDuration;
+	protected LocalDateTime beginning, end;
+	/**
+	 * Step position inside the brew
+	 */
+	protected Integer position;
+	public LocalDateTime getBeginning() {
+		return beginning;
+	}
+
+	public void setBeginning(LocalDateTime beginning) {
+		this.beginning = beginning;
+	}
+
+	public LocalDateTime getEnd() {
+		return end;
+	}
+
+	public void setEnd(LocalDateTime end) {
+		this.end = end;
+	}
 
 	public Quantity getPlannedDuration() {
 		return plannedDuration;

@@ -1,6 +1,6 @@
 package net.brewspberry.brewery.api;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -10,8 +10,8 @@ public class BrewDto {
 
 	private Long id;
 	private String title;
-	private Date beginning;
-	private Date end;
+	private LocalDateTime beginning;
+	private LocalDateTime end;
 	private Quantity totalProduced;
 	private Quantity totalExpected;
 	private List<StepFull> steps;
@@ -19,6 +19,7 @@ public class BrewDto {
 	private List<Hop> hops;
 	private List<Yeast> yeasts;
 	private List<Spice> spices;
+	private List<Additive> additives;
 
 	public Long getId() {
 		return id;
@@ -26,6 +27,14 @@ public class BrewDto {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<Additive> getAdditives() {
+		return additives;
+	}
+
+	public void setAdditives(List<Additive> additives) {
+		this.additives = additives;
 	}
 
 	public String getTitle() {
@@ -44,19 +53,19 @@ public class BrewDto {
 		this.steps = steps;
 	}
 
-	public Date getBeginning() {
+	public LocalDateTime getBeginning() {
 		return beginning;
 	}
 
-	public void setBeginning(Date beginning) {
+	public void setBeginning(LocalDateTime beginning) {
 		this.beginning = beginning;
 	}
 
-	public Date getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
 
-	public void setEnd(Date end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 
