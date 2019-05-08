@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import net.brewspberry.brewery.api.Hop;
+import net.brewspberry.brewery.api.Unit;
 import net.brewspberry.brewery.model.CustomQuantity;
 import net.brewspberry.brewery.model.Hop.HopType;
-import net.brewspberry.brewery.model.Unit;
 
 @Component
 public class HopMapper extends AbstractIngredientMapper<net.brewspberry.brewery.model.Hop, Hop> {

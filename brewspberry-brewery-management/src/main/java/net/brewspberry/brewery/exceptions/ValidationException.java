@@ -1,24 +1,12 @@
 package net.brewspberry.brewery.exceptions;
 
 /**
- * Exception thrown when a functional error occurs on device
+ * Exception thrown when a functional error occurs on brewery management
  *
  */
 public class ValidationException extends Exception {
 
-	private String deviceUuid;
-	
-	public ValidationException(String uuid, Exception e) {
-		super(e);
-		deviceUuid = uuid;
+	public ValidationException(String message) {
+		super(message);
 	}
-
-	public String getDeviceUuid() {
-		return deviceUuid;
-	}
-
-	public void setDeviceUuid(String deviceUuid) {
-		this.deviceUuid = deviceUuid;
-	}
-
 }

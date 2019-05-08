@@ -1,14 +1,19 @@
 package net.brewspberry.brewery.api;
 
 public class Quantity {
-	private Long quantity;
+	private Float quantity;
 	private String unit;
 
-	public Long getQuantity() {
+	public Quantity(Float quantity2, String string) {
+		quantity = quantity2;
+		unit = string;
+	}
+
+	public Float getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(Long quantity) {
+	public void setQuantity(Float quantity) {
 		this.quantity = quantity;
 	}
 

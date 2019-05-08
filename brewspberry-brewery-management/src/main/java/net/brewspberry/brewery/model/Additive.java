@@ -18,7 +18,7 @@ public class Additive extends AbstractIngredient {
 
 	private String code;
 	private String function;
-	private String recommendedQuantity;
+	private CustomQuantity recommendedQuantity;
 
 	@ManyToMany(mappedBy = "additives")
 	private List<Brew> brew;
@@ -31,11 +31,11 @@ public class Additive extends AbstractIngredient {
 		this.brew = brew;
 	}
 
-	public String getRecommendedQuantity() {
+	public CustomQuantity getRecommendedQuantity() {
 		return recommendedQuantity;
 	}
 
-	public void setRecommendedQuantity(String recommendedQuantity) {
+	public void setRecommendedQuantity(CustomQuantity recommendedQuantity) {
 		this.recommendedQuantity = recommendedQuantity;
 	}
 

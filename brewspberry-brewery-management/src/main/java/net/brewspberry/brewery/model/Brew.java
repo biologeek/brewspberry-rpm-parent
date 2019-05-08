@@ -1,6 +1,7 @@
 package net.brewspberry.brewery.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -62,6 +63,17 @@ public class Brew {
 
 	@OneToOne
 	private ProductionReport production;
+	
+	
+
+	public Brew() {
+		super();
+		this.malts = new ArrayList<>();
+		this.hops = new ArrayList<>();
+		this.spices = new ArrayList<>();
+		this.additives = new ArrayList<>();
+		this.yeasts = new ArrayList<>();
+	}
 
 	public Long getId() {
 		return id;
