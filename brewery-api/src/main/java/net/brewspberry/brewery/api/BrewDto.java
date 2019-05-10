@@ -4,13 +4,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import net.brewspberry.brewery.api.converters.LocalDateTimeToLongConverter;
+import net.brewspberry.brewery.api.converters.LongToLocalDateTimeConverter;
 
 @JsonAutoDetect
 public class BrewDto {
 
 	private Long id;
 	private String title;
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
 	private LocalDateTime beginning;
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
 	private LocalDateTime end;
 	private Quantity totalProduced;
 	private Quantity totalExpected;

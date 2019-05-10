@@ -2,17 +2,30 @@ package net.brewspberry.brewery.api;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import net.brewspberry.brewery.api.converters.LocalDateTimeToLongConverter;
+import net.brewspberry.brewery.api.converters.LongToLocalDateTimeConverter;
+
 public class StepLight {
 
 	protected Long id;
 	protected String name;
 	protected String type;
 	protected Quantity plannedDuration, effectiveDuration;
-	protected LocalDateTime beginning, end;
+
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
+	protected LocalDateTime beginning;
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
+	protected LocalDateTime end;
 	/**
 	 * Step position inside the brew
 	 */
 	protected Integer position;
+
 	public LocalDateTime getBeginning() {
 		return beginning;
 	}

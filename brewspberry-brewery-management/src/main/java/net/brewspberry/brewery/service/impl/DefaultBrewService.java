@@ -43,6 +43,8 @@ public class DefaultBrewService implements BrewService {
 		validateBrew(brew);
 		brew.setCreationDate(LocalDateTime.now());
 		brew.setUpdateDate(LocalDateTime.now());
+		persistBrewElements(brew);
+
 		return this.repo.save(brew);
 	}
 
@@ -54,12 +56,16 @@ public class DefaultBrewService implements BrewService {
 		}
 		validateBrew(brew);
 
-		/*
-		 * Updating subcomponents of Brew 
-		 * 1. Steps,
-		 * 2. Ingredients,
-		 * 3. ProductionReport
-		 */
+		persisted = mergeBrew(brew, persisted);
+		persistBrewElements(persisted);
+		persisted.setUpdateDate(LocalDateTime.now());
+		return repo.save(persisted);
+	}
+
+	/**
+	 * Updating subcomponents of Brew 1. Steps, 2. Ingredients, 3. ProductionReport
+	 */
+	private void persistBrewElements(Brew persisted) throws ServiceException, ValidationException {
 		this.stepService.updateSteps(persisted.getSteps());
 		this.ingredientService.updateAll(persisted.getMalts());
 		this.ingredientService.updateAll(persisted.getAdditives());
@@ -67,9 +73,6 @@ public class DefaultBrewService implements BrewService {
 		this.ingredientService.updateAll(persisted.getSpices());
 		this.ingredientService.updateAll(persisted.getYeasts());
 		this.productionService.update(persisted.getProduction());
-		persisted = mergeBrew(brew, persisted);
-
-		return repo.save(persisted);
 	}
 
 	/**

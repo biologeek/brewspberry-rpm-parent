@@ -14,6 +14,10 @@ public class CustomQuantity {
 	@Enumerated(EnumType.STRING)
 	private Unit unit;
 
+	public CustomQuantity() {
+		super();
+	}
+
 	public CustomQuantity(Float qty, Unit unt) {
 		quantity = qty;
 		unit = unt;

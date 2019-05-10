@@ -1,10 +1,14 @@
 package net.brewspberry.brewery.mappers;
 
+import org.springframework.stereotype.Component;
+
 import net.brewspberry.brewery.api.Quantity;
 import net.brewspberry.brewery.api.Unit;
 import net.brewspberry.brewery.model.Additive;
 import net.brewspberry.brewery.model.CustomQuantity;
 
+
+@Component
 public class AdditiveMapper extends AbstractIngredientMapper<Additive, net.brewspberry.brewery.api.Additive> {
 
 	public Additive toModel(net.brewspberry.brewery.api.Additive dto) {

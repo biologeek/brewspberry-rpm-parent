@@ -44,19 +44,19 @@ public class Brew {
 	@OneToMany(mappedBy = "brew")
 	private List<Step> steps;
 	@ManyToMany
-	@JoinTable(name = "brew_ingredient", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
+	@JoinTable(name = "brew_hop", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
 	private List<Hop> hops;
 	@ManyToMany
-	@JoinTable(name = "brew_ingredient", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
+	@JoinTable(name = "brew_malt", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
 	private List<Malt> malts;
 	@ManyToMany
-	@JoinTable(name = "brew_ingredient", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
+	@JoinTable(name = "brew_yeast", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
 	private List<Yeast> yeasts;
 	@ManyToMany
-	@JoinTable(name = "brew_ingredient", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
+	@JoinTable(name = "brew_spice", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
 	private List<Spice> spices;
 	@ManyToMany
-	@JoinTable(name = "brew_ingredient", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
+	@JoinTable(name = "brew_additive", joinColumns = @JoinColumn(name = "brew_id"), inverseJoinColumns = @JoinColumn(name = "ing_id"))
 	private List<Additive> additives;
 	private LocalDateTime beginning, creationDate, updateDate;
 	private LocalDateTime endDate;

@@ -4,6 +4,10 @@ public class Quantity {
 	private Float quantity;
 	private String unit;
 
+	public Quantity() {
+		super();
+	}
+
 	public Quantity(Float quantity2, String string) {
 		quantity = quantity2;
 		unit = string;

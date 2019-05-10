@@ -28,6 +28,8 @@ public class DefaultStepService implements StepService {
 
 	@Override
 	public List<Step> updateSteps(List<Step> steps) {
+		if (steps == null || steps.isEmpty())
+			return new ArrayList<>();
 		return steps.stream()//
 				.map(this::updateStep)//
 				.collect(Collectors.toList());

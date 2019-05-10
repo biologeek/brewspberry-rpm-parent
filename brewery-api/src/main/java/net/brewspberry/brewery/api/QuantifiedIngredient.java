@@ -2,10 +2,18 @@ package net.brewspberry.brewery.api;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import net.brewspberry.brewery.api.converters.LocalDateTimeToLongConverter;
+import net.brewspberry.brewery.api.converters.LongToLocalDateTimeConverter;
+
 public class QuantifiedIngredient {
 
 	private Long ingredient;
 	private Quantity quantityAdded;
+	@JsonDeserialize(converter = LongToLocalDateTimeConverter.class)
+	@JsonSerialize(converter = LocalDateTimeToLongConverter.class)
 	private LocalDateTime additionTime;
 
 	public Long getIngredient() {

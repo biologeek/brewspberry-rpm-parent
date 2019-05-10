@@ -3,6 +3,7 @@ package net.brewspberry.brewery.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,8 @@ public class DefaultAbstractIngredientSerivce implements AbstractIngredientServi
 	@Override
 	public <T extends AbstractIngredient> List<T> updateAll(List<T> toSave) throws ServiceException, ValidationException {
 		List<T> res = new ArrayList<>();
+		if (toSave == null || toSave.isEmpty())
+			return new ArrayList<>();
 
 		for (T elt : toSave) {
 			res.add(this.update(elt));
@@ -51,13 +54,15 @@ public class DefaultAbstractIngredientSerivce implements AbstractIngredientServi
 		return res;
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends AbstractIngredient> T update(T elt) throws ServiceException, ValidationException {
 		IngredientBusinessService<? extends AbstractIngredient> service = ibsFactory.getBusinessService(elt.getClass());
-
+		if (elt.getId() == null)
+			return this.save(elt);
 		service.validate(elt);
 		AbstractIngredient savedOne = this.abstractIngRepo.getOne(elt.getId());
 
-		savedOne = this.mergeAbstractIngredient(elt, savedOne);
+		savedOne = (AbstractIngredient) Hibernate.unproxy(this.mergeAbstractIngredient(elt, savedOne));
 		
 		savedOne = service.merge(elt, savedOne);
 

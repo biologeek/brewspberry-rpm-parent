@@ -14,6 +14,6 @@ public class IngredientBusinessServiceFactory {
 
 	@SuppressWarnings("unchecked")
 	public <T extends AbstractIngredient> IngredientBusinessService<T> getBusinessService(Class<T> clazz) {
-		return (IngredientBusinessService<T>) ctx.getBean(clazz.getSimpleName() + "BusinessService");
+		return (IngredientBusinessService<T>) ctx.getBean("default" + clazz.getSimpleName() + "BusinessService");
 	}
 }
