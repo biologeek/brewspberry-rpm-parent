@@ -2,10 +2,7 @@ package net.brewspberry.monitoring.daemons;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Date;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -13,9 +10,7 @@ import org.junit.Assert;
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
-import com.pi4j.io.w1.W1Master;
 
-import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.DeviceStatus;
 import net.brewspberry.monitoring.model.SwitchStatus;
@@ -32,7 +27,7 @@ import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
 public class BinarySwitchDaemonThread implements Runnable {
 
 	public static final String DURATION_PRM = "duration";
-	public static final String UUID_PRM = "uuid";
+	public static final String DEVICE_PRM = "device";
 
 	public static final int LONG_CHECK_TIMEOUT = 12;
 	public static final int SHORT_CHECK_TIMEOUT = 1;
@@ -49,7 +44,7 @@ public class BinarySwitchDaemonThread implements Runnable {
 		this.binarySwitchRepository = repository;
 		this.gpioController = gpioController;
 		this.threadServices = threadServices;
-		this.witnessServices = witnessServices;
+		this.setWitnessServices(witnessServices);
 	}
 
 	public Map<String, Object> getParameters() {
@@ -67,28 +62,28 @@ public class BinarySwitchDaemonThread implements Runnable {
 	public void run() {
 
 		checkParameters();
-		BinarySwitch device = this.binarySwitchRepository.findByUuid((String) this.parameters.get(UUID_PRM));
+		BinarySwitch device = this.binarySwitchRepository.findByUuid((String) this.parameters.get(DEVICE_PRM));
 
 		LocalDateTime endLocalDate = LocalDateTime.now().plus(Duration.ofSeconds((long) parameters.get(DURATION_PRM)));
 
 		int sleepTime = 10000;
 		while (LocalDateTime.now().isBefore(endLocalDate)) {
-			GpioPinDigitalOutput outputPin = gpioController
-					.provisionDigitalOutputPin(device.getPin().getPin());
-			
+			GpioPinDigitalOutput outputPin = gpioController.provisionDigitalOutputPin(device.getPin().getPin());
+
 			if (outputPin.getState() == PinState.HIGH)
 				outputPin.setState(PinState.LOW);
-			ThreadState state = this.threadServices.readState(UUID_PRM);
-			
-			
-			if (state == null)
-				interruptCurrentRun();
+			ThreadState state = this.threadServices.readState(device.getUuid());
 
+			if (state == null) {
+				gpioController.unprovisionPin(outputPin);
+				interruptCurrentRun();
+				
+			}
 			sleepTime = getSleepTime(endLocalDate);
 			try {
 				Thread.sleep(sleepTime);
 			} catch (InterruptedException e) {
-
+				gpioController.unprovisionPin(outputPin);
 			}
 		}
 
@@ -99,6 +94,8 @@ public class BinarySwitchDaemonThread implements Runnable {
 	}
 
 	private void interruptCurrentRun() {
+		
+		
 		Thread.currentThread().interrupt();
 	}
 
@@ -107,14 +104,14 @@ public class BinarySwitchDaemonThread implements Runnable {
 	 * device status
 	 */
 	private void postRun() {
-		BinarySwitch device = this.binarySwitchRepository.findByUuid((String) this.parameters.get(UUID_PRM));
+		BinarySwitch device = this.binarySwitchRepository.findByUuid((String) this.parameters.get(DEVICE_PRM));
 
 		device.setSwitchStatus(SwitchStatus.DOWN);
 		device.setPinState(DeviceStatus.STOPPED);
 		device.setLastStateChangeDate(LocalDateTime.now());
 		binarySwitchRepository.save(device);
 
-		threadServices.cleanState((String) parameters.get(UUID_PRM));
+		threadServices.cleanState(device.getUuid());
 	}
 
 	private int getSleepTime(LocalDateTime endLocalDate) {
@@ -131,6 +128,15 @@ public class BinarySwitchDaemonThread implements Runnable {
 
 	private void checkParameters() {
 		Assert.assertNotNull(parameters.get(DURATION_PRM));
+		Assert.assertNotNull(parameters.get(DEVICE_PRM));
+	}
+
+	public ThreadWitnessCheckServices getWitnessServices() {
+		return witnessServices;
+	}
+
+	public void setWitnessServices(ThreadWitnessCheckServices witnessServices) {
+		this.witnessServices = witnessServices;
 	}
 
 }

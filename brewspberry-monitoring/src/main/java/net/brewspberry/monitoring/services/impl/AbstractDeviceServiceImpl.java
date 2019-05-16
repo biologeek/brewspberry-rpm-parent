@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
+import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.DeviceStatus;
 import net.brewspberry.monitoring.repositories.AbstractDeviceRepository;
@@ -44,14 +45,14 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 	}
 
 	@Override
-	public AbstractDevice startDevice(Long id, Long duration, Integer frequencyInSeconds) {
+	public AbstractDevice startDevice(Long id, Long duration, Integer frequencyInSeconds) throws StateChangeException {
 		AbstractDevice device = this.abstractDeviceRepository.getOne(id);
 		
 		return (AbstractDevice) getSubService(device).startDevice((AbstractDevice) Hibernate.unproxy(device), duration, frequencyInSeconds);
 	}
 
 	@Override
-	public AbstractDevice stopDevice(Long deviceId) throws ElementNotFoundException {
+	public AbstractDevice stopDevice(Long deviceId) throws ElementNotFoundException, StateChangeException {
 		AbstractDevice device = this.abstractDeviceRepository.getOne(deviceId);
 		if (device != null)
 			return (AbstractDevice) getSubService(device).stopDevice((AbstractDevice) Hibernate.unproxy(device));
@@ -90,10 +91,9 @@ public class AbstractDeviceServiceImpl implements CommonDeviceService {
 	}
 
 	@Override
-	public AbstractDevice stopDevice(String deviceUUID) throws ElementNotFoundException {
+	public AbstractDevice stopDevice(String deviceUUID) throws ElementNotFoundException, StateChangeException {
 		AbstractDevice device = this.abstractDeviceRepository.findByUuid(deviceUUID);
-		this.getSubService(device).stopDevice(device);
-		return null;
+		return this.getSubService(device).stopDevice(device);
 	}
 
 }

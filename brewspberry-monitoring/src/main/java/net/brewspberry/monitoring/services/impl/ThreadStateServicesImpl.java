@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
+import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.exceptions.TechnicalException;
 import net.brewspberry.monitoring.model.ThreadState;
 import net.brewspberry.monitoring.model.ThreadWitness;
@@ -59,6 +60,9 @@ public class ThreadStateServicesImpl implements ThreadStateServices, ThreadWitne
 		try {
 			abstractDeviceService.stopDevice(uuid);
 		} catch (ElementNotFoundException e) {
+			e.printStackTrace();
+		} catch (StateChangeException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
+import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.DeviceStatus;
 
@@ -41,8 +42,9 @@ public interface DeviceService<T extends AbstractDevice> {
 	 * @param frequencyInSeconds
 	 *            frequency of measurement
 	 * @return the updated device
+	 * @throws StateChangeException 
 	 */
-	public T startDevice(T device, Long duration, Integer frequencyInSeconds);
+	public T startDevice(T device, Long duration, Integer frequencyInSeconds) throws StateChangeException;
 
 	/**
 	 * Stops device and sets its new status to {@link DeviceStatus}.STOPPED
@@ -50,7 +52,8 @@ public interface DeviceService<T extends AbstractDevice> {
 	 * @param device
 	 *            the device to stop
 	 * @return the updated device
+	 * @throws StateChangeException 
 	 */
-	public T stopDevice(T device);
+	public T stopDevice(T device) throws StateChangeException;
 
 }

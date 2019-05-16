@@ -19,7 +19,11 @@ public class BrewMapper {
 	@Autowired
 	private YeastMapper yeastMapper;
 	@Autowired
-	private AdditiveMapper additivesMapper;
+	private AdditiveMapper additiveMapper;
+	@Autowired
+	private SpiceMapper spiceMapper;
+	@Autowired
+	private StepMapper stepMapper;
 
 	public List<BrewDto> toDto(List<Brew> brews) {
 		return brews.stream().map(t -> this.toDto(t)).collect(Collectors.toList());
@@ -34,6 +38,9 @@ public class BrewMapper {
 		res.setHops(this.hopMapper.toDto(model.getHops()));
 		res.setMalts(this.maltMapper.toDto(model.getMalts()));
 		res.setYeasts(yeastMapper.toDto(model.getYeasts()));
+		res.setAdditives(additiveMapper.toDto(model.getAdditives()));
+		res.setSpices(spiceMapper.toDto(model.getSpices()));
+		res.setSteps(stepMapper.toFullDto(model.getSteps()));
 		return res;
 	}
 
@@ -43,12 +50,14 @@ public class BrewMapper {
 
 		Brew model = new Brew();
 		model.setTitle(brew.getTitle());
-		model.setHops(hopMapper.toModel(brew.getHops()));
-		model.setAdditives(additivesMapper.toModel(brew.getAdditives()));
-		model.setBeginning(brew.getBeginning());
-		model.setEndDate(brew.getEnd());
+		model.setSteps(this.stepMapper.toModel(brew.getSteps()));
 		model.setMalts(maltMapper.toModel(brew.getMalts()));
 		model.setYeasts(yeastMapper.toModel(brew.getYeasts()));
+		model.setHops(hopMapper.toModel(brew.getHops()));
+		model.setSpices(spiceMapper.toModel(brew.getSpices()));
+		model.setAdditives(additiveMapper.toModel(brew.getAdditives()));
+		model.setBeginning(brew.getBeginning());
+		model.setEndDate(brew.getEnd());
 		model.setId(brew.getId());
 		
 		return model;

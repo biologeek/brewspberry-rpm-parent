@@ -48,18 +48,18 @@ public class DefaultBrewService implements BrewService {
 		return this.repo.save(brew);
 	}
 
-	public Brew updateBrew(Brew brew) throws ServiceException, ElementNotFoundException, ValidationException {
+	public void updateBrew(Brew brew) throws ServiceException, ElementNotFoundException, ValidationException {
 		Brew persisted = repo.getOne(brew.getId());
 
 		if (brew.equals(persisted)) {
-			return brew;
+			return;
 		}
 		validateBrew(brew);
 
 		persisted = mergeBrew(brew, persisted);
 		persistBrewElements(persisted);
 		persisted.setUpdateDate(LocalDateTime.now());
-		return repo.save(persisted);
+		repo.save(persisted);
 	}
 
 	/**
@@ -110,6 +110,11 @@ public class DefaultBrewService implements BrewService {
 		if (brew.getMalts().isEmpty() && brew.getHops().isEmpty() && brew.getAdditives().isEmpty()
 				&& brew.getYeasts().isEmpty() && brew.getSpices().isEmpty())
 			throw new ValidationException("No ingredients !");
+	}
+
+	@Override
+	public Brew getBrew(Long id) {
+		return this.repo.getOne(id);
 	}
 
 }

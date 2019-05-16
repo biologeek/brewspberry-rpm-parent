@@ -8,9 +8,9 @@ export class Step {
     public type?;
     public plannedDuration?: Quantity;
     effectiveDuration?: Quantity;
-    public beginning: number;
-    public end: number;
-    public position: number;
+    public beginning?: number;
+    public end?: number;
+    public position?: number;
     stages?: StepStage[];
-    ingredients: StepIngredient[];
+    ingredients?: StepIngredient[];
 }

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
+import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 
 /**
@@ -19,11 +20,12 @@ public interface CommonDeviceService {
 	 * @param duration duration of device run
 	 * @param frequencyInSeconds frequency of measurement
 	 * @return the updated device
+	 * @throws StateChangeException 
 	 */
-	public AbstractDevice startDevice(Long id, Long duration, Integer frequencyInSeconds);
+	public AbstractDevice startDevice(Long id, Long duration, Integer frequencyInSeconds) throws StateChangeException;
 
-	public AbstractDevice stopDevice(Long deviceId) throws ElementNotFoundException;
-	public AbstractDevice stopDevice(String deviceUUID) throws ElementNotFoundException;
+	public AbstractDevice stopDevice(Long deviceId) throws ElementNotFoundException, StateChangeException;
+	public AbstractDevice stopDevice(String deviceUUID) throws ElementNotFoundException, StateChangeException;
 
 	public Set<AbstractDevice> listAllDevices();
 

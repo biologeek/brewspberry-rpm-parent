@@ -18,4 +18,8 @@ public interface BrewService {
 
 	Brew createBrew(Brew brew) throws ServiceException, ElementNotFoundException, ValidationException;
 
+	void updateBrew(Brew model) throws ServiceException, ElementNotFoundException, ValidationException;
+
+	Brew getBrew(Long id);
+
 }

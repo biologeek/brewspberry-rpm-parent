@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +40,12 @@ public class BrewResource {
 		return new ResponseEntity<>(this.brewMapper.toDto(this.brewService.getCurrentBrew()), HttpStatus.OK);
 	}
 
+
+	@GetMapping("/{id}")
+	public ResponseEntity<BrewDto> getBrew(@PathVariable("id") Long id) {
+		return new ResponseEntity<>(this.brewMapper.toDto(this.brewService.getBrew(id)), HttpStatus.OK);
+	}
+
 	@PostMapping("")
 	public ResponseEntity<BrewDto> createBrew(@RequestBody BrewDto brew) {
 
@@ -51,6 +59,22 @@ public class BrewResource {
 		} catch (ValidationException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<BrewDto>(this.brewMapper.toDto(model), HttpStatus.OK);
+		return new ResponseEntity<>(this.brewMapper.toDto(model), HttpStatus.OK);
+	}
+	
+	
+	@PutMapping("")
+	public ResponseEntity<Void> updateBrew(@RequestBody BrewDto brew){
+		try {
+			this.brewService.updateBrew(brewMapper.toModel(brew));
+		} catch (ServiceException e) {
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (ElementNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (ValidationException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+		
 	}
 }

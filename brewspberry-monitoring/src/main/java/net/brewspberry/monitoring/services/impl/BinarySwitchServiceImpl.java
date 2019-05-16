@@ -1,6 +1,8 @@
 package net.brewspberry.monitoring.services.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -15,12 +17,15 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 
+import net.brewspberry.monitoring.daemons.BinarySwitchDaemonThread;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.SwitchStatus;
 import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
 import net.brewspberry.monitoring.services.BinarySwitchService;
+import net.brewspberry.monitoring.services.ThreadStateServices;
+import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
 
 /**
  * Service that handles operations on binary switches.
@@ -40,6 +45,11 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	private Logger logger = Logger.getLogger(BinarySwitchServiceImpl.class.getName());
 	@Autowired
 	private BinarySwitchRepository repository;
+	private BinarySwitchDaemonThread binarySwitchDaemonThread;
+	@Autowired
+	private ThreadWitnessCheckServices witnessServices;
+	@Autowired
+	private ThreadStateServices threadServices;
 
 	public BinarySwitchServiceImpl() {
 		controller = GpioFactory.getInstance();
@@ -51,15 +61,18 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(device.getPin().getPin());
 		if (pinOutput.getState() == PinState.LOW) {
 			logger.warning("Pin state already LOW for " + device.getUuid() + " at pin " + pinOutput.getPin().getName());
-			return device;
+			controller.unprovisionPin(pinOutput);
+			return changeState(device, SwitchStatus.UP);
 		} else {
 			try {
 				pinOutput.low();
+				controller.unprovisionPin(pinOutput);
 				return changeState(device, SwitchStatus.UP);
 			} catch (Exception e) {
 				logger.severe("Got an error during state change to LOW for " + device.getUuid() + " at pin "
 						+ pinOutput.getPin().getName());
 				e.printStackTrace();
+				controller.unprovisionPin(pinOutput);
 				throw new StateChangeException(e.getMessage());
 			}
 		}
@@ -72,15 +85,18 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 		if (pinOutput.getState() == PinState.HIGH) {
 			logger.warning(
 					"Pin state already HIGH for " + device.getUuid() + " at pin " + pinOutput.getPin().getName());
-			return device;
+			controller.unprovisionPin(pinOutput);
+			return changeState(device, SwitchStatus.DOWN);
 		} else {
 			try {
 				pinOutput.high();
+				controller.unprovisionPin(pinOutput);
 				return changeState(device, SwitchStatus.DOWN);
 			} catch (Exception e) {
 				logger.severe("Got an error during state change to HIGH for " + device.getUuid() + " at pin "
 						+ pinOutput.getPin().getName());
 				e.printStackTrace();
+				controller.unprovisionPin(pinOutput);
 				throw new StateChangeException(e.getMessage());
 			}
 		}
@@ -129,8 +145,8 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 
 	@Override
 	public BinarySwitch getDeviceById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return this.repository.getOne(id);
 	}
 
 	@Override
@@ -193,7 +209,8 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	}
 
 	@Override
-	public BinarySwitch startDevice(BinarySwitch device, Long duration, Integer frequencyInSeconds) {
+	public BinarySwitch startDevice(BinarySwitch device, Long duration, Integer frequencyInSeconds)
+			throws StateChangeException {
 		if (duration == null) {
 			return startDeviceForUndefinedPeriod(device);
 		} else {
@@ -202,19 +219,48 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	}
 
 	private BinarySwitch startDeviceForPeriod(BinarySwitch device, Long duration) {
-		
-		return null;
+		binarySwitchDaemonThread = new BinarySwitchDaemonThread(repository, controller, threadServices,
+				witnessServices);
+		Map<String, Object> params = new HashMap<>();
+		params.put(BinarySwitchDaemonThread.DEVICE_PRM, device);
+		params.put(BinarySwitchDaemonThread.DURATION_PRM, duration);
+		Thread t = new Thread(binarySwitchDaemonThread);
+		t.start();
+
+		return changeState(device, SwitchStatus.UP);
 	}
 
-	private BinarySwitch startDeviceForUndefinedPeriod(BinarySwitch device) {
-
-		return null;
+	private BinarySwitch startDeviceForUndefinedPeriod(BinarySwitch device) throws StateChangeException {
+		return this.setSwitchUp(device);
 	}
 
 	@Override
-	public BinarySwitch stopDevice(BinarySwitch device) {
-		// TODO Auto-generated method stub
-		return null;
+	public BinarySwitch stopDevice(BinarySwitch device) throws StateChangeException {
+		return this.setSwitchDown(device);
+	}
+
+	@Override
+	public BinarySwitch toggleSwitch(Long id) throws StateChangeException {
+		BinarySwitch device = this.getDeviceById(id);
+
+		GpioPinDigitalOutput pinOutput = controller.provisionDigitalOutputPin(device.getPin().getPin());
+
+		try {
+			pinOutput.toggle();
+
+			controller.shutdown();
+			controller.unprovisionPin(pinOutput);
+			if (pinOutput.getState() == PinState.HIGH)
+				return changeState(device, SwitchStatus.DOWN);
+			else
+				return changeState(device, SwitchStatus.UP);
+
+		} catch (Exception e) {
+			logger.severe("Got an error during state change to HIGH for " + device.getUuid() + " at pin "
+					+ pinOutput.getPin().getName());
+			e.printStackTrace();
+			throw new StateChangeException(e.getMessage());
+		}
 	}
 
 }

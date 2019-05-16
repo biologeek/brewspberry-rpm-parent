@@ -6,11 +6,9 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import javax.jms.ConnectionFactory;
 import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 
-import org.apache.activemq.ActiveMQConnectionFactory;
 import org.hibernate.dialect.MySQL55Dialect;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.BeanCreationException;
@@ -22,8 +20,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.format.FormatterRegistry;
-import org.springframework.jms.connection.SingleConnectionFactory;
-import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
@@ -71,7 +67,6 @@ public class MonitoringConfig implements WebMvcConfigurer {
 		return new W1Master();
 	}
 
-	@Bean
 	/**
 	 * Creates the controller that will manage devices plugged to the Pi
 	 * 
@@ -79,6 +74,7 @@ public class MonitoringConfig implements WebMvcConfigurer {
 	 * @throws BeanCreationException
 	 *             in case root privileges are required to manage pins
 	 */
+	@Bean
 	public GpioController gpioController() throws IOException {
 
 		String raspbianVmArg = System.getProperty("raspbian");

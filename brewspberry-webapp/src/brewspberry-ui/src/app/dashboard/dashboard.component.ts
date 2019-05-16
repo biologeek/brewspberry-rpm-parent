@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.brewService.getBurrentBrew().subscribe((brew: Brew) => {
+    this.brewService.getCurrentBrew().subscribe((brew: Brew) => {
       this.currentBrew = brew;
       this.updateCurrentAndNextStep();
     });

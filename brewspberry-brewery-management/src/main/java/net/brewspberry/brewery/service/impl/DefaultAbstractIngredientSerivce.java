@@ -79,4 +79,12 @@ public class DefaultAbstractIngredientSerivce implements AbstractIngredientServi
 		return savedOne;
 	}
 
+	@Override
+	public <T extends AbstractIngredient> List<T> getIngredientsByType(String type) throws ValidationException {
+		if (type == null)
+			throw new ValidationException("no.type");
+		
+		return null;
+	}
+
 }

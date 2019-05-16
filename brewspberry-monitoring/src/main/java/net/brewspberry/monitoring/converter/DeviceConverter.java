@@ -73,6 +73,8 @@ public class DeviceConverter {
 	 * @return
 	 */
 	public DeviceDto toApi(AbstractDevice result) {
+		if (result == null)
+			return null;
 		DeviceDto converted = new DeviceDto()//
 				.uuid(result.getUuid())//
 				.id(result.getId())//

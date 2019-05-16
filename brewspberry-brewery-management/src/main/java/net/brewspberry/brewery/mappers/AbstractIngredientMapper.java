@@ -25,6 +25,12 @@ public abstract class AbstractIngredientMapper<T extends AbstractIngredient, U e
 		return additives.stream().map(this::toModel).collect(Collectors.toList());
 	}
 
+	public List<U> toDto(List<T> additives) {
+		if (additives == null || additives.isEmpty())
+			return new ArrayList<>();
+		return additives.stream().map(this::toDto).collect(Collectors.toList());
+	}
+
 	protected T toModelAbstract(U model) {
 		Assert.notNull(model, "null ingredient");
 		T api = initModel();

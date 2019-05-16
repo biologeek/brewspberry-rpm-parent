@@ -31,7 +31,12 @@ public class DefaultYeastBusinessService implements IngredientBusinessService<Ye
 
 	@Override
 	public Yeast merge(AbstractIngredient elt, AbstractIngredient savedOne) {
-		// TODO Auto-generated method stub
+
+		Yeast eltH = (Yeast) elt;
+		Yeast savedOneH = (Yeast) savedOne;
+		savedOneH.setDensityLevel(eltH.getDensityLevel());
+		savedOneH.setFerementationTemperatureRange(eltH.getFerementationTemperatureRange());
+		savedOneH.setSpecie(eltH.getSpecie());
 		return (Yeast) savedOne;
 	}
 

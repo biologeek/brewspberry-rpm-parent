@@ -13,25 +13,25 @@ public class DefaultHopBusinessService implements IngredientBusinessService<Hop>
 
 	@Override
 	public Hop preSave(AbstractIngredient bean) throws ValidationException, ServiceException {
-		// TODO Auto-generated method stub
 		return (Hop) bean;
 	}
 
 	@Override
 	public Hop postSave(AbstractIngredient bean) throws ServiceException {
-		// TODO Auto-generated method stub
 		return (Hop) bean;
 	}
 
 	@Override
 	public void validate(AbstractIngredient toSave) throws ValidationException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public Hop merge(AbstractIngredient elt, AbstractIngredient savedOne) {
-		// TODO Auto-generated method stub
+		Hop eltH = (Hop) elt;
+		Hop savedOneH = (Hop) savedOne;
+		savedOneH.setAlphaAcid(eltH.getAlphaAcid());
+		savedOneH.setType(eltH.getType());
 		return (Hop) savedOne;
 	}
 

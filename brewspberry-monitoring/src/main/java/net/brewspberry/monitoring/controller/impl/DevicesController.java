@@ -26,6 +26,7 @@ import net.brewspberry.monitoring.exceptions.DefaultRuntimeException;
 import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ElementNotFoundRuntimeException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
+import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.AbstractDevice;
 import net.brewspberry.monitoring.model.BinarySwitch;
 import net.brewspberry.monitoring.model.TemperatureSensor;
@@ -135,17 +136,26 @@ public class DevicesController {
 	@PutMapping("/{device}/start")
 	public ResponseEntity<DeviceDto> startDevice(@PathVariable("device") Long deviceId,
 			@RequestBody TemperatureBatchRunRequestBodyDto body) {
-		AbstractDevice device = this.deviceServices.startDevice(deviceId, body.getDuration(), body.getFrequency());
+		AbstractDevice device = null;
+		try {
+			device = this.deviceServices.startDevice(deviceId, body.getDuration(), body.getFrequency());
+		} catch (StateChangeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(deviceConverter.toApi(device), HttpStatus.OK);
 	}
 
 	@PutMapping("/{device}/stop")
 	public ResponseEntity<DeviceDto> stopDevice(@PathVariable("device") Long deviceId) {
-		AbstractDevice device;
+		AbstractDevice device = null;
 		try {
 			device = this.deviceServices.stopDevice(deviceId);
 		} catch (ElementNotFoundException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} catch (StateChangeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return new ResponseEntity<>(deviceConverter.toApi(device), HttpStatus.OK);
 	}

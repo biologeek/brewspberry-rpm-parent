@@ -11,6 +11,7 @@ export class Brew {
     public hops?: Ingredient[];
     public yeasts?: Ingredient[];
     public spices?: Ingredient[];
+    public additives?: Ingredient[];
     public steps?: Step[];
     public state?: string;
     public title?: string;

@@ -13,6 +13,7 @@ public interface BinarySwitchService extends DeviceService<BinarySwitch> {
 	public BinarySwitch setSwitchUp(BinarySwitch device) throws StateChangeException;
 
 	public BinarySwitch setSwitchDown(BinarySwitch device) throws StateChangeException;
+	public BinarySwitch toggleSwitch(Long id) throws StateChangeException;
 
 	public SwitchStatus getDeviceStatus(BinarySwitch device);
 	

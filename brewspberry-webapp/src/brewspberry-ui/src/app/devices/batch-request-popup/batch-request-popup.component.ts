@@ -55,25 +55,26 @@ export class BatchRequestPopupComponent implements OnInit {
   }
 
   onSubmit() {
-    const result: BatchRequest = {
+    const batchRequest: BatchRequest = {
       device: this.dialogInputData.device.uuid,
       frequency: this.formData.frequency * this.formData.frequencyUnit,
       duration: this.formData.duration * this.formData.durationUnit
     };
 
-    console.log(result);
-    this.deviceService.startDevice(this.dialogInputData.device, result).subscribe((ok: Device) => {
+    console.log(batchRequest);
+    this.deviceService.startDevice(this.dialogInputData.device, batchRequest).subscribe((ok: Device) => {
       this.snackBar.open('Device started !', null, {
         duration: this.SNACKBAR_POP_DURATION,
         panelClass: ['mat-snack-bar-ok']
       });
+      this.dialogRef.close(ok);
     }, (error: HttpErrorResponse) => {
       this.snackBar.open('Could not start device ! Error ' + error.statusText, null, {
         duration: this.SNACKBAR_POP_DURATION,
         panelClass: ['mat-snack-bar-error']
       });
+      this.dialogRef.close(null);
     });
-    this.dialogRef.close(result);
   }
 
 }

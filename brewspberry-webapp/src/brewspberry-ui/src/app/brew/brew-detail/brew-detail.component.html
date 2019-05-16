@@ -1,3 +1,28 @@
-<p>
-  brew-detail works!
-</p>
+<div class="brew-container">
+  <div class="brew-form">
+
+  </div>
+
+  <div class="steps-container">
+    <div class="step-progress-bar">
+      <div class="container">
+        <ul class="progressbar">
+          <li *ngFor="let step of brew?.steps" (click)="activateStep()">{{step.name}}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-container">
+      Started at : {{currentStep.beginning | date: 'dd/MM/y HH:mm:ss'}}, and finished at :
+      {{currentStep.end | date: 'dd/MM/y HH:mm:ss'}}
+
+      <div class="ingredients-container">
+        <ul>
+          <li *ngFor="let malt of brew?.malts">{{malt.model}}: {{malt.quantity?.quantity}} {{malt.quantity?.unit}}</li>
+        </ul>
+      </div>
+      <div class="stages-container">
+
+      </div>
+    </div>
+  </div>
+</div>

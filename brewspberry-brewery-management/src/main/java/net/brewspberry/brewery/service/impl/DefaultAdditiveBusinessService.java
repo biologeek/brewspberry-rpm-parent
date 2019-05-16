@@ -6,7 +6,6 @@ import net.brewspberry.brewery.exceptions.ServiceException;
 import net.brewspberry.brewery.exceptions.ValidationException;
 import net.brewspberry.brewery.model.AbstractIngredient;
 import net.brewspberry.brewery.model.Additive;
-import net.brewspberry.brewery.model.Malt;
 import net.brewspberry.brewery.service.IngredientBusinessService;
 
 @Service
@@ -32,7 +31,13 @@ public class DefaultAdditiveBusinessService implements IngredientBusinessService
 
 	@Override
 	public Additive merge(AbstractIngredient elt, AbstractIngredient savedOne) {
-		// TODO Auto-generated method stub
+
+		Additive eltH = (Additive) elt;
+		Additive savedOneH = (Additive) savedOne;
+		
+		savedOneH.setCode(eltH.getCode());
+		savedOneH.setFunction(eltH.getFunction());
+		savedOneH.setRecommendedQuantity(eltH.getRecommendedQuantity());
 		return (Additive) savedOne;
 	}
 

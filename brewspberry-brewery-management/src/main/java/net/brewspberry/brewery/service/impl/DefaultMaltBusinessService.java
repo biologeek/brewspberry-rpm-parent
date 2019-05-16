@@ -31,7 +31,11 @@ public class DefaultMaltBusinessService implements IngredientBusinessService<Mal
 
 	@Override
 	public Malt merge(AbstractIngredient elt, AbstractIngredient savedOne) {
-		// TODO Auto-generated method stub
+
+		Malt eltH = (Malt) elt;
+		Malt savedOneH = (Malt) savedOne;
+		savedOneH.setEbcColor(eltH.getEbcColor());
+		savedOneH.setForm(eltH.getForm());
 		return (Malt) savedOne;
 	}
 

@@ -31,7 +31,11 @@ public class DefaultSpiceBusinessService implements IngredientBusinessService<Sp
 
 	@Override
 	public Spice merge(AbstractIngredient elt, AbstractIngredient savedOne) {
-		// TODO Auto-generated method stub
+
+		Spice eltH = (Spice) elt;
+		Spice savedOneH = (Spice) savedOne;
+		
+		savedOneH.setShape(eltH.getShape());
 		return (Spice) savedOne;
 	}
 
