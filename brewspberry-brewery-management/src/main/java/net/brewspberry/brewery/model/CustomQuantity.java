@@ -23,6 +23,11 @@ public class CustomQuantity {
 		unit = unt;
 	}
 
+	public CustomQuantity(Float quantity2, String unit2) {
+		this.quantity = quantity2;
+		this.unit = Unit.valueOf(unit2);
+	}
+
 	public Float getQuantity() {
 		return quantity;
 	}

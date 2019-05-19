@@ -2,6 +2,7 @@ package net.brewspberry.monitoring.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -18,11 +19,14 @@ import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 
 import net.brewspberry.monitoring.daemons.BinarySwitchDaemonThread;
+import net.brewspberry.monitoring.exceptions.ElementNotFoundException;
 import net.brewspberry.monitoring.exceptions.ServiceException;
 import net.brewspberry.monitoring.exceptions.StateChangeException;
 import net.brewspberry.monitoring.model.BinarySwitch;
+import net.brewspberry.monitoring.model.SwitchState;
 import net.brewspberry.monitoring.model.SwitchStatus;
 import net.brewspberry.monitoring.repositories.BinarySwitchRepository;
+import net.brewspberry.monitoring.repositories.SwitchStateRepository;
 import net.brewspberry.monitoring.services.BinarySwitchService;
 import net.brewspberry.monitoring.services.ThreadStateServices;
 import net.brewspberry.monitoring.services.ThreadWitnessCheckServices;
@@ -50,6 +54,8 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	private ThreadWitnessCheckServices witnessServices;
 	@Autowired
 	private ThreadStateServices threadServices;
+	@Autowired
+	private SwitchStateRepository switchStateRepository;
 
 	public BinarySwitchServiceImpl() {
 		controller = GpioFactory.getInstance();
@@ -112,8 +118,17 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 	private BinarySwitch changeState(BinarySwitch device, SwitchStatus state) {
 		device.setSwitchStatus(state);
 		device.setLastStateChangeDate(LocalDateTime.now());
+		saveStateChange(device, state);
 
 		return repository.save(device);
+	}
+
+	private SwitchState saveStateChange(BinarySwitch device, SwitchStatus state) {
+		SwitchState savedState = new SwitchState();
+		savedState.setDate(LocalDateTime.now());
+		savedState.setDevice(device);
+		savedState.setStatusTo(state);
+		return this.switchStateRepository.save(savedState);
 	}
 
 	@Override
@@ -261,6 +276,21 @@ public class BinarySwitchServiceImpl implements BinarySwitchService {
 			e.printStackTrace();
 			throw new StateChangeException(e.getMessage());
 		}
+	}
+
+	@Override
+	public List<SwitchState> getSwitchStatesForDates(String uuid, LocalDateTime begin, LocalDateTime end)
+			throws ElementNotFoundException {
+		BinarySwitch device = this.repository.findByUuid(uuid);
+		if (device == null) {
+			throw new ElementNotFoundException();
+		}
+		List<SwitchState> states = this.getSwitchStates(device, begin, end);
+		return states;
+	}
+
+	private List<SwitchState> getSwitchStates(BinarySwitch device, LocalDateTime start, LocalDateTime end) {
+		return this.switchStateRepository.getSwitchStatesForDeviceAndDates(device, start, end);
 	}
 
 }

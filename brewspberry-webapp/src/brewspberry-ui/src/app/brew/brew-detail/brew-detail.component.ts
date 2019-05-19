@@ -41,7 +41,10 @@ export class BrewDetailComponent implements OnInit {
     const brewQuantities = this.calculateBrewQuantities();
     const ingredients = [...this.brew.malts, ...this.brew.spices, ...this.brew.yeasts, ...this.brew.additives, ...this.brew.hops];
     for(let bq of brewQuantities) {
-        ingredients.filter(ing => ing.id === bq.id)[0].quantity = bq.quantity;
+        const possibleIngredient = ingredients.filter(ing => ing.id === bq.id)[0]
+        if (possibleIngredient) {
+          possibleIngredient.quantity = bq.quantity;
+        }
     }
   }
 

@@ -64,7 +64,6 @@ export class DashboardComponent implements OnInit {
       day = hour * 24;
 
       this.triggerDate = new Date();
-      this.triggerDate.setMonth(5);
     setInterval(() => {
       if (this.triggerDate) {
         const now = new Date().getTime();

@@ -7,7 +7,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,7 @@ public class TemperatureSensorController {
 	public ResponseEntity<List<Temperature>> getTemperaturesForSensors(@PathVariable("sensors") String sensors) {
 		List<Long> deviceIds = processSensors(sensors);
 		List<TemperatureMeasurement> measurements = temperatureSensorService.getTemperatureForDevices(deviceIds);
-		return new ResponseEntity<List<Temperature>>(new TemperatureConverter().toApi(measurements), HttpStatus.OK);
+		return new ResponseEntity<List<Temperature>>(temperatureConverter.toApi(measurements), HttpStatus.OK);
 	}
 
 	@RequestMapping(path = "/sensors/uuid/{sensors}", method = RequestMethod.GET)
@@ -49,13 +48,13 @@ public class TemperatureSensorController {
 		List<String> deviceUuids = processSensorsUuids(sensors);
 		List<TemperatureMeasurement> measurements = temperatureSensorService.getTemperatureForDevicesUuids(deviceUuids,
 				true);
-		return new ResponseEntity<List<Temperature>>(new TemperatureConverter().toApi(measurements), HttpStatus.OK);
+		return new ResponseEntity<List<Temperature>>(temperatureConverter.toApi(measurements), HttpStatus.OK);
 	}
 
 	@GetMapping("/sensors/uuid/{uuid}/measurements")
 	public ResponseEntity<List<Temperature>> getTemperaturesForSensorAndPeriod(//
 			@PathVariable("uuid") String uuid//
-			, @RequestParam(value = "begin", required = false) @DateTimeFormat LocalDateTime begin//
+			, @RequestParam(value = "begin", required = false) LocalDateTime begin//
 			, @RequestParam(value = "end", required = false) LocalDateTime end) {
 		List<TemperatureMeasurement> measurements = null;
 		try {
@@ -65,7 +64,6 @@ public class TemperatureSensorController {
 		}
 
 		return new ResponseEntity<>(temperatureConverter.toApi(measurements), HttpStatus.OK);
-
 	}
 
 	/*

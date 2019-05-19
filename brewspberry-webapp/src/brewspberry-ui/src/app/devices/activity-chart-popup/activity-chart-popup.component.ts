@@ -13,6 +13,7 @@ import { TemperatureService } from 'src/app/services/temperature.service';
 import { Temperature } from 'src/app/beans/monitoring/temperature';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { SwitchService } from 'src/app/services/switch.service';
 
 @Component({
   selector: 'app-activity-chart-popup',
@@ -44,7 +45,11 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
     right: 10
   }
 
-  constructor(@Inject(MAT_DIALOG_DATA) public dialogInputData: any, private temperatureService: TemperatureService, private http: HttpClient) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public dialogInputData: any
+  , private temperatureService: TemperatureService
+  , private switchService: SwitchService
+  , private http: HttpClient) { }
 
   ngOnInit() {
     this.subscriptions$ = [];
@@ -78,6 +83,7 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
   }
 
   getData() {
+    if (this.dialogInputData.device.type === 'THERMOMETER') {
     const subscription$ = this.temperatureService
       .getTemperaturesForDeviceBetweenDates(this.dialogInputData.device.uuid, this.dateBounds)
       .subscribe(entity => {
@@ -87,8 +93,16 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
       }, error => {
 
       });
+      this.subscriptions$.push(subscription$);
+    } else {
+      const subscription$ = this.switchService.getSwitchStateBetweenDates(this.dialogInputData.device.uuid, this.dateBounds)
+      .subscribe(entity => {
+        this.chartData = entity;
+        this.chartReady = true;
+        this.initChart();
+      })
+    }
 
-    this.subscriptions$.push(subscription$);
   }
 
   onCheckNow() {
@@ -99,7 +113,6 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
   initChart() {
     d3.select('.main-g').remove();
     this.chart = d3.select('#chart');
-    console.log(this.chartAngularRef.nativeElement.clientHeight);
 
     let tempEff = this.chartAngularRef.nativeElement.clientHeight - this.margins.top - this.margins.bottom;
     if (tempEff > 0) {
@@ -132,7 +145,6 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
       .x(item => x(new Date(item.date)))
       .y(item => y(item.temperature));
       
-    console.log(d3Time);
     const xAxis = d3Axis.axisBottom(x).ticks(10)
       .tickFormat(d3Time.timeFormat(`%d/%m/%y 
      %H:%M:%S`));
@@ -146,8 +158,6 @@ export class ActivityChartPopupComponent implements OnInit, OnDestroy {
     /*
      * Adding elements to SVG
      */
-    console.log(d3Svg.svg);
-
     mainG.append('g')//
       .attr('class', 'axis axis-x')
       .attr('transform', 'translate(0,' + this.effectiveHeight + ')')

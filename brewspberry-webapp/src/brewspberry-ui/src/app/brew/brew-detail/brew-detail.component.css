@@ -2,6 +2,16 @@
     width: 600px;
     margin: 100px auto; 
 }
+
+.brew-container {
+    margin-top: 40px;
+}
+
+.step-progress-bar {
+    height: 80px;
+    width: 100%;
+}
+
 .progressbar {
     counter-reset: step;
 }
@@ -51,12 +61,25 @@
     background-color: #55b776;
 }
 
+.step-container {
+    margin-top: 20px;
+}
+
+.brew-form {
+    width: 50%;
+    margin: 0 auto;
+}
 
 .ingredients-container {
     float: left;
-    width: 49%;
+    width: 45%;
 }
 .stages-container {
     float: right;
-    width: 49%;
+    width: 45%;
+}
+
+.brew-data-container {
+    width: 50%;
+    margin: 0 auto;
 }

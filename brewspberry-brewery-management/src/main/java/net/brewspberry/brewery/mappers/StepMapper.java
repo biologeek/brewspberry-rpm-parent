@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import net.brewspberry.brewery.api.StepFull;
@@ -13,6 +14,9 @@ import net.brewspberry.brewery.model.Step.StepType;
 
 @Component
 public class StepMapper {
+	
+	@Autowired
+	private StepIngredientMapper stepIngredientMapper;
 
 	public List<Step> toModel(List<StepFull> steps) {
 		if (steps == null || steps.isEmpty())
@@ -39,7 +43,7 @@ public class StepMapper {
 	public StepFull toFullDto(Step step) {
 		StepFull res = new StepFull();
 		res = toDtoCommon(res, step);
-
+		res.setIngredients(stepIngredientMapper.toDto(step.getStepIngredients()));
 		return res;
 	}
 

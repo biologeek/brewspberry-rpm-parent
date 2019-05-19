@@ -1,5 +1,6 @@
 package net.brewspberry.brewery.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Embedded;
@@ -29,7 +30,7 @@ public class QuantifiedIngredient {
 	/**
 	 * The date ingredient was added
 	 */
-	private Date additionTime;
+	private LocalDateTime additionTime;
 
 	@Embedded
 	private CustomQuantity quantity;
@@ -61,11 +62,11 @@ public class QuantifiedIngredient {
 		this.ingredient = ingredient;
 	}
 
-	public Date getAdditionTime() {
+	public LocalDateTime getAdditionTime() {
 		return additionTime;
 	}
 
-	public void setAdditionTime(Date additionTime) {
+	public void setAdditionTime(LocalDateTime additionTime) {
 		this.additionTime = additionTime;
 	}
 

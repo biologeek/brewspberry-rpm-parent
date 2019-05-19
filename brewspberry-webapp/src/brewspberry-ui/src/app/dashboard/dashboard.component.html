@@ -1,13 +1,18 @@
-<div class="dashboard-top-panel">
+<div class="dashboard-top-panel" *ngIf="currentBrew">
   <div class="dashboard-top-title">
     You are currently brewing {{currentBrew.name}} !
   </div>
   <div class="dashboard-top-step">
-    Current step : {{currentStep.name}}
+    Current step : {{currentStep?.name}}
   </div>
 
 </div>
-<div class="dashboard-left-panel">
+<div class="dashboard-top-panel" *ngIf="!currentBrew">
+  <div class="dashboard-top-center">
+    No current brew !
+  </div>
+</div>
+<div class="dashboard-left-panel" *ngIf="currentBrew">
   <ul>
     <li><span id="days">{{timerDays}}</span>days</li>
     <li><span id="hours">{{timerHours}}</span>Hours</li>
@@ -17,11 +22,11 @@
 
     before the end of the step !
 </div>
-<div class="dashboard-right-panel">
+<div class="dashboard-right-panel" *ngIf="currentBrew">
   
-  For next step ({{nextStep.name}}), please prepare :
+  For next step ({{nextStep?.name}}), please prepare :
   <ul>
-    <li *ngFor="let ing of nextStep.ingredients">{{ing.quantity.quantity}}{{ing.quantity.unit}} of {{ing.name}}</li>
+    <li *ngFor="let ing of nextStep?.ingredients">{{ing.quantity.quantity}}{{ing.quantity.unit}} of {{ing.name}}</li>
   </ul>
 
 </div>

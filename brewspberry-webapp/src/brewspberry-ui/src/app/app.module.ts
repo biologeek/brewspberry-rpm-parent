@@ -37,7 +37,7 @@ import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
 
 import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule, MatDialogModule,
-  MatSelectModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule } from '@angular/material';
+  MatSelectModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BatchRequestPopupComponent } from './devices/batch-request-popup/batch-request-popup.component';
 import { AddDevicePopupComponent } from './devices/add-device-popup/add-device-popup.component';
@@ -109,7 +109,8 @@ export const router: Routes = [
     MatSelectModule,
     MatInputModule,
     MatSlideToggleModule,
-    MatSnackBarModule,    
+    MatSnackBarModule,
+    MatTooltipModule,   
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
   ],
