@@ -1,11 +1,17 @@
 package net.brewspberry.brewery.model;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import net.brewspberry.brewery.api.StageType;
 
 /**
  * Represents a heating / cooling stage operation inside a particular step.<br>
@@ -29,10 +35,34 @@ public class TemperatureStageOperation {
 	private Long id;
 	@Enumerated(EnumType.STRING)
 	private StageType stageType;
+	/**
+	 * Duration in seconds
+	 */
 	private Long duration;
-	private Float beginningSetPoint, endSetPoint;
+	/**
+	 * Temperature at the beginning of the stage
+	 */
+	private Float beginningSetPoint;
+	/**
+	 * Temperature at the beginning of the stage
+	 */
+	private Float endSetPoint;
+	/**
+	 * Date point of stage beginning
+	 */
+	private LocalDateTime beginning;
+	
+	@Transient
+	private Long beginningToStep;
+	
 	@ManyToOne
 	private Step step;
+
+	public TemperatureStageOperation() {
+		super();
+		if (this.beginning != null && step != null)
+			this.beginningToStep = this.beginning.until(step.getBeginning(), ChronoUnit.MILLIS);
+	}
 
 	public Long getId() {
 		return id;
@@ -66,6 +96,14 @@ public class TemperatureStageOperation {
 		this.duration = duration;
 	}
 
+	public Long getBeginningToStep() {
+		return beginningToStep;
+	}
+
+	public void setBeginningToStep(Long beginningToStep) {
+		this.beginningToStep = beginningToStep;
+	}
+
 	public Float getBeginningSetPoint() {
 		return beginningSetPoint;
 	}
@@ -80,5 +118,13 @@ public class TemperatureStageOperation {
 
 	public void setEndSetPoint(Float endSetPoint) {
 		this.endSetPoint = endSetPoint;
+	}
+
+	public LocalDateTime getBeginning() {
+		return beginning;
+	}
+
+	public void setBeginning(LocalDateTime beginning) {
+		this.beginning = beginning;
 	}
 }

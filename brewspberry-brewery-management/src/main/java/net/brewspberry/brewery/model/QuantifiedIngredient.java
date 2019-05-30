@@ -1,14 +1,12 @@
 package net.brewspberry.brewery.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
@@ -23,9 +21,7 @@ public class QuantifiedIngredient {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "ing_id")
-	private AbstractIngredient ingredient;
+	private Long ingredient;
 
 	/**
 	 * The date ingredient was added
@@ -54,11 +50,11 @@ public class QuantifiedIngredient {
 		this.step = step;
 	}
 
-	public AbstractIngredient getIngredient() {
+	public Long getIngredient() {
 		return ingredient;
 	}
 
-	public void setIngredient(AbstractIngredient ingredient) {
+	public void setIngredient(Long ingredient) {
 		this.ingredient = ingredient;
 	}
 

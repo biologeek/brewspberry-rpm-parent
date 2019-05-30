@@ -1,24 +1,32 @@
 <div class="brew-container">
   <mat-card class="brew-form">
-    <mat-card-title>Brew data</mat-card-title>
+    <mat-card-title>Brew data
+      <span class="right-text">
+        <i (click)="routeToEdit()" class="material-icons">
+          edit
+        </i>
+      </span>
+    </mat-card-title>
     <mat-card-content>
       <mat-grid-list class="brew-data-container" cols="2" rowHeight="30px">
         <mat-grid-tile>Name</mat-grid-tile>
         <mat-grid-tile>
           <span *ngIf="!nameEdit" (click)="nameEdit=true">{{brew?.title}}</span>
-          <span *ngIf="nameEdit"><input type="text" (keyup.enter)="nameEdit = false" [(ngModel)]="brew.title"></span>
+          <span *ngIf="nameEdit"><input type="text" (keyup.enter)="nameEdit = false" (focusout)="nameEdit=false" [(ngModel)]="brew.title"></span>
         </mat-grid-tile>
         <mat-grid-tile>Beginning</mat-grid-tile>
         <mat-grid-tile>
-          <span *ngIf="!beginningEdit" (click)="beginningEdit=true">{{brew?.beginning ? (brew.beginning | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</span>
+          <span *ngIf="!beginningEdit"
+            (click)="beginningEdit=true">{{brew?.beginning ? (brew?.beginning | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</span>
           <span *ngIf="beginningEdit">
-            <input type="text" (keyup.enter)="beginningEdit = false" [(ngModel)]="brew.beginning">
+            <input type="text" (keyup.enter)="beginningEdit = false" (focusout)="beginningEdit=false" [(ngModel)]="brew.beginning">
           </span>
         </mat-grid-tile>
         <mat-grid-tile>End</mat-grid-tile>
         <mat-grid-tile>
-          <span *ngIf="!endEdit" (click)="endEdit=true">{{brew?.end ? (brew.end | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</span>
-          <span *ngIf="endEdit"><input type="text" (keyup.enter)="endEdit = false" [(ngModel)]="brew.end"></span>
+          <span *ngIf="!endEdit"
+            (click)="endEdit=true">{{brew?.end ? (brew.end | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</span>
+          <span *ngIf="endEdit"><input type="text" (keyup.enter)="endEdit = false" (focusout)="endEdit=false" [(ngModel)]="brew.end"></span>
         </mat-grid-tile>
         <mat-grid-tile>State</mat-grid-tile>
         <mat-grid-tile>
@@ -26,38 +34,56 @@
           <span *ngIf="stateEdit">
             <mat-select>
               <mat-option *ngFor="let state of states" (selectionChange)="stateEdit = false" [(ngModel)]="brew.state"
-              [value]="state.model">
-              {{state.label}}
-            </mat-option>
-          </mat-select>
-        </span>
-      </mat-grid-tile>
-    </mat-grid-list>
-  </mat-card-content>
-</mat-card>
+                [value]="state.model">
+                {{state.label}}
+              </mat-option>
+            </mat-select>
+          </span>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </mat-card-content>
+  </mat-card>
 
-<div class="steps-container">
-  <div class="step-progress-bar">
-    <div class="container">
-      <ul class="progressbar">
-        <li *ngIf="currentStep" [matTooltip]="brew.beginning | date: 'dd/MM/y HH:mm:ss'">Started at</li>
-        <li *ngFor="let step of brew?.steps" (click)="activateStep()">{{step.name}}</li>
-        <li *ngIf="currentStep" [matTooltip]="brew.end | date: 'dd/MM/y HH:mm:ss'">Finished at</li>
-      </ul>
+  <div class="steps-container">
+    <div class="step-progress-bar">
+      <div class="container">
+        <ul class="progressbar">
+          <li *ngIf="currentStep" class="classic" [matTooltip]="brew.beginning | date: 'dd/MM/y HH:mm:ss'">Started at</li>
+          <li *ngFor="let step of brew?.steps" class="classic" (click)="activateStep(step)">{{step.name}}</li>
+          <li *ngIf="currentStep" [matTooltip]="brew.end | date: 'dd/MM/y HH:mm:ss'">Finished at</li>
+        </ul>
+      </div>
+    </div>
+    <div class="step-container" *ngIf="currentStep.id">
+      <mat-card class="ingredients-container">
+        <mat-card-title>Ingredients
+          <span class="right-text">
+            <i (click)="openIngredientsPopup()" class="material-icons">
+              add
+            </i>
+          </span>
+        </mat-card-title>
+        <mat-card-content>
+          <ul>
+            <li *ngFor="let ingredient of currentStep?.ingredients">
+              {{getIngredientById(ingredient.ingredient).model}}:
+              {{ingredient.quantityAdded?.quantity || 'Ø'}} {{ingredient.quantityAdded?.unit}}
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="stages-container">
+        <mat-card-title>Stages
+          <span class="right-text">
+            <i (click)="openStagesPopup()" class="material-icons">
+              add
+            </i>
+          </span>
+        </mat-card-title>
+        <mat-card-content>
+          <svg id="stages-chart" #stagesContainer></svg>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
-  <div class="step-container">
-    <mat-card class="ingredients-container">
-      <mat-card-title>Ingredients</mat-card-title>
-      <mat-card-content>
-        <ul>
-          <li *ngFor="let malt of brew?.malts">{{malt.model}}: {{malt.quantity?.quantity || 'Ø'}} {{malt.quantity?.unit}}</li>
-        </ul>
-      </mat-card-content>
-    </mat-card>
-    <mat-card class="stages-container">
-      <mat-card-title>Stages</mat-card-title>
-    </mat-card>
-  </div>
-</div>
 </div>

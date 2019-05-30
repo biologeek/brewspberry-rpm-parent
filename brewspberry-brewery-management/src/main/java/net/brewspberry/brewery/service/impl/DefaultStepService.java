@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import net.brewspberry.brewery.exceptions.ElementNotFoundException;
 import net.brewspberry.brewery.exceptions.ValidationException;
 import net.brewspberry.brewery.model.QuantifiedIngredient;
 import net.brewspberry.brewery.model.Step;
@@ -110,6 +111,31 @@ public class DefaultStepService implements StepService {
 	private void validateStep(Step step) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Step addNewIngredient(Long stepId, QuantifiedIngredient model) throws ElementNotFoundException {
+		Step step = this.getStepById(stepId);
+		model.setStep(step);
+		model = this.quantifiedIngredientRepository.save(model);
+		step.getStepIngredients().add(model);
+		return step;
+	}
+
+	public Step getStepById(Long stepId) throws ElementNotFoundException {
+		Step result = this.stepRepo.getOne(stepId);
+		if (result != null)
+			return result;
+		throw new ElementNotFoundException();
+	}
+
+	@Override
+	public Step addNewStage(Long stepId, TemperatureStageOperation model) throws ElementNotFoundException {
+		Step step = this.getStepById(stepId);
+		model.setStep(step);
+		model = this.temperatureStageOperationRepository.save(model);
+		step.getTemperatureStages().add(model);
+		return step;
 	}
 
 }

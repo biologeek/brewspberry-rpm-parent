@@ -1,4 +1,4 @@
-package net.brewspberry.brewery.model;
+package net.brewspberry.brewery.api;
 
 public enum StageType {
 

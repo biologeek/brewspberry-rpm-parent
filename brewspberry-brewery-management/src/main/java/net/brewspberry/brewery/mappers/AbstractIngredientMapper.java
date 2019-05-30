@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.util.Assert;
 
+import net.brewspberry.brewery.api.Quantity;
 import net.brewspberry.brewery.model.AbstractIngredient;
+import net.brewspberry.brewery.model.CustomQuantity;
 
 public abstract class AbstractIngredientMapper<T extends AbstractIngredient, U extends net.brewspberry.brewery.api.AbstractIngredient> {
 
@@ -16,6 +18,8 @@ public abstract class AbstractIngredientMapper<T extends AbstractIngredient, U e
 		api.setId(model.getId());
 		api.setBrand(model.getBrand());
 		api.setModel(model.getModel());
+		if (model.getPackaging() != null)
+			api.setQuantity(new Quantity(model.getPackaging().getQuantity(), model.getPackaging().getUnit().name()));
 		return api;
 	}
 
@@ -37,6 +41,8 @@ public abstract class AbstractIngredientMapper<T extends AbstractIngredient, U e
 		api.setId(model.getId());
 		api.setBrand(model.getBrand());
 		api.setModel(model.getModel());
+		if (model.getQuantity() != null)
+			api.setPackaging(new CustomQuantity(model.getQuantity().getQuantity(), model.getQuantity().getUnit()));
 		return api;
 	}
 

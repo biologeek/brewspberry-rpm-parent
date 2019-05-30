@@ -16,6 +16,15 @@ public abstract class AbstractIngredient {
 	protected String type;
 	protected String brand;
 	protected String model;
+	protected Quantity quantity;
+
+	public Quantity getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Quantity quantity) {
+		this.quantity = quantity;
+	}
 
 	public String getType() {
 		return type;

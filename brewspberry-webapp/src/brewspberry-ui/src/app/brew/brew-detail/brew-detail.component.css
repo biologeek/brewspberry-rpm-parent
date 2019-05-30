@@ -73,13 +73,15 @@
 .ingredients-container {
     float: left;
     width: 45%;
+    min-height: 190px;
 }
 .stages-container {
     float: right;
     width: 45%;
+    min-height: 190px;
 }
 
 .brew-data-container {
-    width: 50%;
+    width: 70%;
     margin: 0 auto;
 }

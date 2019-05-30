@@ -1,5 +1,7 @@
 package net.brewspberry.brewery.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import net.brewspberry.brewery.exceptions.ServiceException;
@@ -38,6 +40,12 @@ public class DefaultYeastBusinessService implements IngredientBusinessService<Ye
 		savedOneH.setFerementationTemperatureRange(eltH.getFerementationTemperatureRange());
 		savedOneH.setSpecie(eltH.getSpecie());
 		return (Yeast) savedOne;
+	}
+
+	@Override
+	public List<Yeast> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

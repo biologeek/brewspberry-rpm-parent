@@ -20,8 +20,8 @@ export class MashingComponent implements OnInit {
   
   constructor(private stepService: StepService) {
     this.currentOp = new StepStage();
-    this.currentOp.beginTime = 0;
-    this.currentOp.endTime = 120;
+    this.currentOp.beginning = 0;
+    this.currentOp.duration = 120;
     this.currentStep = {plannedDuration: {quantity: 15, unit: 'MINUTES'}, stages: []};
     
   }

@@ -1,1 +1,90 @@
-[{"sensor":2,"date":1554569403000,"temperature":19.37},{"sensor":2,"date":1554569405000,"temperature":19.37},{"sensor":2,"date":1554569407000,"temperature":19.37},{"sensor":2,"date":1554569409000,"temperature":19.37},{"sensor":2,"date":1554569411000,"temperature":19.37},{"sensor":2,"date":1554569413000,"temperature":19.37},{"sensor":2,"date":1554569415000,"temperature":19.37},{"sensor":2,"date":1554569417000,"temperature":19.37},{"sensor":2,"date":1554569418000,"temperature":19.37},{"sensor":2,"date":1554569420000,"temperature":19.37},{"sensor":2,"date":1554569422000,"temperature":19.37},{"sensor":2,"date":1554569424000,"temperature":18.75},{"sensor":2,"date":1554569427000,"temperature":18.75},{"sensor":2,"date":1554569430000,"temperature":21.37},{"sensor":2,"date":1554569431000,"temperature":25.37},{"sensor":2,"date":1554569433000,"temperature":23.37},{"sensor":2,"date":1554569436000,"temperature":21.37},{"sensor":2,"date":1554569438000,"temperature":24.37},{"sensor":2,"date":1554569439000,"temperature":16.37},{"sensor":2,"date":1554569442000,"temperature":19.37},{"sensor":2,"date":1554569444000,"temperature":20.37},{"sensor":2,"date":1554569446000,"temperature":22.37},{"sensor":2,"date":1554569448000,"temperature":19.37},{"sensor":2,"date":1554569450000,"temperature":19.37},{"sensor":2,"date":1554569452000,"temperature":19.37},{"sensor":2,"date":1554569454000,"temperature":19.37},{"sensor":2,"date":1554569458000,"temperature":19.37},{"sensor":2,"date":1554569461000,"temperature":19.37},{"sensor":2,"date":1554569730000,"temperature":19.937},{"sensor":2,"date":1554569734000,"temperature":19.937},{"sensor":2,"date":1554569738000,"temperature":19.937},{"sensor":2,"date":1554569745000,"temperature":19.875},{"sensor":2,"date":1554569749000,"temperature":19.937},{"sensor":2,"date":1554569753000,"temperature":19.875},{"sensor":2,"date":1554569757000,"temperature":19.937},{"sensor":2,"date":1554569761000,"temperature":21.125},{"sensor":2,"date":1554569765000,"temperature":22.937},{"sensor":2,"date":1554569769000,"temperature":24.062},{"sensor":2,"date":1554569775000,"temperature":25.125},{"sensor":2,"date":1554569779000,"temperature":26.0},{"sensor":2,"date":1554569783000,"temperature":26.687},{"sensor":2,"date":1554569789000,"temperature":27.437}]
+{
+    "id": 5,
+    "title": "Le premier !",
+    "beginning": 1557430858000,
+    "end": null,
+    "totalProduced": null,
+    "totalExpected": null,
+    "steps": [
+        {
+            "id": 1,
+            "name": "Etape 1",
+            "type": "MASHING",
+            "plannedDuration": null,
+            "effectiveDuration": null,
+            "beginning": 1558611441837,
+            "end": null,
+            "ingredients": [
+                {
+                    "ingredient": null,
+                    "quantityAdded": {
+                        "quantity": 5.0,
+                        "unit": "kg"
+                    },
+                    "additionTime": 1558292369543
+                },
+                {
+                    "ingredient": null,
+                    "quantityAdded": {
+                        "quantity": 1.0,
+                        "unit": "kg"
+                    },
+                    "additionTime": 1000
+                },
+                {
+                    "ingredient": null,
+                    "quantityAdded": {
+                        "quantity": 1.0,
+                        "unit": "kg"
+                    },
+                    "additionTime": 60000
+                },
+                {
+                    "ingredient": 2,
+                    "quantityAdded": {
+                        "quantity": 1.0,
+                        "unit": "kg"
+                    },
+                    "additionTime": 43200000
+                }
+            ],
+            "stages": [
+                {
+                    "id": 1,
+                    "type": "CONSTANT",
+                    "beginning": 1558614607049,
+                    "duration": 1800,
+                    "startTemperature": 64.0,
+                    "endTemperature": 64.0
+                },
+                {
+                    "id": 2,
+                    "type": "CONSTANT",
+                    "beginning": 1558616436247,
+                    "duration": 1800,
+                    "startTemperature": 72.0,
+                    "endTemperature": 72.0
+                }
+            ]
+        }
+    ],
+    "malts": [
+        {
+            "type": "M",
+            "id": 4,
+            "type": "M",
+            "brand": "Soufflet",
+            "model": "Pilsen",
+            "quantity": {
+                "quantity": 25.0,
+                "unit": "KILOGRAM"
+            },
+            "form": null,
+            "ebc": 4
+        }
+    ],
+    "hops": [],
+    "yeasts": [],
+    "spices": [],
+    "additives": []
+}

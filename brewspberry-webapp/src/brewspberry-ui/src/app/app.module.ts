@@ -37,7 +37,7 @@ import { FilteringComponent } from './brew/steps/filtering/filtering.component';
 import { StepService } from './services/step.service';
 
 import { MatTableModule, MatCardModule, MatGridListModule, MatButtonModule, MatDialogModule,
-  MatSelectModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule, MatTooltipModule } from '@angular/material';
+  MatSelectModule, MatInputModule, MatSlideToggleModule, MatSnackBarModule, MatTooltipModule, MatRadioModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { BatchRequestPopupComponent } from './devices/batch-request-popup/batch-request-popup.component';
 import { AddDevicePopupComponent } from './devices/add-device-popup/add-device-popup.component';
@@ -45,6 +45,8 @@ import { ActivityChartPopupComponent } from './devices/activity-chart-popup/acti
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import { TestComponent } from './test/test.component';
 import { BrewDetailComponent } from './brew/brew-detail/brew-detail.component';
+import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dialog.component';
+import { StageDialogComponent } from './stage-dialog/stage-dialog.component';
 
 
 
@@ -57,8 +59,9 @@ export const router: Routes = [
     { path: 'devices/create', component: CreationFormComponent },
     { path: 'devices/edit/:id', component: CreationFormComponent },
     { path: 'brew/list', component: ListComponent },
-    { path: 'brew/:id', component: BrewDetailComponent },
     { path: 'brew/create', component: CreateComponent },
+    { path: 'brew/edit/:id/:selectedStep', component: CreateComponent },
+    { path: 'brew/:id', component: BrewDetailComponent },
     { path: 'brew/create/:selectedStep', component: CreateComponent },
     { path: 'params', component: ParamsComponent },
     { path: 'dashboard', component: DashboardComponent }
@@ -88,7 +91,9 @@ export const router: Routes = [
     AddDevicePopupComponent,
     ActivityChartPopupComponent,
     TestComponent,
-    BrewDetailComponent
+    BrewDetailComponent,
+    IngredientsDialogComponent,
+    StageDialogComponent
     ],
   imports: [
     BrowserModule,
@@ -110,7 +115,8 @@ export const router: Routes = [
     MatInputModule,
     MatSlideToggleModule,
     MatSnackBarModule,
-    MatTooltipModule,   
+    MatTooltipModule, 
+    MatRadioModule,  
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
   ],
@@ -128,6 +134,8 @@ export const router: Routes = [
     FilteringComponent,
     BatchRequestPopupComponent,
     AddDevicePopupComponent,
+    IngredientsDialogComponent,
+    StageDialogComponent,
     ActivityChartPopupComponent
   ]
 })

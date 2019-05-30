@@ -1,0 +1,38 @@
+<mat-grid-list rowHeight="40px" cols="2">
+  <mat-grid-tile>Ingredient</mat-grid-tile>
+  <mat-grid-tile>
+    <mat-form-field>
+      <mat-select [(ngModel)]="newIngredient.ingredient">
+        <mat-option *ngFor="let ing of ingredients" [value]="ing.id">{{ing.model}} - {{ing.quantity.quantity}} {{ing.quantity.unit | lowercase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+  <mat-grid-tile>Quantity</mat-grid-tile>
+  <mat-grid-tile>
+    <mat-form-field style="width: 50%;">
+      <input matInput placeholder="Quantity" name="quantity" type="text"
+        [(ngModel)]="newIngredient?.quantityAdded.quantity">
+    </mat-form-field>
+    <mat-form-field style="width: 50%;">
+      <mat-select [(ngModel)]="newIngredient?.quantityAdded.unit">
+        <mat-optgroup *ngFor="let group of units" [label]="group.group">
+          <mat-option *ngFor="let unit of group.units" [value]="unit.name">{{unit.name | lowercase}}</mat-option>
+        </mat-optgroup>
+      </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+  <mat-grid-tile>Addition time</mat-grid-tile>
+  <mat-grid-tile>
+    <mat-form-field style="width: 50%;">
+      + <input matInput [(ngModel)]="additionTime.quantity" style="width: 50%; margin-right: 5px;" type="text" (change)="setAdditionTime($event)">
+    </mat-form-field>
+    <mat-form-field style="width: 50%;">
+      <mat-select [(ngModel)]="additionTime.unit" >
+        <mat-option (change)="setAdditionTime()" *ngFor="let unit of timeUnits" [value]="unit.name">{{unit.name | lowercase}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-grid-tile>
+  <mat-grid-tile>
+  </mat-grid-tile>
+  <mat-grid-tile><button mat-raised-button color="primary" style="float: right;" (click)="onSubmit()">Add</button></mat-grid-tile>
+</mat-grid-list>

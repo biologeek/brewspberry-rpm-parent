@@ -20,8 +20,8 @@ public class StepIngredientMapper {
 		QuantifiedIngredient res = new QuantifiedIngredient();
 
 		res.setAdditionTime(model.getAdditionTime());
-		res.setIngredient(model.getIngredient().getId());
-		res.setQuantityAdded(new Quantity(model.getQuantity().getQuantity(), model.getQuantity().getUnit().name()));
+		res.setIngredient(model.getIngredient());
+		res.setQuantityAdded(new Quantity(model.getQuantity().getQuantity(), model.getQuantity().getUnit().getSymbol()));
 
 		return res;
 	}
@@ -36,7 +36,8 @@ public class StepIngredientMapper {
 		res.setAdditionTime(model.getAdditionTime());
 		res.setQuantity(
 				new CustomQuantity(model.getQuantityAdded().getQuantity(), model.getQuantityAdded().getUnit()));
-
+		
+		res.setIngredient(model.getIngredient());
 		return res;
 	}
 }

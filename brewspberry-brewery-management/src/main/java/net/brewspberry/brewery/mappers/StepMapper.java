@@ -17,6 +17,8 @@ public class StepMapper {
 	
 	@Autowired
 	private StepIngredientMapper stepIngredientMapper;
+	@Autowired
+	private TemperatureStageMapper stagesMapper;
 
 	public List<Step> toModel(List<StepFull> steps) {
 		if (steps == null || steps.isEmpty())
@@ -43,6 +45,7 @@ public class StepMapper {
 	public StepFull toFullDto(Step step) {
 		StepFull res = new StepFull();
 		res = toDtoCommon(res, step);
+		res.setStages(this.stagesMapper.toDto(step.getTemperatureStages()));
 		res.setIngredients(stepIngredientMapper.toDto(step.getStepIngredients()));
 		return res;
 	}

@@ -23,6 +23,4 @@ public interface AbstractIngredientService {
 
 	<T extends AbstractIngredient> List<T> updateAll(List<T> toSave) throws ServiceException, ValidationException;
 
-	<T extends AbstractIngredient> List<T> getIngredientsByType(String type) throws ValidationException;
-
 }

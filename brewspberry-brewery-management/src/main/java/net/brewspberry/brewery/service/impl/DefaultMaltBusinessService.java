@@ -1,15 +1,22 @@
 package net.brewspberry.brewery.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import net.brewspberry.brewery.exceptions.ServiceException;
 import net.brewspberry.brewery.exceptions.ValidationException;
 import net.brewspberry.brewery.model.AbstractIngredient;
 import net.brewspberry.brewery.model.Malt;
+import net.brewspberry.brewery.repositories.MaltRepository;
 import net.brewspberry.brewery.service.IngredientBusinessService;
 
 @Service
 public class DefaultMaltBusinessService implements IngredientBusinessService<Malt> {
+
+	@Autowired
+	private MaltRepository maltRepo;
 
 	@Override
 	public Malt preSave(AbstractIngredient bean) throws ValidationException, ServiceException {
@@ -37,6 +44,11 @@ public class DefaultMaltBusinessService implements IngredientBusinessService<Mal
 		savedOneH.setEbcColor(eltH.getEbcColor());
 		savedOneH.setForm(eltH.getForm());
 		return (Malt) savedOne;
+	}
+
+	@Override
+	public List<Malt> getAll() {
+		return this.maltRepo.findAll();
 	}
 
 }

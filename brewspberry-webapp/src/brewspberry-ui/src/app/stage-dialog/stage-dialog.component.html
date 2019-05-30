@@ -1,0 +1,31 @@
+<mat-grid-list rowHeight="40px" cols="1">
+  <mat-grid-tile>
+      <mat-radio-group matNativeControl aria-label="Select an option" [(ngModel)]="newStage.type">
+        <mat-radio-button value="CONSTANT">Constant</mat-radio-button>
+        <mat-radio-button value="LINEAR">Linear</mat-radio-button>
+      </mat-radio-group>
+  </mat-grid-tile>
+  <mat-grid-tile *ngIf="newStage.type === 'CONSTANT'">
+    <mat-form-field>
+      <input matNativeControl placeholder="Temperature" name="temperature" type="text" [(ngModel)]="newStage.startTemperature">
+    </mat-form-field>
+    °C
+  </mat-grid-tile>
+  <mat-grid-tile *ngIf="newStage.type === 'LINEAR'">
+  </mat-grid-tile>
+  <mat-grid-tile>
+    + <input type="text" [(ngModel)]="timeToStep.quantity" style="width: 45%;" placeholder="Starts at"> 
+    <mat-select [(ngModel)]="timeToStep.unit" style="width: 25%; margin-left: 10px;">
+      <mat-option *ngFor="let unit of timeUnits" [value]="unit">{{unit}}</mat-option>
+    </mat-select>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    + <input type="text" [(ngModel)]="duration.quantity" style="width: 45%;" placeholder="Duration"> 
+    <mat-select [(ngModel)]="duration.unit" style="width: 25%; margin-left: 10px;">
+      <mat-option *ngFor="let unit of timeUnits" [value]="unit">{{unit}}</mat-option>
+    </mat-select>
+  </mat-grid-tile>
+
+  <mat-grid-tile><button mat-raised-button color="primary" style="float: right;" (click)="onSubmit()">Add</button>
+  </mat-grid-tile>
+</mat-grid-list>

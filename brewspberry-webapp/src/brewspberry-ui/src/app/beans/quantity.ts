@@ -1,4 +1,4 @@
 export class Quantity {
-    quantity: number;
-    unit: string;
+    quantity?: number;
+    unit?: string;
 }

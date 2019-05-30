@@ -44,7 +44,9 @@ export class CreateComponent implements OnInit, OnChanges {
     ngOnInit() {
         this.currentBrew = { id: 1 };
         this.route.params.subscribe(params => {
-            this.routeToView(params['selectedStep']);
+            if (params['selectedStep']) {
+                this.routeToView(params['selectedStep']);
+            }
         });
     }
 

@@ -1,10 +1,9 @@
 export class StepStage {
     id?: number;
-    stageType?: string;
+    type?: string;
     duration?: number;
-    beginningSetPoint?: number;
-    endSetPoint?: number;
-    label?: string;
-    beginTime?;
-    endTime?;
+    startTemperature?: number;
+    endTemperature?: number;
+    beginning?: number;
+    beginningToStep?: number;
 }
