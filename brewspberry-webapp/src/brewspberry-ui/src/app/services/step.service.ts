@@ -21,19 +21,21 @@ export class StepService {
 
     constructor(private http: HttpClient) { }
 
-
-    public getStagesForStep(stepId: number): Observable<StepStage[]> {
-        return <Observable<StepStage[]>> this.http.get(`${environment.apiBreweryManagement}/step/${stepId}/stages`);
+    public getAllTypes(): Observable<any[]> {
+        return <Observable<any[]>>this.http.get(`${environment.apiBreweryManagement}/step/types`);
     }
 
+    public getStagesForStep(stepId: number): Observable<StepStage[]> {
+        return <Observable<StepStage[]>>this.http.get(`${environment.apiBreweryManagement}/step/${stepId}/stages`);
+    }
 
     public pushNewStage(step: Step, stage: StepStage): Observable<StepStage[]> {
-        return <Observable<StepStage[]>> this.http.post(`${environment.apiBreweryManagement}/step/${step.id}/stages`, stage);
+        return <Observable<StepStage[]>>this.http.post(`${environment.apiBreweryManagement}/step/${step.id}/stages`, stage);
         // return of(step.stages.concat(stage));
     }
 
     public pushNewIngredient(step: number, ingredient: StepIngredient): Observable<StepIngredient> {
-        return <Observable<StepIngredient>> this.http.post(`${environment.apiBreweryManagement}/step/${step}/ingredient`, ingredient);
+        return <Observable<StepIngredient>>this.http.post(`${environment.apiBreweryManagement}/step/${step}/ingredient`, ingredient);
         //return of(step.stages.concat(stage));
     }
 
@@ -42,11 +44,21 @@ export class StepService {
         return this.http.get(`${environment.apiBreweryManagement}/step/${id}`);
     }
 
+    public convertDates(steps: Step[]): Step[] {
+        return steps ? steps.map(s => {
+            s.beginning = new Date(s.beginning);
+            s.end = new Date(s.end);
+            return s;
+        }) : [];
+    }
+
     public calculateStageDates(obj: Step[]) {
         for (let step of obj) {
             for (let stage of step.stages) {
-                stage.beginningToStep = stage.beginning - step.beginning;
-                console.log('stage ' + stage.id + ' started '+ stage.beginningToStep / 1000 +' s after step');
+                if (stage.beginning && !stage.beginningToStep) {
+                    stage.beginningToStep = stage.beginning - (typeof step.beginning === 'number' ? step.beginning : step.beginning.getTime());
+                    console.log('stage ' + stage.id + ' started ' + stage.beginningToStep / 1000 + ' s after step');
+                }
             }
         }
     }

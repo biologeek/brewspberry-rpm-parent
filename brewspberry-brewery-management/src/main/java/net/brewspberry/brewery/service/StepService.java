@@ -13,7 +13,7 @@ public interface StepService {
 	List<Step> createSteps(List<Step> steps) throws ValidationException;
 	List<Step> updateSteps(List<Step> steps);
 	Step updateStep(Step step);
-	Step addNewIngredient(Long stepId, QuantifiedIngredient model) throws ElementNotFoundException;
+	Step addNewIngredient(Long stepId, QuantifiedIngredient model) throws ElementNotFoundException, ValidationException;
 	Step getStepById(Long stepId) throws ElementNotFoundException;
-	Step addNewStage(Long stepId, TemperatureStageOperation model) throws ElementNotFoundException;
+	Step addNewStage(Long stepId, TemperatureStageOperation model) throws ElementNotFoundException, ValidationException;
 }

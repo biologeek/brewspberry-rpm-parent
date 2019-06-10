@@ -47,6 +47,8 @@ import { TestComponent } from './test/test.component';
 import { BrewDetailComponent } from './brew/brew-detail/brew-detail.component';
 import { IngredientsDialogComponent } from './ingredients-dialog/ingredients-dialog.component';
 import { StageDialogComponent } from './stage-dialog/stage-dialog.component';
+import { QuantityPipe } from './quantity.pipe';
+import { CamelcasePipe } from './camelcase.pipe';
 
 
 
@@ -93,7 +95,9 @@ export const router: Routes = [
     TestComponent,
     BrewDetailComponent,
     IngredientsDialogComponent,
-    StageDialogComponent
+    StageDialogComponent,
+    QuantityPipe,
+    CamelcasePipe
     ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Step } from 'src/app/beans/brewery/step';
 import { Brew } from 'src/app/beans/brewery/brew';
 import { BrewService } from 'src/app/services/brew.service';
@@ -18,6 +18,7 @@ import { StepStage } from 'src/app/beans/brewery/step-stage';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { IngredientsDialogComponent } from 'src/app/ingredients-dialog/ingredients-dialog.component';
 import { StageDialogComponent } from 'src/app/stage-dialog/stage-dialog.component';
+import { UnitService } from 'src/app/services/unit.service';
 
 
 @Component({
@@ -25,21 +26,26 @@ import { StageDialogComponent } from 'src/app/stage-dialog/stage-dialog.componen
   templateUrl: './brew-detail.component.html',
   styleUrls: ['./brew-detail.component.css']
 })
-export class BrewDetailComponent implements OnInit {
+export class BrewDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('stagesContainer')
   private stagesRef: ElementRef;
 
-  private padding = 20;
-
-  private stageTemporalUnit;
+  private padding = {top: 20, bottom: 40, left: 40, right: 20};
 
   currentStep: Step = new Step();
-  brew: Brew;
+  brew: Brew = {};
   ingredientsList: Ingredient[];
   brewId: number;
 
   subs$: Subscription[] = [];
+  stepTypes: any[];
+  stepHeaderEdit: boolean = false;
+  brewHeaderEdit = false;
+
+  originalX = [1000000, 0];
+
+  timeUnits = this.unitService.units.filter(s => s.group === 'time')[0].units.map(s => s.name);
 
   ingredientsDialogRef: MatDialogRef<any, any>;
   stagesDialogRef: MatDialogRef<any, any>;
@@ -48,6 +54,7 @@ export class BrewDetailComponent implements OnInit {
     , private brewService: BrewService
     , private ingredientService: IngredientService
     , private stepService: StepService
+    , private unitService: UnitService
     , private router: Router
     , private ingredientsDialog: MatDialog
     , private stagesDialog: MatDialog) { }
@@ -60,7 +67,7 @@ export class BrewDetailComponent implements OnInit {
        * Getting all ingredients
        */
       this.subs$.push(this.ingredientService.getAllIngredients().subscribe(res => {
-        console.log('Got ' + res.map(s => JSON.stringify(s)));
+        //  console.log('Got ' + res.map(s => JSON.stringify(s)));
         this.ingredientsList = res;
       }));
       /*
@@ -75,14 +82,42 @@ export class BrewDetailComponent implements OnInit {
     }));
   }
 
+  ngOnDestroy(){
+    this.subs$.forEach(s => {
+      s.unsubscribe();
+    });
+  }
 
-  private routeToEdit() {
+  private cancelBrewHeader(){
+    const brewSub$ = this.brewService.getBrew(this.brewId).subscribe(brw => {
+      this.stepService.calculateStageDates(brw.steps);
+      this.brew = brw;
+      this.dispatchBrewQuantities();
+      this.brewHeaderEdit = false;
+    });
+    this.subs$.push(brewSub$);
+  }
 
+  private routeToEdit(){
+    this.brewHeaderEdit = true; 
+  }
+  private editHeader() {
+    this.stepHeaderEdit = true;
+    this.stepService.getAllTypes().subscribe(res => {
+      this.stepTypes = res;
+    });
+  }
+
+  private saveHeader() {
+  }
+
+  private cancelHeader() {
+    this.stepHeaderEdit = false;
   }
 
   private activateStep(step: Step) {
     this.currentStep = step;
-    console.log(this.currentStep);
+    //  console.log(this.currentStep);
     setTimeout(() => this.initStagesChart(), 200);
   }
 
@@ -97,14 +132,14 @@ export class BrewDetailComponent implements OnInit {
       }
     }
   }
-  
+
   getIngredientById(ingredientId): Ingredient {
     const poss = this.ingredientsList.filter(s => s.id === ingredientId);
     if (poss && poss.length === 1) {
-      console.log(poss[0]);
+      //     //  console.log(poss[0]);
       return poss[0];
     } else {
-      console.log('No Ingredient ' + ingredientId);
+      //     //  console.log('No Ingredient ' + ingredientId);
       return new Ingredient();
     }
   }
@@ -135,13 +170,14 @@ export class BrewDetailComponent implements OnInit {
    * Returns an array containing chart bounds in millis for X axis and Celsius for temperatures
    */
   private getMinAndMaxForStep(): any {
-    const res = { x: [0, 0], y: [0, 0] };
+    
+    const res = { x: [{}, {}], y: [100000000, 0] };
     for (let stage of this.currentStep.stages) {
-      if (stage.beginningToStep < res.x[0]) {
-        res.x[0] = stage.beginningToStep;
+      if (stage.beginningToStep < this.originalX[0]) {
+        this.originalX[0] = stage.beginningToStep;
       }
-      if (stage.beginningToStep + stage.duration * 1000 > res.x[1]) {
-        res.x[1] = stage.beginningToStep + stage.duration * 1000;
+      if (stage.beginningToStep + stage.duration > this.originalX[1]) {
+        this.originalX[1] = stage.beginningToStep + stage.duration;
       }
       if (Math.min(stage.startTemperature, stage.endTemperature) < res.y[0]) {
         res.y[0] = Math.min(stage.startTemperature, stage.endTemperature);
@@ -151,8 +187,8 @@ export class BrewDetailComponent implements OnInit {
       }
     }
 
-    res.x[0] = this.toBestTemporalUnit(res.x[0], res.x);
-    res.x[1] = this.toBestTemporalUnit(res.x[1], res.x);
+    res.x[0] = this.unitService.toBestTemporalUnit(this.originalX[0], this.originalX);
+    res.x[1] = this.unitService.toBestTemporalUnit(this.originalX[1], this.originalX);
     return res;
   }
 
@@ -164,27 +200,28 @@ export class BrewDetailComponent implements OnInit {
 
     const mainG = chart.append('g')
       .attr('class', 'main-g')
-      .attr('width', this.stagesRef.nativeElement.clientWidth - this.padding * 2)
-      .attr('height', this.stagesRef.nativeElement.clientHeight - this.padding * 2)
-      .attr('transform', `translate(${this.padding}, ${this.padding})`);
+      .attr('width', this.stagesRef.nativeElement.clientWidth - this.padding.left - this.padding.right)
+      .attr('height', this.stagesRef.nativeElement.clientHeight - this.padding.bottom - this.padding.top)
+      .attr('transform', `translate(${this.padding.left}, ${this.padding.top})`);
 
 
     const x = d3Scale.scaleLinear()//
-      .range([0, this.stagesRef.nativeElement.clientWidth - this.padding * 2])
-      .domain(minAndMax.x);
+      .range([0, this.stagesRef.nativeElement.clientWidth - this.padding.top - this.padding.bottom])
+      .domain(minAndMax.x.map(s => s.quantity));
 
     const y = d3Scale.scaleLinear()//
-      .range([0, this.stagesRef.nativeElement.clientHeight - this.padding * 2])
+      .range([0, this.stagesRef.nativeElement.clientHeight - this.padding.left - this.padding.right])
       .domain([minAndMax.y[1], minAndMax.y[0]]);
 
     const line = d3Shape//
       .line()//
       .x((item: any) => {
-        console.log('X : ' + this.toBestTemporalUnit(item.x, minAndMax.x));
-        return x(this.toBestTemporalUnit(item.x, minAndMax.x));
+         // console.log(item.x + ' X : ');
+         // console.log(this.unitService.toBestTemporalUnit(item.x, this.originalX));
+        return x(this.unitService.toBestTemporalUnit(item.x, this.originalX).quantity);
       })
       .y((item: any) => {
-        console.log('Y : ' + y(item.y));
+       // console.log(item.y + 'Y : ' + y(item.y));
         return y(item.y);
       });
 
@@ -197,16 +234,30 @@ export class BrewDetailComponent implements OnInit {
 
     mainG.append('g')
       .attr('class', 'axis x-axis')
-      .attr('transform', `translate(0, ${this.stagesRef.nativeElement.clientHeight - this.padding * 2})`)
+      .attr('transform', `translate(0, ${this.stagesRef.nativeElement.clientHeight - this.padding.top - this.padding.bottom})`)
       .call(xAxis);
 
     mainG.append('g')
       .attr('class', 'axis y-axis')
       .call(yAxis);
 
+      mainG.append('text')
+        .attr('transform', `translate(${(this.stagesRef.nativeElement.clientWidth - this.padding.left - this.padding.right) / 2},
+         ${this.stagesRef.nativeElement.clientHeight - this.padding.top})`)
+        .style('font-size', '0.8em')
+        .style('color', 'black')
+        .text('Time in ' + minAndMax.x[0].unit.toLowerCase());
+
+
+        mainG.append('text')
+        .attr('transform', `translate(-${this.padding.left},0)`)
+        .style('font-size', '0.8em')
+        .style('color', 'black')
+        .text('°C');
+    
     mainG.append('path')
-      .attr('width', `${this.stagesRef.nativeElement.clientWidth - this.padding * 2}`)
-      .attr('height', `${this.stagesRef.nativeElement.clientHeight - this.padding * 2}`)
+      .attr('width', `${this.stagesRef.nativeElement.clientWidth - this.padding.left - this.padding.right}`)
+      .attr('height', `${this.stagesRef.nativeElement.clientHeight - this.padding.top - this.padding.bottom}`)
       .datum(data)
       .attr('class', 'line')
       .attr('d', line)
@@ -219,38 +270,27 @@ export class BrewDetailComponent implements OnInit {
     const res = [];
 
     for (let elt of this.currentStep.stages) {
+      //   console.log('Pushing ')
+      //   console.log({
+      //    x: elt.beginningToStep,
+      //    y: elt.startTemperature
+      //  });
+      //  console.log(' To ');
+      //  console.log({
+      //   x: elt.beginningToStep + elt.duration,
+      //   y: elt.endTemperature
+      // });
+      // //  console.log(elt);
       res.push({
         x: elt.beginningToStep,
         y: elt.startTemperature
       });
       res.push({
-        x: elt.beginningToStep + elt.duration * 1000,
+        x: elt.beginningToStep + elt.duration,
         y: elt.endTemperature
       });
     }
     return res;
-  }
-
-  /**
-   * Converts to best unit of time
-   * @param time time in ms
-   * @param bounds bounds in ms
-   */
-  private toBestTemporalUnit(time: number, bounds: number[]): number {
-    const diff = bounds[1] - bounds[0];
-
-    // In case min and max are over 100 minutes, convert to hours
-    if (diff > 60000000) {
-      bounds = bounds.map(s => s / 1000 / 3600);
-      this.stageTemporalUnit = 'h';
-      // console.log(time / 1000 / 3600 + 'h');
-      return time / 1000 / 3600;
-    } else {
-      this.stageTemporalUnit = 'min';
-      bounds = bounds.map(s => s / 1000 / 60);
-      // console.log(time / 1000 / 60 + 'min');
-      return time / 1000 / 60;
-    }
   }
 
   /**

@@ -16,7 +16,7 @@
             "end": null,
             "ingredients": [
                 {
-                    "ingredient": null,
+                    "ingredient": 2,
                     "quantityAdded": {
                         "quantity": 5.0,
                         "unit": "kg"
@@ -24,7 +24,7 @@
                     "additionTime": 1558292369543
                 },
                 {
-                    "ingredient": null,
+                    "ingredient": 2,
                     "quantityAdded": {
                         "quantity": 1.0,
                         "unit": "kg"
@@ -32,7 +32,7 @@
                     "additionTime": 1000
                 },
                 {
-                    "ingredient": null,
+                    "ingredient": 2,
                     "quantityAdded": {
                         "quantity": 1.0,
                         "unit": "kg"
@@ -46,13 +46,22 @@
                         "unit": "kg"
                     },
                     "additionTime": 43200000
+                },
+                {
+                    "ingredient": 12,
+                    "quantityAdded": {
+                        "quantity": 100.0,
+                        "unit": "g"
+                    },
+                    "additionTime": 300000
                 }
             ],
             "stages": [
                 {
                     "id": 1,
                     "type": "CONSTANT",
-                    "beginning": 1558614607049,
+                    "beginning": null,
+                    "beginningToStep": 0,
                     "duration": 1800,
                     "startTemperature": 64.0,
                     "endTemperature": 64.0
@@ -60,10 +69,29 @@
                 {
                     "id": 2,
                     "type": "CONSTANT",
-                    "beginning": 1558616436247,
+                    "beginning": null,
+                    "beginningToStep": 1800,
                     "duration": 1800,
                     "startTemperature": 72.0,
                     "endTemperature": 72.0
+                },
+                {
+                    "id": 30,
+                    "type": "CONSTANT",
+                    "beginning": null,
+                    "beginningToStep": 3600,
+                    "duration": 180000,
+                    "startTemperature": 50.0,
+                    "endTemperature": 50.0
+                },
+                {
+                    "id": 31,
+                    "type": "CONSTANT",
+                    "beginning": null,
+                    "beginningToStep": 180000,
+                    "duration": 240000,
+                    "startTemperature": 60.0,
+                    "endTemperature": 60.0
                 }
             ]
         }

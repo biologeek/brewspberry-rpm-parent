@@ -6,10 +6,10 @@ export class Step {
     public id?;
     public name?;
     public type?;
-    public plannedDuration?: Quantity;
-    effectiveDuration?: Quantity;
-    public beginning?: number;
-    public end?: number;
+    public plannedDuration?: Quantity = {};
+    public effectiveDuration?: Quantity = {};
+    public beginning?: number | Date;
+    public end?: number | Date;
     public position?: number;
     stages?: StepStage[];
     ingredients?: StepIngredient[];

@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Brew } from 'src/app/beans/brewery/brew';
 import { map } from 'rxjs/operators';
+import { StepService } from './step.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BrewService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private stepService: StepService) { }
 
   public getCurrentBrews(): Observable<Brew[]> {
     return this.http.get(`${environment.apiBreweryManagement}/brew`).pipe(map((brew: Brew) => this.convertDates(brew))) as Observable<Brew[]>;
@@ -31,6 +32,7 @@ export class BrewService {
   private convertDates(brew: Brew): Brew {
     brew.beginning ? brew.beginning = new Date(brew.beginning) : null;
     brew.end ? brew.end = new Date(brew.end) : null;
+    brew.steps = this.stepService.convertDates(brew.steps);
     return brew;
   }
 }

@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import net.brewspberry.brewery.api.StageType;
 import net.brewspberry.brewery.exceptions.ElementNotFoundException;
 import net.brewspberry.brewery.exceptions.ValidationException;
 import net.brewspberry.brewery.model.QuantifiedIngredient;
@@ -130,12 +132,33 @@ public class DefaultStepService implements StepService {
 	}
 
 	@Override
-	public Step addNewStage(Long stepId, TemperatureStageOperation model) throws ElementNotFoundException {
+	public Step addNewStage(Long stepId, TemperatureStageOperation model)
+			throws ElementNotFoundException, ValidationException {
 		Step step = this.getStepById(stepId);
 		model.setStep(step);
+		this.validateStage(model);
+		if (model.getStageType() == StageType.CONSTANT)
+			model.setEndSetPoint(model.getBeginningSetPoint());
 		model = this.temperatureStageOperationRepository.save(model);
 		step.getTemperatureStages().add(model);
 		return step;
+	}
+
+	private void validateStage(TemperatureStageOperation op) throws ValidationException {
+		try {
+
+			Assert.notNull(op.getBeginningToStep(), "beginningToStep.null");
+			Assert.notNull(op.getDuration(), "duration.null");
+			Assert.notNull(op.getBeginningSetPoint(), "beginning.null");
+
+			if (op.getStageType() == StageType.LINEAR) {
+				Assert.notNull(op.getEndSetPoint(), "end.null");
+			} else if (op.getStageType() == StageType.CONSTANT) {
+
+			}
+		} catch (IllegalArgumentException e) {
+			throw new ValidationException(e.getMessage());
+		}
 	}
 
 }

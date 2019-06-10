@@ -52,7 +52,6 @@ public class TemperatureStageOperation {
 	 */
 	private LocalDateTime beginning;
 	
-	@Transient
 	private Long beginningToStep;
 	
 	@ManyToOne

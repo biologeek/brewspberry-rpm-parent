@@ -1,37 +1,52 @@
 <div class="brew-container">
   <mat-card class="brew-form">
     <mat-card-title>Brew data
-      <span class="right-text">
+      <span class="right-text" *ngIf="!brewHeaderEdit">
         <i (click)="routeToEdit()" class="material-icons">
           edit
         </i>
       </span>
+      <span class="right-text" *ngIf="brewHeaderEdit">
+          <i class="material-icons" (click)="cancelBrewHeader()">
+            cancel
+          </i>
+          <i class="material-icons" (click)="saveBrewHeader()">
+            save
+          </i>
+        </span>
     </mat-card-title>
     <mat-card-content>
       <mat-grid-list class="brew-data-container" cols="2" rowHeight="30px">
         <mat-grid-tile>Name</mat-grid-tile>
         <mat-grid-tile>
-          <span *ngIf="!nameEdit" (click)="nameEdit=true">{{brew?.title}}</span>
-          <span *ngIf="nameEdit"><input type="text" (keyup.enter)="nameEdit = false" (focusout)="nameEdit=false" [(ngModel)]="brew.title"></span>
+          <span *ngIf="!nameEdit && !brewHeaderEdit" (click)="nameEdit=true">{{brew?.title}}</span>
+          <span *ngIf="nameEdit || brewHeaderEdit"><input type="text" (keyup.enter)="nameEdit = false"
+              (focusout)="nameEdit=false" [(ngModel)]="brew.title"></span>
         </mat-grid-tile>
         <mat-grid-tile>Beginning</mat-grid-tile>
         <mat-grid-tile>
-          <span *ngIf="!beginningEdit"
+          <span *ngIf="!beginningEdit && !brewHeaderEdit"
             (click)="beginningEdit=true">{{brew?.beginning ? (brew?.beginning | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</span>
-          <span *ngIf="beginningEdit">
-            <input type="text" (keyup.enter)="beginningEdit = false" (focusout)="beginningEdit=false" [(ngModel)]="brew.beginning">
+          <span *ngIf="beginningEdit || brewHeaderEdit">
+            <input (keyup.enter)="beginningEdit = false" (focusout)="beginningEdit=false" [(ngModel)]="brew.beginning"
+              [owlDateTime]="beginBrewDt" [owlDateTimeTrigger]="beginBrewDt">
+            <owl-date-time #beginBrewDt></owl-date-time>
           </span>
         </mat-grid-tile>
         <mat-grid-tile>End</mat-grid-tile>
         <mat-grid-tile>
-          <span *ngIf="!endEdit"
+          <span *ngIf="!endEdit && !brewHeaderEdit"
             (click)="endEdit=true">{{brew?.end ? (brew.end | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</span>
-          <span *ngIf="endEdit"><input type="text" (keyup.enter)="endEdit = false" (focusout)="endEdit=false" [(ngModel)]="brew.end"></span>
+          <span *ngIf="endEdit || brewHeaderEdit">
+            <input type="text" (keyup.enter)="endEdit = false" (focusout)="endEdit=false" [(ngModel)]="brew.end"
+            [owlDateTime]="endBrewDt" [owlDateTimeTrigger]="endBrewDt">
+          <owl-date-time #endBrewDt></owl-date-time>
+          </span>
         </mat-grid-tile>
         <mat-grid-tile>State</mat-grid-tile>
         <mat-grid-tile>
-          <span *ngIf="!stateEdit" (click)="stateEdit=true">{{brew?.state}}</span>
-          <span *ngIf="stateEdit">
+          <span *ngIf="!stateEdit && !brewHeaderEdit" (click)="stateEdit=true">{{brew?.state}}</span>
+          <span *ngIf="stateEdit || brewHeaderEdit">
             <mat-select>
               <mat-option *ngFor="let state of states" (selectionChange)="stateEdit = false" [(ngModel)]="brew.state"
                 [value]="state.model">
@@ -45,45 +60,116 @@
   </mat-card>
 
   <div class="steps-container">
-    <div class="step-progress-bar">
+    <span class="step-progress-bar">
       <div class="container">
         <ul class="progressbar">
-          <li *ngIf="currentStep" class="classic" [matTooltip]="brew.beginning | date: 'dd/MM/y HH:mm:ss'">Started at</li>
-          <li *ngFor="let step of brew?.steps" class="classic" (click)="activateStep(step)">{{step.name}}</li>
+          <li *ngIf="currentStep" [matTooltip]="brew.beginning | date: 'dd/MM/y HH:mm:ss'">Started at</li>
+          <li *ngFor="let step of brew?.steps" (click)="activateStep(step)">{{step.name}}</li>
           <li *ngIf="currentStep" [matTooltip]="brew.end | date: 'dd/MM/y HH:mm:ss'">Finished at</li>
         </ul>
       </div>
-    </div>
-    <div class="step-container" *ngIf="currentStep.id">
-      <mat-card class="ingredients-container">
-        <mat-card-title>Ingredients
-          <span class="right-text">
-            <i (click)="openIngredientsPopup()" class="material-icons">
-              add
-            </i>
-          </span>
-        </mat-card-title>
-        <mat-card-content>
-          <ul>
-            <li *ngFor="let ingredient of currentStep?.ingredients">
-              {{getIngredientById(ingredient.ingredient).model}}:
-              {{ingredient.quantityAdded?.quantity || 'Ø'}} {{ingredient.quantityAdded?.unit}}
-            </li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="stages-container">
-        <mat-card-title>Stages
-          <span class="right-text">
-            <i (click)="openStagesPopup()" class="material-icons">
-              add
-            </i>
-          </span>
-        </mat-card-title>
-        <mat-card-content>
-          <svg id="stages-chart" #stagesContainer></svg>
-        </mat-card-content>
-      </mat-card>
-    </div>
+    </span>
+    <span class="rounded-circle">
+      <i (click)="openIngredientsPopup()" class="material-icons">
+        add
+      </i>
+    </span>
+  </div>
+
+  <div class="step-container" *ngIf="currentStep.id">
+    <mat-card class="step-header-container">
+      <mat-card-title>{{currentStep.name}}
+        <span class="right-text" *ngIf="!stepHeaderEdit">
+          <i class="material-icons" (click)="editHeader()">
+            edit
+          </i>
+        </span>
+        <span class="right-text" *ngIf="stepHeaderEdit">
+          <i class="material-icons" (click)="cancelHeader()">
+            cancel
+          </i>
+          <i class="material-icons" (click)="saveHeader()">
+            save
+          </i>
+        </span>
+      </mat-card-title>
+      <mat-card-content>
+        <mat-grid-list style="width: 50%" [cols]="2" [rowHeight]="'30px'">
+          <mat-grid-tile>Type</mat-grid-tile>
+          <mat-grid-tile *ngIf="!stepHeaderEdit">{{currentStep.type | camelcase}}</mat-grid-tile>
+          <mat-grid-tile *ngIf="stepHeaderEdit">
+            <mat-select [(ngModel)]="currentStep.type">
+              <mat-option *ngFor="let typ of stepTypes" [value]="typ">{{typ | camelcase}}</mat-option>
+            </mat-select>
+          </mat-grid-tile>
+          <mat-grid-tile>Position</mat-grid-tile>
+          <mat-grid-tile *ngIf="!stepHeaderEdit">{{currentStep.position}}</mat-grid-tile>
+          <mat-grid-tile *ngIf="stepHeaderEdit"><input type="number" [(ngModel)]="currentStep.position"></mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list [cols]="4" [rowHeight]="'30px'">
+
+          <mat-grid-tile>Started at</mat-grid-tile>
+          <mat-grid-tile *ngIf="!stepHeaderEdit">
+            {{currentStep.beginning ? (currentStep.beginning | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</mat-grid-tile>
+          <mat-grid-tile *ngIf="stepHeaderEdit">
+            <input [(ngModel)]="currentStep.beginning" [owlDateTime]="beginDt" [owlDateTimeTrigger]="beginDt">
+            <owl-date-time #beginDt></owl-date-time>
+          </mat-grid-tile>
+          <mat-grid-tile>Finished at</mat-grid-tile>
+          <mat-grid-tile *ngIf="!stepHeaderEdit">
+            {{currentStep.end ? (currentStep.end | date: 'dd/MM/yyyy hh:mm:ss') : 'Ø'}}</mat-grid-tile>
+          <mat-grid-tile *ngIf="stepHeaderEdit">
+            <input [(ngModel)]="currentStep.end" [owlDateTime]="endDt" [owlDateTimeTrigger]="endDt">
+            <owl-date-time #endDt></owl-date-time>
+          </mat-grid-tile>
+          <mat-grid-tile>Planned duration</mat-grid-tile>
+          <mat-grid-tile *ngIf="!stepHeaderEdit">{{currentStep.plannedDuration | quantity}}</mat-grid-tile>
+          <mat-grid-tile *ngIf="stepHeaderEdit">
+            <input type="text" style="width: 45%; margin-right: 5px" [(ngModel)]="currentStep.plannedDuration.quantity">
+            <mat-select style="width: 45%" [(ngModel)]="currentStep.plannedDuration.unit">
+              <mat-option *ngFor="let un of timeUnits" [value]="un">{{un | lowercase}}</mat-option>
+            </mat-select>
+          </mat-grid-tile>
+          <mat-grid-tile>Effective duration</mat-grid-tile>
+          <mat-grid-tile *ngIf="!stepHeaderEdit">{{ currentStep.effectiveDuration  | quantity}}</mat-grid-tile>
+          <mat-grid-tile *ngIf="stepHeaderEdit">
+            <input type="text" style="width: 45%; margin-right: 5px"
+              [(ngModel)]="currentStep.effectiveDuration.quantity">
+            <mat-select style="width: 45%" [(ngModel)]="currentStep.effectiveDuration.unit">
+              <mat-option *ngFor="let un of timeUnits" [value]="un">{{un | lowercase}}</mat-option>
+            </mat-select>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="ingredients-container">
+      <mat-card-title>Ingredients
+        <span class="right-text">
+          <i (click)="openIngredientsPopup()" class="material-icons">
+            add
+          </i>
+        </span>
+      </mat-card-title>
+      <mat-card-content>
+        <ul>
+          <li *ngFor="let ingredient of currentStep?.ingredients">
+            {{getIngredientById(ingredient.ingredient).model}}:
+            {{ingredient.quantityAdded?.quantity || 'Ø'}} {{ingredient.quantityAdded?.unit}}
+          </li>
+        </ul>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="stages-container">
+      <mat-card-title>Stages
+        <span class="right-text">
+          <i (click)="openStagesPopup()" class="material-icons">
+            add
+          </i>
+        </span>
+      </mat-card-title>
+      <mat-card-content>
+        <svg id="stages-chart" #stagesContainer></svg>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

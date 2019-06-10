@@ -3,6 +3,10 @@ package net.brewspberry.brewery.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -46,6 +50,20 @@ public class Step {
 
 	@ManyToOne
 	private Brew brew;
+
+	@Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "quantity", column = @Column(name = "planned_duration_qty")),                       
+        @AttributeOverride(name = "unit", column = @Column(name = "planned_duration_unit"))
+    })
+	private CustomQuantity plannedDuration;
+	@Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "quantity", column = @Column(name = "eff_duration_qty")),                       
+        @AttributeOverride(name = "unit", column = @Column(name = "eff_duration_unit"))
+    })
+	private CustomQuantity effectiveDuration;
+
 	/**
 	 * Allows to pause
 	 *
@@ -57,6 +75,30 @@ public class Step {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Brew getBrew() {
+		return brew;
+	}
+
+	public void setBrew(Brew brew) {
+		this.brew = brew;
+	}
+
+	public CustomQuantity getPlannedDuration() {
+		return plannedDuration;
+	}
+
+	public void setPlannedDuration(CustomQuantity plannedDuration) {
+		this.plannedDuration = plannedDuration;
+	}
+
+	public CustomQuantity getEffectiveDuration() {
+		return effectiveDuration;
+	}
+
+	public void setEffectiveDuration(CustomQuantity effectiveDuration) {
+		this.effectiveDuration = effectiveDuration;
 	}
 
 	public StepType getStepType() {

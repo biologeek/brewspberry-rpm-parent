@@ -34,9 +34,13 @@ export class StageDialogComponent implements OnInit {
   beginningToStepCalculation() {
     this.newStage.beginningToStep = this.unitService.convertTo(this.timeToStep, 'MILLISECONDS').quantity;
   }
+  durationCalculation() {
+    this.newStage.duration = this.unitService.convertTo(this.duration, 'MILLISECONDS').quantity;
+  }
 
   onSubmit(){
     this.beginningToStepCalculation();
+    this.durationCalculation();
     this.stepService.pushNewStage(this.dialogInputData.step, this.newStage).subscribe(res => {
       this.snackbar.open("Stage saved !", null, {
         duration: 3000,

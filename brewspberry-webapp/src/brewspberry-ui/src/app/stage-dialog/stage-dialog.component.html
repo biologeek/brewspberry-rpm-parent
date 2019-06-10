@@ -14,13 +14,13 @@
   <mat-grid-tile *ngIf="newStage.type === 'LINEAR'">
   </mat-grid-tile>
   <mat-grid-tile>
-    + <input type="text" [(ngModel)]="timeToStep.quantity" style="width: 45%;" placeholder="Starts at"> 
+    + <input type="number" [(ngModel)]="timeToStep.quantity" style="width: 45%;" placeholder="Starts at"> 
     <mat-select [(ngModel)]="timeToStep.unit" style="width: 25%; margin-left: 10px;">
       <mat-option *ngFor="let unit of timeUnits" [value]="unit">{{unit}}</mat-option>
     </mat-select>
   </mat-grid-tile>
   <mat-grid-tile>
-    + <input type="text" [(ngModel)]="duration.quantity" style="width: 45%;" placeholder="Duration"> 
+    + <input type="number" [(ngModel)]="duration.quantity" style="width: 45%;" placeholder="Duration"> 
     <mat-select [(ngModel)]="duration.unit" style="width: 25%; margin-left: 10px;">
       <mat-option *ngFor="let unit of timeUnits" [value]="unit">{{unit}}</mat-option>
     </mat-select>

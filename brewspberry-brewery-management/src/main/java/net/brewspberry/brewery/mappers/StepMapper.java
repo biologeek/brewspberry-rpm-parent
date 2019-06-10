@@ -7,8 +7,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import net.brewspberry.brewery.api.Quantity;
 import net.brewspberry.brewery.api.StepFull;
 import net.brewspberry.brewery.api.StepLight;
+import net.brewspberry.brewery.model.CustomQuantity;
 import net.brewspberry.brewery.model.Step;
 import net.brewspberry.brewery.model.Step.StepType;
 
@@ -33,6 +35,10 @@ public class StepMapper {
 		res.setEndDate(step.getEnd());
 		res.setLabel(step.getName());
 		res.setStepType(StepType.valueOf(step.getType()));
+		if (step.getPlannedDuration() != null)
+			res.setPlannedDuration(new CustomQuantity(step.getPlannedDuration().getQuantity(), step.getPlannedDuration().getUnit()));
+		if (step.getEffectiveDuration() != null)
+			res.setEffectiveDuration(new CustomQuantity(step.getEffectiveDuration().getQuantity(), step.getEffectiveDuration().getUnit()));
 		return res;
 	}
 
@@ -68,6 +74,10 @@ public class StepMapper {
 		res.setEnd(step.getEndDate());
 		res.setName(step.getLabel());
 		res.setType(step.getStepType().name());
+		if (step.getPlannedDuration() != null)
+			res.setPlannedDuration(new Quantity(step.getPlannedDuration().getQuantity(), step.getPlannedDuration().getUnit().name()));
+		if (step.getEffectiveDuration() != null)
+			res.setEffectiveDuration(new Quantity(step.getEffectiveDuration().getQuantity(), step.getEffectiveDuration().getUnit().name()));
 		return res;
 	}
 

@@ -1,6 +1,8 @@
 package net.brewspberry.brewery.api;
 
 public enum Unit {
+	MILLISECONDS("ms"), SECONDS("s"), MINUTES("min"), HOURS("h"), DAYS("days"), MONTHS("months"), YEARS("years"),
+	/**/
 	MILLILITER("ml"), CENTILITER("cl"), LITER("L"),
 
 	/**/
