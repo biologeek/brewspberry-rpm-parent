@@ -27,7 +27,6 @@ import net.brewspberry.monitoring.services.TemperatureSensorService;
 @RequestMapping("/temperature")
 public class TemperatureSensorController {
 
-	private static final String SENSOR_IDS_SEPARATOR = ".";
 	private static final String SENSOR_UUIDS_SEPARATOR = ";";
 	@Autowired
 	private TemperatureSensorService temperatureSensorService;
@@ -37,7 +36,7 @@ public class TemperatureSensorController {
 	private TemperatureMeasurementService temperatureMeasurementService;
 
 	@RequestMapping(path = "/sensors/{sensors}", method = RequestMethod.GET)
-	public ResponseEntity<List<Temperature>> getTemperaturesForSensors(@PathVariable("sensors") String sensors) {
+	public ResponseEntity<List<Temperature>> getTemperaturesForSensors(@PathVariable("sensors") List<String> sensors) {
 		List<Long> deviceIds = processSensors(sensors);
 		List<TemperatureMeasurement> measurements = temperatureSensorService.getTemperatureForDevices(deviceIds);
 		return new ResponseEntity<List<Temperature>>(temperatureConverter.toApi(measurements), HttpStatus.OK);
@@ -80,8 +79,8 @@ public class TemperatureSensorController {
 	 * @param sensors
 	 * @return
 	 */
-	private List<Long> processSensors(String sensors) {
-		return Arrays.asList(sensors.split(SENSOR_IDS_SEPARATOR)).stream().map(new Function<String, Long>() {
+	private List<Long> processSensors(List<String> sensors) {
+		return sensors.stream().map(new Function<String, Long>() {
 			@Override
 			public Long apply(String t) {
 				return Long.valueOf(t);

@@ -1,9 +1,18 @@
-package net.brewspberry.monitoring.model;
+package net.brewspberry.regulation.model;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 public class ConstantRegulationModel implements RegulationModel {
 
 	private Long id;
+	
+	private List<String> uuids;
+	/**
+	 * Duration in milliseconds
+	 */
 	private Long duration;
+	private LocalDateTime end;
 	private Float instruction;
 
 	public Long getId() {
@@ -12,6 +21,22 @@ public class ConstantRegulationModel implements RegulationModel {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<String> getUuids() {
+		return uuids;
+	}
+
+	public void setUuids(List<String> uuids) {
+		this.uuids = uuids;
+	}
+
+	public LocalDateTime getEnd() {
+		return end;
+	}
+
+	public void setEnd(LocalDateTime end) {
+		this.end = end;
 	}
 
 	public Long getDuration() {

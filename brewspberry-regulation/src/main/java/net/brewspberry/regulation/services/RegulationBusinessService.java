@@ -1,6 +1,6 @@
 package net.brewspberry.regulation.services;
 
-import net.brewspberry.monitoring.model.RegulationModel;
+import net.brewspberry.regulation.model.RegulationModel;
 
 public interface RegulationBusinessService<T extends RegulationModel> {
 	
