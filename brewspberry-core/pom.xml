@@ -7,7 +7,7 @@
 	<name>brewspberry-core</name>
 	<description>Core of BrewspberryPi project</description>
 		<properties>
-		<org.springframework.version>4.3.0.RELEASE</org.springframework.version>
+		<org.springframework.version>5.2.20.RELEASE</org.springframework.version>
 		<org.hibernate.version>4.3.11.Final</org.hibernate.version>
 
 		<hsqldb.version>2.3.2</hsqldb.version>
